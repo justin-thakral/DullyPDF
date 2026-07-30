@@ -1,0 +1,983 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1211__boiler_asset_register_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1211__boiler_asset_register_form.pdf",
+  "slug": "boiler-asset-register-form",
+  "title": "Boiler Asset Register and Lifecycle Record",
+  "subtitle": "Maintain one authoritative boiler record for identity, design, safeguards, access, documents, condition, and lifecycle decisions.",
+  "description": "A boiler-specific asset register that preserves nameplate, fuel, pressure, temperature, burner, water, treatment, control, relief-device, access, maintenance, baseline, evidence, change, and retirement data.",
+  "use_case": "Use when establishing or updating the authoritative boiler record needed for safe work planning, maintenance strategy, compliance routing, capital decisions, replacement, and accountable lifecycle control.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "asset_identity",
+      "title": "Asset identity, ownership, and location",
+      "guidance": "Establish the stable identity used by work orders, drawings, controls, and field labels.",
+      "blocks": [
+        {
+          "key": "asset_identifiers",
+          "type": "fields",
+          "label": "Asset identifiers and record ownership",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Primary asset or boiler ID",
+              "units": 1.35
+            },
+            {
+              "key": "alternate_id",
+              "label": "Alternate or legacy ID",
+              "units": 1.15
+            },
+            {
+              "key": "barcode_reference",
+              "label": "Barcode or QR ref",
+              "units": 1.1
+            },
+            {
+              "key": "record_created",
+              "label": "Record created",
+              "units": 0.95
+            },
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "property_location",
+          "type": "fields",
+          "label": "Property and boiler-room location",
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility or property",
+              "units": 1.25
+            },
+            {
+              "key": "street_address",
+              "label": "Street address",
+              "units": 1.45
+            },
+            {
+              "key": "building_area",
+              "label": "Building or area",
+              "units": 1.0
+            },
+            {
+              "key": "boiler_room",
+              "label": "Boiler room",
+              "units": 0.85
+            },
+            {
+              "key": "drawing_reference",
+              "label": "Drawing or grid ref",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "service_ownership",
+          "type": "fields",
+          "label": "Served system and operational ownership",
+          "fields": [
+            {
+              "key": "system_served",
+              "label": "System or process served",
+              "units": 1.4
+            },
+            {
+              "key": "area_served",
+              "label": "Area served",
+              "units": 1.1
+            },
+            {
+              "key": "department",
+              "label": "Department or tenant",
+              "units": 1.2
+            },
+            {
+              "key": "asset_owner",
+              "label": "Asset owner",
+              "units": 0.95
+            },
+            {
+              "key": "criticality",
+              "label": "Criticality",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select level",
+                "Low",
+                "Moderate",
+                "High",
+                "Critical"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "location_notes",
+          "type": "textarea",
+          "label": "How to find the boiler, access limits, and nearby hazards",
+          "height": 62,
+          "fields": [
+            {
+              "key": "details",
+              "label": "How to find the boiler, access limits, and nearby hazards",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "design_nameplate",
+      "title": "Nameplate, design, fuel, and burner data",
+      "guidance": "Transcribe field-verified identity and preserve image evidence for future work.",
+      "blocks": [
+        {
+          "key": "manufacturer_identity",
+          "type": "fields",
+          "label": "Boiler manufacturer identity",
+          "fields": [
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 1.1
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 0.9
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.05
+            },
+            {
+              "key": "manufacture_year",
+              "label": "Manufacture year",
+              "units": 1.0
+            },
+            {
+              "key": "national_board",
+              "label": "National Board no.",
+              "units": 1.15
+            },
+            {
+              "key": "nameplate_photo",
+              "label": "Nameplate photo ID",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "boiler_design",
+          "type": "fields",
+          "label": "Boiler design and capacity",
+          "fields": [
+            {
+              "key": "boiler_type",
+              "label": "Boiler type",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select type",
+                "Firetube",
+                "Watertube",
+                "Condensing",
+                "Electric",
+                "Other"
+              ]
+            },
+            {
+              "key": "service_medium",
+              "label": "Steam or hot water",
+              "units": 1.15
+            },
+            {
+              "key": "input_rating",
+              "label": "Input rating",
+              "units": 0.95
+            },
+            {
+              "key": "output_rating",
+              "label": "Output rating",
+              "units": 1.0
+            },
+            {
+              "key": "heating_surface",
+              "label": "Heating surface",
+              "units": 1.05
+            },
+            {
+              "key": "efficiency_rating",
+              "label": "Efficiency rating",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "fuel_burner",
+          "type": "fields",
+          "label": "Fuel and burner configuration",
+          "fields": [
+            {
+              "key": "primary_fuel",
+              "label": "Primary fuel",
+              "units": 0.9
+            },
+            {
+              "key": "alternate_fuel",
+              "label": "Alternate fuel",
+              "units": 1.0
+            },
+            {
+              "key": "burner_manufacturer",
+              "label": "Burner manufacturer",
+              "units": 1.25
+            },
+            {
+              "key": "burner_model",
+              "label": "Burner model",
+              "units": 1.0
+            },
+            {
+              "key": "burner_serial",
+              "label": "Burner serial",
+              "units": 1.0
+            },
+            {
+              "key": "fuel_train_id",
+              "label": "Fuel-train ID",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "installed_features",
+          "type": "checklist",
+          "label": "Installed design features and accessories",
+          "items": [
+            "Forced-draft burner",
+            "Power burner with linkage",
+            "Dual-fuel capability",
+            "Economizer or heat recovery",
+            "Modulating firing control",
+            "Oxygen-trim control",
+            "Condensing heat exchanger",
+            "Deaerator or feedwater tank",
+            "Condensate receiver",
+            "Remote monitoring interface"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "pressure_safeguards",
+      "title": "Pressure, temperature, relief, and safeguards",
+      "guidance": "Preserve design limits and device identities needed for qualified review and planning.",
+      "blocks": [
+        {
+          "key": "design_limits",
+          "type": "fields",
+          "label": "Pressure and temperature design limits",
+          "fields": [
+            {
+              "key": "mawp",
+              "label": "Maximum allowable pressure",
+              "units": 1.45
+            },
+            {
+              "key": "design_temperature",
+              "label": "Design temperature",
+              "units": 1.3
+            },
+            {
+              "key": "normal_pressure",
+              "label": "Normal pressure",
+              "units": 1.05
+            },
+            {
+              "key": "normal_temperature",
+              "label": "Normal temperature",
+              "units": 1.15
+            },
+            {
+              "key": "test_pressure_ref",
+              "label": "Test pressure ref",
+              "units": 1.1
+            },
+            {
+              "key": "code_stamp",
+              "label": "Code stamp or class",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "safety_device_register",
+          "type": "table",
+          "label": "Relief, cutoff, limit, and safety-device register",
+          "columns": [
+            {
+              "key": "device_id",
+              "label": "Device or tag",
+              "units": 1.0
+            },
+            {
+              "key": "device_type",
+              "label": "Device type",
+              "units": 1.0
+            },
+            {
+              "key": "rating",
+              "label": "Setpoint or rating",
+              "units": 1.15
+            },
+            {
+              "key": "serial",
+              "label": "Serial or seal",
+              "units": 1.0
+            },
+            {
+              "key": "last_test",
+              "label": "Last test date",
+              "units": 0.95
+            },
+            {
+              "key": "record",
+              "label": "Record reference",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "safeguard_inventory",
+          "type": "checklist",
+          "label": "Safeguards and protective functions present",
+          "items": [
+            "Operating pressure or temperature control",
+            "Independent high-limit control",
+            "Low-water fuel cutoff",
+            "Feedwater or level control",
+            "Flame safeguard system",
+            "Fuel-pressure protection",
+            "Combustion-air proving",
+            "Draft or vent proving",
+            "Emergency shutdown control",
+            "Remote alarm or monitoring"
+          ]
+        },
+        {
+          "key": "safeguard_notes",
+          "type": "textarea",
+          "label": "Safeguard configuration, known limits, and open verification",
+          "height": 56,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Safeguard configuration, known limits, and open verification",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "water_controls",
+      "title": "Water, treatment, controls, and monitoring",
+      "guidance": "Link the boiler to the water, condensate, treatment, and automation systems that support it.",
+      "blocks": [
+        {
+          "key": "water_configuration",
+          "type": "fields",
+          "label": "Water and condensate configuration",
+          "fields": [
+            {
+              "key": "feedwater_source",
+              "label": "Feedwater source",
+              "units": 1.15
+            },
+            {
+              "key": "makeup_source",
+              "label": "Makeup-water source",
+              "units": 1.25
+            },
+            {
+              "key": "feedwater_equipment",
+              "label": "Feedwater equipment",
+              "units": 1.25
+            },
+            {
+              "key": "condensate_return",
+              "label": "Condensate return",
+              "units": 1.1
+            },
+            {
+              "key": "blowdown_system",
+              "label": "Blowdown system",
+              "units": 1.05
+            },
+            {
+              "key": "discharge_location",
+              "label": "Discharge location",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "treatment_configuration",
+          "type": "fields",
+          "label": "Water-treatment ownership and records",
+          "fields": [
+            {
+              "key": "treatment_provider",
+              "label": "Treatment provider",
+              "units": 1.2
+            },
+            {
+              "key": "program_reference",
+              "label": "Program reference",
+              "units": 1.15
+            },
+            {
+              "key": "sampling_frequency",
+              "label": "Sampling frequency",
+              "units": 1.15
+            },
+            {
+              "key": "chemical_location",
+              "label": "Chemical location",
+              "units": 1.1
+            },
+            {
+              "key": "record_location",
+              "label": "Result record location",
+              "units": 1.3
+            }
+          ]
+        },
+        {
+          "key": "water_features",
+          "type": "checklist",
+          "label": "Installed water-system features",
+          "items": [
+            "Makeup-water meter",
+            "Feedwater pump set",
+            "Deaerator",
+            "Condensate receiver",
+            "Continuous blowdown",
+            "Bottom blowdown",
+            "Chemical feed equipment",
+            "Water softener",
+            "Sample cooler",
+            "Remote water-level monitoring"
+          ]
+        },
+        {
+          "key": "control_point_register",
+          "type": "table",
+          "label": "Control, sensor, and monitoring point register",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point or alarm",
+              "units": 1.1
+            },
+            {
+              "key": "source",
+              "label": "Sensor or source",
+              "units": 1.05
+            },
+            {
+              "key": "normal",
+              "label": "Normal range or state",
+              "units": 1.25
+            },
+            {
+              "key": "alarm",
+              "label": "Alarm or limit",
+              "units": 1.0
+            },
+            {
+              "key": "system",
+              "label": "System or panel",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Response owner",
+              "units": 0.95
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "control_notes",
+          "type": "textarea",
+          "label": "Control sequence, override authority, and record reference",
+          "height": 56,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Control sequence, override authority, and record reference",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "access_records",
+      "title": "Access, isolation, hazards, and records",
+      "guidance": "Give future technicians reliable planning information without replacing field verification.",
+      "blocks": [
+        {
+          "key": "access_details",
+          "type": "fields",
+          "label": "Boiler-room and equipment access",
+          "fields": [
+            {
+              "key": "access_method",
+              "label": "Access method",
+              "units": 1.0
+            },
+            {
+              "key": "key_badge",
+              "label": "Key, badge, or lock",
+              "units": 1.15
+            },
+            {
+              "key": "escort",
+              "label": "Escort requirement",
+              "units": 1.1
+            },
+            {
+              "key": "clearance_limits",
+              "label": "Clearance limits",
+              "units": 1.05
+            },
+            {
+              "key": "material_route",
+              "label": "Material route",
+              "units": 1.0
+            },
+            {
+              "key": "emergency_contact",
+              "label": "Emergency contact",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "isolation_references",
+          "type": "fields",
+          "label": "Energy-control and isolation references",
+          "fields": [
+            {
+              "key": "fuel_shutoff",
+              "label": "Fuel shutoff location",
+              "units": 1.25
+            },
+            {
+              "key": "electrical_disconnect",
+              "label": "Electrical disconnect",
+              "units": 1.3
+            },
+            {
+              "key": "water_steam_valves",
+              "label": "Water or steam valves",
+              "units": 1.3
+            },
+            {
+              "key": "lockout_procedure",
+              "label": "Lockout procedure ref",
+              "units": 1.25
+            },
+            {
+              "key": "shutdown_authority",
+              "label": "Shutdown authority",
+              "units": 1.15
+            },
+            {
+              "key": "emergency_stop",
+              "label": "Emergency stop",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "known_hazards",
+          "type": "checklist",
+          "label": "Known access and service hazards",
+          "items": [
+            "Fuel or combustion hazard",
+            "Electrical or arc hazard",
+            "Pressure and stored-energy hazard",
+            "Hot-surface or burn hazard",
+            "Steam or condensate exposure",
+            "Water-treatment chemical exposure",
+            "Confined-space concern",
+            "Limited egress or clearance",
+            "Combustion-air dependency",
+            "Noise or rotating-equipment hazard",
+            "Adjacent process dependency",
+            "No known special hazard documented"
+          ]
+        },
+        {
+          "key": "field_verification",
+          "type": "notice",
+          "label": "Field-verification requirement",
+          "guidance": "Stored access, isolation, setting, and hazard data are planning aids only. Qualified personnel must verify current conditions, energy sources, pressure and temperature state, fuel controls, water boundaries, permits, PPE, and applicable requirements before work."
+        },
+        {
+          "key": "document_register",
+          "type": "table",
+          "label": "Required boiler document and evidence register",
+          "columns": [
+            {
+              "key": "record",
+              "label": "Document or record",
+              "units": 1.3
+            },
+            {
+              "key": "reference",
+              "label": "Number or file link",
+              "units": 1.25
+            },
+            {
+              "key": "revision",
+              "label": "Revision or date",
+              "units": 0.95
+            },
+            {
+              "key": "owner",
+              "label": "Record owner",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Current or missing",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "maintenance_baselines",
+      "title": "Components, maintenance, baselines, and spares",
+      "guidance": "Translate asset data into service intervals, replaceable components, and accepted operating baselines.",
+      "blocks": [
+        {
+          "key": "component_register",
+          "type": "table",
+          "label": "Major component and replaceable-assembly register",
+          "columns": [
+            {
+              "key": "component",
+              "label": "Component",
+              "units": 1.05
+            },
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer or model",
+              "units": 1.2
+            },
+            {
+              "key": "part_serial",
+              "label": "Part or serial number",
+              "units": 1.25
+            },
+            {
+              "key": "rating",
+              "label": "Rating or size",
+              "units": 0.95
+            },
+            {
+              "key": "installed",
+              "label": "Installed date",
+              "units": 0.9
+            },
+            {
+              "key": "warranty",
+              "label": "Warranty or status",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "maintenance_strategy",
+          "type": "fields",
+          "label": "Preventive maintenance strategy",
+          "fields": [
+            {
+              "key": "pm_frequency",
+              "label": "PM frequency",
+              "units": 0.9
+            },
+            {
+              "key": "burner_frequency",
+              "label": "Burner service frequency",
+              "units": 1.35
+            },
+            {
+              "key": "treatment_frequency",
+              "label": "Treatment frequency",
+              "units": 1.2
+            },
+            {
+              "key": "inspection_frequency",
+              "label": "Inspection frequency",
+              "units": 1.2
+            },
+            {
+              "key": "primary_pm_owner",
+              "label": "Primary PM owner",
+              "units": 1.05
+            },
+            {
+              "key": "next_pm_due",
+              "label": "Next PM due",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "baseline_readings",
+          "type": "table",
+          "label": "Accepted baseline operating readings",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter or point",
+              "units": 1.15
+            },
+            {
+              "key": "value",
+              "label": "Baseline value",
+              "units": 1.0
+            },
+            {
+              "key": "range",
+              "label": "Accepted range",
+              "units": 1.05
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.55
+            },
+            {
+              "key": "conditions",
+              "label": "Date and conditions",
+              "units": 1.2
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or instrument",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "spares_register",
+          "type": "table",
+          "label": "Recommended consumables and critical spares",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part or consumable",
+              "units": 1.3
+            },
+            {
+              "key": "part_number",
+              "label": "Part number",
+              "units": 1.0
+            },
+            {
+              "key": "quantity",
+              "label": "Stock quantity",
+              "units": 0.9
+            },
+            {
+              "key": "location",
+              "label": "Storage location",
+              "units": 1.05
+            },
+            {
+              "key": "reorder",
+              "label": "Reorder point",
+              "units": 0.9
+            },
+            {
+              "key": "lead_time",
+              "label": "Lead time",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "asset_lifecycle",
+      "title": "Condition, changes, decisions, and retirement",
+      "guidance": "Preserve lifecycle changes and prevent obsolete records from driving future work.",
+      "blocks": [
+        {
+          "key": "condition_status",
+          "type": "fields",
+          "label": "Current condition and capital status",
+          "fields": [
+            {
+              "key": "condition",
+              "label": "Current condition",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select condition",
+                "Excellent",
+                "Good",
+                "Fair",
+                "Poor",
+                "Out of service"
+              ]
+            },
+            {
+              "key": "remaining_life",
+              "label": "Estimated remaining life",
+              "units": 1.35
+            },
+            {
+              "key": "replacement_year",
+              "label": "Replacement target year",
+              "units": 1.3
+            },
+            {
+              "key": "budget_estimate",
+              "label": "Budget estimate",
+              "units": 1.0
+            },
+            {
+              "key": "decision_reference",
+              "label": "Decision reference",
+              "units": 1.15
+            },
+            {
+              "key": "condition_date",
+              "label": "Condition date",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "change_log",
+          "type": "table",
+          "label": "Asset configuration and record change log",
+          "columns": [
+            {
+              "key": "change_date",
+              "label": "Change date",
+              "units": 0.85
+            },
+            {
+              "key": "change",
+              "label": "Component or data change",
+              "units": 1.35
+            },
+            {
+              "key": "reason",
+              "label": "Reason",
+              "units": 1.0
+            },
+            {
+              "key": "work_order",
+              "label": "Work order or project",
+              "units": 1.15
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or revision",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "retirement_review",
+          "type": "checklist",
+          "label": "Retirement or replacement closeout",
+          "items": [
+            "Fuel source closed and documented",
+            "Electrical source disconnected",
+            "Pressure and water boundaries resolved",
+            "Chemical inventory and waste addressed",
+            "Controls and monitoring retired or reassigned",
+            "Salvaged parts recorded",
+            "Replacement asset linked",
+            "Drawings and asset systems updated",
+            "Final evidence retained",
+            "Record status changed to retired"
+          ]
+        },
+        {
+          "key": "condition_decision",
+          "type": "textarea",
+          "label": "Condition rationale, repair-or-replace decision, and approval",
+          "height": 62,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Condition rationale, repair-or-replace decision, and approval",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "record_approval",
+          "type": "signatures",
+          "label": "Asset record review and approval",
+          "fields": [
+            {
+              "key": "record_preparer",
+              "label": "Record preparer",
+              "units": 1.1
+            },
+            {
+              "key": "field_verifier",
+              "label": "Field verifier",
+              "units": 1.1
+            },
+            {
+              "key": "asset_owner",
+              "label": "Asset owner approval",
+              "units": 1.2
+            },
+            {
+              "key": "review_date",
+              "label": "Date",
+              "units": 0.65
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

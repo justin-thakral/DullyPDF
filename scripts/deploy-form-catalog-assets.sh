@@ -33,9 +33,11 @@ if [[ ! -d "${CATALOG_ROOT}" ]]; then
 fi
 
 TMP_CORS_FILE="$(mktemp)"
+TMP_PDF_URLS="$(mktemp)"
+TMP_WEBP_URLS="$(mktemp)"
 TMP_SYNC_ROOT=""
 cleanup() {
-  rm -f "${TMP_CORS_FILE}" || true
+  rm -f "${TMP_CORS_FILE}" "${TMP_PDF_URLS}" "${TMP_WEBP_URLS}" || true
   if [[ -n "${TMP_SYNC_ROOT}" ]]; then
     rm -rf "${TMP_SYNC_ROOT}" || true
   fi
@@ -71,7 +73,12 @@ fi
 
 echo "Staging manifest-listed form catalog assets..."
 TMP_SYNC_ROOT="$(mktemp -d)"
-python3 - "${CATALOG_ROOT}" "${TMP_SYNC_ROOT}" <<'PY'
+python3 - \
+  "${CATALOG_ROOT}" \
+  "${TMP_SYNC_ROOT}" \
+  "${FORM_CATALOG_BUCKET_URL}" \
+  "${TMP_PDF_URLS}" \
+  "${TMP_WEBP_URLS}" <<'PY'
 import json
 import os
 import shutil
@@ -80,6 +87,9 @@ from pathlib import Path
 
 catalog_root = Path(sys.argv[1]).resolve()
 sync_root = Path(sys.argv[2]).resolve()
+bucket_url = sys.argv[3].rstrip("/")
+pdf_urls_path = Path(sys.argv[4])
+webp_urls_path = Path(sys.argv[5])
 manifest = json.loads((catalog_root / "manifest.json").read_text())
 forms = [
     entry
@@ -87,6 +97,7 @@ forms = [
     if entry.get("ok") is True and entry.get("section") and entry.get("filename")
 ]
 missing: list[str] = []
+published: list[Path] = []
 
 for entry in forms:
     pdf_path = catalog_root / entry["section"] / entry["filename"]
@@ -101,6 +112,7 @@ for entry in forms:
             os.link(source_path, destination_path)
         except OSError:
             shutil.copy2(source_path, destination_path)
+        published.append(source_path.relative_to(catalog_root))
 
 if missing:
     for rel_path in missing[:25]:
@@ -108,6 +120,14 @@ if missing:
     if len(missing) > 25:
         print(f"... {len(missing) - 25} more missing manifest assets", file=sys.stderr)
     raise SystemExit(1)
+
+with pdf_urls_path.open("wb") as pdf_urls, webp_urls_path.open("wb") as webp_urls:
+    for relative_path in published:
+        destination = f"{bucket_url}/{relative_path.as_posix()}".encode("utf-8") + b"\0"
+        if relative_path.suffix.lower() == ".pdf":
+            pdf_urls.write(destination)
+        elif relative_path.suffix.lower() == ".webp":
+            webp_urls.write(destination)
 
 print(f"Staged {len(forms)} PDFs and {len(forms)} thumbnails from manifest.json")
 PY
@@ -141,24 +161,26 @@ gcloud storage buckets add-iam-policy-binding "${FORM_CATALOG_BUCKET_URL}" \
   --member allUsers \
   --role roles/storage.objectViewer >/dev/null
 
-echo "Syncing PDFs and thumbnails to ${FORM_CATALOG_BUCKET_URL}..."
+# Stable legacy object names remain available for catalog entries that have
+# not entered the immutable release pipeline. This sync may update a same-path
+# official revision, but it never deletes unmatched release or rollback assets.
+echo "Updating legacy PDFs and thumbnails in ${FORM_CATALOG_BUCKET_URL}..."
 gcloud storage rsync "${TMP_SYNC_ROOT}" "${FORM_CATALOG_BUCKET_URL}" \
   --project "${PROJECT_ID}" \
   --recursive \
-  --delete-unmatched-destination-objects \
   --exclude '.*\.(json|py|pyc|md|txt|mjs|log)$' \
   --cache-control 'public,max-age=31536000,immutable'
 
 if command -v gsutil >/dev/null 2>&1; then
-  echo "Normalizing uploaded object metadata..."
-  gsutil -m setmeta \
-    -h 'Cache-Control:public,max-age=31536000,immutable' \
-    -h 'Content-Type:application/pdf' \
-    "${FORM_CATALOG_BUCKET_URL}/**/*.pdf"
-  gsutil -m setmeta \
-    -h 'Cache-Control:public,max-age=31536000,immutable' \
-    -h 'Content-Type:image/webp' \
-    "${FORM_CATALOG_BUCKET_URL}/**/*.webp"
+  echo "Normalizing metadata for the exact manifest-derived legacy objects..."
+  xargs -0 -r -n 200 \
+    gsutil -m setmeta \
+      -h 'Cache-Control:public,max-age=31536000,immutable' \
+      -h 'Content-Type:application/pdf' < "${TMP_PDF_URLS}"
+  xargs -0 -r -n 200 \
+    gsutil -m setmeta \
+      -h 'Cache-Control:public,max-age=31536000,immutable' \
+      -h 'Content-Type:image/webp' < "${TMP_WEBP_URLS}"
 else
   echo "Warning: gsutil not found; uploaded catalog thumbnails may keep default object content types." >&2
 fi

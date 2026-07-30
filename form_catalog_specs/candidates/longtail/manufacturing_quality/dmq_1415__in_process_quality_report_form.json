@@ -1,0 +1,589 @@
+{
+  "schema_version": 1,
+  "catalog_id": "manufacturing_quality/dmq_1415__in_process_quality_report_form",
+  "source_section": "manufacturing_quality",
+  "source_filename": "dmq_1415__in_process_quality_report_form.pdf",
+  "slug": "in-process-quality-report-form",
+  "title": "In-Process Quality Report Form",
+  "subtitle": "Reconcile the in-process inspection and control check population, summarize evidence and trends, separate limitations from conclusions, assign decisions, and track follow-up.",
+  "description": "A decision-ready in-process quality report form that turns source records for a work-in-process lot or serial range into reconciled measures, exception patterns, qualified conclusions, owned actions, and a retrievable reporting package.",
+  "use_case": "Use when the production and quality response owner needs a bounded quality report for the in-process inspection and control check rather than a raw inspection checklist or chronological log.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "report_scope",
+      "title": "In-Process Quality report scope and ownership",
+      "guidance": "Define the reporting period, exact population, controlling references, and intended audience.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "inspection_number",
+              "label": "In-process inspection number",
+              "units": 0.9
+            },
+            {
+              "key": "check_date_time",
+              "label": "Check date and time",
+              "units": 0.8
+            },
+            {
+              "key": "work_order",
+              "label": "Work order",
+              "units": 0.7
+            },
+            {
+              "key": "part_number",
+              "label": "Part number",
+              "units": 0.8
+            },
+            {
+              "key": "part_revision",
+              "label": "Part revision",
+              "units": 0.6
+            },
+            {
+              "key": "operation_step",
+              "label": "Operation or routing step",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Work-In-Process Lot Or Serial Range identity",
+          "fields": [
+            {
+              "key": "lot_serial_range",
+              "label": "Lot or serial range",
+              "units": 0.9
+            },
+            {
+              "key": "line_cell",
+              "label": "Line or cell",
+              "units": 0.7
+            },
+            {
+              "key": "machine_asset",
+              "label": "Machine or asset ID",
+              "units": 0.85
+            },
+            {
+              "key": "operator",
+              "label": "Operator",
+              "units": 0.8
+            },
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 0.55
+            },
+            {
+              "key": "sampling_frequency",
+              "label": "Sampling frequency",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "reporting_context",
+          "type": "fields",
+          "label": "Reporting context",
+          "fields": [
+            {
+              "key": "reporting_period",
+              "label": "Reporting period",
+              "units": 0.8
+            },
+            {
+              "key": "population_scope",
+              "label": "Lot, serial, job, or asset population",
+              "units": 1.2
+            },
+            {
+              "key": "report_owner",
+              "label": "Report owner",
+              "units": 0.8
+            },
+            {
+              "key": "review_meeting",
+              "label": "Review meeting or due date",
+              "units": 0.85
+            },
+            {
+              "key": "distribution",
+              "label": "Intended distribution",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "report_purpose",
+          "type": "textarea",
+          "label": "Report purpose, questions to answer, exclusions, and decision required",
+          "fields": [
+            {
+              "key": "purpose_detail",
+              "label": "Purpose and reporting boundary"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "population_evidence",
+      "title": "Population, source records, and data integrity",
+      "guidance": "Reconcile source data to the in-process inspection and control check population before summarizing.",
+      "blocks": [
+        {
+          "key": "source_record_reconciliation",
+          "type": "table",
+          "label": "Source-record reconciliation",
+          "columns": [
+            {
+              "key": "source_record",
+              "label": "Source record / system",
+              "units": 1.2
+            },
+            {
+              "key": "population",
+              "label": "Population",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed",
+              "label": "Reviewed count",
+              "units": 0.7
+            },
+            {
+              "key": "excluded",
+              "label": "Excluded count",
+              "units": 0.65
+            },
+            {
+              "key": "reason",
+              "label": "Exclusion / gap",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Data owner",
+              "units": 0.7
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "data_integrity_checks",
+          "type": "checklist",
+          "label": "Data completeness and traceability checks",
+          "items": [
+            "The active routing and control plan match the work order revision",
+            "First-piece and restart approvals can be traced to production start",
+            "Sampling times or quantities satisfy the documented frequency",
+            "Actual results identify the measured unit and equipment used",
+            "Operators preserve original observations after adjustments",
+            "Drift and defect signals lead to timely containment",
+            "Affected product range is defined from the last known acceptable check",
+            "Reinspection scope and results support restart authorization",
+            "Nonconformance records are linked when limits are exceeded",
+            "Automated data gaps or alarms have documented review"
+          ]
+        },
+        {
+          "key": "data_limitations",
+          "type": "textarea",
+          "label": "Missing data, sampling assumptions, system limitations, and effect on conclusions",
+          "fields": [
+            {
+              "key": "limitations_detail",
+              "label": "Data limitations and qualification"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "results_analysis",
+      "title": "In-Process Quality results and performance analysis",
+      "guidance": "Preserve counts, actual evidence, targets, trends, and the calculation basis.",
+      "blocks": [
+        {
+          "key": "performance_summary",
+          "type": "table",
+          "label": "Performance measures and comparison",
+          "columns": [
+            {
+              "key": "measure",
+              "label": "Measure",
+              "units": 1.1
+            },
+            {
+              "key": "definition",
+              "label": "Definition / basis",
+              "units": 1.0
+            },
+            {
+              "key": "target",
+              "label": "Target / limit",
+              "units": 0.7
+            },
+            {
+              "key": "actual",
+              "label": "Actual",
+              "units": 0.65
+            },
+            {
+              "key": "trend",
+              "label": "Trend / prior",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "result_evidence",
+          "type": "table",
+          "label": "In-process characteristic and parameter checks",
+          "columns": [
+            {
+              "key": "time_unit",
+              "label": "Time / unit sampled",
+              "units": 0.9
+            },
+            {
+              "key": "characteristic",
+              "label": "Characteristic / parameter",
+              "units": 1.15
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement / range",
+              "units": 0.95
+            },
+            {
+              "key": "actual_result",
+              "label": "Actual result",
+              "units": 0.8
+            },
+            {
+              "key": "gage_asset",
+              "label": "Gage / asset",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "result_controls",
+          "type": "checklist",
+          "label": "Result interpretation controls",
+          "items": [
+            "Material lot and work-in-process identity remain traceable",
+            "First-piece or restart approval is present before routine production",
+            "Specified sample size and inspection frequency are being followed",
+            "Process parameters are within the documented operating window",
+            "Measurement equipment status and resolution are suitable",
+            "Actual readings are recorded at the required time or quantity interval",
+            "Defects and trends are separated from conforming work immediately",
+            "Rework or adjustment does not erase the original observation"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "findings_analysis",
+      "title": "Findings, patterns, and escalation",
+      "guidance": "Separate facts from interpretation and route significant or recurring exceptions.",
+      "blocks": [
+        {
+          "key": "report_exception_types",
+          "type": "checklist",
+          "label": "In-Process Quality exceptions requiring action",
+          "items": [
+            "Required check missed, late, incomplete, or recorded against the wrong lot",
+            "Process parameter outside the approved operating window",
+            "Characteristic result outside limit or trending toward a limit",
+            "Gage status expired, damaged, unsuitable, or unavailable",
+            "Material, tooling, program, or revision identity mismatch",
+            "Defective output not immediately contained or identified",
+            "Adjustment made without recording before-and-after evidence",
+            "Shift handoff omitted the last accepted unit or next check due"
+          ],
+          "guidance": "Select every applicable exception and preserve the original observation."
+        },
+        {
+          "key": "report_exception_log",
+          "type": "table",
+          "label": "Exception, containment, ownership, and disposition log",
+          "columns": [
+            {
+              "key": "exception_evidence",
+              "label": "Exception / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due_point",
+              "label": "Due date / point",
+              "units": 0.7
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "report_exception_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, containment boundary, and unresolved risk",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception narrative and affected-scope rationale"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "conclusions_decisions",
+      "title": "Conclusions, decisions, and authorized response",
+      "guidance": "State what the evidence supports and who may decide whether to continue, adjust, contain, stop, or authorize restart of the operation.",
+      "blocks": [
+        {
+          "key": "report_boundary",
+          "type": "notice",
+          "label": "Report and approval boundary",
+          "guidance": "This report summarizes recorded evidence; it does not create a technical or regulatory approval. A qualified reviewer must apply the current work instruction, control plan, routing step, and product requirement and site procedures."
+        },
+        {
+          "key": "decision_register",
+          "type": "table",
+          "label": "Decision, rationale, owner, and communication register",
+          "columns": [
+            {
+              "key": "decision",
+              "label": "Decision / response",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_basis",
+              "label": "Evidence basis",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Authority",
+              "units": 0.7
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.7
+            },
+            {
+              "key": "communicated_to",
+              "label": "Communicated to",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "management_summary",
+          "type": "textarea",
+          "label": "Evidence-based conclusion, adverse trend, confidence limitations, and decision rationale",
+          "fields": [
+            {
+              "key": "conclusion_detail",
+              "label": "Report conclusion and decision rationale"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "report_review",
+          "type": "signatures",
+          "label": "Report preparation and review",
+          "fields": [
+            {
+              "key": "report_preparer",
+              "label": "Report preparer / date",
+              "units": 1.0
+            },
+            {
+              "key": "data_reviewer",
+              "label": "Data reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Production And Quality Response Owner / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "report_closeout",
+      "title": "Action tracking, distribution, and report closeout",
+      "guidance": "Transfer every accepted action and preserve the report package for later comparison.",
+      "blocks": [
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action and accountable handoff register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Report outcome and routing",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limits",
+                "On hold",
+                "Rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or release date",
+              "units": 0.75
+            },
+            {
+              "key": "remaining_limits",
+              "label": "Remaining limitation reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Final decision basis, residual limitations, next action, and receiving handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome rationale and accountable handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_closeout",
+          "type": "signatures",
+          "label": "Accountable review and closeout",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Production And Quality Response Owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner or approver / date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not replace required technical or regulatory approval."
+        }
+      ]
+    }
+  ]
+}

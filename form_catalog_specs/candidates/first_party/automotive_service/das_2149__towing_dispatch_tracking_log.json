@@ -1,0 +1,469 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2149__towing_dispatch_tracking_log",
+  "source_section": "automotive_service",
+  "source_filename": "das_2149__towing_dispatch_tracking_log.pdf",
+  "slug": "towing-dispatch-tracking-log",
+  "title": "Towing Dispatch and Custody Tracking Log",
+  "subtitle": "Capture call authority, vehicle and scene facts, assigned recovery resources, actual dispatch milestones, pre-movement condition, custody transfers, destination acceptance, exceptions, charges, and final status.",
+  "description": "A workflow-complete towing dispatch log covering requesting-party authority, vehicle identity, pickup and destination details, scene hazards and access constraints, service and equipment assignment, driver acceptance, a time-stamped live status trail, pre-existing damage and property evidence, key custody, destination handoff, quoted and final charges, delivery exceptions, unresolved damage or billing reviews, and dispatcher closeout.",
+  "use_case": "Use when a dispatcher, tow operator, account representative, and destination receiver need one fillable record connecting the initial towing request to safe resource assignment, actual event times, vehicle custody, accepted delivery, exception resolution, and financial closeout.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "call_intake",
+      "title": "Call intake, requesting party, and authority routing",
+      "guidance": "Create one dispatch reference from first contact and identify who requested the service, how they relate to the vehicle, and what authority or account reference applies.",
+      "blocks": [
+        {
+          "key": "dispatch_reference",
+          "type": "fields",
+          "label": "Dispatch call reference",
+          "fields": [
+            {"key": "dispatch_number", "label": "Dispatch or call number", "units": 0.95},
+            {"key": "received_date_time", "label": "Call received date and time", "units": 1.05},
+            {"key": "dispatcher", "label": "Dispatcher", "units": 0.8},
+            {"key": "priority", "label": "Priority", "units": 0.75, "field_type": "choice", "options": ["Routine", "Priority", "Traffic exposure", "Emergency support", "Scheduled"]},
+            {"key": "account_contract", "label": "Account or contract", "units": 1.0},
+            {"key": "call_status", "label": "Call status", "units": 0.85, "field_type": "choice", "options": ["Open", "Assigned", "En route", "On scene", "Transporting", "Delivered", "Closed"]}
+          ]
+        },
+        {
+          "key": "requesting_party",
+          "type": "fields",
+          "label": "Requester and callback",
+          "fields": [
+            {"key": "requester", "label": "Requester, agency, or customer", "units": 1.25},
+            {"key": "callback_number", "label": "Callback number", "units": 0.9},
+            {"key": "relationship_vehicle", "label": "Relationship to vehicle", "units": 1.0},
+            {"key": "on_scene_contact", "label": "On-scene contact", "units": 0.95},
+            {"key": "communication_method", "label": "Communication method", "units": 0.9}
+          ]
+        },
+        {
+          "key": "authority_reference",
+          "type": "fields",
+          "label": "Authority, case, and purchase reference",
+          "fields": [
+            {"key": "authority_type", "label": "Authority type", "units": 0.9, "field_type": "choice", "options": ["Vehicle owner", "Authorized agent", "Motor club", "Fleet account", "Law enforcement", "Property authority", "Other documented authority"]},
+            {"key": "authority_name", "label": "Authorizing name or agency", "units": 1.15},
+            {"key": "case_po_reference", "label": "Case, authorization, or PO", "units": 1.05},
+            {"key": "authority_verified_by", "label": "Verified by", "units": 0.8},
+            {"key": "verification_date_time", "label": "Verified date and time", "units": 0.95}
+          ]
+        },
+        {
+          "key": "call_intake_notes",
+          "type": "textarea",
+          "label": "Initial request, customer expectations, jurisdiction, authorization limits, contact attempts, and dispatch routing notes",
+          "fields": [
+            {"key": "intake_note_detail", "label": "Call intake and authority detail"}
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "vehicle_scene_destination",
+      "title": "Vehicle, scene, pickup, and destination",
+      "guidance": "Match the vehicle and recovery equipment to the actual location, access, condition, occupant, and requested destination.",
+      "blocks": [
+        {
+          "key": "vehicle_identity",
+          "type": "fields",
+          "label": "Vehicle identity",
+          "fields": [
+            {"key": "year_make_model", "label": "Year, make, and model", "units": 1.2},
+            {"key": "color", "label": "Color", "units": 0.65},
+            {"key": "plate_state", "label": "Plate and state", "units": 0.85},
+            {"key": "vin_last8", "label": "VIN or last 8", "units": 0.9},
+            {"key": "fleet_unit", "label": "Fleet or unit", "units": 0.8},
+            {"key": "vehicle_class", "label": "Vehicle class", "units": 0.85}
+          ]
+        },
+        {
+          "key": "locations",
+          "type": "fields",
+          "label": "Pickup and requested destination",
+          "fields": [
+            {"key": "pickup_location", "label": "Pickup location or mile marker", "units": 1.35},
+            {"key": "scene_directions", "label": "Exact scene or access direction", "units": 1.2},
+            {"key": "requested_destination", "label": "Requested destination", "units": 1.25},
+            {"key": "destination_contact", "label": "Destination contact", "units": 1.0},
+            {"key": "destination_hours", "label": "Destination hours or limits", "units": 1.0}
+          ]
+        },
+        {
+          "key": "scene_conditions",
+          "type": "checklist",
+          "label": "Vehicle and scene conditions",
+          "items": [
+            "Vehicle drivable",
+            "Keys available",
+            "Wheels roll",
+            "Steering unlocked",
+            "Collision damage",
+            "Flat or missing wheel",
+            "Low clearance",
+            "Off roadway",
+            "Underground or garage",
+            "Traffic exposure",
+            "Police on scene",
+            "Hazardous load or leak",
+            "Occupant remains with vehicle",
+            "Weather or terrain constraint",
+            "Locked brakes or drivetrain",
+            "Loose parts require securing"
+          ]
+        },
+        {
+          "key": "scene_risk_detail",
+          "type": "textarea",
+          "label": "Exact directions, recovery angle, access limits, vehicle damage already present, occupant status, traffic control, hazards, and safety notes",
+          "fields": [
+            {"key": "scene_detail", "label": "Scene condition, access, and risk detail"}
+          ],
+          "height": 78
+        },
+        {
+          "key": "scene_evidence",
+          "type": "fields",
+          "label": "Scene evidence and escalation",
+          "fields": [
+            {"key": "scene_photo_ref", "label": "Scene photo reference", "units": 0.95},
+            {"key": "map_pin", "label": "Map pin or coordinates", "units": 1.0},
+            {"key": "traffic_control_owner", "label": "Traffic control owner", "units": 1.0},
+            {"key": "hazard_escalated_to", "label": "Hazard escalated to", "units": 0.95},
+            {"key": "scene_update_time", "label": "Scene update time", "units": 0.8}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "service_resource_assignment",
+      "title": "Requested service and resource assignment",
+      "guidance": "Record the accepted service, selected truck and recovery equipment, provider, driver, quote, and any mismatch requiring reassignment.",
+      "blocks": [
+        {
+          "key": "requested_service",
+          "type": "checklist",
+          "label": "Requested towing or roadside service",
+          "items": [
+            "Local tow",
+            "Long-distance tow",
+            "Accident recovery",
+            "Winch-out",
+            "Jump start",
+            "Tire change",
+            "Fuel delivery",
+            "Lockout",
+            "Heavy duty",
+            "Motorcycle",
+            "Impound or police",
+            "Roadside only",
+            "Vehicle relocation",
+            "Specialty or low-clearance transport"
+          ]
+        },
+        {
+          "key": "assigned_resource",
+          "type": "fields",
+          "label": "Provider, driver, truck, and commercial basis",
+          "fields": [
+            {"key": "assigned_provider", "label": "Assigned provider", "units": 1.0},
+            {"key": "driver_operator", "label": "Driver or operator", "units": 0.9},
+            {"key": "truck_equipment", "label": "Truck or equipment", "units": 1.0},
+            {"key": "quoted_eta", "label": "Quoted ETA", "units": 0.7},
+            {"key": "rate_quote", "label": "Rate or quote reference", "units": 0.95},
+            {"key": "assignment_time", "label": "Assigned date and time", "units": 0.95}
+          ]
+        },
+        {
+          "key": "resource_plan",
+          "type": "table",
+          "label": "Recovery equipment and service capability plan",
+          "columns": [
+            {"key": "need", "label": "Scene or vehicle need", "units": 1.25},
+            {"key": "equipment", "label": "Truck, attachment, or tool", "units": 1.2},
+            {"key": "capability", "label": "Capacity or capability", "units": 1.0},
+            {"key": "assigned_to", "label": "Assigned to", "units": 0.85},
+            {"key": "status", "label": "Ready or exception", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "assignment_acceptance",
+          "type": "fields",
+          "label": "Dispatch and driver acceptance",
+          "fields": [
+            {"key": "driver_accepted", "label": "Driver acceptance time", "units": 0.95},
+            {"key": "dispatcher_handoff", "label": "Dispatcher handoff initials", "units": 0.95},
+            {"key": "route_sent", "label": "Route or scene details sent", "units": 1.05},
+            {"key": "exception_owner", "label": "Assignment exception owner", "units": 1.05},
+            {"key": "reassignment_ref", "label": "Reassignment reference", "units": 0.95}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "live_dispatch_timeline",
+      "title": "Live dispatch timeline and communication trail",
+      "guidance": "Use actual event times, not estimates, and retain the responsible person, location or status, and confirmation for each milestone.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Time-stamped dispatch event log",
+          "columns": [
+            {"key": "event", "label": "Event", "units": 1.0},
+            {"key": "date_time", "label": "Date and time", "units": 0.9},
+            {"key": "actor", "label": "Driver or dispatcher", "units": 1.0},
+            {"key": "location_status", "label": "Location or status", "units": 1.25},
+            {"key": "confirmation", "label": "Note or confirmation", "units": 1.3}
+          ],
+          "rows": 9
+        },
+        {
+          "key": "milestone_summary",
+          "type": "fields",
+          "label": "Critical dispatch milestones",
+          "fields": [
+            {"key": "en_route_time", "label": "En route", "units": 0.75},
+            {"key": "arrived_time", "label": "Arrived", "units": 0.75},
+            {"key": "hooked_loaded_time", "label": "Hooked or loaded", "units": 0.9},
+            {"key": "departed_scene_time", "label": "Departed scene", "units": 0.9},
+            {"key": "destination_arrival", "label": "Destination arrival", "units": 0.95},
+            {"key": "clear_time", "label": "Clear time", "units": 0.75}
+          ]
+        },
+        {
+          "key": "communication_check",
+          "type": "checklist",
+          "label": "Required status communication recorded",
+          "items": [
+            "Driver accepted assignment",
+            "ETA update sent",
+            "Arrival confirmed",
+            "Service or recovery method confirmed",
+            "Delay communicated",
+            "Destination acceptance checked",
+            "Completion communicated",
+            "Exception escalated when required"
+          ]
+        },
+        {
+          "key": "timeline_exception",
+          "type": "textarea",
+          "label": "Missed ETA, unable-to-locate, reassignment, customer unavailable, scene change, destination change, or other timeline exception and response",
+          "fields": [
+            {"key": "timeline_exception_detail", "label": "Timeline exception and response"}
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "pickup_condition",
+      "title": "Pickup verification, pre-movement condition, and property",
+      "guidance": "Verify the vehicle, photograph pre-existing damage, record keys and loose property, and document special loading steps before movement.",
+      "blocks": [
+        {
+          "key": "pickup_values",
+          "type": "fields",
+          "label": "Pickup identity and readings",
+          "fields": [
+            {"key": "arrived_date_time", "label": "Arrived date and time", "units": 0.95},
+            {"key": "loaded_date_time", "label": "Loaded date and time", "units": 0.95},
+            {"key": "odometer", "label": "Odometer", "units": 0.7},
+            {"key": "keys_received_from", "label": "Keys received from", "units": 1.0},
+            {"key": "key_tag", "label": "Key tag", "units": 0.65},
+            {"key": "condition_photo_ref", "label": "Photo or condition reference", "units": 1.15}
+          ]
+        },
+        {
+          "key": "condition_record",
+          "type": "checklist",
+          "label": "Vehicle condition and property record completed",
+          "items": [
+            "Front documented",
+            "Rear documented",
+            "Driver side documented",
+            "Passenger side documented",
+            "Roof or top documented",
+            "Loose parts secured",
+            "Personal property noted",
+            "Keys tagged",
+            "No visible new damage before movement",
+            "Wheel or steering condition documented",
+            "Loading contact points documented",
+            "Customer or officer observations recorded"
+          ]
+        },
+        {
+          "key": "damage_inventory",
+          "type": "table",
+          "label": "Existing damage, loose part, and personal-property register",
+          "columns": [
+            {"key": "area_item", "label": "Area or item", "units": 1.15},
+            {"key": "condition", "label": "Existing condition", "units": 1.25},
+            {"key": "photo", "label": "Photo reference", "units": 0.9},
+            {"key": "secured_disposition", "label": "Secured or disposition", "units": 1.1},
+            {"key": "witness", "label": "Customer, officer, or witness", "units": 1.1}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "loading_notes",
+          "type": "textarea",
+          "label": "Recovery setup, loading technique, special precautions, keys, loose parts, personal property, and scene observations",
+          "fields": [
+            {"key": "loading_detail", "label": "Pickup condition and loading detail"}
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "custody_destination",
+      "title": "Chain of custody and destination acceptance",
+      "guidance": "Make each transfer of the vehicle, keys, seal, and condition attributable from pickup through accepted destination handoff.",
+      "blocks": [
+        {
+          "key": "custody_log",
+          "type": "table",
+          "label": "Vehicle and key custody event log",
+          "columns": [
+            {"key": "date_time", "label": "Date and time", "units": 0.85},
+            {"key": "released_by", "label": "Released by", "units": 1.0},
+            {"key": "accepted_by", "label": "Accepted by", "units": 1.0},
+            {"key": "location", "label": "Location", "units": 1.15},
+            {"key": "condition_keys", "label": "Condition, seal, or keys", "units": 1.25}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "destination_receipt",
+          "type": "fields",
+          "label": "Destination receipt and acceptance",
+          "fields": [
+            {"key": "actual_destination", "label": "Actual destination", "units": 1.25},
+            {"key": "destination_arrival_time", "label": "Arrival date and time", "units": 0.95},
+            {"key": "accepted_by", "label": "Accepted by", "units": 0.85},
+            {"key": "acceptance_reference", "label": "Receipt or acceptance reference", "units": 1.05},
+            {"key": "keys_handed_to", "label": "Keys handed to", "units": 0.9},
+            {"key": "condition_at_handoff", "label": "Condition at handoff", "units": 1.0}
+          ]
+        },
+        {
+          "key": "destination_checks",
+          "type": "checklist",
+          "label": "Destination handoff completed",
+          "items": [
+            "Destination identity confirmed",
+            "Receiving authority confirmed",
+            "Vehicle location recorded",
+            "Keys transferred or secured",
+            "Condition reviewed at handoff",
+            "Photos retained",
+            "Personal property status handed off",
+            "Delivery receipt obtained",
+            "Customer or agency notified",
+            "Destination exception documented"
+          ]
+        },
+        {
+          "key": "destination_exception",
+          "type": "textarea",
+          "label": "Destination refusal, after-hours placement, key drop, changed destination, storage instruction, failed handoff, or other custody exception",
+          "fields": [
+            {"key": "destination_exception_detail", "label": "Destination and custody exception"}
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "financial_closeout",
+      "title": "Charges, exception resolution, and final closeout",
+      "guidance": "Separate quoted, authorized, and final amounts, resolve delivery or custody exceptions, and record the final towing outcome.",
+      "blocks": [
+        {
+          "key": "charge_summary",
+          "type": "fields",
+          "label": "Final charge categories",
+          "fields": [
+            {"key": "base_tow", "label": "Base tow", "units": 0.7},
+            {"key": "mileage", "label": "Mileage", "units": 0.65},
+            {"key": "recovery_equipment", "label": "Recovery or equipment", "units": 0.95},
+            {"key": "storage_wait", "label": "Storage or wait", "units": 0.85},
+            {"key": "other_charge", "label": "Other", "units": 0.65},
+            {"key": "final_total", "label": "Final total", "units": 0.75}
+          ]
+        },
+        {
+          "key": "charge_reconciliation",
+          "type": "table",
+          "label": "Quoted, authorized, and final charge reconciliation",
+          "columns": [
+            {"key": "charge", "label": "Charge or adjustment", "units": 1.25},
+            {"key": "quoted", "label": "Quoted", "units": 0.75},
+            {"key": "authorized", "label": "Authorized", "units": 0.85},
+            {"key": "final", "label": "Final", "units": 0.7},
+            {"key": "basis", "label": "Rate, event, or approval basis", "units": 1.4},
+            {"key": "reviewer", "label": "Reviewer", "units": 0.8}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_status",
+          "type": "checklist",
+          "label": "Final service and review status",
+          "items": [
+            "Delivered",
+            "Impounded",
+            "Roadside service resolved",
+            "Canceled before arrival",
+            "Canceled on scene",
+            "Unable to tow",
+            "Damage review open",
+            "Billing review open",
+            "Police or agency hold remains",
+            "Customer follow-up required"
+          ]
+        },
+        {
+          "key": "exception_resolution",
+          "type": "table",
+          "label": "Delay, refusal, damage, payment, hold, or failed-delivery resolution",
+          "columns": [
+            {"key": "exception", "label": "Exception and evidence", "units": 1.4},
+            {"key": "immediate_action", "label": "Immediate action", "units": 1.15},
+            {"key": "owner", "label": "Owner", "units": 0.75},
+            {"key": "due", "label": "Due", "units": 0.65},
+            {"key": "final_disposition", "label": "Final disposition or open status", "units": 1.35}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Custody and dispatch closeout acknowledgment",
+          "fields": [
+            {"key": "driver_signature", "label": "Driver or operator signature", "units": 1.25},
+            {"key": "driver_date_time", "label": "Date and time", "units": 0.75},
+            {"key": "destination_signature", "label": "Destination acceptance", "units": 1.25},
+            {"key": "destination_date_time", "label": "Date and time", "units": 0.75},
+            {"key": "dispatcher_closeout", "label": "Dispatcher closeout", "units": 1.1},
+            {"key": "closeout_date_time", "label": "Date and time", "units": 0.75}
+          ]
+        },
+        {
+          "key": "authority_notice",
+          "type": "notice",
+          "label": "Record boundary and unresolved review",
+          "guidance": "This operational record does not establish legal towing authority or replace required law-enforcement, impound, inventory, lien, rate-disclosure, insurance, or vehicle-property documents. Keep any unresolved damage, custody, authority, billing, or destination issue assigned to a named owner until final disposition."
+        }
+      ]
+    }
+  ]
+}

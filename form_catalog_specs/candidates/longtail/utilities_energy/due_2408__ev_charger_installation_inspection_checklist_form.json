@@ -1,0 +1,447 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2408__ev_charger_installation_inspection_checklist_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2408__ev_charger_installation_inspection_checklist_form.pdf",
+  "slug": "ev-charger-installation-inspection-checklist-form",
+  "title": "EV Charger Installation Inspection Checklist Form",
+  "subtitle": "An original ev charger installation workflow that guides a bounded inspection from readiness through findings and release, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete ev charger installation inspection checklist form for the electric vehicle charging site that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when an assigned inspector must confirm safe observation boundaries, document domain-specific conditions, route deficiencies, and record a qualified acceptance, restriction, or follow-up decision. The charging deployment coordinator owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "inspection_routing",
+      "title": "EV charger installation inspection identity and authority",
+      "guidance": "Define the asset, inspection scope, qualified reviewer, and conditions before observations begin.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Inspection record and assignment",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Inspection record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "inspection_authority",
+          "type": "fields",
+          "label": "Inspection authority and scope",
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Inspector name",
+              "units": 1.0
+            },
+            {
+              "key": "qualification_ref",
+              "label": "Qualification or role ref",
+              "units": 1.15
+            },
+            {
+              "key": "scope_ref",
+              "label": "Approved inspection scope",
+              "units": 1.15
+            },
+            {
+              "key": "procedure_ref",
+              "label": "Site procedure reference",
+              "units": 1.15
+            },
+            {
+              "key": "conditions",
+              "label": "Weather or operating condition",
+              "units": 1.2
+            },
+            {
+              "key": "escort",
+              "label": "Escort or operations contact",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_readiness",
+      "title": "EV charger installation readiness and safe observation boundary",
+      "guidance": "Confirm identity, operating context, access, and limits before checking condition.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "EV charger installation identity",
+          "fields": [
+            {
+              "key": "site_type",
+              "label": "Site and parking use",
+              "units": 1.1
+            },
+            {
+              "key": "charger_location",
+              "label": "Proposed charger location",
+              "units": 1.2
+            },
+            {
+              "key": "port_count",
+              "label": "Planned port count",
+              "units": 0.8
+            },
+            {
+              "key": "charger_output",
+              "label": "Level and output rating",
+              "units": 1.0
+            },
+            {
+              "key": "panel_id",
+              "label": "Supplying panel or service ID",
+              "units": 1.15
+            },
+            {
+              "key": "network_model",
+              "label": "Network or payment model",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "Inspection baseline",
+          "fields": [
+            {
+              "key": "service_capacity",
+              "label": "Service capacity reference",
+              "units": 1.15
+            },
+            {
+              "key": "circuit_distance",
+              "label": "Estimated circuit distance",
+              "units": 1.05
+            },
+            {
+              "key": "parking_layout",
+              "label": "Stall and traffic layout ref",
+              "units": 1.2
+            },
+            {
+              "key": "mounting_type",
+              "label": "Wall, pedestal, or overhead",
+              "units": 1.1
+            },
+            {
+              "key": "communications",
+              "label": "Communications method",
+              "units": 1.05
+            },
+            {
+              "key": "utility_case",
+              "label": "Utility program or case ref",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "stop_work_boundary",
+          "type": "notice",
+          "label": "Stop-work boundary",
+          "guidance": "This form is not an energized-work permit or energy-control procedure. Stop when exposed parts, unknown circuits, failed protection, water intrusion, heat, smoke, or impact damage is present. A qualified and authorized person must control isolation, testing, commissioning, and return to service under current site procedures and applicable requirements."
+        }
+      ]
+    },
+    {
+      "key": "inspection_findings",
+      "title": "EV charger installation inspection points and finding evidence",
+      "guidance": "Check each point only when observed; use the findings table for condition, evidence, and disposition.",
+      "blocks": [
+        {
+          "key": "inspection_points",
+          "type": "checklist",
+          "label": "Domain inspection checklist",
+          "items": [
+            "Charger identity, nameplate, connector, and port assignment match the record",
+            "Mounting hardware, pedestal, wall, and foundation show no visible movement",
+            "Enclosure, cable, connector, holster, and strain relief are intact",
+            "Vehicle clearances, bollards, wheel stops, and traffic path are documented",
+            "Accessible approach, operating reach, signage, and stall markings are unobstructed",
+            "Drainage, ponding, irrigation, snow storage, and trip hazards are documented",
+            "Panel, disconnect, circuit label, and protective-device references are captured",
+            "Grounding, bonding, and protection results are recorded by the qualified tester",
+            "Network, payment, display, emergency contact, and remote reset functions are checked",
+            "Representative charging session and connector release results are recorded",
+            "Heat, odor, noise, damage, water ingress, and fault indications are absent or escalated",
+            "Open defects, access restrictions, and commissioning dependencies have owners"
+          ]
+        },
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Findings and evidence register",
+          "columns": [
+            {
+              "key": "item_area",
+              "label": "Item / area",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition / result",
+              "units": 1.15
+            },
+            {
+              "key": "severity",
+              "label": "Priority",
+              "units": 0.75
+            },
+            {
+              "key": "evidence",
+              "label": "Photo / test ref",
+              "units": 1.0
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner / due",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Open / closed",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "inspection_notes",
+          "type": "textarea",
+          "label": "Inspection limitations and pattern notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Inaccessible areas, sampling limits, representative conditions, trends, and supporting context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "EV charger installation exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Exposed or damaged energized component, conductor, connector, or enclosure",
+            "Arcing, smoke, abnormal heat, burning odor, or repeated protective trip",
+            "Water intrusion, standing water, flood exposure, or damaged seals",
+            "Vehicle impact, unstable mounting, sharp edge, or falling equipment",
+            "Uncontrolled circuit, unknown backfeed, or incomplete energy isolation",
+            "Grounding, bonding, or protective-device result outside approved criteria",
+            "Pedestrian, accessible-route, traffic, or cord trip exposure",
+            "Work beyond the assigned qualified person's authorization"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "This form is not an energized-work permit or energy-control procedure. Stop when exposed parts, unknown circuits, failed protection, water intrusion, heat, smoke, or impact damage is present. A qualified and authorized person must control isolation, testing, commissioning, and return to service under current site procedures and applicable requirements."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each inspection exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "EV charger installation decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Inspection closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Electric vehicle charging site identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

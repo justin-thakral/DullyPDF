@@ -1,0 +1,441 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1008__home_remodel_work_order_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1008__home_remodel_work_order_form.pdf",
+  "slug": "home-remodel-work-order-form",
+  "title": "Home Remodel Work Order and Occupied-Home Plan",
+  "subtitle": "Authorize room-specific work, confirm selections, control household access and protection, document field execution and changes, restore living areas, and complete owner handoff.",
+  "description": "A workflow-complete home remodel work order covering homeowner authorization, room and task scope, approved selections, access windows, children and pets, dust and floor protection, temporary kitchen or bath needs, utility shutoffs, milestones, inspection evidence, homeowner decisions, deviations, room restoration, open items, warranties, and final acceptance.",
+  "use_case": "Use after a remodel scope is approved when the contractor, trade leads, and homeowner need one fillable control record for performing work inside or around an occupied residence while protecting daily household use and preserving accountable completion.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "order_identity",
+      "title": "Work order, household, and authorization",
+      "guidance": "Tie the authorized work to the correct home, agreement, decision makers, and field lead.",
+      "blocks": [
+        {
+          "key": "order_reference",
+          "type": "fields",
+          "label": "Work order reference",
+          "fields": [
+            {"key": "work_order_number", "label": "Work order number", "units": 0.8},
+            {"key": "issue_date", "label": "Issue date", "units": 0.65},
+            {"key": "issued_by", "label": "Issued by", "units": 0.8},
+            {"key": "contract_reference", "label": "Contract reference", "units": 0.9},
+            {"key": "cost_code", "label": "Cost code", "units": 0.65},
+            {"key": "order_status", "label": "Order status", "units": 0.8, "field_type": "choice", "options": ["Draft", "Authorized", "In progress", "On hold", "Complete", "Canceled"]}
+          ]
+        },
+        {
+          "key": "home_identity",
+          "type": "fields",
+          "label": "Home and household identity",
+          "fields": [
+            {"key": "homeowner_names", "label": "Homeowner names", "units": 1.15},
+            {"key": "property_address", "label": "Property address", "units": 1.35},
+            {"key": "primary_contact", "label": "Primary contact", "units": 0.95},
+            {"key": "alternate_contact", "label": "Alternate contact", "units": 0.95},
+            {"key": "occupied_status", "label": "Occupancy during work", "units": 0.9, "field_type": "choice", "options": ["Fully occupied", "Partially occupied", "Temporary move-out", "Vacant"]}
+          ]
+        },
+        {
+          "key": "responsible_parties",
+          "type": "fields",
+          "label": "Responsible remodel team",
+          "fields": [
+            {"key": "project_manager", "label": "Project manager", "units": 0.9},
+            {"key": "site_lead", "label": "Site lead", "units": 0.85},
+            {"key": "performing_trade", "label": "Performing trade or crew", "units": 1.0},
+            {"key": "foreman_contact", "label": "Foreman contact", "units": 0.9},
+            {"key": "designer_contact", "label": "Designer or architect", "units": 0.95},
+            {"key": "emergency_contact", "label": "After-hours contact", "units": 0.95}
+          ]
+        },
+        {
+          "key": "routing_check",
+          "type": "checklist",
+          "label": "Authorized order distributed to",
+          "items": [
+            "Homeowner decision makers",
+            "Project manager",
+            "Site lead",
+            "Affected trade",
+            "Designer or architect",
+            "Procurement lead",
+            "Property manager or association",
+            "Inspection coordinator"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorized_scope",
+      "title": "Authorized rooms, tasks, and selections",
+      "guidance": "Translate the approved agreement into findable tasks, product references, and acceptance measures.",
+      "blocks": [
+        {
+          "key": "task_schedule",
+          "type": "table",
+          "label": "Room-specific task and milestone schedule",
+          "columns": [
+            {"key": "room_area", "label": "Room or area", "units": 0.95},
+            {"key": "authorized_task", "label": "Authorized task", "units": 1.45},
+            {"key": "trade_owner", "label": "Trade or owner", "units": 0.85},
+            {"key": "start_finish", "label": "Start and finish", "units": 0.85},
+            {"key": "selection_reference", "label": "Selection or detail", "units": 1.0},
+            {"key": "acceptance_measure", "label": "Acceptance measure", "units": 1.0}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "scope_boundaries",
+          "type": "textarea",
+          "label": "Authorized demolition, installation limits, retained finishes, exclusions, salvage, and work by homeowner or others",
+          "fields": [
+            {"key": "scope_boundary_detail", "label": "Authorized scope and explicit boundaries"}
+          ],
+          "height": 76
+        },
+        {
+          "key": "selection_readiness",
+          "type": "checklist",
+          "label": "Selection and product readiness confirmed",
+          "items": [
+            "Cabinet layout approved",
+            "Countertop decision complete",
+            "Plumbing fixtures approved",
+            "Lighting fixtures approved",
+            "Tile and grout approved",
+            "Flooring approved",
+            "Paint colors approved",
+            "Hardware approved",
+            "Appliances or equipment confirmed",
+            "Owner-furnished items on site",
+            "Samples or mockups accepted",
+            "Long-lead products released"
+          ]
+        },
+        {
+          "key": "acceptance_basis",
+          "type": "fields",
+          "label": "Controlling documents and acceptance basis",
+          "fields": [
+            {"key": "drawing_issue", "label": "Plan or sketch issue", "units": 1.0},
+            {"key": "selection_log", "label": "Selection log reference", "units": 1.0},
+            {"key": "permit_number", "label": "Permit number", "units": 0.8},
+            {"key": "inspection_points", "label": "Required inspection points", "units": 1.1},
+            {"key": "quality_reference", "label": "Sample or quality reference", "units": 1.1}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "home_access_protection",
+      "title": "Household access, protection, and temporary use",
+      "guidance": "Plan entry, containment, utilities, and daily living before the crew mobilizes.",
+      "blocks": [
+        {
+          "key": "work_window",
+          "type": "fields",
+          "label": "Work window and access control",
+          "fields": [
+            {"key": "planned_start", "label": "Planned start", "units": 0.75},
+            {"key": "planned_finish", "label": "Planned finish", "units": 0.75},
+            {"key": "work_hours", "label": "Permitted work hours", "units": 0.95},
+            {"key": "entry_method", "label": "Entry or key method", "units": 0.9},
+            {"key": "alarm_protocol", "label": "Alarm protocol", "units": 0.85},
+            {"key": "daily_contact", "label": "Daily household contact", "units": 1.0}
+          ]
+        },
+        {
+          "key": "household_controls",
+          "type": "checklist",
+          "label": "Household coordination controls",
+          "items": [
+            "Children separated from work zone",
+            "Pet containment agreed",
+            "Remote work or school considered",
+            "Accessible route maintained",
+            "Resident egress maintained",
+            "Quiet hours scheduled",
+            "Bathroom availability planned",
+            "Kitchen availability planned",
+            "Medication or equipment power protected",
+            "Daily arrival notice agreed",
+            "Visitor entry coordinated",
+            "Neighbor notification assigned"
+          ]
+        },
+        {
+          "key": "protection_controls",
+          "type": "checklist",
+          "label": "Home and contents protection required",
+          "items": [
+            "Floor protection",
+            "Stair and railing protection",
+            "Door and corner protection",
+            "Dust partitions",
+            "Negative air or filtration",
+            "Return-air protection",
+            "Furniture relocation or covering",
+            "Artwork and valuables removed",
+            "Weather protection",
+            "Secure tool storage",
+            "Secure material storage",
+            "Debris route protection",
+            "Daily vacuum and cleanup",
+            "Final cleaning standard"
+          ]
+        },
+        {
+          "key": "temporary_services",
+          "type": "fields",
+          "label": "Utility shutoff and temporary service plan",
+          "fields": [
+            {"key": "water_shutdown", "label": "Water shutdown window", "units": 1.0},
+            {"key": "power_shutdown", "label": "Power shutdown window", "units": 1.0},
+            {"key": "heating_cooling", "label": "Heating or cooling plan", "units": 1.0},
+            {"key": "temporary_kitchen", "label": "Temporary kitchen", "units": 0.9},
+            {"key": "temporary_bath", "label": "Temporary bath", "units": 0.9},
+            {"key": "service_notice", "label": "Resident notice method", "units": 0.95}
+          ]
+        },
+        {
+          "key": "site_instructions",
+          "type": "textarea",
+          "label": "Parking, entry, protected routes, occupied-room limits, daily setup and breakdown, and security instructions",
+          "fields": [
+            {"key": "site_instruction_detail", "label": "Occupied-home site instructions"}
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "execution_control",
+      "title": "Execution, evidence, and change control",
+      "guidance": "Record actual progress, inspections, homeowner decisions, and deviations from the authorized order.",
+      "blocks": [
+        {
+          "key": "progress_log",
+          "type": "table",
+          "label": "Room and task progress log",
+          "columns": [
+            {"key": "date_room", "label": "Date and room", "units": 0.95},
+            {"key": "work_completed", "label": "Work completed", "units": 1.4},
+            {"key": "crew_hours", "label": "Crew or hours", "units": 0.8},
+            {"key": "inspection", "label": "Inspection or test", "units": 0.95},
+            {"key": "photo_reference", "label": "Photo reference", "units": 0.85},
+            {"key": "status_next", "label": "Status and next step", "units": 1.1}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "daily_control_check",
+          "type": "checklist",
+          "label": "Daily occupied-home control checks",
+          "items": [
+            "Work zone secured",
+            "Dust containment intact",
+            "Resident route safe",
+            "Tools secured at departure",
+            "Utilities restored or status posted",
+            "Doors and windows secured",
+            "Pets remain separated",
+            "Debris removed",
+            "Floors vacuumed",
+            "Homeowner update delivered",
+            "Tomorrow's access confirmed",
+            "Open hazard handed off"
+          ]
+        },
+        {
+          "key": "quality_evidence",
+          "type": "table",
+          "label": "Quality, concealed-work, and inspection evidence",
+          "columns": [
+            {"key": "room_item", "label": "Room and item", "units": 1.0},
+            {"key": "requirement", "label": "Requirement", "units": 1.15},
+            {"key": "evidence", "label": "Photo, test, or inspection", "units": 1.2},
+            {"key": "reviewed_by", "label": "Reviewed by", "units": 0.85},
+            {"key": "result", "label": "Result", "units": 0.7},
+            {"key": "correction", "label": "Correction or hold point", "units": 1.05}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "decision_change_log",
+          "type": "table",
+          "label": "Homeowner decision, field deviation, and change log",
+          "columns": [
+            {"key": "date_room", "label": "Date and room", "units": 0.9},
+            {"key": "issue_request", "label": "Issue or request", "units": 1.35},
+            {"key": "direction", "label": "Direction received", "units": 1.1},
+            {"key": "cost_time_effect", "label": "Cost or time effect", "units": 0.9},
+            {"key": "authorized_by", "label": "Authorized by", "units": 0.85},
+            {"key": "record_reference", "label": "Change reference", "units": 0.85}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "change_control_notice",
+          "type": "notice",
+          "label": "Change authorization control",
+          "guidance": "Do not treat a conversation, text message, site observation, or homeowner preference as authorization to exceed this order. Pause affected work when practical and route cost, time, product, and occupancy effects through the written change process."
+        }
+      ]
+    },
+    {
+      "key": "room_restoration",
+      "title": "Room restoration, testing, and open items",
+      "guidance": "Return each affected area to safe household use and retain evidence for anything not complete.",
+      "blocks": [
+        {
+          "key": "room_completion",
+          "type": "table",
+          "label": "Room-by-room completion and restoration",
+          "columns": [
+            {"key": "room_area", "label": "Room or area", "units": 0.9},
+            {"key": "scope_complete", "label": "Scope complete", "units": 0.9},
+            {"key": "finish_condition", "label": "Finish condition", "units": 1.0},
+            {"key": "clean_restored", "label": "Clean and restored", "units": 1.0},
+            {"key": "owner_walk", "label": "Owner walk date", "units": 0.8},
+            {"key": "status_note", "label": "Status or note", "units": 1.2}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "system_testing",
+          "type": "checklist",
+          "label": "Functional testing and release checks",
+          "items": [
+            "Plumbing fixtures tested",
+            "Drainage checked",
+            "Electrical devices tested",
+            "Lighting controls tested",
+            "Appliances started",
+            "Heating or cooling restored",
+            "Doors and windows operated",
+            "Cabinet doors and drawers adjusted",
+            "Smoke or carbon-monoxide alarms restored",
+            "Waterproofing or leak test documented",
+            "Required inspection passed",
+            "Temporary protections safely removed"
+          ]
+        },
+        {
+          "key": "property_restoration",
+          "type": "checklist",
+          "label": "Property and household restoration",
+          "items": [
+            "Furniture returned as agreed",
+            "Artwork and valuables area released",
+            "Floors and stairs cleaned",
+            "Driveway and yard cleaned",
+            "Common areas restored",
+            "Keys and access devices reconciled",
+            "Alarm settings restored",
+            "Unused materials identified",
+            "Salvaged items transferred",
+            "Waste and dumpster removed",
+            "Neighbor impact resolved",
+            "Final cleaning completed"
+          ]
+        },
+        {
+          "key": "open_item_log",
+          "type": "table",
+          "label": "Open room item, access need, and correction commitment",
+          "columns": [
+            {"key": "room_item", "label": "Room and item", "units": 1.35},
+            {"key": "reason", "label": "Reason open", "units": 1.1},
+            {"key": "owner", "label": "Owner", "units": 0.75},
+            {"key": "return_date", "label": "Return date", "units": 0.75},
+            {"key": "protection_verification", "label": "Interim protection and verification", "units": 1.45}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "completion_notes",
+          "type": "textarea",
+          "label": "Remaining limitations, temporary arrangements, resident instructions, and room-release notes",
+          "fields": [
+            {"key": "completion_detail", "label": "Room restoration and release notes"}
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "owner_handoff",
+      "title": "Owner handoff and accountable closeout",
+      "guidance": "Deliver records, resolve exceptions, and document the people accepting completed work.",
+      "blocks": [
+        {
+          "key": "handoff_package",
+          "type": "checklist",
+          "label": "Homeowner handoff package",
+          "items": [
+            "Final approved selection record",
+            "Permit closeout or inspection record",
+            "Product manuals",
+            "Warranty information",
+            "Care and cleaning instructions",
+            "Paint and finish references",
+            "Spare tile or flooring",
+            "Keys or access devices",
+            "Final photos",
+            "Open-item schedule"
+          ]
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Work order closeout status",
+          "fields": [
+            {"key": "substantial_completion", "label": "Substantial completion", "units": 0.9},
+            {"key": "final_completion", "label": "Final completion", "units": 0.85},
+            {"key": "open_item_count", "label": "Open item count", "units": 0.7},
+            {"key": "final_cost_reference", "label": "Final cost reference", "units": 0.9},
+            {"key": "warranty_start", "label": "Warranty start", "units": 0.75},
+            {"key": "closeout_status", "label": "Closeout status", "units": 0.9, "field_type": "choice", "options": ["Accepted", "Accepted with open items", "Correction required", "Not ready for acceptance"]}
+          ]
+        },
+        {
+          "key": "owner_walk_log",
+          "type": "table",
+          "label": "Final owner walkthrough decisions",
+          "columns": [
+            {"key": "room_topic", "label": "Room or topic", "units": 1.2},
+            {"key": "owner_comment", "label": "Owner comment or decision", "units": 1.45},
+            {"key": "response", "label": "Contractor response", "units": 1.2},
+            {"key": "owner_due", "label": "Owner and due", "units": 0.85},
+            {"key": "closed_reference", "label": "Closed or reference", "units": 0.9}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Work order completion acknowledgment",
+          "fields": [
+            {"key": "site_lead_signature", "label": "Site lead signature", "units": 1.1},
+            {"key": "site_lead_date", "label": "Date", "units": 0.55},
+            {"key": "project_manager_signature", "label": "Project manager signature", "units": 1.2},
+            {"key": "project_manager_date", "label": "Date", "units": 0.55},
+            {"key": "homeowner_signature", "label": "Homeowner acknowledgment", "units": 1.2},
+            {"key": "homeowner_date", "label": "Date", "units": 0.55}
+          ]
+        },
+        {
+          "key": "acceptance_notice",
+          "type": "notice",
+          "label": "Closeout and warranty control",
+          "guidance": "Acknowledgment records the walkthrough and listed status; it does not erase open items, concealed defects, warranty rights, or obligations in the executed agreement. Carry every unresolved item to a named owner, protected condition, and return date."
+        }
+      ]
+    }
+  ]
+}

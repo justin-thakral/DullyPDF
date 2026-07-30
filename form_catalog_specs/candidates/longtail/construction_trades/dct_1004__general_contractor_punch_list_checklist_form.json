@@ -1,0 +1,762 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1004__general_contractor_punch_list_checklist_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1004__general_contractor_punch_list_checklist_form.pdf",
+  "slug": "general-contractor-punch-list-checklist-form",
+  "title": "General Contractor Punch List and Verification Register",
+  "subtitle": "Plan the walkthrough, record location-specific deficiencies, assign correction and evidence, control access and disputes, verify rework, and support accountable turnover.",
+  "description": "A workflow-complete construction punch list covering milestone and walkthrough identity, readiness checks, deficiency classification, item ownership and due dates, inaccessible or disputed work, correction evidence, reinspection, turnover documents, acceptance conditions, and final closeout.",
+  "use_case": "Use when a contractor, owner, or design team needs one fillable register to turn a walkthrough into traceable correction assignments and prove that every accepted item was reinspected or carried to an accountable exception.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "walk_identity",
+      "title": "Walkthrough identity and closeout milestone",
+      "guidance": "Define the inspection purpose, participants, limits, and controlling record.",
+      "blocks": [
+        {
+          "key": "list_reference",
+          "type": "fields",
+          "label": "Punch list reference",
+          "fields": [
+            {
+              "key": "punch_list_number",
+              "label": "Punch list number",
+              "units": 0.8
+            },
+            {
+              "key": "walk_date",
+              "label": "Walk date",
+              "units": 0.6
+            },
+            {
+              "key": "walk_start_time",
+              "label": "Start time",
+              "units": 0.55
+            },
+            {
+              "key": "issued_date",
+              "label": "Issued date",
+              "units": 0.6
+            },
+            {
+              "key": "response_due",
+              "label": "Correction response due",
+              "units": 0.75
+            },
+            {
+              "key": "list_manager",
+              "label": "List manager",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "project_identity",
+          "type": "fields",
+          "label": "Project and inspected area",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.2
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.7
+            },
+            {
+              "key": "site_address",
+              "label": "Site address",
+              "units": 1.3
+            },
+            {
+              "key": "building_area",
+              "label": "Building, phase, or area",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "walk_type",
+          "type": "fields",
+          "label": "Inspection type and status",
+          "fields": [
+            {
+              "key": "inspection_type",
+              "label": "Walkthrough type",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Contractor pre-punch",
+                "Architect or engineer punch",
+                "Owner punch",
+                "Substantial completion",
+                "Final completion",
+                "Warranty walk",
+                "Reinspection"
+              ]
+            },
+            {
+              "key": "completion_claimed",
+              "label": "Completion claimed date",
+              "units": 0.8
+            },
+            {
+              "key": "contract_milestone",
+              "label": "Contract milestone",
+              "units": 0.9
+            },
+            {
+              "key": "overall_readiness",
+              "label": "Overall readiness",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Ready for walk",
+                "Ready with limited exclusions",
+                "Not ready",
+                "Reinspection only"
+              ]
+            },
+            {
+              "key": "target_close_date",
+              "label": "Target close date",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "participants",
+          "type": "table",
+          "label": "Walkthrough participants and authority",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Name",
+              "units": 1.0
+            },
+            {
+              "key": "company",
+              "label": "Company",
+              "units": 0.9
+            },
+            {
+              "key": "role",
+              "label": "Role",
+              "units": 0.75
+            },
+            {
+              "key": "areas",
+              "label": "Areas represented",
+              "units": 1.0
+            },
+            {
+              "key": "decision_authority",
+              "label": "Decision authority",
+              "units": 0.9
+            },
+            {
+              "key": "contact",
+              "label": "Contact",
+              "units": 0.85
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "readiness_protocol",
+      "title": "Walk readiness and inspection protocol",
+      "guidance": "Confirm the area can be inspected and the acceptance basis is available.",
+      "blocks": [
+        {
+          "key": "readiness_check",
+          "type": "checklist",
+          "label": "Area readiness before walkthrough",
+          "items": [
+            "Construction work substantially complete",
+            "Contractor pre-punch completed",
+            "Work areas cleaned",
+            "Permanent lighting operational",
+            "Systems energized where required",
+            "Ceilings and access panels accessible",
+            "Doors and hardware operational",
+            "Labels and identification installed",
+            "Required testing completed",
+            "Temporary protection allows inspection",
+            "Keys or access credentials available",
+            "Known incomplete work identified"
+          ]
+        },
+        {
+          "key": "reference_documents",
+          "type": "checklist",
+          "label": "Inspection references available",
+          "items": [
+            "Contract drawings",
+            "Specifications",
+            "Approved submittals",
+            "Approved changes",
+            "RFI responses",
+            "Mockup or sample standard",
+            "Test and inspection reports",
+            "Prior deficiency list",
+            "Room finish schedule",
+            "Equipment startup records"
+          ]
+        },
+        {
+          "key": "inspection_rules",
+          "type": "fields",
+          "label": "Item numbering and evidence protocol",
+          "fields": [
+            {
+              "key": "item_prefix",
+              "label": "Item ID prefix",
+              "units": 0.65
+            },
+            {
+              "key": "location_convention",
+              "label": "Location naming convention",
+              "units": 1.1
+            },
+            {
+              "key": "photo_folder",
+              "label": "Photo folder or link",
+              "units": 1.0
+            },
+            {
+              "key": "mark_up_reference",
+              "label": "Plan mark-up reference",
+              "units": 0.9
+            },
+            {
+              "key": "verification_method",
+              "label": "Default verification method",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "excluded_areas",
+          "type": "textarea",
+          "label": "Excluded, inaccessible, unsafe, occupied, or incomplete areas and the responsible return date",
+          "fields": [
+            {
+              "key": "exclusion_detail",
+              "label": "Excluded area and return-plan detail"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "deficiency_register",
+      "title": "Deficiency and completion item register",
+      "guidance": "Describe each item so another person can find, correct, and verify it.",
+      "blocks": [
+        {
+          "key": "priority_criteria",
+          "type": "checklist",
+          "label": "Item priority and classification criteria",
+          "items": [
+            "Life-safety or code",
+            "Water or weather integrity",
+            "System function",
+            "Accessibility",
+            "Contract nonconformance",
+            "Damage",
+            "Incomplete work",
+            "Finish or appearance",
+            "Cleaning",
+            "Documentation or labeling",
+            "Owner preference pending review",
+            "Warranty observation"
+          ]
+        },
+        {
+          "key": "items_primary",
+          "type": "table",
+          "label": "Punch items 1 through 10",
+          "columns": [
+            {
+              "key": "item_id_location",
+              "label": "Item ID and location",
+              "units": 1.05
+            },
+            {
+              "key": "deficiency",
+              "label": "Deficiency or incomplete work",
+              "units": 1.55
+            },
+            {
+              "key": "trade_owner",
+              "label": "Trade or owner",
+              "units": 0.85
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.55
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.6
+            },
+            {
+              "key": "photo_status",
+              "label": "Photo or status",
+              "units": 0.8
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "items_additional",
+          "type": "table",
+          "label": "Punch items 11 through 20",
+          "columns": [
+            {
+              "key": "item_id_location",
+              "label": "Item ID and location",
+              "units": 1.05
+            },
+            {
+              "key": "deficiency",
+              "label": "Deficiency or incomplete work",
+              "units": 1.55
+            },
+            {
+              "key": "trade_owner",
+              "label": "Trade or owner",
+              "units": 0.85
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.55
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.6
+            },
+            {
+              "key": "photo_status",
+              "label": "Photo or status",
+              "units": 0.8
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "list_summary",
+          "type": "fields",
+          "label": "Initial list summary",
+          "fields": [
+            {
+              "key": "total_items",
+              "label": "Total items",
+              "units": 0.55
+            },
+            {
+              "key": "critical_items",
+              "label": "Critical items",
+              "units": 0.6
+            },
+            {
+              "key": "inaccessible_items",
+              "label": "Inaccessible items",
+              "units": 0.7
+            },
+            {
+              "key": "disputed_items",
+              "label": "Disputed items",
+              "units": 0.65
+            },
+            {
+              "key": "required_reinspection",
+              "label": "Items requiring reinspection",
+              "units": 0.85
+            },
+            {
+              "key": "list_issued_by",
+              "label": "List issued by",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "exceptions_coordination",
+      "title": "Exceptions, disputes, and correction planning",
+      "guidance": "Route scope questions and access blockers without losing the item.",
+      "blocks": [
+        {
+          "key": "exception_log",
+          "type": "table",
+          "label": "Exception and dispute log",
+          "columns": [
+            {
+              "key": "item_id",
+              "label": "Item ID",
+              "units": 0.55
+            },
+            {
+              "key": "exception",
+              "label": "Exception or dispute",
+              "units": 1.45
+            },
+            {
+              "key": "basis_reference",
+              "label": "Contract basis or reference",
+              "units": 1.1
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 0.8
+            },
+            {
+              "key": "decision_due",
+              "label": "Decision due",
+              "units": 0.65
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution",
+              "units": 0.95
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "correction_constraints",
+          "type": "checklist",
+          "label": "Correction constraints and coordination",
+          "items": [
+            "Owner access required",
+            "Shutdown required",
+            "Occupied-area protection required",
+            "Material lead time",
+            "Design clarification required",
+            "Change order review required",
+            "Inspection agency return required",
+            "Multiple trades affected",
+            "Temporary repair in place",
+            "Weather-dependent correction",
+            "Mockup or sample approval required",
+            "Warranty vendor required"
+          ]
+        },
+        {
+          "key": "correction_plan",
+          "type": "table",
+          "label": "Trade correction plan and commitment",
+          "columns": [
+            {
+              "key": "trade",
+              "label": "Trade or company",
+              "units": 1.0
+            },
+            {
+              "key": "item_ids",
+              "label": "Item IDs",
+              "units": 0.8
+            },
+            {
+              "key": "correction_method",
+              "label": "Correction method",
+              "units": 1.3
+            },
+            {
+              "key": "start_date",
+              "label": "Start",
+              "units": 0.6
+            },
+            {
+              "key": "finish_date",
+              "label": "Finish",
+              "units": 0.6
+            },
+            {
+              "key": "foreman_contact",
+              "label": "Foreman or contact",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "escalation_narrative",
+          "type": "textarea",
+          "label": "Unresolved acceptance question, schedule or occupancy risk, temporary condition, and required decision",
+          "fields": [
+            {
+              "key": "escalation_detail",
+              "label": "Exception and escalation narrative"
+            }
+          ],
+          "height": 136
+        }
+      ]
+    },
+    {
+      "key": "verification",
+      "title": "Correction evidence and reinspection",
+      "guidance": "Close an item only after the required verification is complete.",
+      "blocks": [
+        {
+          "key": "correction_evidence",
+          "type": "checklist",
+          "label": "Acceptable correction evidence",
+          "items": [
+            "Before and after photos",
+            "Field reinspection",
+            "Designer review",
+            "Owner review",
+            "Test report",
+            "Authority inspection",
+            "Manufacturer or vendor report",
+            "As-built update",
+            "Cleaning confirmation",
+            "Document delivery",
+            "Replacement material record",
+            "Warranty confirmation"
+          ]
+        },
+        {
+          "key": "reinspection_log",
+          "type": "table",
+          "label": "Reinspection and closure log",
+          "columns": [
+            {
+              "key": "item_id",
+              "label": "Item ID",
+              "units": 0.55
+            },
+            {
+              "key": "correction_date",
+              "label": "Correction date",
+              "units": 0.75
+            },
+            {
+              "key": "evidence_reference",
+              "label": "Evidence reference",
+              "units": 1.15
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.8
+            },
+            {
+              "key": "result",
+              "label": "Accepted or reopened",
+              "units": 0.9
+            },
+            {
+              "key": "close_date_note",
+              "label": "Close date or note",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "reinspection_summary",
+          "type": "fields",
+          "label": "Reinspection summary",
+          "fields": [
+            {
+              "key": "reinspection_date",
+              "label": "Reinspection date",
+              "units": 0.7
+            },
+            {
+              "key": "items_accepted",
+              "label": "Items accepted",
+              "units": 0.65
+            },
+            {
+              "key": "items_reopened",
+              "label": "Items reopened",
+              "units": 0.65
+            },
+            {
+              "key": "items_deferred",
+              "label": "Items deferred",
+              "units": 0.65
+            },
+            {
+              "key": "remaining_target",
+              "label": "Remaining target close",
+              "units": 0.85
+            },
+            {
+              "key": "verification_lead",
+              "label": "Verification lead",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "reopened_detail",
+          "type": "textarea",
+          "label": "Reopened or rejected corrections, additional work required, responsible party, and new due date",
+          "fields": [
+            {
+              "key": "reopened_narrative",
+              "label": "Reopened item detail"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "turnover_closeout",
+      "title": "Turnover conditions and final closeout",
+      "guidance": "Separate punch closure from document turnover and contractual acceptance.",
+      "blocks": [
+        {
+          "key": "turnover_checklist",
+          "type": "checklist",
+          "label": "Turnover and closeout deliverables",
+          "items": [
+            "Punch corrections accepted",
+            "Final cleaning accepted",
+            "Record drawings delivered",
+            "Operation and maintenance manuals delivered",
+            "Warranties delivered",
+            "Training completed",
+            "Keys and access credentials transferred",
+            "Spare parts and attic stock delivered",
+            "Final test reports delivered",
+            "Permit closeout completed",
+            "Lien or payment documents routed",
+            "Final completion documentation routed"
+          ]
+        },
+        {
+          "key": "deferred_items",
+          "type": "table",
+          "label": "Accepted deferred or seasonal items",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Deferred item",
+              "units": 1.35
+            },
+            {
+              "key": "reason",
+              "label": "Reason",
+              "units": 0.95
+            },
+            {
+              "key": "responsible_party",
+              "label": "Responsible party",
+              "units": 0.9
+            },
+            {
+              "key": "target_date",
+              "label": "Target date",
+              "units": 0.65
+            },
+            {
+              "key": "security_holdback",
+              "label": "Holdback or security",
+              "units": 0.8
+            },
+            {
+              "key": "acceptance_basis",
+              "label": "Acceptance basis",
+              "units": 0.95
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Final punch list status",
+          "fields": [
+            {
+              "key": "final_status",
+              "label": "Status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "All items accepted",
+                "Accepted with deferred items",
+                "Open items remain",
+                "Reinspection required",
+                "Disputed closeout"
+              ]
+            },
+            {
+              "key": "final_item_count",
+              "label": "Open item count",
+              "units": 0.65
+            },
+            {
+              "key": "final_acceptance_date",
+              "label": "Acceptance date",
+              "units": 0.75
+            },
+            {
+              "key": "warranty_start",
+              "label": "Warranty start if applicable",
+              "units": 0.85
+            },
+            {
+              "key": "closeout_reference",
+              "label": "Closeout reference",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "acceptance_notice",
+          "type": "notice",
+          "label": "Acceptance notice",
+          "guidance": "Checking or signing this register documents item review but does not amend contract requirements, waive concealed defects, release unresolved claims, or establish substantial or final completion unless the controlling agreement says so."
+        },
+        {
+          "key": "final_signoff",
+          "type": "signatures",
+          "label": "Punch list closeout acknowledgment",
+          "fields": [
+            {
+              "key": "contractor_signature",
+              "label": "Contractor representative",
+              "units": 1.0
+            },
+            {
+              "key": "designer_signature",
+              "label": "Designer or inspector",
+              "units": 0.95
+            },
+            {
+              "key": "owner_signature",
+              "label": "Owner representative",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

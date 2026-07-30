@@ -1,0 +1,821 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1209__boiler_repair_request_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1209__boiler_repair_request_form.pdf",
+  "slug": "boiler-repair-request-form",
+  "title": "Boiler Repair Request and Resolution Record",
+  "subtitle": "Route a boiler defect from initial request through safe work control, diagnosis, repair, verification, and closeout.",
+  "description": "A boiler-specific repair workflow for documenting the reported problem, interim risk controls, qualified diagnosis, authorized repair scope, evidence, testing, return-to-service decisions, and facility handoff.",
+  "use_case": "Use when a boiler, burner, fuel train, water system, pressure control, safety device, or venting concern requires formal triage, repair authorization, execution tracking, and accountable resolution.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_identity",
+      "title": "Repair request, site, and boiler identity",
+      "guidance": "Route the request to one asset, one affected service, and one accountable response owner.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Repair request reference and routing",
+          "fields": [
+            {
+              "key": "request_number",
+              "label": "Request number",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.8
+            },
+            {
+              "key": "request_time",
+              "label": "Request time",
+              "units": 0.75
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.75
+            },
+            {
+              "key": "work_order",
+              "label": "Work order",
+              "units": 0.9
+            },
+            {
+              "key": "assigned_to",
+              "label": "Assigned to",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "requester_contact",
+          "type": "fields",
+          "label": "Requester and operating contact",
+          "fields": [
+            {
+              "key": "requester_name",
+              "label": "Requester name",
+              "units": 1.15
+            },
+            {
+              "key": "department",
+              "label": "Department or company",
+              "units": 1.3
+            },
+            {
+              "key": "phone",
+              "label": "Phone",
+              "units": 0.8
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.3
+            },
+            {
+              "key": "operator_contact",
+              "label": "Operator contact",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "site_asset",
+          "type": "fields",
+          "label": "Facility, location, and boiler identity",
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility name",
+              "units": 1.15
+            },
+            {
+              "key": "boiler_room",
+              "label": "Boiler room",
+              "units": 0.9
+            },
+            {
+              "key": "asset_id",
+              "label": "Asset or boiler ID",
+              "units": 1.05
+            },
+            {
+              "key": "manufacturer_model",
+              "label": "Manufacturer and model",
+              "units": 1.45
+            },
+            {
+              "key": "area_served",
+              "label": "Area served",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "reported_problem",
+          "type": "textarea",
+          "label": "Reported symptom, alarm, condition, and requested outcome",
+          "height": 66,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Reported symptom, alarm, condition, and requested outcome",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record what was observed and when; avoid unsupported diagnosis in the initial request."
+        }
+      ]
+    },
+    {
+      "key": "triage_controls",
+      "title": "Triage, urgency, and interim controls",
+      "guidance": "Protect people, property, and service while the request is evaluated by qualified personnel.",
+      "blocks": [
+        {
+          "key": "problem_classification",
+          "type": "checklist",
+          "label": "Reported problem classification",
+          "items": [
+            "No heat or inadequate heat",
+            "Pressure or temperature concern",
+            "Water level or feedwater concern",
+            "Fuel odor or suspected fuel leak",
+            "Combustion or flame concern",
+            "Venting, draft, or spillage concern",
+            "Relief or safety-device concern",
+            "Alarm, trip, or repeated lockout",
+            "Water, steam, or condensate leak",
+            "Abnormal noise or vibration",
+            "Control or sensor concern",
+            "Electrical or overheating concern",
+            "Corrosion, scale, or deposit concern",
+            "Other condition documented below"
+          ]
+        },
+        {
+          "key": "initial_disposition",
+          "type": "fields",
+          "label": "Initial condition and interim disposition",
+          "fields": [
+            {
+              "key": "boiler_state",
+              "label": "Boiler state",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select state",
+                "Operating",
+                "Restricted",
+                "Shutdown",
+                "Isolated"
+              ]
+            },
+            {
+              "key": "severity",
+              "label": "Initial severity",
+              "units": 1.0
+            },
+            {
+              "key": "interim_control",
+              "label": "Interim control",
+              "units": 1.2
+            },
+            {
+              "key": "control_owner",
+              "label": "Control owner",
+              "units": 1.0
+            },
+            {
+              "key": "review_due",
+              "label": "Qualified review due",
+              "units": 1.2
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "triage_account",
+          "type": "textarea",
+          "label": "Observed facts, immediate actions, and escalation record",
+          "height": 64,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Observed facts, immediate actions, and escalation record",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "emergency_boundary",
+          "type": "notice",
+          "label": "Emergency and qualified-review boundary",
+          "guidance": "This request does not replace emergency calls, evacuation, fuel-leak response, fire reporting, pressure-vessel incident procedures, or jurisdictional notice. Stop work and obtain qualified review when conditions exceed authorization. Confirm applicable code, site policy, manufacturer requirements, and professional review before repair or return to service."
+        }
+      ]
+    },
+    {
+      "key": "repair_work_control",
+      "title": "Repair authorization and work limits",
+      "guidance": "Establish the approved work boundary and verified safe state before intrusive diagnosis or repair.",
+      "blocks": [
+        {
+          "key": "work_authorization",
+          "type": "fields",
+          "label": "Repair authorization and operating impact",
+          "fields": [
+            {
+              "key": "authorized_by",
+              "label": "Repair authorized by",
+              "units": 1.25
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 1.15
+            },
+            {
+              "key": "shutdown_window",
+              "label": "Shutdown window",
+              "units": 1.05
+            },
+            {
+              "key": "permit_reference",
+              "label": "Permit or policy ref",
+              "units": 1.15
+            },
+            {
+              "key": "service_impact",
+              "label": "Service impact",
+              "units": 1.0
+            },
+            {
+              "key": "notification_owner",
+              "label": "Notification owner",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "repair_hazard_review",
+          "type": "checklist",
+          "label": "Repair hazard and requirement review",
+          "items": [
+            "Fuel and combustion hazards assessed",
+            "Electrical sources identified",
+            "Pressure and stored energy assessed",
+            "Temperature and cooldown status assessed",
+            "Steam, water, and condensate hazards assessed",
+            "Chemical treatment exposure assessed",
+            "Ventilation and combustion air checked",
+            "Required PPE and access controls confirmed",
+            "Qualified-person scope confirmed",
+            "Emergency shutdown authority known",
+            "Nearby occupants and processes considered",
+            "Stop-work triggers communicated"
+          ]
+        },
+        {
+          "key": "isolation_record",
+          "type": "fields",
+          "label": "Energy isolation and verification record",
+          "fields": [
+            {
+              "key": "fuel_isolation",
+              "label": "Fuel isolation",
+              "units": 1.0
+            },
+            {
+              "key": "electrical_isolation",
+              "label": "Electrical isolation",
+              "units": 1.2
+            },
+            {
+              "key": "water_steam_isolation",
+              "label": "Water or steam isolation",
+              "units": 1.3
+            },
+            {
+              "key": "lock_tag",
+              "label": "Lock or tag reference",
+              "units": 1.2
+            },
+            {
+              "key": "safe_state",
+              "label": "Safe state",
+              "units": 0.85
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "authorization_exception",
+          "type": "textarea",
+          "label": "Changed scope, unavailable control, and stop-work escalation",
+          "height": 56,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Changed scope, unavailable control, and stop-work escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "diagnosis_evidence",
+      "title": "Qualified diagnosis, readings, and evidence",
+      "guidance": "Separate verified findings and measurements from hypotheses or unavailable evidence.",
+      "blocks": [
+        {
+          "key": "diagnostic_areas",
+          "type": "checklist",
+          "label": "Diagnostic areas evaluated",
+          "items": [
+            "Boiler pressure-boundary condition",
+            "Water level and feedwater condition",
+            "Pressure and temperature controls",
+            "Relief and safety-device records",
+            "Fuel supply and valve-train condition",
+            "Ignition and flame safeguard status",
+            "Burner and combustion-air condition",
+            "Venting and draft condition",
+            "Electrical power and protection",
+            "Control sequence and sensors",
+            "Water treatment and deposits",
+            "Leaks, corrosion, and insulation",
+            "Operating history and prior work",
+            "External service or utility factors"
+          ]
+        },
+        {
+          "key": "diagnostic_readings",
+          "type": "table",
+          "label": "Diagnostic reading and test record",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter or test",
+              "units": 1.1
+            },
+            {
+              "key": "observed",
+              "label": "Observed result",
+              "units": 1.0
+            },
+            {
+              "key": "expected",
+              "label": "Expected range",
+              "units": 1.05
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.55
+            },
+            {
+              "key": "instrument",
+              "label": "Instrument and date",
+              "units": 1.2
+            },
+            {
+              "key": "taken_by",
+              "label": "Taken by",
+              "units": 0.8
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "diagnosis_summary",
+          "type": "textarea",
+          "label": "Evidence-based diagnosis, ruled-out causes, and uncertainty",
+          "height": 70,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Evidence-based diagnosis, ruled-out causes, and uncertainty",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "diagnostic_evidence",
+          "type": "table",
+          "label": "Diagnostic evidence index",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.8
+            },
+            {
+              "key": "record_type",
+              "label": "Photo or record",
+              "units": 1.05
+            },
+            {
+              "key": "subject",
+              "label": "Component or result",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition shown",
+              "units": 1.15
+            },
+            {
+              "key": "captured_by",
+              "label": "Captured by",
+              "units": 0.9
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "repair_plan",
+      "title": "Repair plan, parts, approvals, and decision",
+      "guidance": "Define the repair outcome and approval boundary before parts are installed or settings changed.",
+      "blocks": [
+        {
+          "key": "repair_scope",
+          "type": "textarea",
+          "label": "Proposed repair scope, exclusions, and acceptance basis",
+          "height": 68,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Proposed repair scope, exclusions, and acceptance basis",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "planned_parts",
+          "type": "table",
+          "label": "Planned parts, materials, and services",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part or service",
+              "units": 1.25
+            },
+            {
+              "key": "part_number",
+              "label": "Part number",
+              "units": 1.0
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.65
+            },
+            {
+              "key": "source",
+              "label": "Source or vendor",
+              "units": 1.05
+            },
+            {
+              "key": "availability",
+              "label": "Availability",
+              "units": 0.9
+            },
+            {
+              "key": "approval",
+              "label": "Approval ref",
+              "units": 0.8
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "repair_decision",
+          "type": "fields",
+          "label": "Repair decision and authorization",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select decision",
+                "Approve repair",
+                "Approve temporary repair",
+                "Defer",
+                "Replace asset",
+                "Reject"
+              ]
+            },
+            {
+              "key": "decision_by",
+              "label": "Decision by",
+              "units": 0.9
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.9
+            },
+            {
+              "key": "cost_reference",
+              "label": "Cost or quote ref",
+              "units": 1.1
+            },
+            {
+              "key": "completion_target",
+              "label": "Completion target",
+              "units": 1.15
+            },
+            {
+              "key": "restriction_owner",
+              "label": "Restriction owner",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "setting_boundary",
+          "type": "notice",
+          "label": "Safety-device and control-setting boundary",
+          "guidance": "Record approvals and references for any authorized control or setting change. Do not use this form as an instruction to alter relief devices, burner controls, fuel components, combustion settings, or protective limits."
+        }
+      ]
+    },
+    {
+      "key": "repair_execution",
+      "title": "Repair execution, verification, and exceptions",
+      "guidance": "Record what was actually repaired, who performed it, and how results were verified.",
+      "blocks": [
+        {
+          "key": "repair_action_log",
+          "type": "table",
+          "label": "Completed repair action log",
+          "columns": [
+            {
+              "key": "component",
+              "label": "Component",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Action performed",
+              "units": 1.25
+            },
+            {
+              "key": "part_reference",
+              "label": "Part or material ref",
+              "units": 1.1
+            },
+            {
+              "key": "performed_by",
+              "label": "Performed by",
+              "units": 0.95
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "restoration_check",
+          "type": "checklist",
+          "label": "Repair restoration and verification review",
+          "items": [
+            "Installed parts match approved scope",
+            "Fasteners and connections restored",
+            "Covers, guards, and panels restored",
+            "Fuel connections visually rechecked",
+            "Electrical enclosures restored",
+            "Water and pressure boundaries checked",
+            "Controls left at approved settings",
+            "No unauthorized bypass remains",
+            "Tools and temporary materials removed",
+            "Leak, odor, and noise check recorded",
+            "Required functional evidence linked",
+            "Open defects assigned and communicated"
+          ]
+        },
+        {
+          "key": "verification_results",
+          "type": "table",
+          "label": "Repair verification and operating results",
+          "columns": [
+            {
+              "key": "test",
+              "label": "Test or parameter",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.8
+            },
+            {
+              "key": "criterion",
+              "label": "Acceptance criterion",
+              "units": 1.2
+            },
+            {
+              "key": "conditions",
+              "label": "Operating conditions",
+              "units": 1.15
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "execution_exception",
+          "type": "textarea",
+          "label": "Failed result, changed repair, residual risk, and escalation",
+          "height": 60,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Failed result, changed repair, residual risk, and escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "repair_closeout",
+      "title": "Return to service, handoff, and resolution",
+      "guidance": "Make service status, restrictions, monitoring, and final responsibility unambiguous.",
+      "blocks": [
+        {
+          "key": "return_service_review",
+          "type": "checklist",
+          "label": "Return-to-service evidence reviewed",
+          "items": [
+            "Approved repair scope completed or reconciled",
+            "Required verification results accepted",
+            "Fuel and combustion condition reviewed",
+            "Water level and pressure state documented",
+            "Venting and combustion-air path checked",
+            "Protective controls left authorized",
+            "Area access and housekeeping restored",
+            "Operating restrictions documented",
+            "Monitoring needs assigned",
+            "Facility contact briefed",
+            "Open actions linked to accountable owners",
+            "Qualified service authorization recorded"
+          ]
+        },
+        {
+          "key": "return_status",
+          "type": "fields",
+          "label": "Return-to-service status and authorization",
+          "fields": [
+            {
+              "key": "operating_disposition",
+              "label": "Operating disposition",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Select status",
+                "Normal service",
+                "Restricted service",
+                "Standby only",
+                "Removed from service"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization time",
+              "units": 1.15
+            },
+            {
+              "key": "restriction_review",
+              "label": "Restriction review",
+              "units": 1.1
+            },
+            {
+              "key": "monitoring_owner",
+              "label": "Monitoring owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "resolution_summary",
+          "type": "textarea",
+          "label": "Resolution summary, remaining uncertainty, and next action",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Resolution summary, remaining uncertainty, and next action",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "handoff_record",
+          "type": "fields",
+          "label": "Facility handoff and recurrence follow-up",
+          "fields": [
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 1.0
+            },
+            {
+              "key": "handoff_method",
+              "label": "Handoff method",
+              "units": 1.05
+            },
+            {
+              "key": "handoff_time",
+              "label": "Handoff date and time",
+              "units": 1.3
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.95
+            },
+            {
+              "key": "related_record",
+              "label": "Related record",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "repair_approval",
+          "type": "signatures",
+          "label": "Repair resolution review and acceptance",
+          "fields": [
+            {
+              "key": "lead_technician",
+              "label": "Lead technician or signature",
+              "units": 1.4
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "facility_approval",
+              "label": "Facility acceptance",
+              "units": 1.15
+            },
+            {
+              "key": "approval_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

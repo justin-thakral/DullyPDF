@@ -49,7 +49,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: controlled-deploy-${{ github.ref }}
+  group: controlled-deploy-global
   cancel-in-progress: false
 
 jobs:
@@ -305,6 +305,44 @@ jobs:
           fi
           printf '%s' "$DEPLOY_FRONTEND_OVERRIDE_B64" | base64 --decode > "$RUNNER_TEMP/frontend.env"
 
+      - name: Capture pre-deploy form catalog Hosting version
+        id: form_catalog_release
+        if: >-
+          ${{
+            needs.resolve.outputs.deploy_environment == 'prod'
+            && needs.resolve.outputs.dry_run != 'true'
+            && (
+              needs.resolve.outputs.component == 'frontend'
+              || needs.resolve.outputs.component == 'all'
+            )
+          }}
+        run: |
+          set -euo pipefail
+          release_id="$(jq -r '.releaseId // empty' form_catalog_releases/active.json)"
+          replacement_count="$(jq -r '.replacements | length' form_catalog_releases/active.json)"
+          if [[ -z "$release_id" || "$replacement_count" == "0" ]]; then
+            echo "active=false" >> "$GITHUB_OUTPUT"
+            echo "No active immutable catalog release; Hosting evidence is not required."
+            exit 0
+          fi
+
+          before_path="$RUNNER_TEMP/form-catalog-hosting-before.json"
+          deploy_result_path="$RUNNER_TEMP/firebase-hosting-deploy-result.json"
+          evidence_path="$RUNNER_TEMP/form-catalog-hosting-evidence.json"
+          python3 -m scripts.form_catalog_factory snapshot-hosting \
+            --project dullypdf \
+            --site dullypdf \
+            --output "$before_path"
+          {
+            echo "active=true"
+            echo "release_id=$release_id"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo "FORM_CATALOG_HOSTING_BEFORE_PATH=$before_path"
+            echo "FIREBASE_HOSTING_DEPLOY_RESULT_PATH=$deploy_result_path"
+            echo "FORM_CATALOG_HOSTING_EVIDENCE_PATH=$evidence_path"
+          } >> "$GITHUB_ENV"
+
       - name: Run deploy target
         run: |
           set -euo pipefail
@@ -387,3 +425,32 @@ jobs:
           PLAYWRIGHT_API_URL="$base_url" \
           PLAYWRIGHT_CHECK_API_HEALTH="$check_api_health" \
           npm run test:playwright:deployed-frontend:real
+
+      - name: Create release-bound form catalog Hosting evidence
+        if: ${{ steps.form_catalog_release.outputs.active == 'true' }}
+        run: |
+          set -euo pipefail
+          python3 -m scripts.form_catalog_factory create-hosting-evidence \
+            --active-release form_catalog_releases/active.json \
+            --before-snapshot "$FORM_CATALOG_HOSTING_BEFORE_PATH" \
+            --deploy-result "$FIREBASE_HOSTING_DEPLOY_RESULT_PATH" \
+            --project dullypdf \
+            --site dullypdf \
+            --site-origin https://dullypdf.com \
+            --site-origin https://dullypdf.web.app \
+            --deployment-commit "$GITHUB_SHA" \
+            --workflow-run-id "$GITHUB_RUN_ID" \
+            --workflow-run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --output "$FORM_CATALOG_HOSTING_EVIDENCE_PATH"
+
+      - name: Upload form catalog Hosting evidence
+        if: ${{ steps.form_catalog_release.outputs.active == 'true' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: form-catalog-hosting-evidence-${{ steps.form_catalog_release.outputs.release_id }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/form-catalog-hosting-before.json
+            ${{ runner.temp }}/firebase-hosting-deploy-result.json
+            ${{ runner.temp }}/form-catalog-hosting-evidence.json
+          if-no-files-found: error
+          retention-days: 90

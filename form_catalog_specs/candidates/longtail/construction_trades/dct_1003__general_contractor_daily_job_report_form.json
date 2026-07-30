@@ -1,0 +1,812 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1003__general_contractor_daily_job_report_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1003__general_contractor_daily_job_report_form.pdf",
+  "slug": "general-contractor-daily-job-report-form",
+  "title": "General Contractor Daily Job Report and Handoff",
+  "subtitle": "Record site conditions, labor and equipment, installed work, deliveries, inspections, safety and quality events, delays, decisions, and the next-shift plan.",
+  "description": "A workflow-complete daily construction report covering project and shift identity, weather, workforce by trade, completed quantities, equipment and deliveries, visitors and inspections, safety and quality observations, delays, directives, evidence, next-day planning, and superintendent certification.",
+  "use_case": "Use when a superintendent or field lead needs an objective same-day record that supports progress verification, payroll and cost review, schedule analysis, issue escalation, customer communication, and the next crew handoff.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "report_identity",
+      "title": "Report, project, and shift identity",
+      "guidance": "Anchor observations to one project date and responsible field lead.",
+      "blocks": [
+        {
+          "key": "report_reference",
+          "type": "fields",
+          "label": "Daily report reference",
+          "fields": [
+            {
+              "key": "report_number",
+              "label": "Daily report number",
+              "units": 0.75
+            },
+            {
+              "key": "report_date",
+              "label": "Report date",
+              "units": 0.6
+            },
+            {
+              "key": "day_of_week",
+              "label": "Day of week",
+              "units": 0.6
+            },
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 0.65,
+              "field_type": "choice",
+              "options": [
+                "Day",
+                "Evening",
+                "Night",
+                "Weekend or special"
+              ]
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.85
+            },
+            {
+              "key": "superintendent",
+              "label": "Superintendent",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "project_identity",
+          "type": "fields",
+          "label": "Project and site",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.2
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.7
+            },
+            {
+              "key": "site_address",
+              "label": "Site address",
+              "units": 1.35
+            },
+            {
+              "key": "owner_contact",
+              "label": "Owner or client contact",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "work_window",
+          "type": "fields",
+          "label": "Work window and site status",
+          "fields": [
+            {
+              "key": "site_open_time",
+              "label": "Site opened",
+              "units": 0.6
+            },
+            {
+              "key": "work_start_time",
+              "label": "Work started",
+              "units": 0.65
+            },
+            {
+              "key": "work_end_time",
+              "label": "Work ended",
+              "units": 0.65
+            },
+            {
+              "key": "site_close_time",
+              "label": "Site secured",
+              "units": 0.65
+            },
+            {
+              "key": "overall_status",
+              "label": "Overall shift status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "On plan",
+                "Ahead",
+                "Behind",
+                "Partially stopped",
+                "Fully stopped"
+              ]
+            },
+            {
+              "key": "schedule_day",
+              "label": "Schedule day or update",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "report_distribution",
+          "type": "checklist",
+          "label": "Required distribution and references",
+          "items": [
+            "Project manager",
+            "Owner or construction manager",
+            "Project controls",
+            "Safety lead",
+            "Quality lead",
+            "Affected subcontractor",
+            "Photo log linked",
+            "Prior report open items reviewed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "conditions_workforce",
+      "title": "Conditions, workforce, and working time",
+      "guidance": "Record factors that affected productivity or site access.",
+      "blocks": [
+        {
+          "key": "weather",
+          "type": "fields",
+          "label": "Weather and environmental conditions",
+          "fields": [
+            {
+              "key": "morning_weather",
+              "label": "Morning conditions",
+              "units": 0.95
+            },
+            {
+              "key": "afternoon_weather",
+              "label": "Afternoon conditions",
+              "units": 0.95
+            },
+            {
+              "key": "temperature_range",
+              "label": "Temperature range",
+              "units": 0.75
+            },
+            {
+              "key": "precipitation",
+              "label": "Precipitation",
+              "units": 0.7
+            },
+            {
+              "key": "wind",
+              "label": "Wind or air condition",
+              "units": 0.8
+            },
+            {
+              "key": "weather_delay_hours",
+              "label": "Weather delay hours",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "condition_effects",
+          "type": "checklist",
+          "label": "Site condition effects",
+          "items": [
+            "Heat or cold controls used",
+            "Rain or snow protection used",
+            "High-wind restriction",
+            "Wet or muddy access",
+            "Lighting limitation",
+            "Occupied-area restriction",
+            "Utility interruption",
+            "Delivery access restriction",
+            "Environmental monitoring required",
+            "No material condition effect"
+          ]
+        },
+        {
+          "key": "workforce",
+          "type": "table",
+          "label": "Workforce by company and trade",
+          "columns": [
+            {
+              "key": "company",
+              "label": "Company",
+              "units": 1.0
+            },
+            {
+              "key": "trade",
+              "label": "Trade or crew",
+              "units": 0.9
+            },
+            {
+              "key": "foreman",
+              "label": "Foreman",
+              "units": 0.8
+            },
+            {
+              "key": "worker_count",
+              "label": "Workers",
+              "units": 0.55
+            },
+            {
+              "key": "regular_hours",
+              "label": "Regular hours",
+              "units": 0.65
+            },
+            {
+              "key": "overtime_hours",
+              "label": "OT hours",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "headcount_summary",
+          "type": "fields",
+          "label": "Daily labor summary",
+          "fields": [
+            {
+              "key": "total_workers",
+              "label": "Total workers",
+              "units": 0.65
+            },
+            {
+              "key": "total_regular_hours",
+              "label": "Total regular hours",
+              "units": 0.75
+            },
+            {
+              "key": "total_overtime_hours",
+              "label": "Total overtime hours",
+              "units": 0.75
+            },
+            {
+              "key": "orientation_count",
+              "label": "New worker orientations",
+              "units": 0.8
+            },
+            {
+              "key": "absent_trade",
+              "label": "Missing or short trade",
+              "units": 0.95
+            },
+            {
+              "key": "labor_variance",
+              "label": "Labor variance reason",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "work_progress",
+      "title": "Work performed and progress evidence",
+      "guidance": "Describe installed work with location, quantity, and verification.",
+      "blocks": [
+        {
+          "key": "completed_work",
+          "type": "table",
+          "label": "Work completed this shift",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Area or grid",
+              "units": 0.75
+            },
+            {
+              "key": "activity",
+              "label": "Activity or scope",
+              "units": 1.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity and unit",
+              "units": 0.7
+            },
+            {
+              "key": "percent_complete",
+              "label": "Percent complete",
+              "units": 0.65
+            },
+            {
+              "key": "inspection_reference",
+              "label": "Inspection or photo",
+              "units": 0.9
+            },
+            {
+              "key": "next_step",
+              "label": "Next step",
+              "units": 0.9
+            }
+          ],
+          "rows": 9
+        },
+        {
+          "key": "work_narrative",
+          "type": "textarea",
+          "label": "Sequence of work, methods, coordination, concealed conditions, and notable production facts",
+          "fields": [
+            {
+              "key": "work_detail",
+              "label": "Daily work narrative"
+            }
+          ],
+          "height": 160
+        },
+        {
+          "key": "progress_evidence",
+          "type": "checklist",
+          "label": "Progress evidence retained",
+          "items": [
+            "Before-work photos",
+            "In-progress photos",
+            "Completed-work photos",
+            "Concealed-work photos",
+            "Quantity ticket",
+            "Survey or layout record",
+            "Test report",
+            "Inspection record",
+            "As-built mark-up",
+            "Delivery or haul ticket"
+          ]
+        },
+        {
+          "key": "milestone_status",
+          "type": "fields",
+          "label": "Schedule and milestone check",
+          "fields": [
+            {
+              "key": "planned_activity",
+              "label": "Planned activity",
+              "units": 1.15
+            },
+            {
+              "key": "planned_quantity",
+              "label": "Planned quantity",
+              "units": 0.75
+            },
+            {
+              "key": "actual_quantity",
+              "label": "Actual quantity",
+              "units": 0.75
+            },
+            {
+              "key": "variance",
+              "label": "Variance",
+              "units": 0.65
+            },
+            {
+              "key": "recovery_owner",
+              "label": "Recovery action owner",
+              "units": 0.95
+            },
+            {
+              "key": "recovery_date",
+              "label": "Recovery date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "resources_inspections",
+      "title": "Equipment, deliveries, visitors, and checks",
+      "guidance": "Preserve records that support cost, custody, and acceptance.",
+      "blocks": [
+        {
+          "key": "equipment",
+          "type": "table",
+          "label": "Equipment use and downtime",
+          "columns": [
+            {
+              "key": "equipment",
+              "label": "Equipment or unit",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner or vendor",
+              "units": 0.9
+            },
+            {
+              "key": "hours_used",
+              "label": "Hours used",
+              "units": 0.65
+            },
+            {
+              "key": "idle_down_hours",
+              "label": "Idle or down",
+              "units": 0.65
+            },
+            {
+              "key": "work_area",
+              "label": "Work area",
+              "units": 0.8
+            },
+            {
+              "key": "condition_note",
+              "label": "Condition or note",
+              "units": 1.05
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "deliveries",
+          "type": "table",
+          "label": "Material delivery and custody log",
+          "columns": [
+            {
+              "key": "supplier",
+              "label": "Supplier",
+              "units": 0.9
+            },
+            {
+              "key": "material",
+              "label": "Material",
+              "units": 1.2
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.6
+            },
+            {
+              "key": "ticket",
+              "label": "Ticket or PO",
+              "units": 0.75
+            },
+            {
+              "key": "condition",
+              "label": "Accepted or exception",
+              "units": 0.9
+            },
+            {
+              "key": "storage_location",
+              "label": "Storage location",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "visitors_inspections",
+          "type": "table",
+          "label": "Visitor, inspection, and meeting log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.5
+            },
+            {
+              "key": "person_agency",
+              "label": "Person or agency",
+              "units": 1.05
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose",
+              "units": 1.0
+            },
+            {
+              "key": "area",
+              "label": "Area",
+              "units": 0.65
+            },
+            {
+              "key": "result_direction",
+              "label": "Result or direction",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.8
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inspection_summary",
+          "type": "fields",
+          "label": "Inspection and test summary",
+          "fields": [
+            {
+              "key": "inspections_requested",
+              "label": "Inspections requested",
+              "units": 0.8
+            },
+            {
+              "key": "inspections_passed",
+              "label": "Inspections passed",
+              "units": 0.75
+            },
+            {
+              "key": "inspections_failed",
+              "label": "Inspections failed",
+              "units": 0.75
+            },
+            {
+              "key": "test_reports",
+              "label": "Test report references",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Open hold point",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "resource_exception_detail",
+          "type": "textarea",
+          "label": "Equipment, delivery, visitor, inspection, or custody exception requiring follow-up",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Resource, visitor, or inspection exception detail"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "events_exceptions",
+      "title": "Safety, quality, delay, and direction events",
+      "guidance": "Escalate consequential events and preserve who was notified.",
+      "blocks": [
+        {
+          "key": "event_screen",
+          "type": "checklist",
+          "label": "Events occurring this shift",
+          "items": [
+            "Safety observation",
+            "Near miss",
+            "Injury or first aid",
+            "Property or utility damage",
+            "Quality deficiency",
+            "Failed inspection",
+            "Differing condition",
+            "Work stoppage",
+            "Weather delay",
+            "Material shortage",
+            "Design question",
+            "Owner or designer direction",
+            "Trade interference",
+            "Complaint or neighbor issue"
+          ]
+        },
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Event, notification, and action log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.5
+            },
+            {
+              "key": "event",
+              "label": "Event or condition",
+              "units": 1.35
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "notified",
+              "label": "Notified",
+              "units": 0.75
+            },
+            {
+              "key": "reference",
+              "label": "Report, RFI, or photo",
+              "units": 0.85
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "delay_detail",
+          "type": "fields",
+          "label": "Delay and disruption summary",
+          "fields": [
+            {
+              "key": "delay_start",
+              "label": "Delay start",
+              "units": 0.6
+            },
+            {
+              "key": "delay_end",
+              "label": "Delay end",
+              "units": 0.6
+            },
+            {
+              "key": "hours_lost",
+              "label": "Hours lost",
+              "units": 0.55
+            },
+            {
+              "key": "workers_affected",
+              "label": "Workers affected",
+              "units": 0.7
+            },
+            {
+              "key": "equipment_affected",
+              "label": "Equipment affected",
+              "units": 0.8
+            },
+            {
+              "key": "notice_reference",
+              "label": "Notice reference",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "exception_narrative",
+          "type": "textarea",
+          "label": "Objective event narrative, cause known at the time, impact, evidence, direction, and required escalation",
+          "fields": [
+            {
+              "key": "event_detail",
+              "label": "Event and exception narrative"
+            }
+          ],
+          "height": 90
+        },
+        {
+          "key": "incident_notice",
+          "type": "notice",
+          "label": "Separate reporting requirement",
+          "guidance": "This daily report does not replace required incident, injury, environmental, quality, claim, or contractual notice forms. Complete and distribute those records under the applicable procedure and deadline."
+        }
+      ]
+    },
+    {
+      "key": "handoff_closeout",
+      "title": "Next-shift plan and accountable closeout",
+      "guidance": "Convert today's facts into owned actions for the next work period.",
+      "blocks": [
+        {
+          "key": "next_shift_plan",
+          "type": "table",
+          "label": "Next-shift work and readiness plan",
+          "columns": [
+            {
+              "key": "planned_task",
+              "label": "Planned task",
+              "units": 1.25
+            },
+            {
+              "key": "area",
+              "label": "Area",
+              "units": 0.65
+            },
+            {
+              "key": "crew",
+              "label": "Crew or trade",
+              "units": 0.8
+            },
+            {
+              "key": "prerequisite",
+              "label": "Prerequisite",
+              "units": 1.0
+            },
+            {
+              "key": "material_equipment",
+              "label": "Material or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.6
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "open_action_log",
+          "type": "table",
+          "label": "Open action and decision log",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action or decision",
+              "units": 1.45
+            },
+            {
+              "key": "source",
+              "label": "Source or reference",
+              "units": 0.9
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.6
+            },
+            {
+              "key": "impact_if_late",
+              "label": "Impact if late",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Next-shift briefing, access or shutdown needs, priority follow-up, customer commitment, and responsible owner",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Next-shift handoff and commitments"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "report_certification",
+          "type": "signatures",
+          "label": "Daily report certification and review",
+          "fields": [
+            {
+              "key": "prepared_by_signature",
+              "label": "Prepared by",
+              "units": 0.95
+            },
+            {
+              "key": "superintendent_signature",
+              "label": "Superintendent",
+              "units": 0.95
+            },
+            {
+              "key": "project_manager_review",
+              "label": "Project manager review",
+              "units": 1.0
+            },
+            {
+              "key": "owner_acknowledgment",
+              "label": "Owner acknowledgment if used",
+              "units": 1.0
+            },
+            {
+              "key": "signed_date_time",
+              "label": "Date and time",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

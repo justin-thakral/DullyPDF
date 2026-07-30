@@ -1,0 +1,375 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1308__single_family_rental_move_in_condition_checklist_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1308__single_family_rental_move_in_condition_checklist_form.pdf",
+  "slug": "single-family-rental-move-in-condition-checklist-form",
+  "title": "Single-Family Rental Move-In Condition and Handover Record",
+  "subtitle": "Create a shared, evidence-linked baseline for the dwelling, exclusive-use grounds, exterior features, utilities, access devices, equipment, and unresolved handover work.",
+  "description": "Move-in condition record tailored to a detached or attached single-family rental where the resident may receive control of a yard, driveway, garage, utility shutoffs, outdoor equipment, and other property-specific features.",
+  "use_case": "Use during possession handover to document observable condition without assigning fault, establish utility and access baselines, explain operating responsibilities, and route corrections for accountable closeout.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "handover_property_identity",
+      "title": "Handover, lease, household, and property identity",
+      "guidance": "Tie the baseline to the correct rental house, possession event, participants, and approved inspection scope.",
+      "blocks": [
+        {
+          "key": "condition_record",
+          "type": "fields",
+          "label": "Move-in condition record",
+          "fields": [
+            {"key": "record_number", "label": "Condition record number", "units": 1.1},
+            {"key": "inspection_date", "label": "Inspection date", "units": 0.8},
+            {"key": "start_time", "label": "Start time", "units": 0.7},
+            {"key": "end_time", "label": "End time", "units": 0.7},
+            {"key": "prepared_by", "label": "Prepared by", "units": 1.0}
+          ]
+        },
+        {
+          "key": "rental_house",
+          "type": "fields",
+          "label": "Single-family rental",
+          "fields": [
+            {"key": "property_address", "label": "Property address", "units": 1.8},
+            {"key": "property_type", "label": "House type", "units": 1.0, "field_type": "choice", "options": ["Detached house", "Townhouse or rowhouse", "Duplex side", "Cottage or accessory dwelling", "Other single-family rental"]},
+            {"key": "lease_reference", "label": "Lease or account reference", "units": 1.1},
+            {"key": "possession_date", "label": "Possession date", "units": 0.9}
+          ]
+        },
+        {
+          "key": "participants",
+          "type": "fields",
+          "label": "Inspection participants and occupancy",
+          "fields": [
+            {"key": "resident_participant", "label": "Resident participant", "units": 1.2},
+            {"key": "manager_participant", "label": "Owner or manager representative", "units": 1.3},
+            {"key": "other_participant", "label": "Other participant and role", "units": 1.1},
+            {"key": "inspection_method", "label": "Inspection method", "units": 1.0, "field_type": "choice", "options": ["Joint walkthrough", "Resident review period", "Manager inspection with resident follow-up", "Remote evidence review"]}
+          ]
+        },
+        {
+          "key": "scope_reference",
+          "type": "textarea",
+          "label": "Included dwelling areas, yard limits, garage or outbuildings, shared boundaries, excluded areas, and access limitations",
+          "fields": [{"key": "scope_detail", "label": "Move-in inspection scope"}],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "method_evidence_controls",
+      "title": "Condition method, evidence, weather, and access controls",
+      "guidance": "Use consistent condition language and connect every material observation to a location and record.",
+      "blocks": [
+        {
+          "key": "condition_code",
+          "type": "notice",
+          "label": "Condition coding",
+          "guidance": "Suggested codes: G for good or serviceable, W for worn or marked, D for damaged or not operating, C for cleaning needed, and NI for not inspected. Describe observable facts rather than fault or a legal conclusion."
+        },
+        {
+          "key": "inspection_controls",
+          "type": "checklist",
+          "label": "Inspection preparation and participation",
+          "items": [
+            "Resident invited to participate",
+            "Move-in or turnover record available",
+            "Rooms and storage areas accessible",
+            "Garage and authorized outbuildings accessible",
+            "Yard and exterior boundaries identified",
+            "Utilities available for basic operational checks",
+            "Weather and ground conditions recorded",
+            "Date-stamped photos or video captured",
+            "Existing work orders reviewed",
+            "Uninspected areas identified",
+            "Communication assistance provided",
+            "Separate accommodation request routed"
+          ],
+          "guidance": "Record only operational assistance provided; do not collect diagnosis or protected-trait information here."
+        },
+        {
+          "key": "conditions_at_review",
+          "type": "fields",
+          "label": "Conditions during walkthrough",
+          "fields": [
+            {"key": "weather", "label": "Weather", "units": 0.9},
+            {"key": "temperature", "label": "Temperature", "units": 0.8},
+            {"key": "ground_condition", "label": "Ground or surface condition", "units": 1.1},
+            {"key": "occupancy_condition", "label": "Occupancy or staging condition", "units": 1.2},
+            {"key": "utility_status", "label": "Utility availability", "units": 1.0}
+          ]
+        },
+        {
+          "key": "evidence_series",
+          "type": "fields",
+          "label": "Photo, video, and document series",
+          "fields": [
+            {"key": "evidence_reference", "label": "Evidence set reference", "units": 1.1},
+            {"key": "first_file", "label": "First image or file", "units": 0.9},
+            {"key": "last_file", "label": "Last image or file", "units": 0.9},
+            {"key": "captured_by", "label": "Captured by", "units": 0.9},
+            {"key": "stored_location", "label": "Stored location", "units": 1.2}
+          ]
+        },
+        {
+          "key": "inspection_limits",
+          "type": "textarea",
+          "label": "Areas not inspected, obstructed views, unavailable utilities, weather limits, resident objections, or other exception",
+          "fields": [{"key": "inspection_limit_detail", "label": "Inspection limitation and follow-up"}],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exterior_grounds_structures",
+      "title": "Exterior, grounds, drainage, and accessory structures",
+      "guidance": "Document the exclusive-use site and visible building exterior without representing a code, engineering, environmental, or specialist inspection.",
+      "blocks": [
+        {
+          "key": "envelope_log",
+          "type": "table",
+          "label": "Roofline, envelope, openings, and foundation observations",
+          "columns": [
+            {"key": "component", "label": "Exterior component", "units": 1.2},
+            {"key": "condition_code", "label": "Condition code", "units": 0.8},
+            {"key": "observed_condition", "label": "Observed condition", "units": 1.7},
+            {"key": "photo_ref", "label": "Photo or file ref", "units": 1.0},
+            {"key": "action", "label": "Action needed", "units": 1.1}
+          ],
+          "rows": 5,
+          "guidance": "Suggested components include roofing viewed from an authorized location, gutters, siding, trim, windows, exterior doors, foundation, vents, and visible utility entries."
+        },
+        {
+          "key": "site_log",
+          "type": "table",
+          "label": "Yard, grading, drainage, paving, fence, and landscape observations",
+          "columns": [
+            {"key": "area", "label": "Site area or feature", "units": 1.2},
+            {"key": "condition_code", "label": "Condition code", "units": 0.8},
+            {"key": "observed_condition", "label": "Observed condition", "units": 1.7},
+            {"key": "photo_ref", "label": "Photo or file ref", "units": 1.0},
+            {"key": "action", "label": "Action needed", "units": 1.1}
+          ],
+          "rows": 5,
+          "guidance": "Identify lawns, planting beds, trees, slopes, swales, drains, driveways, walks, parking, fences, gates, retaining features, and irrigation only when within the rental scope."
+        },
+        {
+          "key": "outbuilding_log",
+          "type": "table",
+          "label": "Porch, deck, garage, carport, shed, and other authorized structure observations",
+          "columns": [
+            {"key": "structure", "label": "Structure or area", "units": 1.1},
+            {"key": "condition_code", "label": "Condition code", "units": 0.8},
+            {"key": "observed_condition", "label": "Observed condition", "units": 1.7},
+            {"key": "access_item", "label": "Key, remote, or access item", "units": 1.1},
+            {"key": "action", "label": "Action needed", "units": 1.1}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "exterior_safety",
+          "type": "checklist",
+          "label": "Visible exterior and site safety observations",
+          "items": [
+            "Exterior doors visibly secure",
+            "Steps and rails visibly stable",
+            "Walkways appear passable",
+            "Driveway or parking boundary identified",
+            "Fence and gate operation recorded",
+            "Garage door operation recorded",
+            "Tree or limb concern routed",
+            "Drainage or standing-water concern routed",
+            "Pool, spa, or water feature not in scope",
+            "Pool, spa, or water feature controls recorded",
+            "No immediate exterior hazard observed",
+            "Specialist review requested"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "interior_room_condition",
+      "title": "Interior rooms, finishes, fixtures, and storage",
+      "guidance": "Identify each room or area by location so later comparisons remain unambiguous.",
+      "blocks": [
+        {
+          "key": "living_sleeping_log",
+          "type": "table",
+          "label": "Entry, living, dining, hallway, office, and sleeping-area observations",
+          "columns": [
+            {"key": "room", "label": "Room or area", "units": 1.0},
+            {"key": "item", "label": "Finish, fixture, or opening", "units": 1.3},
+            {"key": "condition_code", "label": "Condition code", "units": 0.8},
+            {"key": "observed_condition", "label": "Observed condition", "units": 1.7},
+            {"key": "evidence", "label": "Evidence or action ref", "units": 1.2}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "kitchen_laundry_log",
+          "type": "table",
+          "label": "Kitchen, pantry, laundry, and provided-appliance observations",
+          "columns": [
+            {"key": "area_item", "label": "Area or item", "units": 1.2},
+            {"key": "asset_id", "label": "Model, serial, or asset ID", "units": 1.1},
+            {"key": "condition_code", "label": "Condition code", "units": 0.8},
+            {"key": "operation", "label": "Observed operation or issue", "units": 1.6},
+            {"key": "evidence", "label": "Evidence or action ref", "units": 1.2}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "bath_storage_log",
+          "type": "table",
+          "label": "Bathroom, closet, basement, attic-access, and interior storage observations",
+          "columns": [
+            {"key": "location", "label": "Location or fixture", "units": 1.2},
+            {"key": "condition_code", "label": "Condition code", "units": 0.8},
+            {"key": "flow_or_operation", "label": "Flow, drain, or operation", "units": 1.3},
+            {"key": "observed_condition", "label": "Observed condition", "units": 1.6},
+            {"key": "evidence", "label": "Evidence or action ref", "units": 1.2}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "interior_notes",
+          "type": "textarea",
+          "label": "Additional stains, marks, odors, cleanliness, resident comments, or area-specific context",
+          "fields": [{"key": "interior_note_detail", "label": "Interior condition notes"}],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "systems_utilities_inventory",
+      "title": "House systems, utilities, meters, access devices, and inventory",
+      "guidance": "Record visible operation, service baselines, quantities, and handover instructions separately from specialist conclusions.",
+      "blocks": [
+        {
+          "key": "system_checks",
+          "type": "checklist",
+          "label": "Basic system and safety-device observations",
+          "items": [
+            "Heating responded to basic control",
+            "Cooling responded to basic control",
+            "Thermostat location and use reviewed",
+            "Water heater basic status recorded",
+            "Visible supply and drain issue noted",
+            "Electric panel location identified",
+            "Main water shutoff identified",
+            "Fuel shutoff or tank information provided",
+            "Smoke alarms visibly present",
+            "Carbon monoxide alarms visibly present",
+            "Well, pump, or treatment system reviewed",
+            "Septic location or service record referenced",
+            "Sump pump or drainage equipment reviewed",
+            "Specialist concern routed"
+          ],
+          "guidance": "A basic operational check is not a code, safety, environmental, engineering, or licensed systems inspection."
+        },
+        {
+          "key": "utility_meter_log",
+          "type": "table",
+          "label": "Utility, fuel, and meter baseline",
+          "columns": [
+            {"key": "service", "label": "Utility or service", "units": 1.1},
+            {"key": "provider", "label": "Provider or system type", "units": 1.1},
+            {"key": "meter_or_id", "label": "Meter, tank, or device ID", "units": 1.1},
+            {"key": "reading", "label": "Reading or level", "units": 0.9},
+            {"key": "date_time", "label": "Date and time", "units": 0.9},
+            {"key": "evidence", "label": "Photo reference", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "access_inventory",
+          "type": "table",
+          "label": "Keys, remotes, codes, bins, equipment, and other issued property items",
+          "columns": [
+            {"key": "item", "label": "Issued item", "units": 1.2},
+            {"key": "identifier", "label": "Identifier or location", "units": 1.2},
+            {"key": "quantity", "label": "Quantity", "units": 0.7},
+            {"key": "condition", "label": "Condition", "units": 1.0},
+            {"key": "issued_to", "label": "Issued to", "units": 1.0},
+            {"key": "notes", "label": "Notes", "units": 1.1}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "resident_owner_handover",
+          "type": "table",
+          "label": "Routine property-care handover",
+          "columns": [
+            {"key": "task", "label": "Task or system", "units": 1.3},
+            {"key": "record_source", "label": "Lease, plan, or instruction source", "units": 1.4},
+            {"key": "assigned_party", "label": "Recorded party", "units": 1.0},
+            {"key": "schedule", "label": "Schedule or trigger", "units": 1.0},
+            {"key": "contact", "label": "Contact or service ref", "units": 1.1}
+          ],
+          "rows": 4,
+          "guidance": "Record approved instructions for items such as lawn care, snow or ice response, filters, salt or treatment supplies, trash bins, irrigation, fuel monitoring, pest reporting, and seasonal access. Route disputed responsibility for qualified review."
+        }
+      ]
+    },
+    {
+      "key": "corrections_acceptance_closeout",
+      "title": "Corrections, resident comments, acceptance, and closeout",
+      "guidance": "Assign open work, preserve resident additions, and close the handover without waiving later reporting rights.",
+      "blocks": [
+        {
+          "key": "correction_register",
+          "type": "table",
+          "label": "Pre-existing condition and corrective-work register",
+          "columns": [
+            {"key": "area", "label": "Area or item reference", "units": 1.2},
+            {"key": "condition", "label": "Observed condition", "units": 1.5},
+            {"key": "action", "label": "Agreed next action", "units": 1.4},
+            {"key": "owner", "label": "Responsible owner", "units": 1.0},
+            {"key": "target_date", "label": "Target date", "units": 0.8},
+            {"key": "close_ref", "label": "Work or closeout ref", "units": 1.0}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "resident_additions",
+          "type": "textarea",
+          "label": "Resident additions, disputed descriptions, later-submitted evidence, access concern, or requested correction",
+          "fields": [{"key": "resident_addition_detail", "label": "Resident additions and requested correction"}],
+          "height": 56
+        },
+        {
+          "key": "comment_tracking",
+          "type": "fields",
+          "label": "Comment and correction tracking",
+          "fields": [
+            {"key": "received_date", "label": "Comments received date", "units": 1.0},
+            {"key": "received_by", "label": "Received by", "units": 0.9},
+            {"key": "response_target", "label": "Response target", "units": 0.9},
+            {"key": "final_record_location", "label": "Final record location", "units": 1.2},
+            {"key": "closeout_status", "label": "Closeout status", "units": 1.0, "field_type": "choice", "options": ["Accepted as recorded", "Accepted with additions", "Correction pending", "Resident review pending", "Escalated for review"]}
+          ]
+        },
+        {
+          "key": "record_notice",
+          "type": "notice",
+          "label": "Condition-record notice",
+          "guidance": "This form records observable condition and handover activity. It does not determine responsibility, damages, charges, code compliance, habitability, or legal rights. Apply applicable notice, retention, privacy, lease, fair-housing, and local requirements."
+        },
+        {
+          "key": "condition_acknowledgment",
+          "type": "signatures",
+          "label": "Condition record acknowledgment",
+          "fields": [
+            {"key": "resident", "label": "Resident name or signature", "units": 1.3},
+            {"key": "manager", "label": "Owner or manager representative", "units": 1.3},
+            {"key": "date", "label": "Date", "units": 0.7},
+            {"key": "delivery", "label": "Copy delivered by and method", "units": 1.2}
+          ],
+          "guidance": "Acknowledgment confirms participation or receipt only and does not waive the resident's right to report an issue, request an accommodation, or dispute a factual description."
+        }
+      ]
+    }
+  ]
+}

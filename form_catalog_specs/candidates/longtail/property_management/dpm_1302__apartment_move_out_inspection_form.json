@@ -1,0 +1,749 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1302__apartment_move_out_inspection_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1302__apartment_move_out_inspection_form.pdf",
+  "slug": "apartment-move-out-inspection-form",
+  "title": "Apartment Move-Out Inspection and Turnover Record",
+  "subtitle": "Document departure scheduling, observable unit condition, evidence, keys and utilities, comparison references, resident comments, turnover decisions, exceptions, and accountable handoff.",
+  "description": "A workflow-complete apartment move-out inspection record covering lease and unit identity, inspection access, room-by-room observations, photo references, utility readings, returned access devices, remaining property, turnover actions, resident comments, and management closeout.",
+  "use_case": "Use when property staff and a departing resident need a factual, reviewable move-out condition record that supports turnover planning while keeping repair decisions, financial review, disputed observations, and legal conclusions in their proper separate workflows.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "departure_identity",
+      "title": "Departure, lease, and inspection identity",
+      "guidance": "Identify the correct tenancy, unit, notice event, and inspection participants.",
+      "blocks": [
+        {
+          "key": "inspection_reference",
+          "type": "fields",
+          "label": "Move-out inspection reference",
+          "fields": [
+            {
+              "key": "inspection_number",
+              "label": "Inspection record number",
+              "units": 1.0
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.7
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.55
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.55
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "property_unit",
+          "type": "fields",
+          "label": "Property and apartment",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Property name",
+              "units": 1.05
+            },
+            {
+              "key": "property_address",
+              "label": "Property address",
+              "units": 1.45
+            },
+            {
+              "key": "building",
+              "label": "Building",
+              "units": 0.55
+            },
+            {
+              "key": "unit",
+              "label": "Unit",
+              "units": 0.5
+            },
+            {
+              "key": "unit_type",
+              "label": "Unit type or layout",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "lease_departure",
+          "type": "fields",
+          "label": "Lease and departure context",
+          "fields": [
+            {
+              "key": "lease_reference",
+              "label": "Lease or account reference",
+              "units": 1.05
+            },
+            {
+              "key": "resident_names",
+              "label": "Resident names on record",
+              "units": 1.35
+            },
+            {
+              "key": "lease_end",
+              "label": "Lease end date",
+              "units": 0.7
+            },
+            {
+              "key": "possession_return",
+              "label": "Expected possession date",
+              "units": 0.9
+            },
+            {
+              "key": "notice_reference",
+              "label": "Move-out notice reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "participants",
+          "type": "fields",
+          "label": "Inspection participants and status",
+          "fields": [
+            {
+              "key": "resident_participant",
+              "label": "Resident participant",
+              "units": 1.1
+            },
+            {
+              "key": "property_participant",
+              "label": "Property representative",
+              "units": 1.1
+            },
+            {
+              "key": "other_participant",
+              "label": "Other participant and role",
+              "units": 1.05
+            },
+            {
+              "key": "inspection_stage",
+              "label": "Inspection stage",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Pre-move inspection",
+                "Final inspection",
+                "Follow-up inspection",
+                "Staff-only inspection",
+                "Other"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "access_baseline",
+      "title": "Access, baseline records, and evidence",
+      "guidance": "Document the inspection basis, limitations, and evidence set before conclusions.",
+      "blocks": [
+        {
+          "key": "scheduling_access",
+          "type": "fields",
+          "label": "Scheduling and access",
+          "fields": [
+            {
+              "key": "appointment_notice",
+              "label": "Appointment or notice reference",
+              "units": 1.15
+            },
+            {
+              "key": "notice_date_time",
+              "label": "Notice date and time",
+              "units": 0.85
+            },
+            {
+              "key": "entry_basis",
+              "label": "Entry basis confirmed",
+              "units": 1.0
+            },
+            {
+              "key": "unit_status",
+              "label": "Unit status on arrival",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Occupied",
+                "Partially vacated",
+                "Vacant",
+                "Access unavailable",
+                "Inspection stopped"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "baseline_records",
+          "type": "checklist",
+          "label": "Records and references available",
+          "items": [
+            "Move-in condition record",
+            "Move-in photo set",
+            "Prior inspection record",
+            "Open maintenance requests",
+            "Completed work orders",
+            "Resident-provided evidence",
+            "Inventory or appliance list",
+            "Key and device issue record",
+            "No baseline record available",
+            "Additional record listed below"
+          ]
+        },
+        {
+          "key": "evidence_control",
+          "type": "fields",
+          "label": "Move-out evidence set",
+          "fields": [
+            {
+              "key": "evidence_set_reference",
+              "label": "Evidence set reference",
+              "units": 1.05
+            },
+            {
+              "key": "captured_by",
+              "label": "Captured by",
+              "units": 0.8
+            },
+            {
+              "key": "capture_date_time",
+              "label": "Capture date and time",
+              "units": 0.9
+            },
+            {
+              "key": "first_last_file",
+              "label": "First and last file reference",
+              "units": 1.2
+            },
+            {
+              "key": "storage_location",
+              "label": "Stored location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "inspection_limits",
+          "type": "textarea",
+          "label": "Uninspected areas, unavailable utilities, resident objections, weather, or access exceptions",
+          "fields": [
+            {
+              "key": "inspection_limit_detail",
+              "label": "Inspection limitations and access exceptions"
+            }
+          ],
+          "height": 54
+        },
+        {
+          "key": "neutral_process_notice",
+          "type": "notice",
+          "label": "Neutral documentation",
+          "guidance": "Describe observable condition and identify the comparison source. Do not assign fault, characterize normal wear, determine a charge, or make a legal conclusion in the inspection notes. Apply the same review process consistently."
+        }
+      ]
+    },
+    {
+      "key": "room_observations",
+      "title": "Room-by-room condition observations",
+      "guidance": "Link each material observation to a baseline, photo, and turnover action.",
+      "blocks": [
+        {
+          "key": "living_sleeping",
+          "type": "table",
+          "label": "Entry, living, dining, hall, bedroom, and closet observations",
+          "columns": [
+            {
+              "key": "area_item",
+              "label": "Area or item",
+              "units": 1.1
+            },
+            {
+              "key": "move_in_reference",
+              "label": "Baseline reference",
+              "units": 1.0
+            },
+            {
+              "key": "move_out_observation",
+              "label": "Move-out observation",
+              "units": 1.65
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Photo or file ref",
+              "units": 0.85
+            },
+            {
+              "key": "turnover_action",
+              "label": "Turnover action",
+              "units": 1.15
+            }
+          ],
+          "rows": 10,
+          "guidance": "Identify walls, ceilings, floors, doors, windows, coverings, lighting, outlets, and storage by room or location."
+        },
+        {
+          "key": "kitchen_laundry",
+          "type": "table",
+          "label": "Kitchen, laundry, and provided appliance observations",
+          "columns": [
+            {
+              "key": "fixture_appliance",
+              "label": "Fixture or appliance",
+              "units": 1.2
+            },
+            {
+              "key": "asset_baseline",
+              "label": "Asset or baseline ref",
+              "units": 1.0
+            },
+            {
+              "key": "condition_operation",
+              "label": "Condition or operation observed",
+              "units": 1.65
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Photo or file ref",
+              "units": 0.85
+            },
+            {
+              "key": "turnover_action",
+              "label": "Turnover action",
+              "units": 1.15
+            }
+          ],
+          "rows": 9
+        },
+        {
+          "key": "bath_plumbing",
+          "type": "table",
+          "label": "Bathroom, plumbing, and moisture observations",
+          "columns": [
+            {
+              "key": "location_item",
+              "label": "Location or fixture",
+              "units": 1.15
+            },
+            {
+              "key": "baseline_reference",
+              "label": "Baseline reference",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition, leak, or moisture",
+              "units": 1.65
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Photo or reading ref",
+              "units": 0.95
+            },
+            {
+              "key": "turnover_action",
+              "label": "Turnover action",
+              "units": 1.1
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "room_notes",
+          "type": "textarea",
+          "label": "Cleanliness, odor, finish, repair-history context, resident explanation, or other room-specific detail",
+          "fields": [
+            {
+              "key": "room_note_detail",
+              "label": "Additional room condition context"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "systems_return",
+      "title": "Systems, utilities, and return items",
+      "guidance": "Capture operational handoff facts separately from later financial review.",
+      "blocks": [
+        {
+          "key": "basic_system_checks",
+          "type": "checklist",
+          "label": "Basic observable system checks",
+          "items": [
+            "Heating control responded",
+            "Cooling control responded",
+            "Hot water observed",
+            "Visible supply leaks checked",
+            "Visible drain leaks checked",
+            "Smoke alarms visually present",
+            "Carbon monoxide alarms visually present",
+            "Alarm test documented separately",
+            "Windows and exterior doors operated",
+            "Locks and latches operated",
+            "No immediate concern observed",
+            "Urgent condition escalated"
+          ],
+          "guidance": "A move-out walkthrough is not a code, fire, electrical, mechanical, environmental, or specialist inspection."
+        },
+        {
+          "key": "meter_readings",
+          "type": "table",
+          "label": "Final utility and equipment readings",
+          "columns": [
+            {
+              "key": "service",
+              "label": "Utility or equipment",
+              "units": 1.2
+            },
+            {
+              "key": "meter_id",
+              "label": "Meter or device ID",
+              "units": 1.05
+            },
+            {
+              "key": "reading",
+              "label": "Final reading",
+              "units": 0.8
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Photo reference",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "returned_devices",
+          "type": "table",
+          "label": "Keys, credentials, remotes, and access devices returned",
+          "columns": [
+            {
+              "key": "device",
+              "label": "Key or device",
+              "units": 1.3
+            },
+            {
+              "key": "identifier",
+              "label": "Identifier",
+              "units": 0.9
+            },
+            {
+              "key": "issued_quantity",
+              "label": "Issued qty",
+              "units": 0.65
+            },
+            {
+              "key": "returned_quantity",
+              "label": "Returned qty",
+              "units": 0.7
+            },
+            {
+              "key": "condition",
+              "label": "Condition",
+              "units": 0.85
+            },
+            {
+              "key": "exception",
+              "label": "Missing item or exception",
+              "units": 1.25
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "remaining_property",
+          "type": "textarea",
+          "label": "Remaining personal property, waste, surrendered items, storage routing, or handling instructions",
+          "fields": [
+            {
+              "key": "remaining_property_detail",
+              "label": "Remaining property and handling record"
+            }
+          ],
+          "height": 54,
+          "guidance": "Follow applicable notice, storage, safety, privacy, and disposal procedures; do not use this field as authorization to discard property."
+        },
+        {
+          "key": "forwarding_contact",
+          "type": "fields",
+          "label": "Resident-provided forwarding contact",
+          "fields": [
+            {
+              "key": "forwarding_address",
+              "label": "Forwarding address",
+              "units": 1.8
+            },
+            {
+              "key": "forwarding_email",
+              "label": "Email",
+              "units": 1.15
+            },
+            {
+              "key": "forwarding_phone",
+              "label": "Phone",
+              "units": 0.85
+            },
+            {
+              "key": "provided_date",
+              "label": "Date provided",
+              "units": 0.7
+            }
+          ],
+          "guidance": "Restrict forwarding information to authorized operational use and retention."
+        }
+      ]
+    },
+    {
+      "key": "turnover_decisions",
+      "title": "Turnover review, decisions, and authorization",
+      "guidance": "Assign work based on evidence while keeping any financial determination separate.",
+      "blocks": [
+        {
+          "key": "turnover_register",
+          "type": "table",
+          "label": "Turnover work and further-review register",
+          "columns": [
+            {
+              "key": "finding_reference",
+              "label": "Finding or photo ref",
+              "units": 1.15
+            },
+            {
+              "key": "proposed_action",
+              "label": "Proposed action",
+              "units": 1.45
+            },
+            {
+              "key": "review_status",
+              "label": "Routine, further review, or hold",
+              "units": 1.25
+            },
+            {
+              "key": "owner_vendor",
+              "label": "Owner or vendor",
+              "units": 0.95
+            },
+            {
+              "key": "target_date",
+              "label": "Target date",
+              "units": 0.75
+            },
+            {
+              "key": "work_order",
+              "label": "Work order or review ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "management_decision",
+          "type": "fields",
+          "label": "Turnover authorization",
+          "fields": [
+            {
+              "key": "turnover_status",
+              "label": "Turnover status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Ready for routine turnover",
+                "Repairs authorized",
+                "Estimate required",
+                "Specialist review required",
+                "Evidence review pending",
+                "Access follow-up required"
+              ]
+            },
+            {
+              "key": "scope_limit",
+              "label": "Approved scope or limit",
+              "units": 1.1
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.9
+            },
+            {
+              "key": "authorization_date",
+              "label": "Authorization date",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "financial_handoff",
+          "type": "checklist",
+          "label": "Separate review handoff completed",
+          "items": [
+            "Baseline records attached",
+            "Move-out evidence attached",
+            "Repair estimates requested",
+            "Vendor findings requested",
+            "Resident comments attached",
+            "Disputed facts flagged",
+            "Financial reviewer assigned",
+            "No financial review requested"
+          ],
+          "guidance": "Inspection staff should not use this checklist as a final determination of responsibility, wear classification, deposit treatment, or charge."
+        },
+        {
+          "key": "exception_escalation",
+          "type": "textarea",
+          "label": "Urgent condition, disputed fact, evidence gap, specialist need, or escalation",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception and escalation detail"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "resident_closeout",
+      "title": "Resident comments and accountable closeout",
+      "guidance": "Preserve disagreement, confirm routing, and close only when owners are assigned.",
+      "blocks": [
+        {
+          "key": "resident_comments",
+          "type": "textarea",
+          "label": "Resident comments, corrections, disputed observations, supporting evidence, or requested follow-up",
+          "fields": [
+            {
+              "key": "resident_comment_detail",
+              "label": "Resident move-out comments and evidence"
+            }
+          ],
+          "height": 68
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Open actions and communication ownership",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action or review",
+              "units": 1.65
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.75
+            },
+            {
+              "key": "resident_update",
+              "label": "Resident update method or date",
+              "units": 1.2
+            },
+            {
+              "key": "completion_reference",
+              "label": "Completion reference",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "closeout",
+          "type": "fields",
+          "label": "Inspection closeout",
+          "fields": [
+            {
+              "key": "inspection_status",
+              "label": "Inspection status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with comments",
+                "Follow-up required",
+                "Incomplete",
+                "Escalated"
+              ]
+            },
+            {
+              "key": "copy_delivery",
+              "label": "Copy delivery method and date",
+              "units": 1.2
+            },
+            {
+              "key": "record_location",
+              "label": "Final record location",
+              "units": 1.05
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "record_notice",
+          "type": "notice",
+          "label": "Record-use notice",
+          "guidance": "This inspection documents observable condition and operational handoff. It does not decide responsibility, normal wear, charges, deposit treatment, code compliance, or legal rights. Apply applicable notice, privacy, retention, and fair housing procedures."
+        },
+        {
+          "key": "acknowledgment",
+          "type": "signatures",
+          "label": "Inspection record acknowledgment",
+          "fields": [
+            {
+              "key": "resident_signature",
+              "label": "Resident name or signature",
+              "units": 1.2
+            },
+            {
+              "key": "property_signature",
+              "label": "Property representative",
+              "units": 1.15
+            },
+            {
+              "key": "signed_date",
+              "label": "Date",
+              "units": 0.65
+            },
+            {
+              "key": "manager_review",
+              "label": "Manager review",
+              "units": 0.9
+            }
+          ],
+          "guidance": "Acknowledgment confirms participation or receipt only. A missing signature does not establish agreement, and a signature does not waive a dispute."
+        }
+      ]
+    }
+  ]
+}

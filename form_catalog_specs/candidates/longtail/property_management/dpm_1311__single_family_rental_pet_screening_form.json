@@ -1,0 +1,436 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1311__single_family_rental_pet_screening_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1311__single_family_rental_pet_screening_form.pdf",
+  "slug": "single-family-rental-pet-screening-form",
+  "title": "Single-Family Rental Animal Request and Pet Screening Record",
+  "subtitle": "Classify the animal request first, reroute assistance-animal accommodations, document household-pet facts, review house and yard controls, authorize a neutral decision, and close registration.",
+  "description": "Animal-request workflow tailored to a single-family rental with possible yard, fence, gate, garage, outbuilding, neighboring-property, waste, landscape, septic, and maintenance-entry considerations.",
+  "use_case": "Use only after correctly classifying the request. Assistance-animal requests leave this pet-screening workflow and proceed through the property's qualified accommodation process without pet criteria, pet fees, or diagnosis collection.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "request_property_identity",
+      "title": "Animal request, resident, lease, and property identity",
+      "guidance": "Open one traceable animal request for the correct resident and rental house before collecting screening information.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Animal request reference",
+          "fields": [
+            {"key": "request_number", "label": "Animal request number", "units": 1.1},
+            {"key": "date_received", "label": "Date received", "units": 0.8},
+            {"key": "received_by", "label": "Received by", "units": 0.9},
+            {"key": "request_channel", "label": "Request channel", "units": 1.0, "field_type": "choice", "options": ["Resident portal", "Email", "Phone", "In person", "Lease application", "Other"]},
+            {"key": "case_owner", "label": "Assigned case owner", "units": 1.1}
+          ]
+        },
+        {
+          "key": "rental_property",
+          "type": "fields",
+          "label": "Single-family rental",
+          "fields": [
+            {"key": "property_address", "label": "Property address", "units": 1.8},
+            {"key": "property_type", "label": "House type", "units": 1.0, "field_type": "choice", "options": ["Detached house", "Townhouse or rowhouse", "Duplex side", "Cottage or accessory dwelling", "Other single-family rental"]},
+            {"key": "lease_reference", "label": "Lease or application reference", "units": 1.2},
+            {"key": "occupancy_status", "label": "Occupancy status", "units": 1.0, "field_type": "choice", "options": ["Current resident", "Approved future resident", "Applicant", "Other authorized occupant"]}
+          ]
+        },
+        {
+          "key": "resident_contact",
+          "type": "fields",
+          "label": "Resident or applicant contact",
+          "fields": [
+            {"key": "resident_name", "label": "Resident or applicant name", "units": 1.4},
+            {"key": "phone", "label": "Phone", "units": 0.8},
+            {"key": "email", "label": "Email", "units": 1.1},
+            {"key": "contact_method", "label": "Preferred contact method", "units": 1.0, "field_type": "choice", "options": ["Phone", "Text", "Email", "Resident portal", "Other"]},
+            {"key": "requested_start", "label": "Requested animal start date", "units": 1.0}
+          ]
+        },
+        {
+          "key": "property_scope",
+          "type": "textarea",
+          "label": "Dwelling, exclusive-use yard, fence or gate, garage, outbuilding, shared boundary, or other site context relevant to routing",
+          "fields": [{"key": "property_scope_detail", "label": "Animal-request property context"}],
+          "height": 46
+        }
+      ]
+    },
+    {
+      "key": "classification_protected_routing",
+      "title": "Request classification and protected-process routing",
+      "guidance": "Classify before screening so an accommodation request is not processed as a household pet.",
+      "blocks": [
+        {
+          "key": "classification",
+          "type": "fields",
+          "label": "Animal request classification",
+          "fields": [
+            {"key": "request_type", "label": "Request type", "units": 1.2, "field_type": "choice", "options": ["Household pet request", "Assistance-animal accommodation request", "Classification unclear", "Temporary animal request", "Visiting animal question", "Other routing needed"]},
+            {"key": "classification_source", "label": "Classification based on", "units": 1.2},
+            {"key": "classified_by", "label": "Classified by", "units": 1.0},
+            {"key": "classification_date", "label": "Classification date", "units": 0.9}
+          ]
+        },
+        {
+          "key": "routing_decision",
+          "type": "fields",
+          "label": "Routing decision",
+          "fields": [
+            {"key": "workflow_route", "label": "Workflow route", "units": 1.2, "field_type": "choice", "options": ["Continue household-pet screening", "Pause and open accommodation workflow", "Qualified classification review", "Close duplicate request", "Other approved route"]},
+            {"key": "accommodation_ref", "label": "Accommodation workflow reference", "units": 1.3},
+            {"key": "routed_to", "label": "Routed to", "units": 1.0},
+            {"key": "routing_date", "label": "Routing date", "units": 0.8}
+          ]
+        },
+        {
+          "key": "assistance_animal_safeguard",
+          "type": "notice",
+          "label": "Assistance-animal safeguard",
+          "guidance": "Do not apply pet fees, deposits, breed or size rules, pet screening scores, pet-document requirements, yard criteria, or pet conditions to an assistance-animal request. Do not ask for diagnosis or unnecessary medical detail. Pause this pet workflow and use the property's qualified accommodation process."
+        },
+        {
+          "key": "communication_support",
+          "type": "checklist",
+          "label": "Process and communication support",
+          "items": [
+            "Resident received correct process information",
+            "Accommodation process opened when indicated",
+            "Communication adjustment requested",
+            "Language assistance requested",
+            "Alternate document format requested",
+            "Support person included at resident request",
+            "Request treated as confidential",
+            "Protected information access restricted",
+            "Classification question escalated",
+            "No additional support requested"
+          ],
+          "guidance": "Record operational support only, not diagnosis or other unnecessary protected information."
+        },
+        {
+          "key": "classification_notes",
+          "type": "textarea",
+          "label": "Classification facts, resident wording, routing explanation, correction, and unresolved process question",
+          "fields": [{"key": "classification_note_detail", "label": "Classification and protected-routing notes"}],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "household_pet_identity",
+      "title": "Household-pet identity, care, and record references",
+      "guidance": "Complete only for a household pet after the protected routing decision above.",
+      "blocks": [
+        {
+          "key": "pet_identity",
+          "type": "fields",
+          "label": "Household-pet identity",
+          "fields": [
+            {"key": "animal_name", "label": "Animal name", "units": 0.9},
+            {"key": "species", "label": "Species or animal type", "units": 1.2},
+            {"key": "age", "label": "Age or birth date", "units": 0.9},
+            {"key": "weight", "label": "Approximate weight", "units": 0.9},
+            {"key": "sex_status", "label": "Sex and alteration status", "units": 1.2}
+          ]
+        },
+        {
+          "key": "identification",
+          "type": "fields",
+          "label": "Physical and record identification",
+          "fields": [
+            {"key": "markings", "label": "Color and identifying markings", "units": 1.3},
+            {"key": "photo_reference", "label": "Current photo reference", "units": 1.0},
+            {"key": "license_number", "label": "License number, if required", "units": 1.1},
+            {"key": "microchip", "label": "Microchip number, if provided", "units": 1.1}
+          ]
+        },
+        {
+          "key": "care_contacts",
+          "type": "fields",
+          "label": "Care and emergency contacts",
+          "fields": [
+            {"key": "veterinary_clinic", "label": "Veterinary clinic", "units": 1.2},
+            {"key": "clinic_phone", "label": "Clinic phone", "units": 0.9},
+            {"key": "emergency_caregiver", "label": "Emergency caregiver", "units": 1.2},
+            {"key": "caregiver_phone", "label": "Caregiver phone", "units": 0.9},
+            {"key": "pickup_plan", "label": "Authorized pickup or care plan", "units": 1.2}
+          ]
+        },
+        {
+          "key": "required_pet_records",
+          "type": "table",
+          "label": "Required household-pet records",
+          "columns": [
+            {"key": "record_type", "label": "Record type", "units": 1.2},
+            {"key": "issuer", "label": "Issuer", "units": 1.0},
+            {"key": "record_date", "label": "Record date", "units": 0.9},
+            {"key": "review_date", "label": "Expiration or review date", "units": 1.1},
+            {"key": "file_ref", "label": "File reference", "units": 1.1},
+            {"key": "status", "label": "Received or pending", "units": 1.0}
+          ],
+          "rows": 4,
+          "guidance": "Request only records required by the written household-pet policy and applicable rules. Do not use this block for an assistance-animal request."
+        },
+        {
+          "key": "daily_care",
+          "type": "textarea",
+          "label": "Daily care, exercise, containment, waste handling, weather plan, supervision, and time-alone plan",
+          "fields": [{"key": "daily_care_detail", "label": "Household-pet daily care plan"}],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "site_history_controls",
+      "title": "Single-family site plan, history, and risk controls",
+      "guidance": "Capture specific facts and practical controls for the house and exclusive-use site without assumptions based on appearance or label.",
+      "blocks": [
+        {
+          "key": "site_context",
+          "type": "checklist",
+          "label": "House and site context reviewed",
+          "items": [
+            "Indoor-only plan",
+            "Supervised yard use",
+            "Fence condition and height reviewed",
+            "Gate and latch operation reviewed",
+            "Leash or carrier route reviewed",
+            "Garage or outbuilding access restricted",
+            "Garden or landscape protection planned",
+            "Wellhead or treatment area protected",
+            "Septic or drain-field area considered",
+            "Trash, compost, or wildlife attractants secured",
+            "Shared boundary or nearby residence considered",
+            "No exclusive-use yard in scope",
+            "Pool, spa, or water feature not in scope",
+            "Pool, spa, or water feature controls recorded"
+          ]
+        },
+        {
+          "key": "management_plan",
+          "type": "table",
+          "label": "Household-pet property management plan",
+          "columns": [
+            {"key": "site_area", "label": "House or site area", "units": 1.2},
+            {"key": "planned_use", "label": "Planned animal use", "units": 1.2},
+            {"key": "control", "label": "Containment or care control", "units": 1.4},
+            {"key": "responsible_person", "label": "Responsible person", "units": 1.0},
+            {"key": "follow_up", "label": "Follow-up or record ref", "units": 1.2}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "reported_history",
+          "type": "checklist",
+          "label": "Resident-reported factual history",
+          "items": [
+            "No known bite incident reported",
+            "Prior bite incident disclosed",
+            "No known injury incident reported",
+            "Prior injury incident disclosed",
+            "No known property damage reported",
+            "Prior property damage disclosed",
+            "Noise concern previously reported",
+            "Escape or roaming incident reported",
+            "Fence or gate escape history reported",
+            "Animal-control contact reported",
+            "Prior housing contact available",
+            "Additional context provided below"
+          ],
+          "guidance": "A checked item records the resident's report, not a verified finding, risk score, or legal characterization."
+        },
+        {
+          "key": "incident_register",
+          "type": "table",
+          "label": "Disclosed incident or concern details",
+          "columns": [
+            {"key": "date_location", "label": "Date and location", "units": 1.0},
+            {"key": "factual_event", "label": "Factual event description", "units": 1.6},
+            {"key": "source", "label": "Information source", "units": 1.0},
+            {"key": "response", "label": "Response or training", "units": 1.3},
+            {"key": "current_control", "label": "Current control", "units": 1.1}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "resident_explanation",
+          "type": "textarea",
+          "label": "Resident explanation, evidence, mitigation, reference response, site constraint, or unresolved factual question",
+          "fields": [{"key": "resident_explanation_detail", "label": "Resident factual explanation and mitigation"}],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "policy_decision",
+      "title": "Written household-pet policy review and authorized decision",
+      "guidance": "Apply the same documented household-pet criteria to comparable requests and preserve qualified review for exceptions or adverse outcomes.",
+      "blocks": [
+        {
+          "key": "policy_reference",
+          "type": "fields",
+          "label": "Policy and reviewer reference",
+          "fields": [
+            {"key": "policy_version", "label": "Pet policy name and version", "units": 1.2},
+            {"key": "effective_date", "label": "Policy effective date", "units": 0.9},
+            {"key": "reviewed_by", "label": "Reviewed by", "units": 0.9},
+            {"key": "review_date", "label": "Review date", "units": 0.8},
+            {"key": "approval_matrix", "label": "Approval matrix reference", "units": 1.1}
+          ]
+        },
+        {
+          "key": "criteria_review",
+          "type": "table",
+          "label": "Household-pet criterion and evidence review",
+          "columns": [
+            {"key": "criterion", "label": "Written criterion", "units": 1.4},
+            {"key": "policy_ref", "label": "Policy section", "units": 0.9},
+            {"key": "evidence", "label": "Evidence reviewed", "units": 1.4},
+            {"key": "result", "label": "Met, unmet, or unclear", "units": 1.1},
+            {"key": "follow_up", "label": "Follow-up or exception", "units": 1.2}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "review_controls",
+          "type": "checklist",
+          "label": "Review controls confirmed",
+          "items": [
+            "Request classification rechecked",
+            "Assistance-animal pathway excluded",
+            "Current written pet policy used",
+            "Comparable pet requests use the same criteria",
+            "Only necessary pet records requested",
+            "Factual evidence distinguished from allegation",
+            "House and yard controls reviewed neutrally",
+            "Exception authority identified",
+            "Adverse pet decision receives qualified review",
+            "Resident can correct missing information",
+            "Confidential records access restricted",
+            "No pet fee entered for an assistance-animal route"
+          ]
+        },
+        {
+          "key": "missing_information",
+          "type": "textarea",
+          "label": "Missing information, resident clarification request, policy uncertainty, site concern, or needed qualified input",
+          "fields": [{"key": "missing_information_detail", "label": "Missing information and qualified follow-up"}],
+          "height": 50
+        },
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Authorized household-pet decision",
+          "fields": [
+            {"key": "decision_status", "label": "Decision status", "units": 1.1, "field_type": "choice", "options": ["Approved", "Approved with conditions", "More information needed", "Exception review", "Not approved under cited pet policy", "Withdrawn", "Rerouted as accommodation request"]},
+            {"key": "decision_date", "label": "Decision date", "units": 0.8},
+            {"key": "decided_by", "label": "Decided by", "units": 0.9},
+            {"key": "policy_basis", "label": "Policy basis or section", "units": 1.1},
+            {"key": "review_reference", "label": "Approval or review reference", "units": 1.1}
+          ]
+        },
+        {
+          "key": "approved_terms",
+          "type": "table",
+          "label": "Approved household-pet condition, amount, document, or action",
+          "columns": [
+            {"key": "term", "label": "Condition or term", "units": 1.5},
+            {"key": "policy_source", "label": "Policy source", "units": 1.0},
+            {"key": "amount", "label": "Amount, if applicable", "units": 0.9},
+            {"key": "effective_date", "label": "Due or effective date", "units": 1.0},
+            {"key": "status", "label": "Status or document ref", "units": 1.3}
+          ],
+          "rows": 4,
+          "guidance": "Use only authorized household-pet charges and terms. Never enter pet charges or pet conditions for an assistance-animal accommodation request."
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Decision explanation, factual basis, conditions, missing item, site control, or exception rationale",
+          "fields": [{"key": "decision_rationale_detail", "label": "Household-pet decision explanation"}],
+          "height": 56
+        },
+        {
+          "key": "decision_safeguard",
+          "type": "notice",
+          "label": "Decision safeguard",
+          "guidance": "Do not deny, condition, fee, or pet-screen an assistance-animal accommodation on this form. Route uncertainty, exceptions, and adverse household-pet decisions through qualified review and applicable fair-housing, privacy, notice, and local requirements."
+        }
+      ]
+    },
+    {
+      "key": "registration_closeout",
+      "title": "Property registration, resident handoff, and closeout",
+      "guidance": "Activate only an approved household-pet record, communicate site controls, and assign each renewal or follow-up item.",
+      "blocks": [
+        {
+          "key": "registration_checklist",
+          "type": "checklist",
+          "label": "Household-pet property registration",
+          "items": [
+            "Pet agreement executed",
+            "Approved charges posted",
+            "Required pet records received",
+            "Animal photo retained",
+            "Emergency caregiver recorded",
+            "Property database updated",
+            "Resident copy delivered",
+            "Maintenance-entry animal note updated",
+            "Gate, yard, or site control recorded",
+            "Waste plan recorded",
+            "Renewal or record-review date scheduled",
+            "Open condition assigned",
+            "No pet registration because request rerouted",
+            "Assistance-animal record kept in qualified process"
+          ]
+        },
+        {
+          "key": "activation",
+          "type": "fields",
+          "label": "Registration and activation",
+          "fields": [
+            {"key": "registration_status", "label": "Registration status", "units": 1.0, "field_type": "choice", "options": ["Active", "Active with open condition", "Pending documents", "Pending approved payment", "Not approved", "Withdrawn", "Rerouted"]},
+            {"key": "effective_date", "label": "Effective date", "units": 0.8},
+            {"key": "agreement_ref", "label": "Agreement or addendum reference", "units": 1.2},
+            {"key": "next_review", "label": "Next record review date", "units": 1.0}
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Open action and accountable ownership",
+          "columns": [
+            {"key": "action", "label": "Open action", "units": 1.5},
+            {"key": "owner", "label": "Responsible owner", "units": 1.0},
+            {"key": "due_date", "label": "Due date", "units": 0.8},
+            {"key": "resident_update", "label": "Resident update due", "units": 1.0},
+            {"key": "completion_ref", "label": "Completion reference", "units": 1.1}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "resident_comments",
+          "type": "textarea",
+          "label": "Resident correction, question, disputed fact, withdrawal, accommodation reroute, or follow-up communication",
+          "fields": [{"key": "resident_comment_detail", "label": "Resident comments and corrections"}],
+          "height": 46
+        },
+        {
+          "key": "workflow_signoff",
+          "type": "signatures",
+          "label": "Workflow review and closeout",
+          "fields": [
+            {"key": "resident_acknowledgment", "label": "Resident acknowledgment", "units": 1.2},
+            {"key": "property_reviewer", "label": "Property reviewer", "units": 1.0},
+            {"key": "authorized_approver", "label": "Authorized approver", "units": 1.0},
+            {"key": "closed_date", "label": "Closed date", "units": 0.8}
+          ],
+          "guidance": "Acknowledgment confirms receipt of the recorded pet decision or terms and does not waive a resident's ability to request an accommodation or correct factual information."
+        }
+      ]
+    }
+  ]
+}

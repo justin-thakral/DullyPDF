@@ -1,0 +1,979 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1213__boiler_cleaning_checklist_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1213__boiler_cleaning_checklist_form.pdf",
+  "slug": "boiler-cleaning-checklist-form",
+  "title": "Boiler Cleaning and Restoration Checklist",
+  "subtitle": "Plan, document, verify, and close boiler cleaning while controlling energy, fuel, pressure, heat, chemicals, waste, and contamination.",
+  "description": "A boiler-specific cleaning record for fireside, burner-area, waterside, external, and work-area cleaning with pre-work controls, condition evidence, actual methods, materials, waste, defects, restoration, and return-to-service approval.",
+  "use_case": "Use for authorized boiler cleaning when technicians and facility owners need a defensible record of qualified work boundaries, completed cleaning, preserved findings, controlled materials, verification, escalation, and accountable closeout.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "cleaning_identity",
+      "title": "Cleaning work, site, and boiler identity",
+      "guidance": "Tie the cleaning event to one authorized scope, one site, and one identifiable boiler.",
+      "blocks": [
+        {
+          "key": "work_reference",
+          "type": "fields",
+          "label": "Work reference and schedule",
+          "fields": [
+            {
+              "key": "work_order",
+              "label": "Work order",
+              "units": 0.9
+            },
+            {
+              "key": "cleaning_date",
+              "label": "Cleaning date",
+              "units": 0.85
+            },
+            {
+              "key": "scheduled_start",
+              "label": "Scheduled start",
+              "units": 1.0
+            },
+            {
+              "key": "actual_start",
+              "label": "Actual start",
+              "units": 0.85
+            },
+            {
+              "key": "service_frequency",
+              "label": "Service frequency",
+              "units": 1.1
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "facility_location",
+          "type": "fields",
+          "label": "Facility and boiler-room location",
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility name",
+              "units": 1.2
+            },
+            {
+              "key": "street_address",
+              "label": "Street address",
+              "units": 1.45
+            },
+            {
+              "key": "building_area",
+              "label": "Building or area",
+              "units": 1.0
+            },
+            {
+              "key": "boiler_room",
+              "label": "Boiler room",
+              "units": 0.85
+            },
+            {
+              "key": "access_point",
+              "label": "Access point",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "boiler_identity",
+          "type": "fields",
+          "label": "Boiler, burner, and fuel identity",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Asset or boiler ID",
+              "units": 1.05
+            },
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 1.0
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 0.8
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.0
+            },
+            {
+              "key": "burner_id",
+              "label": "Burner ID",
+              "units": 0.8
+            },
+            {
+              "key": "fuel_type",
+              "label": "Fuel type",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "cleaning_team",
+          "type": "fields",
+          "label": "Assigned cleaning team and facility contact",
+          "fields": [
+            {
+              "key": "lead_technician",
+              "label": "Lead technician",
+              "units": 1.15
+            },
+            {
+              "key": "service_company",
+              "label": "Service company",
+              "units": 1.2
+            },
+            {
+              "key": "additional_crew",
+              "label": "Additional crew",
+              "units": 1.1
+            },
+            {
+              "key": "facility_contact",
+              "label": "Facility contact",
+              "units": 1.15
+            },
+            {
+              "key": "contact_phone",
+              "label": "Contact phone",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "authorized_scope",
+          "type": "textarea",
+          "label": "Authorized cleaning scope, exclusions, and expected result",
+          "height": 66,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Authorized cleaning scope, exclusions, and expected result",
+              "multiline": true
+            }
+          ],
+          "guidance": "Identify fireside, waterside, burner-area, exterior, and work-area boundaries."
+        }
+      ]
+    },
+    {
+      "key": "cleaning_controls",
+      "title": "Authorization, isolation, and protection",
+      "guidance": "Confirm applicable site requirements and safe conditions before disturbing deposits or opening equipment.",
+      "blocks": [
+        {
+          "key": "authorization",
+          "type": "fields",
+          "label": "Authorization and operating constraints",
+          "fields": [
+            {
+              "key": "shutdown_approved_by",
+              "label": "Shutdown approved by",
+              "units": 1.25
+            },
+            {
+              "key": "shutdown_window",
+              "label": "Shutdown window",
+              "units": 1.0
+            },
+            {
+              "key": "cooldown_status",
+              "label": "Cooldown status",
+              "units": 0.95
+            },
+            {
+              "key": "ventilation_status",
+              "label": "Ventilation status",
+              "units": 1.1
+            },
+            {
+              "key": "access_status",
+              "label": "Access status",
+              "units": 0.9
+            },
+            {
+              "key": "permit_reference",
+              "label": "Permit or policy ref",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "hazard_review",
+          "type": "checklist",
+          "label": "Pre-work hazard and requirement review",
+          "items": [
+            "Qualified cleaning scope confirmed",
+            "Fuel and combustion hazards assessed",
+            "Electrical sources identified",
+            "Pressure and stored energy assessed",
+            "Temperature and cooldown status assessed",
+            "Steam, water, and condensate hazards assessed",
+            "Soot, ash, and dust exposure assessed",
+            "Chemical and scale exposure assessed",
+            "Ventilation and respiratory needs reviewed",
+            "Required PPE and tools confirmed",
+            "Confined-space status reviewed if applicable",
+            "Nearby occupants and processes considered",
+            "Waste and discharge requirements reviewed",
+            "Stop-work triggers communicated"
+          ]
+        },
+        {
+          "key": "work_area_protection",
+          "type": "checklist",
+          "label": "Work-area and equipment protections installed",
+          "items": [
+            "Combustion-air openings protected as needed",
+            "Controls and electrical areas protected",
+            "Nearby equipment and surfaces protected",
+            "Drains and discharge paths controlled",
+            "Dust or soot containment established",
+            "Removed panels and fasteners controlled",
+            "Tools and hoses routed safely",
+            "Fire response resources available",
+            "Chemical containers labeled and controlled",
+            "Access boundary and warning signs installed"
+          ]
+        },
+        {
+          "key": "isolation_record",
+          "type": "fields",
+          "label": "Energy isolation and safe-state verification",
+          "fields": [
+            {
+              "key": "fuel_isolation",
+              "label": "Fuel isolation",
+              "units": 1.0
+            },
+            {
+              "key": "electrical_isolation",
+              "label": "Electrical isolation",
+              "units": 1.2
+            },
+            {
+              "key": "water_steam_isolation",
+              "label": "Water or steam isolation",
+              "units": 1.3
+            },
+            {
+              "key": "lock_tag",
+              "label": "Lock or tag reference",
+              "units": 1.2
+            },
+            {
+              "key": "pressure_temp_state",
+              "label": "Pressure and temp state",
+              "units": 1.3
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "cleaning_boundary",
+          "type": "notice",
+          "label": "Qualified-work and applicable-requirements notice",
+          "guidance": "This checklist records completed cleaning; it is not a boiler isolation, opening, chemical cleaning, combustion adjustment, leak-test, or startup procedure. Use qualified personnel and approved methods, and confirm applicable code, site policy, environmental requirements, manufacturer instructions, and professional review."
+        },
+        {
+          "key": "control_exception",
+          "type": "textarea",
+          "label": "Unverified control, changed condition, and stop-work escalation",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unverified control, changed condition, and stop-work escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "preclean_condition",
+      "title": "Pre-clean condition, readings, and evidence",
+      "guidance": "Capture condition before disturbance so cleaning results and newly discovered defects can be separated.",
+      "blocks": [
+        {
+          "key": "arrival_status",
+          "type": "fields",
+          "label": "Arrival and baseline operating status",
+          "fields": [
+            {
+              "key": "arrival_state",
+              "label": "Boiler state on arrival",
+              "units": 1.25
+            },
+            {
+              "key": "control_mode",
+              "label": "Control mode",
+              "units": 0.9
+            },
+            {
+              "key": "active_alarm",
+              "label": "Active alarm or code",
+              "units": 1.1
+            },
+            {
+              "key": "pressure_state",
+              "label": "Pressure state",
+              "units": 0.95
+            },
+            {
+              "key": "temperature_state",
+              "label": "Temperature state",
+              "units": 1.05
+            },
+            {
+              "key": "odor_observed",
+              "label": "Odor observed",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "preclean_visual",
+          "type": "checklist",
+          "label": "Pre-clean visual condition documented",
+          "items": [
+            "Boiler exterior and access panels",
+            "Burner housing and ignition area",
+            "Fireside surfaces where accessible",
+            "Refractory and seals where accessible",
+            "Soot, ash, and deposit pattern",
+            "Signs of flame impingement or overheating",
+            "Venting and breeching condition",
+            "Waterside scale where accessible",
+            "Leak, corrosion, and staining condition",
+            "Gauge glass or level indication",
+            "Wiring, controls, and sensors",
+            "Work-area housekeeping condition"
+          ]
+        },
+        {
+          "key": "preclean_evidence",
+          "type": "table",
+          "label": "Pre-clean photo and evidence index",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Photo or file ID",
+              "units": 0.9
+            },
+            {
+              "key": "component",
+              "label": "Component or view",
+              "units": 1.15
+            },
+            {
+              "key": "condition",
+              "label": "Condition shown",
+              "units": 1.35
+            },
+            {
+              "key": "captured_by",
+              "label": "Captured by",
+              "units": 0.95
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "baseline_findings",
+          "type": "textarea",
+          "label": "Baseline findings, contamination pattern, and inspection limits",
+          "height": 70,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Baseline findings, contamination pattern, and inspection limits",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "fireside_cleaning",
+      "title": "Fireside, burner-area, and vent cleaning",
+      "guidance": "Record completed tasks and actual methods; a checked item means work was performed and verified.",
+      "blocks": [
+        {
+          "key": "debris_preparation",
+          "type": "checklist",
+          "label": "Dry debris removal and preparation",
+          "items": [
+            "Loose soot or ash captured before disturbance",
+            "Burner and control areas protected",
+            "Accessible surfaces vacuumed or brushed",
+            "Debris prevented from entering controls",
+            "Removed deposits contained and labeled",
+            "Fragile refractory areas identified",
+            "Unexpected wet deposits documented",
+            "Airborne dust controls maintained",
+            "Nearby intakes protected where needed",
+            "Pre-clean evidence preserved"
+          ]
+        },
+        {
+          "key": "heat_transfer_cleaning",
+          "type": "checklist",
+          "label": "Fireside heat-transfer surface cleaning",
+          "items": [
+            "Accessible tubes or passages cleaned",
+            "Cleaning direction and method recorded",
+            "Tube, fin, or surface damage avoided",
+            "Deposit thickness or severity documented",
+            "Scale, soot, or residue result recorded",
+            "Restricted passages escalated",
+            "Corrosion or erosion condition documented",
+            "Refractory condition rechecked",
+            "No tool or debris left in passages",
+            "Post-clean evidence captured"
+          ]
+        },
+        {
+          "key": "burner_vent_cleaning",
+          "type": "checklist",
+          "label": "Burner area, combustion air, and vent path",
+          "items": [
+            "Burner exterior cleaned as authorized",
+            "Ignition and sensor areas left undamaged",
+            "Blower and accessible air path cleaned",
+            "Combustion-air openings unobstructed",
+            "Accessible breeching surfaces cleaned",
+            "Draft components left in approved condition",
+            "Condensate path kept clear where applicable",
+            "Fuel components protected from contamination",
+            "Control settings left unchanged unless approved",
+            "Abnormal deposit pattern escalated"
+          ]
+        },
+        {
+          "key": "fireside_execution",
+          "type": "table",
+          "label": "Fireside cleaning method and result by area",
+          "columns": [
+            {
+              "key": "area",
+              "label": "Component or area",
+              "units": 1.15
+            },
+            {
+              "key": "method",
+              "label": "Actual method",
+              "units": 1.15
+            },
+            {
+              "key": "tool_product",
+              "label": "Tool or product ref",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.8
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.85
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "fireside_exception",
+          "type": "textarea",
+          "label": "Damage, stopped work, changed method, and escalation",
+          "height": 60,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Damage, stopped work, changed method, and escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "waterside_materials",
+      "title": "Waterside cleaning, materials, and waste",
+      "guidance": "Create a traceable record of authorized waterside work and every introduced or removed material.",
+      "blocks": [
+        {
+          "key": "waterside_work",
+          "type": "checklist",
+          "label": "Authorized waterside cleaning and inspection",
+          "items": [
+            "Waterside access scope confirmed",
+            "Pressure and temperature state verified",
+            "Water or steam boundaries documented",
+            "Accessible deposits documented before cleaning",
+            "Approved cleaning method reference recorded",
+            "Chemical compatibility review referenced",
+            "Exposure and ventilation controls maintained",
+            "Rinse or recovery path controlled",
+            "Accessible surfaces checked after cleaning",
+            "Scale or corrosion finding documented",
+            "Openings and closures protected from damage",
+            "Unexpected condition escalated"
+          ]
+        },
+        {
+          "key": "water_treatment_control",
+          "type": "fields",
+          "label": "Water-treatment and discharge control",
+          "fields": [
+            {
+              "key": "treatment_provider",
+              "label": "Treatment provider",
+              "units": 1.2
+            },
+            {
+              "key": "method_reference",
+              "label": "Method reference",
+              "units": 1.1
+            },
+            {
+              "key": "water_source",
+              "label": "Water source",
+              "units": 0.9
+            },
+            {
+              "key": "estimated_volume",
+              "label": "Estimated volume",
+              "units": 1.05
+            },
+            {
+              "key": "recovery_container",
+              "label": "Recovery container ID",
+              "units": 1.3
+            },
+            {
+              "key": "discharge_destination",
+              "label": "Approved destination",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "products_used",
+          "type": "table",
+          "label": "Cleaning product and treatment log",
+          "columns": [
+            {
+              "key": "product",
+              "label": "Product name",
+              "units": 1.15
+            },
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 1.0
+            },
+            {
+              "key": "lot_reference",
+              "label": "Lot or reference",
+              "units": 1.05
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "used_on",
+              "label": "Component used on",
+              "units": 1.2
+            },
+            {
+              "key": "handled_by",
+              "label": "Handled by",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "waste_disposition",
+          "type": "table",
+          "label": "Recovered material and waste disposition",
+          "columns": [
+            {
+              "key": "material",
+              "label": "Waste or recovered material",
+              "units": 1.4
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.75
+            },
+            {
+              "key": "container",
+              "label": "Container ID",
+              "units": 0.9
+            },
+            {
+              "key": "destination",
+              "label": "Disposition or destination",
+              "units": 1.35
+            },
+            {
+              "key": "handled_by",
+              "label": "Handled by",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "material_exception",
+          "type": "textarea",
+          "label": "Spill, release, disposal issue, or unapproved material",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Spill, release, disposal issue, or unapproved material",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "postclean_verification",
+      "title": "Post-clean verification and defect disposition",
+      "guidance": "Separate cleaning completion from repair needs and obtain decisions for unresolved conditions.",
+      "blocks": [
+        {
+          "key": "postclean_visual",
+          "type": "checklist",
+          "label": "Post-clean visual and condition verification",
+          "items": [
+            "Fireside surfaces visibly clean where accessible",
+            "Burner and ignition areas clean and dry",
+            "Combustion-air path unobstructed",
+            "Accessible vent path clear",
+            "Refractory and seals remain serviceable",
+            "No cleaning tool or debris remains",
+            "Waterside result documented where in scope",
+            "Openings, plugs, and closures accounted for",
+            "Controls and wiring free of residue",
+            "No new leak, crack, or damage observed",
+            "Work area and nearby equipment clean",
+            "Before-and-after evidence indexed",
+            "Uncleaned or inaccessible areas documented",
+            "Repair needs routed to an accountable owner"
+          ]
+        },
+        {
+          "key": "postclean_readings",
+          "type": "table",
+          "label": "Post-clean operating or verification readings",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter or check",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.8
+            },
+            {
+              "key": "criterion",
+              "label": "Acceptance criterion",
+              "units": 1.2
+            },
+            {
+              "key": "conditions",
+              "label": "Conditions",
+              "units": 0.9
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            }
+          ],
+          "rows": 4,
+          "guidance": "Record only measurements authorized under the work scope and qualified procedure."
+        },
+        {
+          "key": "defect_log",
+          "type": "table",
+          "label": "Defect, damage, or unresolved condition log",
+          "columns": [
+            {
+              "key": "reference",
+              "label": "Reference",
+              "units": 0.7
+            },
+            {
+              "key": "condition",
+              "label": "Component and condition",
+              "units": 1.35
+            },
+            {
+              "key": "risk",
+              "label": "Risk or impact",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Immediate action",
+              "units": 1.05
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.75
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "cleaning_outcome",
+          "type": "fields",
+          "label": "Cleaning outcome and repair decision",
+          "fields": [
+            {
+              "key": "overall_result",
+              "label": "Overall result",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select result",
+                "Acceptable",
+                "Incomplete",
+                "Repair required",
+                "Qualified review required"
+              ]
+            },
+            {
+              "key": "repair_request",
+              "label": "Repair request",
+              "units": 1.0
+            },
+            {
+              "key": "decision_by",
+              "label": "Decision by",
+              "units": 0.9
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision date and time",
+              "units": 1.25
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "verification_limits",
+          "type": "textarea",
+          "label": "Unresolved contamination, inaccessible area, and risk",
+          "height": 56,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unresolved contamination, inaccessible area, and risk",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "cleaning_closeout",
+      "title": "Restoration, return to service, and closeout",
+      "guidance": "Restore deliberately, confirm the area is protected, and hand off open actions before completion.",
+      "blocks": [
+        {
+          "key": "restoration_review",
+          "type": "checklist",
+          "label": "Mechanical, control, and site restoration",
+          "items": [
+            "Access covers, panels, and closures restored",
+            "Gaskets and seals left in approved condition",
+            "Burner and ignition components restored",
+            "Sensors and wiring restored and dry",
+            "Fuel components free of cleaning debris",
+            "Water and pressure boundaries documented",
+            "Drains and discharge paths left authorized",
+            "Combustion-air and vent paths unobstructed",
+            "Isolation cleared only by authorized personnel",
+            "Control settings left approved",
+            "Tools, waste, and containment removed",
+            "Boiler room clean and access restored",
+            "Facility contact briefed",
+            "Open actions linked to related work"
+          ]
+        },
+        {
+          "key": "return_authorization",
+          "type": "fields",
+          "label": "Return-to-service authorization",
+          "fields": [
+            {
+              "key": "operating_disposition",
+              "label": "Operating disposition",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Select status",
+                "Normal service",
+                "Restricted service",
+                "Standby only",
+                "Removed from service"
+              ]
+            },
+            {
+              "key": "restart_time",
+              "label": "Restart time",
+              "units": 0.8
+            },
+            {
+              "key": "observed_run",
+              "label": "Observed run minutes",
+              "units": 1.15
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization time",
+              "units": 1.15
+            },
+            {
+              "key": "monitoring_owner",
+              "label": "Monitoring owner",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "facility_handoff",
+          "type": "fields",
+          "label": "Facility handoff and recurring schedule",
+          "fields": [
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 1.0
+            },
+            {
+              "key": "handoff_method",
+              "label": "Handoff method",
+              "units": 1.05
+            },
+            {
+              "key": "handoff_time",
+              "label": "Handoff date and time",
+              "units": 1.3
+            },
+            {
+              "key": "next_cleaning_due",
+              "label": "Next cleaning due",
+              "units": 1.15
+            },
+            {
+              "key": "next_service_basis",
+              "label": "Next service basis",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "closeout_summary",
+          "type": "textarea",
+          "label": "Closeout summary, residual risk, and final outcome",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Closeout summary, residual risk, and final outcome",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "cleaning_approval",
+          "type": "signatures",
+          "label": "Cleaning completion, review, and acceptance",
+          "fields": [
+            {
+              "key": "lead_technician",
+              "label": "Lead technician or signature",
+              "units": 1.4
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "facility_reviewer",
+              "label": "Facility acceptance",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -38,6 +38,7 @@ jobs:
       ci_meta: ${{ steps.filter.outputs.ci_meta }}
       frontend_lint: ${{ steps.filter.outputs.frontend_lint }}
       frontend_lint_files: ${{ steps.filter.outputs.frontend_lint_files }}
+      form_catalog_factory: ${{ steps.filter.outputs.form_catalog_factory }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -162,6 +163,72 @@ jobs:
               - 'frontend/src/**/*.tsx'
               - 'frontend/src/**/*.mjs'
               - 'frontend/src/**/*.cjs'
+            form_catalog_factory:
+              - 'scripts/form_catalog_factory/**'
+              - 'scripts/validate-form-catalog-release.py'
+              - 'scripts/deploy-form-catalog-release.sh'
+              - 'scripts/deploy-form-catalog-assets.sh'
+              - 'scripts/deploy-frontend.sh'
+              - 'scripts/build-form-catalog-index.mjs'
+              - 'frontend/src/components/pages/FormCatalogFormPage.tsx'
+              - 'frontend/test/unit/test_public_route_server.test.tsx'
+              - 'form_catalog_specs/**'
+              - 'form_catalog_releases/**'
+              - 'backend/test/unit/scripts/test_form_catalog_release_foundation.py'
+              - '.github/workflows/controlled-deploy.yml'
+              - '.github/workflows/hybrid-qa.yml'
+              - 'test/docs/form-catalog-release-runbook.md'
+
+  form_catalog_qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs:
+      - changes
+    if: ${{ needs.changes.outputs.form_catalog_factory == 'true' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+
+      - name: Install PDF runtime and Python dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes poppler-utils
+          python -m venv backend/.venv
+          backend/.venv/bin/pip install --upgrade pip
+          backend/.venv/bin/pip install -r backend/requirements.txt -r backend/requirements-dev.txt
+
+      - name: Run form factory and immutable release tests
+        run: |
+          set -euo pipefail
+          backend/.venv/bin/python -m pytest -q scripts/form_catalog_factory/tests
+          backend/.venv/bin/python -m pytest -q backend/test/unit/scripts/test_form_catalog_release_foundation.py
+
+      - name: Validate tracked form specifications
+        run: |
+          set -euo pipefail
+          backend/.venv/bin/python -m scripts.form_catalog_factory validate-spec form_catalog_specs/candidates
+          backend/.venv/bin/python -m scripts.form_catalog_factory qa-spec form_catalog_specs/candidates
+
+      - name: Validate release script syntax
+        run: |
+          set -euo pipefail
+          bash -n scripts/deploy-form-catalog-release.sh
+          bash -n scripts/deploy-form-catalog-assets.sh
+          backend/.venv/bin/python -m py_compile \
+            scripts/validate-form-catalog-release.py \
+            scripts/form_catalog_factory/*.py
+          node --check scripts/build-form-catalog-index.mjs
 
   ci_meta:
     runs-on: ubuntu-latest

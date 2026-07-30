@@ -1,0 +1,614 @@
+{
+  "schema_version": 1,
+  "catalog_id": "manufacturing_quality/dmq_1412__first_article_audit_checklist_form",
+  "source_section": "manufacturing_quality",
+  "source_filename": "dmq_1412__first_article_audit_checklist_form.pdf",
+  "slug": "first-article-audit-checklist-form",
+  "title": "First Article Audit Checklist Form",
+  "subtitle": "Set the first article audit criteria and sample, test objective evidence, write precise findings, assign responses, verify follow-up, and close the audit.",
+  "description": "An evidence-led first article audit checklist form for evaluating whether the first article build and inspection is implemented and maintained, with explicit criteria, traceable samples, conformity evidence, requirement-based findings, response ownership, and verification.",
+  "use_case": "Use for a scheduled, follow-up, triggered, or layered audit of the first article build and inspection when conclusions must remain bounded to a documented population and evidence sample.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "audit_assignment",
+      "title": "First Article audit assignment and scope",
+      "guidance": "Define the objective, criteria, population, auditor, independence, and reporting route.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "first_article_record",
+              "label": "First article record number",
+              "units": 0.9
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.65
+            },
+            {
+              "key": "work_order",
+              "label": "Work order or job",
+              "units": 0.75
+            },
+            {
+              "key": "part_number",
+              "label": "Part number",
+              "units": 0.8
+            },
+            {
+              "key": "part_name",
+              "label": "Part name",
+              "units": 1.15
+            },
+            {
+              "key": "part_revision",
+              "label": "Part revision",
+              "units": 0.6
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "First Production-Representative Article identity",
+          "fields": [
+            {
+              "key": "article_serial_lot",
+              "label": "Article serial or lot",
+              "units": 0.85
+            },
+            {
+              "key": "drawing_revision",
+              "label": "Drawing or model revision",
+              "units": 0.85
+            },
+            {
+              "key": "manufacturing_site",
+              "label": "Manufacturing site",
+              "units": 0.9
+            },
+            {
+              "key": "line_cell",
+              "label": "Line or cell",
+              "units": 0.65
+            },
+            {
+              "key": "machine_tooling",
+              "label": "Machine, fixture, and tooling IDs",
+              "units": 1.25
+            },
+            {
+              "key": "customer_reference",
+              "label": "Customer or contract reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "audit_control",
+          "type": "fields",
+          "label": "Audit control",
+          "fields": [
+            {
+              "key": "audit_number",
+              "label": "Audit number",
+              "units": 0.75
+            },
+            {
+              "key": "audit_date",
+              "label": "Audit date",
+              "units": 0.65
+            },
+            {
+              "key": "lead_auditor",
+              "label": "Lead auditor",
+              "units": 0.8
+            },
+            {
+              "key": "process_owner",
+              "label": "Process owner",
+              "units": 0.8
+            },
+            {
+              "key": "audit_type",
+              "label": "Audit type",
+              "units": 0.7,
+              "field_type": "choice",
+              "options": [
+                "Scheduled",
+                "Follow-up",
+                "Triggered",
+                "Layered review"
+              ]
+            },
+            {
+              "key": "report_due",
+              "label": "Report due date",
+              "units": 0.65
+            }
+          ]
+        },
+        {
+          "key": "audit_scope",
+          "type": "textarea",
+          "label": "Audit objective, process boundary, sites, shifts, records, exclusions, and sampling rationale",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Audit scope and sampling rationale"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "criteria_sampling",
+      "title": "Criteria, population, and evidence sampling",
+      "guidance": "Anchor observations to the current drawing, specification, purchase order, and approved process configuration and a traceable sample.",
+      "blocks": [
+        {
+          "key": "criteria_register",
+          "type": "table",
+          "label": "Audit criteria and evidence source register",
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Criterion / requirement",
+              "units": 1.25
+            },
+            {
+              "key": "revision",
+              "label": "Revision",
+              "units": 0.55
+            },
+            {
+              "key": "population",
+              "label": "Population",
+              "units": 0.85
+            },
+            {
+              "key": "sample",
+              "label": "Sample selected",
+              "units": 0.8
+            },
+            {
+              "key": "evidence_source",
+              "label": "Evidence source",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Evidence sources available for audit",
+          "items": [
+            "Ballooned drawing, model, or characteristic accountability list",
+            "Material certificate and purchased-component traceability",
+            "Special-process or outside-service certificate",
+            "Inspection report with actual variable results",
+            "Functional, fit, or performance test result",
+            "Tooling, fixture, program, and machine configuration reference",
+            "Approved deviation or engineering clarification",
+            "First article photographs, sample location, or retention reference"
+          ]
+        },
+        {
+          "key": "sampling_limitations",
+          "type": "textarea",
+          "label": "Sampling method, exclusions, missing records, access limits, and effect on assurance",
+          "fields": [
+            {
+              "key": "sampling_detail",
+              "label": "Audit sample and limitation rationale"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "audit_execution",
+      "title": "First Article control audit",
+      "guidance": "Record evidence for conformity and nonconformity; do not score from unsupported impressions.",
+      "blocks": [
+        {
+          "key": "audit_checkpoints",
+          "type": "checklist",
+          "label": "Audit checkpoints",
+          "items": [
+            "The first article trigger and required scope are documented",
+            "The inspected article matches the intended production configuration",
+            "Current design data and planning revisions are identified",
+            "All characteristics are accounted for without unexplained gaps",
+            "Actual results and evidence references support conformity decisions",
+            "Materials and special processes remain traceable to the article",
+            "Inspection equipment was suitable and current when used",
+            "Nonconformities and deviations have authorized disposition",
+            "Approval conditions are reflected in production controls",
+            "Partial or delta scope clearly identifies unchanged prior evidence",
+            "Customer or contractual approval is retained when required",
+            "A retrievable baseline supports later configuration changes"
+          ]
+        },
+        {
+          "key": "evidence_test_log",
+          "type": "table",
+          "label": "Sampled evidence and test result log",
+          "columns": [
+            {
+              "key": "sample_record",
+              "label": "Sample / record",
+              "units": 1.0
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion",
+              "units": 1.05
+            },
+            {
+              "key": "evidence_observed",
+              "label": "Evidence observed",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.65
+            },
+            {
+              "key": "record_ref",
+              "label": "Record ref.",
+              "units": 0.75
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up",
+              "units": 0.75
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "conformity_strengths",
+          "type": "textarea",
+          "label": "Effective controls, representative conforming evidence, and practice worth preserving",
+          "fields": [
+            {
+              "key": "conformity_detail",
+              "label": "Conformity evidence and effective-control summary"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "audit_findings",
+      "title": "Findings, evidence, and immediate escalation",
+      "guidance": "A finding must identify the requirement, evidence, precise gap, and affected scope.",
+      "blocks": [
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Audit finding register",
+          "columns": [
+            {
+              "key": "finding",
+              "label": "Finding / issue",
+              "units": 1.15
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement",
+              "units": 1.0
+            },
+            {
+              "key": "objective_evidence",
+              "label": "Objective evidence",
+              "units": 1.15
+            },
+            {
+              "key": "scope",
+              "label": "Affected scope",
+              "units": 0.8
+            },
+            {
+              "key": "classification",
+              "label": "Classification",
+              "units": 0.75
+            },
+            {
+              "key": "response_ref",
+              "label": "Response ref.",
+              "units": 0.65
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "finding_escalation",
+          "type": "checklist",
+          "label": "Finding and escalation controls",
+          "items": [
+            "Design, drawing, model, or specification revision conflict",
+            "Production-representative site, process, equipment, or tooling not used",
+            "Characteristic missing from the accountability record",
+            "Actual result outside requirement or tolerance",
+            "Material, component, or special-process traceability gap",
+            "Test method, gage capability, or calibration status unsuitable",
+            "Unapproved deviation, repair, rework, or configuration difference",
+            "Production started beyond an explicitly authorized limited quantity"
+          ]
+        },
+        {
+          "key": "finding_narrative",
+          "type": "textarea",
+          "label": "Finding statements, evidence trail, potential consequence, and immediate containment",
+          "fields": [
+            {
+              "key": "finding_detail",
+              "label": "Audit finding and escalation narrative"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "audit_conclusion",
+      "title": "Audit conclusion and response assignment",
+      "guidance": "Conclude only within the sampled scope and route every accepted response.",
+      "blocks": [
+        {
+          "key": "audit_boundary",
+          "type": "notice",
+          "label": "Audit conclusion boundary",
+          "guidance": "Audit evidence reflects the stated sample and time period. Qualified owners must apply the current drawing, specification, purchase order, and approved process configuration before technical, customer, safety, or regulatory decisions."
+        },
+        {
+          "key": "audit_outcome",
+          "type": "fields",
+          "label": "Audit outcome",
+          "fields": [
+            {
+              "key": "overall_result",
+              "label": "Overall result",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Conforming",
+                "Conforming with findings",
+                "Action required",
+                "Unable to conclude"
+              ]
+            },
+            {
+              "key": "finding_count",
+              "label": "Finding count",
+              "units": 0.6
+            },
+            {
+              "key": "urgent_count",
+              "label": "Urgent escalation count",
+              "units": 0.65
+            },
+            {
+              "key": "response_due",
+              "label": "Response due date",
+              "units": 0.7
+            },
+            {
+              "key": "followup_required",
+              "label": "Follow-up audit?",
+              "units": 0.7,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "To be decided"
+              ]
+            },
+            {
+              "key": "followup_owner",
+              "label": "Follow-up owner",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "response_assignment",
+          "type": "table",
+          "label": "Finding response and corrective-action assignment",
+          "columns": [
+            {
+              "key": "finding_ref",
+              "label": "Finding ref.",
+              "units": 0.65
+            },
+            {
+              "key": "response_action",
+              "label": "Response / action",
+              "units": 1.3
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "verification",
+              "label": "Verification method",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "audit_review",
+          "type": "signatures",
+          "label": "Audit acknowledgment and report review",
+          "fields": [
+            {
+              "key": "lead_auditor_signoff",
+              "label": "Lead auditor / date",
+              "units": 1.0
+            },
+            {
+              "key": "process_owner_ack",
+              "label": "Process owner acknowledgment / date",
+              "units": 1.0
+            },
+            {
+              "key": "report_reviewer",
+              "label": "Design, Manufacturing, Or Quality Approval Owner / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "audit_closeout",
+      "title": "Follow-up verification and audit closeout",
+      "guidance": "Verify accepted responses against evidence and preserve unresolved items.",
+      "blocks": [
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action and accountable handoff register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Audit outcome and routing",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limits",
+                "On hold",
+                "Rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or release date",
+              "units": 0.75
+            },
+            {
+              "key": "remaining_limits",
+              "label": "Remaining limitation reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Final decision basis, residual limitations, next action, and receiving handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome rationale and accountable handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_closeout",
+          "type": "signatures",
+          "label": "Accountable review and closeout",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Design, Manufacturing, Or Quality Approval Owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner or approver / date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not replace required technical or regulatory approval."
+        }
+      ]
+    }
+  ]
+}

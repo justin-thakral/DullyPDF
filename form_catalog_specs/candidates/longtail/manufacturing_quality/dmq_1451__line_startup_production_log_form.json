@@ -1,0 +1,663 @@
+{
+  "schema_version": 1,
+  "catalog_id": "manufacturing_quality/dmq_1451__line_startup_production_log_form",
+  "source_section": "manufacturing_quality",
+  "source_filename": "dmq_1451__line_startup_production_log_form.pdf",
+  "slug": "line-startup-production-log-form",
+  "title": "Line Startup Production Log Form",
+  "subtitle": "Control the starting state, record chronological production line clearance, setup, and controlled release activity, reconcile quantities and holds, authorize restarts, and hand off the next due check.",
+  "description": "A chronological line startup production log form for reconstructing how a line, product, work order, and startup configuration moved through readiness, execution, interruptions, measurements, quantity reconciliation, exceptions, restart decisions, and shift closeout.",
+  "use_case": "Use during active production line clearance, setup, and controlled release work when operators and reviewers need a time-ordered trace that identifies who did what, the actual result, affected range, and last known acceptable status.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_setup",
+      "title": "Line Startup log setup and control",
+      "guidance": "Establish the exact population, time window, responsible crew, and controlling instruction.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "startup_record",
+              "label": "Line startup record number",
+              "units": 0.85
+            },
+            {
+              "key": "startup_date_time",
+              "label": "Startup date and time",
+              "units": 0.8
+            },
+            {
+              "key": "line_cell",
+              "label": "Line or cell",
+              "units": 0.7
+            },
+            {
+              "key": "work_order_batch",
+              "label": "Work order or batch",
+              "units": 0.85
+            },
+            {
+              "key": "product_sku",
+              "label": "Product or SKU",
+              "units": 0.9
+            },
+            {
+              "key": "product_revision",
+              "label": "Product revision",
+              "units": 0.65
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Line, Product, Work Order, And Startup Configuration identity",
+          "fields": [
+            {
+              "key": "changeover_from",
+              "label": "Previous product or job",
+              "units": 0.95
+            },
+            {
+              "key": "planned_quantity",
+              "label": "Planned quantity",
+              "units": 0.65
+            },
+            {
+              "key": "planned_rate",
+              "label": "Planned rate",
+              "units": 0.65
+            },
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 0.55
+            },
+            {
+              "key": "line_lead",
+              "label": "Line lead",
+              "units": 0.8
+            },
+            {
+              "key": "startup_authority",
+              "label": "Startup release authority",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "log_control",
+          "type": "fields",
+          "label": "Log control and ownership",
+          "fields": [
+            {
+              "key": "log_start",
+              "label": "Log start date and time",
+              "units": 0.8
+            },
+            {
+              "key": "log_end",
+              "label": "Log end date and time",
+              "units": 0.8
+            },
+            {
+              "key": "shift_team",
+              "label": "Shift, team, or work center",
+              "units": 0.9
+            },
+            {
+              "key": "log_owner",
+              "label": "Log owner",
+              "units": 0.75
+            },
+            {
+              "key": "instruction_revision",
+              "label": "Instruction and revision",
+              "units": 1.0
+            },
+            {
+              "key": "planned_volume",
+              "label": "Planned volume or count",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "log_scope",
+          "type": "textarea",
+          "label": "Log scope, sequence boundary, starting condition, and carryover from prior work",
+          "fields": [
+            {
+              "key": "log_scope_detail",
+              "label": "Scope and starting condition"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "readiness_resources",
+      "title": "Readiness, resources, and starting status",
+      "guidance": "Confirm that the production line clearance, setup, and controlled release can begin under the current references.",
+      "blocks": [
+        {
+          "key": "startup_checkpoints",
+          "type": "checklist",
+          "label": "Starting-condition checkpoints",
+          "items": [
+            "Previous product, material, labels, documents, and waste are cleared from the line",
+            "Work order, product, revision, recipe, program, and setup instruction agree",
+            "Required cleaning, sanitation, maintenance, and changeover records are complete",
+            "Materials, components, labels, and packaging match the job and status",
+            "Tooling, fixtures, settings, sensors, and inspection devices are identified",
+            "Machine guards, interlocks, emergency stops, and required protective controls were checked under site procedure",
+            "Energy isolation is removed only by authorized personnel under the site-specific procedure",
+            "Utilities, environment, temperature, pressure, or air supply are within startup limits",
+            "First-piece or trial-run samples meet specified characteristics",
+            "Scrap, rejects, and startup output remain segregated until release"
+          ]
+        },
+        {
+          "key": "resource_status",
+          "type": "table",
+          "label": "Resource, material, equipment, and evidence readiness",
+          "columns": [
+            {
+              "key": "resource",
+              "label": "Resource / item",
+              "units": 1.1
+            },
+            {
+              "key": "identifier",
+              "label": "ID / lot / revision",
+              "units": 1.0
+            },
+            {
+              "key": "required_status",
+              "label": "Required status",
+              "units": 0.85
+            },
+            {
+              "key": "actual_status",
+              "label": "Actual status",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.75
+            },
+            {
+              "key": "exception_ref",
+              "label": "Exception ref.",
+              "units": 0.7
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "start_authorization",
+          "type": "fields",
+          "label": "Start authorization",
+          "fields": [
+            {
+              "key": "starting_status",
+              "label": "Starting status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Ready",
+                "Ready with limits",
+                "On hold",
+                "Not ready"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.85
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization time",
+              "units": 0.75
+            },
+            {
+              "key": "starting_reference",
+              "label": "Starting evidence reference",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_execution",
+      "title": "Line Startup chronological execution log",
+      "guidance": "Record work as it occurs so timing, responsible person, evidence, and status remain reconstructable.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Chronological event and decision log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.75
+            },
+            {
+              "key": "stage_event",
+              "label": "Stage / event",
+              "units": 1.2
+            },
+            {
+              "key": "item_range",
+              "label": "Item / range",
+              "units": 0.85
+            },
+            {
+              "key": "actual_result",
+              "label": "Actual result",
+              "units": 1.0
+            },
+            {
+              "key": "performed_by",
+              "label": "Performed by",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status / ref.",
+              "units": 0.75
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "process_results",
+          "type": "table",
+          "label": "Startup settings and first-run verification",
+          "columns": [
+            {
+              "key": "parameter_check",
+              "label": "Parameter / check",
+              "units": 1.05
+            },
+            {
+              "key": "target_limit",
+              "label": "Target / limit",
+              "units": 0.9
+            },
+            {
+              "key": "actual_result",
+              "label": "Actual result",
+              "units": 0.75
+            },
+            {
+              "key": "source_device",
+              "label": "Source / device",
+              "units": 0.9
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Ready?",
+              "units": 0.55
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "execution_stages",
+          "type": "checklist",
+          "label": "Required execution stages",
+          "items": [
+            "Clear prior product, materials, labels, documents, and waste",
+            "Verify current work order, product, recipe, program, and setup revision",
+            "Confirm cleaning, maintenance, utilities, safety controls, and equipment readiness",
+            "Stage and verify approved materials, tooling, labels, and inspection devices",
+            "Set process parameters and record independently checked values",
+            "Run controlled first-piece or trial output and capture acceptance evidence",
+            "Resolve alarms, defects, deviations, or unresolved readiness conditions",
+            "Authorize startup and hand off released settings and next check to the crew"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "quantity_holds",
+      "title": "Quantity, status, interruption, and hold control",
+      "guidance": "Reconcile output and preserve every interruption, held range, and restart decision.",
+      "blocks": [
+        {
+          "key": "quantity_reconciliation",
+          "type": "table",
+          "label": "Quantity and status reconciliation",
+          "columns": [
+            {
+              "key": "stage",
+              "label": "Stage / period",
+              "units": 1.0
+            },
+            {
+              "key": "input_qty",
+              "label": "Input qty.",
+              "units": 0.65
+            },
+            {
+              "key": "accepted_qty",
+              "label": "Accepted qty.",
+              "units": 0.7
+            },
+            {
+              "key": "rework_qty",
+              "label": "Rework qty.",
+              "units": 0.65
+            },
+            {
+              "key": "reject_qty",
+              "label": "Reject qty.",
+              "units": 0.65
+            },
+            {
+              "key": "balance_note",
+              "label": "Balance / note",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "interruption_hold_log",
+          "type": "table",
+          "label": "Interruption, hold, affected range, and restart log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.55
+            },
+            {
+              "key": "condition",
+              "label": "Condition / reason",
+              "units": 1.15
+            },
+            {
+              "key": "affected_range",
+              "label": "Affected range",
+              "units": 0.9
+            },
+            {
+              "key": "containment",
+              "label": "Containment",
+              "units": 0.9
+            },
+            {
+              "key": "restart_authority",
+              "label": "Restart authority",
+              "units": 0.85
+            },
+            {
+              "key": "restart_time",
+              "label": "Restart time",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "unreconciled_detail",
+          "type": "textarea",
+          "label": "Unreconciled quantity, data gap, interruption effect, and escalation",
+          "fields": [
+            {
+              "key": "unreconciled_narrative",
+              "label": "Reconciliation and interruption narrative"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "exceptions_response",
+      "title": "Exceptions, response, and controlled restart",
+      "guidance": "Capture the original exception, containment boundary, decision owner, and final disposition.",
+      "blocks": [
+        {
+          "key": "log_exception_types",
+          "type": "checklist",
+          "label": "Line Startup exceptions requiring action",
+          "items": [
+            "Prior product, material, label, document, or waste remains on the line",
+            "Work order, product, recipe, program, or setup revision mismatch",
+            "Cleaning, maintenance, safety control, or utility readiness incomplete",
+            "Material, tooling, label, or measurement device status mismatch",
+            "Parameter outside startup limit or independent check missing",
+            "First-piece, trial-run, function, or workmanship result fails",
+            "Alarm, leak, damage, unusual condition, or unresolved maintenance issue",
+            "Startup proceeds without documented authority or crew handoff"
+          ],
+          "guidance": "Select every applicable exception and preserve the original observation."
+        },
+        {
+          "key": "log_exception_log",
+          "type": "table",
+          "label": "Exception, containment, ownership, and disposition log",
+          "columns": [
+            {
+              "key": "exception_evidence",
+              "label": "Exception / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due_point",
+              "label": "Due date / point",
+              "units": 0.7
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_exception_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, containment boundary, and unresolved risk",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception narrative and affected-scope rationale"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "shift_closeout",
+      "title": "Shift or sequence handoff and log closeout",
+      "guidance": "Identify the last known status, the next required check, and every open action.",
+      "blocks": [
+        {
+          "key": "handoff_point",
+          "type": "fields",
+          "label": "Handoff status",
+          "fields": [
+            {
+              "key": "last_completed_stage",
+              "label": "Last completed stage",
+              "units": 1.0
+            },
+            {
+              "key": "last_accepted_item",
+              "label": "Last accepted item or time",
+              "units": 0.9
+            },
+            {
+              "key": "next_required_check",
+              "label": "Next required check",
+              "units": 1.0
+            },
+            {
+              "key": "next_check_due",
+              "label": "Next check due",
+              "units": 0.7
+            },
+            {
+              "key": "held_location",
+              "label": "Held item location",
+              "units": 0.85
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action and accountable handoff register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Production log outcome and routing",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limits",
+                "On hold",
+                "Rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or release date",
+              "units": 0.75
+            },
+            {
+              "key": "remaining_limits",
+              "label": "Remaining limitation reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Final decision basis, residual limitations, next action, and receiving handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome rationale and accountable handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_closeout",
+          "type": "signatures",
+          "label": "Accountable review and closeout",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Production, Maintenance, Safety, Or Quality Release Owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner or approver / date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not replace required technical or regulatory approval."
+        }
+      ]
+    }
+  ]
+}

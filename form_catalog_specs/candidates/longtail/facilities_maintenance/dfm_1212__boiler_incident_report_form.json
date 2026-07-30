@@ -1,0 +1,961 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1212__boiler_incident_report_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1212__boiler_incident_report_form.pdf",
+  "slug": "boiler-incident-report-form",
+  "title": "Boiler Incident Response and Investigation Report",
+  "subtitle": "Document immediate response, boiler condition, evidence, notifications, investigation, corrective action, and closure.",
+  "description": "A boiler-specific incident record for preserving factual evidence about injury, fire, fuel, combustion, pressure, steam, water, chemical, venting, control, equipment, and service events through accountable resolution.",
+  "use_case": "Use after a boiler incident or near miss when the organization needs one traceable record of response, affected people and operations, scene evidence, notifications, cause analysis, corrective action, return-to-service authority, and closure.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Incident, site, boiler, and reporter identity",
+      "guidance": "Establish when and where the event occurred and preserve the reporter's direct knowledge.",
+      "blocks": [
+        {
+          "key": "incident_reference",
+          "type": "fields",
+          "label": "Incident reference and timing",
+          "fields": [
+            {
+              "key": "incident_number",
+              "label": "Incident number",
+              "units": 1.1
+            },
+            {
+              "key": "incident_date",
+              "label": "Incident date",
+              "units": 0.85
+            },
+            {
+              "key": "incident_time",
+              "label": "Incident time",
+              "units": 0.75
+            },
+            {
+              "key": "discovery_time",
+              "label": "Discovery date and time",
+              "units": 1.35
+            },
+            {
+              "key": "report_time",
+              "label": "Report date and time",
+              "units": 1.25
+            },
+            {
+              "key": "initial_severity",
+              "label": "Initial severity",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "reporter_contact",
+          "type": "fields",
+          "label": "Reporter and initial contact",
+          "fields": [
+            {
+              "key": "reporter_name",
+              "label": "Reporter name",
+              "units": 1.1
+            },
+            {
+              "key": "role_company",
+              "label": "Role or company",
+              "units": 1.2
+            },
+            {
+              "key": "phone",
+              "label": "Phone",
+              "units": 0.8
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.25
+            },
+            {
+              "key": "direct_observer",
+              "label": "Direct observer",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Yes",
+                "No",
+                "Not applicable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "site_asset",
+          "type": "fields",
+          "label": "Facility and affected boiler",
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility name",
+              "units": 1.2
+            },
+            {
+              "key": "street_address",
+              "label": "Street address",
+              "units": 1.4
+            },
+            {
+              "key": "boiler_room",
+              "label": "Boiler room",
+              "units": 0.85
+            },
+            {
+              "key": "asset_id",
+              "label": "Asset or boiler ID",
+              "units": 1.05
+            },
+            {
+              "key": "area_served",
+              "label": "Area served",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "event_context",
+          "type": "fields",
+          "label": "Operating conditions at the event",
+          "fields": [
+            {
+              "key": "boiler_state",
+              "label": "Boiler state",
+              "units": 0.9
+            },
+            {
+              "key": "fuel_in_use",
+              "label": "Fuel in use",
+              "units": 0.9
+            },
+            {
+              "key": "load_condition",
+              "label": "Load condition",
+              "units": 1.0
+            },
+            {
+              "key": "weather_ventilation",
+              "label": "Weather or ventilation",
+              "units": 1.35
+            },
+            {
+              "key": "related_work",
+              "label": "Related work or activity",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "immediate_response",
+      "title": "Event classification and immediate response",
+      "guidance": "Protect life and property first; document response after urgent actions are underway.",
+      "blocks": [
+        {
+          "key": "incident_type",
+          "type": "checklist",
+          "label": "Incident type - select all that apply",
+          "items": [
+            "Injury or medical event",
+            "Fire, smoke, or overheating",
+            "Suspected fuel or gas release",
+            "Combustion or flame event",
+            "Pressure excursion or relief discharge",
+            "Steam or hot-water release",
+            "Low-water or feedwater event",
+            "Venting, draft, or spillage event",
+            "Electrical arc, shock, or control event",
+            "Water-treatment chemical release",
+            "Equipment rupture or mechanical failure",
+            "Property or boiler-room damage",
+            "Service interruption",
+            "Near miss without damage"
+          ]
+        },
+        {
+          "key": "response_actions",
+          "type": "checklist",
+          "label": "Immediate response actions",
+          "items": [
+            "Emergency services contacted",
+            "First aid or medical response initiated",
+            "Boiler room or affected area restricted",
+            "Occupants evacuated or relocated",
+            "Boiler stopped by authorized control",
+            "Fuel source isolated by authorized person",
+            "Electrical source isolated",
+            "Water or steam source controlled",
+            "Ventilation or air monitoring arranged",
+            "Spill or discharge contained",
+            "Scene and failed components preserved",
+            "No-immediate-action decision documented",
+            "Facility leadership notified",
+            "Qualified boiler support requested"
+          ]
+        },
+        {
+          "key": "response_control",
+          "type": "fields",
+          "label": "Response and equipment-control record",
+          "fields": [
+            {
+              "key": "response_lead",
+              "label": "Response lead",
+              "units": 1.0
+            },
+            {
+              "key": "response_start",
+              "label": "Response start time",
+              "units": 1.1
+            },
+            {
+              "key": "boiler_state_after",
+              "label": "Boiler state after",
+              "units": 1.2
+            },
+            {
+              "key": "lock_tag",
+              "label": "Lock or tag reference",
+              "units": 1.15
+            },
+            {
+              "key": "dispatch_reference",
+              "label": "Dispatch or emergency ref",
+              "units": 1.35
+            },
+            {
+              "key": "scene_control_owner",
+              "label": "Scene-control owner",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "factual_account",
+          "type": "textarea",
+          "label": "Chronological factual account and actions taken",
+          "height": 82,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Chronological factual account and actions taken",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record what was seen, heard, smelled, alarmed, or reported without unsupported conclusions."
+        },
+        {
+          "key": "emergency_notice",
+          "type": "notice",
+          "label": "Emergency, medical, and reporting notice",
+          "guidance": "This report does not replace emergency calling, evacuation, medical care, fire or police reporting, fuel-release response, pressure-vessel incident rules, environmental reporting, workers' compensation reporting, insurer notice, or any applicable government filing. Obtain qualified professional review before equipment work or return to service."
+        }
+      ]
+    },
+    {
+      "key": "people_impact",
+      "title": "People, property, operations, and witnesses",
+      "guidance": "Record impact without unnecessary medical detail or unsupported conclusions.",
+      "blocks": [
+        {
+          "key": "affected_people",
+          "type": "table",
+          "label": "Affected or potentially exposed people",
+          "columns": [
+            {
+              "key": "identifier",
+              "label": "Name or identifier",
+              "units": 1.15
+            },
+            {
+              "key": "role",
+              "label": "Role and location",
+              "units": 1.1
+            },
+            {
+              "key": "effect",
+              "label": "Reported effect or exposure",
+              "units": 1.35
+            },
+            {
+              "key": "action",
+              "label": "Immediate action",
+              "units": 1.15
+            },
+            {
+              "key": "followup",
+              "label": "Follow-up reference",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "witness_log",
+          "type": "table",
+          "label": "Witness and information-source log",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Name",
+              "units": 1.0
+            },
+            {
+              "key": "contact",
+              "label": "Contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Location at event",
+              "units": 1.1
+            },
+            {
+              "key": "knowledge",
+              "label": "Direct knowledge or source",
+              "units": 1.45
+            },
+            {
+              "key": "statement",
+              "label": "Statement reference",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "operational_impact",
+          "type": "fields",
+          "label": "Property and operational impact",
+          "fields": [
+            {
+              "key": "areas_affected",
+              "label": "Areas or operations affected",
+              "units": 1.5
+            },
+            {
+              "key": "outage_duration",
+              "label": "Outage duration",
+              "units": 0.95
+            },
+            {
+              "key": "property_damage",
+              "label": "Property damage summary",
+              "units": 1.3
+            },
+            {
+              "key": "temporary_service",
+              "label": "Temporary service or control",
+              "units": 1.35
+            },
+            {
+              "key": "impact_owner",
+              "label": "Impact owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "impact_details",
+          "type": "textarea",
+          "label": "People, tenant, product, schedule, and business impact",
+          "height": 66,
+          "fields": [
+            {
+              "key": "details",
+              "label": "People, tenant, product, schedule, and business impact",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "equipment_evidence",
+      "title": "Boiler condition, readings, and evidence",
+      "guidance": "Preserve scene facts and distinguish recorded conditions from later analysis.",
+      "blocks": [
+        {
+          "key": "equipment_identity",
+          "type": "fields",
+          "label": "Boiler, burner, fuel, and control identity",
+          "fields": [
+            {
+              "key": "manufacturer",
+              "label": "Boiler manufacturer",
+              "units": 1.2
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 0.75
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.0
+            },
+            {
+              "key": "burner_id",
+              "label": "Burner ID",
+              "units": 0.8
+            },
+            {
+              "key": "fuel_type",
+              "label": "Fuel type",
+              "units": 0.8
+            },
+            {
+              "key": "control_system",
+              "label": "Control system",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "scene_evidence",
+          "type": "checklist",
+          "label": "Equipment and scene evidence documented",
+          "items": [
+            "Overall boiler-room photos",
+            "Boiler and burner nameplate photos",
+            "Failed or damaged component photos",
+            "Pressure and temperature indication photos",
+            "Water-level indication documented",
+            "Relief or discharge path documented",
+            "Fuel train and shutoff condition documented",
+            "Control panel and alarm display captured",
+            "Combustion-air and vent condition documented",
+            "Leak, residue, soot, or water path documented",
+            "Removed components retained or dispositioned",
+            "Control trend or event log preserved",
+            "Witness-provided media indexed",
+            "Service settings and overrides recorded"
+          ]
+        },
+        {
+          "key": "incident_readings",
+          "type": "table",
+          "label": "Incident-related readings and states",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter or point",
+              "units": 1.1
+            },
+            {
+              "key": "observed",
+              "label": "Observed value or state",
+              "units": 1.25
+            },
+            {
+              "key": "expected",
+              "label": "Expected or nameplate",
+              "units": 1.2
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            },
+            {
+              "key": "taken_by",
+              "label": "Taken by",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Instrument or evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "evidence_custody",
+          "type": "table",
+          "label": "Evidence custody and file log",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.8
+            },
+            {
+              "key": "description",
+              "label": "Description",
+              "units": 1.35
+            },
+            {
+              "key": "collected_by",
+              "label": "Collected by",
+              "units": 0.95
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "File or storage location",
+              "units": 1.25
+            },
+            {
+              "key": "disposition",
+              "label": "Custody or disposition",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "evidence_limits",
+          "type": "textarea",
+          "label": "Evidence gap, altered scene, missing data, or access limit",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Evidence gap, altered scene, missing data, or access limit",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "notifications_control",
+      "title": "Notifications, reporting, and work control",
+      "guidance": "Track who was notified, what obligation remains open, and who controls the boiler.",
+      "blocks": [
+        {
+          "key": "notification_log",
+          "type": "table",
+          "label": "Incident notification and reporting log",
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Person, team, or agency",
+              "units": 1.3
+            },
+            {
+              "key": "reason",
+              "label": "Reason for notice",
+              "units": 1.1
+            },
+            {
+              "key": "notified_by",
+              "label": "Notified by",
+              "units": 0.9
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            },
+            {
+              "key": "reference",
+              "label": "Reference or confirmation",
+              "units": 1.2
+            },
+            {
+              "key": "next_action",
+              "label": "Required next action",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "notification_review",
+          "type": "checklist",
+          "label": "Notification needs assessed",
+          "items": [
+            "Property or facility leadership",
+            "Safety or environmental health team",
+            "Security or emergency management",
+            "Affected department or tenant",
+            "Boiler service provider",
+            "Fuel or utility provider",
+            "Fire or emergency authority",
+            "Jurisdictional boiler authority",
+            "Insurance or risk management",
+            "Environmental or chemical specialist",
+            "Employee injury process",
+            "Legal or communications review"
+          ]
+        },
+        {
+          "key": "equipment_control",
+          "type": "fields",
+          "label": "Equipment and scene work control",
+          "fields": [
+            {
+              "key": "work_status",
+              "label": "Work status",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization time",
+              "units": 1.15
+            },
+            {
+              "key": "repair_work_order",
+              "label": "Repair work order",
+              "units": 1.1
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or case ref",
+              "units": 1.0
+            },
+            {
+              "key": "control_owner",
+              "label": "Control owner",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "reporting_exception",
+          "type": "textarea",
+          "label": "Delayed notice, conflicting direction, and escalation",
+          "height": 64,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Delayed notice, conflicting direction, and escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "investigation_actions",
+      "title": "Cause analysis and corrective action",
+      "guidance": "Test plausible causes and assign actions that address both failure and recurrence.",
+      "blocks": [
+        {
+          "key": "investigation_owner",
+          "type": "fields",
+          "label": "Investigation ownership and schedule",
+          "fields": [
+            {
+              "key": "investigation_lead",
+              "label": "Investigation lead",
+              "units": 1.2
+            },
+            {
+              "key": "boiler_technical_lead",
+              "label": "Boiler technical lead",
+              "units": 1.3
+            },
+            {
+              "key": "safety_reviewer",
+              "label": "Safety or risk reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "investigation_start",
+              "label": "Investigation start",
+              "units": 1.1
+            },
+            {
+              "key": "target_completion",
+              "label": "Target completion",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "contributing_factors",
+          "type": "checklist",
+          "label": "Potential contributing factors evaluated",
+          "items": [
+            "Pressure-boundary or mechanical failure",
+            "Fuel supply or valve-train condition",
+            "Ignition or flame safeguard condition",
+            "Combustion-air or venting condition",
+            "Electrical supply or protection",
+            "Control sequence, sensor, or software",
+            "Water level or feedwater condition",
+            "Water treatment or deposit condition",
+            "Relief or safety-device condition",
+            "Installation or design condition",
+            "Deferred maintenance",
+            "Operating condition or load",
+            "Access or work-practice issue",
+            "Communication or authorization gap"
+          ]
+        },
+        {
+          "key": "cause_analysis",
+          "type": "textarea",
+          "label": "Evidence-based cause analysis and remaining uncertainty",
+          "height": 76,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Evidence-based cause analysis and remaining uncertainty",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "corrective_action_register",
+          "type": "table",
+          "label": "Corrective and preventive action register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.35
+            },
+            {
+              "key": "type",
+              "label": "Immediate or preventive",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.75
+            },
+            {
+              "key": "verification",
+              "label": "Verification or evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "action_escalation",
+          "type": "textarea",
+          "label": "Overdue action, rejected recommendation, and residual risk",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Overdue action, rejected recommendation, and residual risk",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "incident_closeout",
+      "title": "Return to service, effectiveness, and closure",
+      "guidance": "Require explicit authorization and evidence before normal operation or final closure.",
+      "blocks": [
+        {
+          "key": "return_service_evidence",
+          "type": "checklist",
+          "label": "Return-to-service evidence reviewed",
+          "items": [
+            "Failed component repaired or replaced",
+            "Fuel and combustion condition accepted",
+            "Pressure and water boundaries checked",
+            "Water level and feed system verified",
+            "Protective controls left authorized",
+            "Relief and safety-device concerns resolved",
+            "Combustion-air and vent paths checked",
+            "Leak, odor, and abnormal-noise check recorded",
+            "Required operational evidence accepted",
+            "Area access and housekeeping restored",
+            "Temporary controls documented",
+            "Open corrective actions assigned"
+          ]
+        },
+        {
+          "key": "return_verification",
+          "type": "table",
+          "label": "Return-to-service verification results",
+          "columns": [
+            {
+              "key": "test",
+              "label": "Test or parameter",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.8
+            },
+            {
+              "key": "criterion",
+              "label": "Acceptance criterion",
+              "units": 1.2
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "equipment_disposition",
+          "type": "fields",
+          "label": "Equipment disposition and authorization",
+          "fields": [
+            {
+              "key": "return_status",
+              "label": "Return-to-service status",
+              "units": 1.35,
+              "field_type": "choice",
+              "options": [
+                "Select status",
+                "Normal operation",
+                "Restricted operation",
+                "Standby only",
+                "Removed from service"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization time",
+              "units": 1.15
+            },
+            {
+              "key": "restriction_review",
+              "label": "Restriction review",
+              "units": 1.1
+            },
+            {
+              "key": "monitoring_owner",
+              "label": "Monitoring owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "effectiveness_review",
+          "type": "textarea",
+          "label": "Effectiveness, recurrence, lessons, and residual risk",
+          "height": 62,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Effectiveness, recurrence, lessons, and residual risk",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "incident_closure",
+          "type": "fields",
+          "label": "Incident closure and record control",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select status",
+                "Closed",
+                "Closed with open actions",
+                "Monitoring",
+                "Investigation open"
+              ]
+            },
+            {
+              "key": "closure_date",
+              "label": "Closure date",
+              "units": 0.9
+            },
+            {
+              "key": "record_location",
+              "label": "Final record location",
+              "units": 1.25
+            },
+            {
+              "key": "retention_owner",
+              "label": "Record retention owner",
+              "units": 1.25
+            },
+            {
+              "key": "related_record",
+              "label": "Related claim or report",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "incident_approval",
+          "type": "signatures",
+          "label": "Incident review and closure approval",
+          "fields": [
+            {
+              "key": "investigation_lead",
+              "label": "Investigation lead",
+              "units": 1.15
+            },
+            {
+              "key": "technical_reviewer",
+              "label": "Technical reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "facility_safety",
+              "label": "Facility or safety approval",
+              "units": 1.35
+            },
+            {
+              "key": "approval_date",
+              "label": "Date",
+              "units": 0.65
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

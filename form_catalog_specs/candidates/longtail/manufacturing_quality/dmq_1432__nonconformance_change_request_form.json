@@ -1,0 +1,652 @@
+{
+  "schema_version": 1,
+  "catalog_id": "manufacturing_quality/dmq_1432__nonconformance_change_request_form",
+  "source_section": "manufacturing_quality",
+  "source_filename": "dmq_1432__nonconformance_change_request_form.pdf",
+  "slug": "nonconformance-change-request-form",
+  "title": "Nonconformance Change Request Form",
+  "subtitle": "Compare current and proposed nonconformance controls, assess affected work, predefine evidence, authorize a transition boundary, implement, and verify results.",
+  "description": "A controlled nonconformance change request form for changing the nonconforming product or process control without losing revision traceability, impact ownership, pre-implementation evidence, transition control, rollback readiness, post-change verification, or receiving handoff.",
+  "use_case": "Use before altering the specific requirement, objective evidence, and nonconformance procedure or its execution when the proposed state must be assessed, approved, introduced at a clear effective boundary, and verified before closeout.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "change_origin",
+      "title": "Nonconformance change request and ownership",
+      "guidance": "Identify the current state, proposed change, business reason, owner, and requested effective point.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "nonconformance_number",
+              "label": "Nonconformance record number",
+              "units": 0.95
+            },
+            {
+              "key": "discovered_date_time",
+              "label": "Discovery date and time",
+              "units": 0.85
+            },
+            {
+              "key": "discovered_by",
+              "label": "Discovered by",
+              "units": 0.75
+            },
+            {
+              "key": "source_area",
+              "label": "Source area or operation",
+              "units": 0.9
+            },
+            {
+              "key": "work_order",
+              "label": "Work order or order",
+              "units": 0.75
+            },
+            {
+              "key": "requirement_reference",
+              "label": "Requirement reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Suspect Product, Material, Or Process Output identity",
+          "fields": [
+            {
+              "key": "part_material",
+              "label": "Part or material number",
+              "units": 0.95
+            },
+            {
+              "key": "revision",
+              "label": "Revision",
+              "units": 0.55
+            },
+            {
+              "key": "lot_serial_range",
+              "label": "Lot or serial range",
+              "units": 0.9
+            },
+            {
+              "key": "quantity_suspect",
+              "label": "Quantity suspected",
+              "units": 0.65
+            },
+            {
+              "key": "quantity_contained",
+              "label": "Quantity contained",
+              "units": 0.7
+            },
+            {
+              "key": "containment_location",
+              "label": "Containment location",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "change_control",
+          "type": "fields",
+          "label": "Change control and routing",
+          "fields": [
+            {
+              "key": "change_request_number",
+              "label": "Change request number",
+              "units": 0.9
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "requester",
+              "label": "Requester",
+              "units": 0.75
+            },
+            {
+              "key": "change_owner",
+              "label": "Change owner",
+              "units": 0.8
+            },
+            {
+              "key": "requested_effective",
+              "label": "Requested effective date",
+              "units": 0.8
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Expedite",
+                "Emergency review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "current_state",
+          "type": "textarea",
+          "label": "Current condition, evidence, performance, and reason change is needed",
+          "fields": [
+            {
+              "key": "current_detail",
+              "label": "Current-state evidence and problem or opportunity"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "proposed_state",
+          "type": "textarea",
+          "label": "Proposed condition, exact scope, expected benefit, and explicit exclusions",
+          "fields": [
+            {
+              "key": "proposed_detail",
+              "label": "Proposed change and scope boundary"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "impact_assessment",
+      "title": "Cross-functional impact and affected population",
+      "guidance": "Assess product, process, records, people, systems, suppliers, and work already in progress.",
+      "blocks": [
+        {
+          "key": "impact_domains",
+          "type": "checklist",
+          "label": "Nonconformance change impact domains",
+          "items": [
+            "Nonconformance classification, priority, or routing threshold",
+            "Requirement and objective-evidence capture",
+            "Lot, serial, time-range, and quantity scope method",
+            "Physical segregation, labeling, and system-hold control",
+            "Disposition categories and authorization limits",
+            "Rework, repair, use-as-is, return, or scrap instructions",
+            "Supplier, customer, engineering, or regulatory notification",
+            "Reinspection, verification, and final status release",
+            "Quantity reconciliation and inventory transactions",
+            "Corrective-action trigger and recurring-issue review"
+          ]
+        },
+        {
+          "key": "impact_register",
+          "type": "table",
+          "label": "Impact, risk, owner, and required evidence register",
+          "columns": [
+            {
+              "key": "affected_area",
+              "label": "Affected area",
+              "units": 1.0
+            },
+            {
+              "key": "impact",
+              "label": "Impact / risk",
+              "units": 1.2
+            },
+            {
+              "key": "existing_population",
+              "label": "Existing work / population",
+              "units": 0.95
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "required_evidence",
+              "label": "Evidence required",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "transition_population",
+          "type": "textarea",
+          "label": "Open work, inventory, records, tools, labels, programs, and transition boundary",
+          "fields": [
+            {
+              "key": "transition_detail",
+              "label": "Affected-population and transition rationale"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "verification_plan",
+      "title": "Verification, validation, and approval plan",
+      "guidance": "Define evidence and acceptance criteria before implementing the proposed state.",
+      "blocks": [
+        {
+          "key": "verification_matrix",
+          "type": "table",
+          "label": "Change verification and acceptance matrix",
+          "columns": [
+            {
+              "key": "requirement",
+              "label": "Requirement / question",
+              "units": 1.2
+            },
+            {
+              "key": "method",
+              "label": "Method / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "sample",
+              "label": "Sample / scope",
+              "units": 0.75
+            },
+            {
+              "key": "acceptance",
+              "label": "Acceptance criterion",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "evidence_requirements",
+          "type": "checklist",
+          "label": "Supporting evidence and readiness",
+          "items": [
+            "Requirement, drawing, specification, procedure, or acceptance reference",
+            "Objective observation, measurement, test result, or photograph",
+            "Lot, serial, work order, operation, and quantity traceability",
+            "Containment tag, hold transaction, and segregated-location record",
+            "Extent review for similar product, inventory, and prior output",
+            "Disposition rationale and required approval",
+            "Rework or repair instruction and verification result",
+            "Quantity reconciliation, status release, and corrective-action link"
+          ]
+        },
+        {
+          "key": "failure_recovery",
+          "type": "textarea",
+          "label": "Failure criteria, rollback or containment method, decision authority, and recovery evidence",
+          "fields": [
+            {
+              "key": "recovery_detail",
+              "label": "Failure response and rollback plan"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "review_decision",
+      "title": "Review findings and change authorization",
+      "guidance": "Resolve exceptions and document the authority, conditions, and effective boundary.",
+      "blocks": [
+        {
+          "key": "change_exception_types",
+          "type": "checklist",
+          "label": "Nonconformance exceptions requiring action",
+          "items": [
+            "Requirement cannot be identified or conflicts across documents",
+            "Affected lot, serial, time range, or quantity cannot be bounded",
+            "Suspect product may have moved, been consumed, or shipped",
+            "Physical segregation and system status do not agree",
+            "Disposition selected without the required technical authority",
+            "Rework or repair performed without controlled instruction",
+            "Verification fails or creates a new nonconformance",
+            "Disposition quantities or final locations do not reconcile"
+          ],
+          "guidance": "Select every applicable exception and preserve the original observation."
+        },
+        {
+          "key": "change_exception_log",
+          "type": "table",
+          "label": "Exception, containment, ownership, and disposition log",
+          "columns": [
+            {
+              "key": "exception_evidence",
+              "label": "Exception / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due_point",
+              "label": "Due date / point",
+              "units": 0.7
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "change_exception_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, containment boundary, and unresolved risk",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception narrative and affected-scope rationale"
+            }
+          ],
+          "height": 54
+        },
+        {
+          "key": "approval_boundary",
+          "type": "notice",
+          "label": "Change approval boundary",
+          "guidance": "Do not implement from this request alone. Obtain approvals required by the current specific requirement, objective evidence, and nonconformance procedure, customer commitments, and applicable site procedures."
+        },
+        {
+          "key": "approval_decision",
+          "type": "fields",
+          "label": "Change decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.75,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Rejected",
+                "Returned for revision",
+                "On hold"
+              ]
+            },
+            {
+              "key": "effective_boundary",
+              "label": "Effective date, lot, serial, or work order",
+              "units": 1.3
+            },
+            {
+              "key": "approval_reference",
+              "label": "Approval record reference",
+              "units": 1.0
+            },
+            {
+              "key": "conditions_owner",
+              "label": "Condition owner",
+              "units": 0.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "implementation",
+      "title": "Implementation, communication, and transition control",
+      "guidance": "Apply only the approved scope and reconcile prior and new configurations.",
+      "blocks": [
+        {
+          "key": "implementation_plan",
+          "type": "table",
+          "label": "Implementation and transition action plan",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Implementation action",
+              "units": 1.2
+            },
+            {
+              "key": "configuration",
+              "label": "Revision / population",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "completion_evidence",
+              "label": "Completion evidence",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "implementation_checks",
+          "type": "checklist",
+          "label": "Implementation controls",
+          "items": [
+            "Approved documents and systems were released before use",
+            "Obsolete copies, settings, labels, or instructions were removed or controlled",
+            "Affected people received the change and any required training",
+            "Suppliers, customers, or downstream owners were notified when required",
+            "Open work and inventory were dispositioned at the effective boundary",
+            "First implementation evidence meets the approved acceptance criteria",
+            "Temporary controls, conditions, and monitoring are active",
+            "Rollback material, data, and authority remain available when required"
+          ]
+        },
+        {
+          "key": "implementation_result",
+          "type": "textarea",
+          "label": "Actual implementation, configuration boundary, unexpected effect, and transition reconciliation",
+          "fields": [
+            {
+              "key": "implementation_detail",
+              "label": "Implementation result and transition evidence"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "change_closeout",
+      "title": "Post-change review, handoff, and closeout",
+      "guidance": "Confirm intended results, residual limits, record updates, and receiving ownership.",
+      "blocks": [
+        {
+          "key": "post_change_results",
+          "type": "table",
+          "label": "Post-change nonconformance verification results",
+          "columns": [
+            {
+              "key": "item_sample",
+              "label": "Item / sample",
+              "units": 0.85
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement",
+              "units": 1.15
+            },
+            {
+              "key": "observed_evidence",
+              "label": "Observed evidence",
+              "units": 1.15
+            },
+            {
+              "key": "extent",
+              "label": "Extent / quantity",
+              "units": 0.7
+            },
+            {
+              "key": "record_ref",
+              "label": "Evidence ref.",
+              "units": 0.65
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action and accountable handoff register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Change outcome and routing",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limits",
+                "On hold",
+                "Rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or release date",
+              "units": 0.75
+            },
+            {
+              "key": "remaining_limits",
+              "label": "Remaining limitation reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Final decision basis, residual limitations, next action, and receiving handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome rationale and accountable handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_closeout",
+          "type": "signatures",
+          "label": "Accountable review and closeout",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorized Disposition Or Material Review Owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner or approver / date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not replace required technical or regulatory approval."
+        }
+      ]
+    }
+  ]
+}

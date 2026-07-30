@@ -1,0 +1,455 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2425__utility_service_customer_request_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2425__utility_service_customer_request_form.pdf",
+  "slug": "utility-service-customer-request-form",
+  "title": "Utility Service Customer Request Form",
+  "subtitle": "An original utility service workflow that preserves the customer's observation and routes a clear service response, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete utility service customer request form for the electric, gas, water, or thermal utility service point that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when a customer asks for service, investigation, or follow-up and staff need a traceable account of the requested outcome, symptoms, evidence, safety screen, communication, and disposition. The utility service coordinator owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "customer_routing",
+      "title": "Utility service customer request and communication routing",
+      "guidance": "Capture the customer's own observation and give the request a clear service owner.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Customer request record",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Customer request record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_contact",
+          "type": "fields",
+          "label": "Customer and communication preferences",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "contact_name",
+              "label": "Primary contact",
+              "units": 1.0
+            },
+            {
+              "key": "phone",
+              "label": "Phone",
+              "units": 0.85
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.1
+            },
+            {
+              "key": "contact_method",
+              "label": "Preferred contact",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Phone",
+                "Text",
+                "Email",
+                "Portal"
+              ]
+            },
+            {
+              "key": "contact_window",
+              "label": "Best contact window",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "requested_outcome",
+      "title": "Utility service requested outcome and customer constraints",
+      "guidance": "Describe the requested result without treating the customer's suspected cause as confirmed.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Utility service identity",
+          "fields": [
+            {
+              "key": "commodity",
+              "label": "Utility commodity",
+              "units": 0.9
+            },
+            {
+              "key": "account_id",
+              "label": "Customer account reference",
+              "units": 1.15
+            },
+            {
+              "key": "premise_id",
+              "label": "Premise or service-point ID",
+              "units": 1.15
+            },
+            {
+              "key": "meter_id",
+              "label": "Meter or device ID",
+              "units": 1.0
+            },
+            {
+              "key": "service_class",
+              "label": "Service class",
+              "units": 0.9
+            },
+            {
+              "key": "service_status",
+              "label": "Current service status",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "customer_needs",
+          "type": "checklist",
+          "label": "Customer request type",
+          "items": [
+            "Start, stop, or transfer service",
+            "No service or intermittent service",
+            "Voltage, pressure, flow, or quality concern",
+            "Meter, bill, or usage investigation",
+            "Capacity or service upgrade",
+            "Equipment relocation or protection",
+            "Access appointment or missed service",
+            "Restoration or follow-up confirmation"
+          ]
+        },
+        {
+          "key": "customer_description",
+          "type": "textarea",
+          "label": "Customer observation in their own words",
+          "fields": [
+            {
+              "key": "details",
+              "label": "What was observed, when it began, frequency, affected service, desired outcome, and prior contact",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "condition_evidence",
+      "title": "Utility service condition timeline and supplied evidence",
+      "guidance": "Preserve dates, sources, and attachments so service staff can distinguish symptoms from verified findings.",
+      "blocks": [
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "Known system baseline",
+          "fields": [
+            {
+              "key": "service_address",
+              "label": "Service address or coordinates",
+              "units": 1.25
+            },
+            {
+              "key": "system_asset",
+              "label": "Upstream system asset ref",
+              "units": 1.15
+            },
+            {
+              "key": "normal_range",
+              "label": "Normal value or status range",
+              "units": 1.05
+            },
+            {
+              "key": "last_service",
+              "label": "Last service activity ref",
+              "units": 1.1
+            },
+            {
+              "key": "access_method",
+              "label": "Access and key-control method",
+              "units": 1.1
+            },
+            {
+              "key": "critical_load",
+              "label": "Critical customer or load flag",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "symptom_timeline",
+          "type": "table",
+          "label": "Customer observation timeline",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.85
+            },
+            {
+              "key": "observation",
+              "label": "Observed condition",
+              "units": 1.25
+            },
+            {
+              "key": "service_impact",
+              "label": "Service impact",
+              "units": 1.05
+            },
+            {
+              "key": "action",
+              "label": "Action already taken",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Photo / message ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "supplied_evidence",
+          "type": "checklist",
+          "label": "Customer-supplied evidence",
+          "items": [
+            "Photograph or video reference",
+            "Bill, usage, or account reference",
+            "Display, alarm, or fault wording",
+            "Prior ticket or service record",
+            "Site plan, equipment document, or product reference",
+            "Access instruction, property permission, or appointment detail",
+            "Critical-service or accessibility information",
+            "No supporting attachment; follow-up owner assigned"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Utility service exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Gas odor, hissing, suspected leak, or atmosphere concern",
+            "Downed conductor, arcing, exposed electrical part, or burn damage",
+            "Major water release, flooding, washout, or energized equipment in water",
+            "Steam, pressure, hot surface, rotating equipment, or uncontrolled stored energy",
+            "Traffic, excavation, unstable surface, animal, or uncontrolled public exposure",
+            "Unknown valve, switch, disconnect, cross-connection, or service ownership",
+            "Critical-load impact or service interruption without operations authorization",
+            "Condition requiring emergency dispatch or work beyond assigned qualification"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "Do not use this record to approach downed conductors, investigate a gas odor, enter flooded electrical areas, operate unknown valves or switches, or bypass dispatch control. Keep people clear, use the organization's emergency route, and allow only qualified and authorized personnel to isolate, test, repair, and restore the affected utility service."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each customer request exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "Utility service decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Customer request closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Electric, gas, water, or thermal utility service point identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

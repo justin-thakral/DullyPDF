@@ -33,9 +33,11 @@ type FormCatalogEntry = {
   formNumber: string;
   title: string;
   section: string;
+  sourceSection: string;
   filename: string;
   sourceUrl: string;
   bytes: number | null;
+  sha256: string | null;
   pageCount: number | null;
   pdfUrl: string;
   thumbnailUrl: string;
@@ -409,7 +411,13 @@ const FormCatalogFormPage = ({
   return (
     <div className="form-catalog">
       {renderHeader()}
-      <main className="form-catalog__main">
+      <main
+        className="form-catalog__main"
+        data-form-catalog-source-section={entry.sourceSection}
+        data-form-catalog-filename={entry.filename}
+        data-form-catalog-pdf-url={entry.pdfUrl}
+        data-form-catalog-sha256={entry.sha256 || ''}
+      >
         <section className="form-catalog__hero">
           <div className="form-catalog__hero-kicker">{category?.label || 'Form catalog'}</div>
           <h1 className="form-catalog__hero-title">

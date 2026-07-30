@@ -1,0 +1,760 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1203__hvac_rooftop_unit_vendor_sign_in_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1203__hvac_rooftop_unit_vendor_sign_in_form.pdf",
+  "slug": "hvac-rooftop-unit-vendor-sign-in-form",
+  "title": "HVAC Rooftop Unit Vendor Access and Service Sign-In Record",
+  "subtitle": "Control an HVAC vendor visit from authorization and personnel check-in through roof access, safety orientation, keys and badges, RTU work status, exceptions, departure reconciliation, and facility handoff.",
+  "description": "A vendor accountability record designed for HVAC rooftop unit visits, including work-order authorization, personnel credentials, roof and electrical safety requirements, access-item custody, asset scope, change approval, work evidence, sign-out, and unresolved conditions.",
+  "use_case": "Use when an outside HVAC contractor enters a facility or roof area to inspect, maintain, or repair RTUs and security, facilities, and the service company need one traceable record of who entered, what access was issued, what work was authorized, and how the site was left.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "visit_authorization",
+      "title": "Visit authorization, facility, and work scope",
+      "guidance": "Verify the vendor, purpose, approving party, and exact rooftop assets before access is issued.",
+      "blocks": [
+        {
+          "key": "visit_reference",
+          "type": "fields",
+          "label": "Visit reference",
+          "fields": [
+            {
+              "key": "visit_number",
+              "label": "Visit or sign-in number",
+              "units": 0.85
+            },
+            {
+              "key": "visit_date",
+              "label": "Visit date",
+              "units": 0.6
+            },
+            {
+              "key": "scheduled_window",
+              "label": "Scheduled window",
+              "units": 0.75
+            },
+            {
+              "key": "work_order",
+              "label": "Work order",
+              "units": 0.8
+            },
+            {
+              "key": "purchase_order",
+              "label": "PO or contract",
+              "units": 0.8
+            },
+            {
+              "key": "visit_type",
+              "label": "Visit type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Inspection",
+                "Preventive maintenance",
+                "Repair",
+                "Emergency response",
+                "Commissioning",
+                "Estimate or survey"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "facility_contact",
+          "type": "fields",
+          "label": "Facility and host",
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility or property",
+              "units": 1.2
+            },
+            {
+              "key": "address",
+              "label": "Address",
+              "units": 1.3
+            },
+            {
+              "key": "facility_host",
+              "label": "Facility host",
+              "units": 0.9
+            },
+            {
+              "key": "host_phone",
+              "label": "Host phone",
+              "units": 0.75
+            },
+            {
+              "key": "security_contact",
+              "label": "Security contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "vendor_identity",
+          "type": "fields",
+          "label": "Vendor company",
+          "fields": [
+            {
+              "key": "vendor_company",
+              "label": "Vendor legal or company name",
+              "units": 1.3
+            },
+            {
+              "key": "dispatch_contact",
+              "label": "Vendor dispatch contact",
+              "units": 1.0
+            },
+            {
+              "key": "dispatch_phone",
+              "label": "Dispatch phone",
+              "units": 0.75
+            },
+            {
+              "key": "insurance_reference",
+              "label": "Insurance or approved-vendor reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "authorized_scope",
+          "type": "textarea",
+          "label": "Authorized RTUs, roof areas, task scope, exclusions, operating limits, and required deliverables",
+          "fields": [
+            {
+              "key": "authorized_scope_detail",
+              "label": "Authorized rooftop HVAC scope and exclusions"
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "asset_scope",
+          "type": "table",
+          "label": "Authorized RTU and roof-area list",
+          "columns": [
+            {
+              "key": "asset_id",
+              "label": "Asset or RTU ID",
+              "units": 0.85
+            },
+            {
+              "key": "roof_location",
+              "label": "Roof area or grid",
+              "units": 0.85
+            },
+            {
+              "key": "served_area",
+              "label": "Area served",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_task",
+              "label": "Authorized task",
+              "units": 1.25
+            },
+            {
+              "key": "shutdown_limit",
+              "label": "Shutdown or access limit",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "personnel_checkin",
+      "title": "Vendor personnel, credentials, and check-in",
+      "guidance": "Account for every person entering restricted building or roof areas.",
+      "blocks": [
+        {
+          "key": "personnel_roster",
+          "type": "table",
+          "label": "Vendor personnel check-in roster",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Name",
+              "units": 1.05
+            },
+            {
+              "key": "employer",
+              "label": "Employer",
+              "units": 0.9
+            },
+            {
+              "key": "trade_role",
+              "label": "Trade or role",
+              "units": 0.85
+            },
+            {
+              "key": "credential",
+              "label": "Credential or license",
+              "units": 0.95
+            },
+            {
+              "key": "time_in",
+              "label": "Time in",
+              "units": 0.55
+            },
+            {
+              "key": "badge_number",
+              "label": "Badge or visitor ID",
+              "units": 0.75
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "credential_checks",
+          "type": "checklist",
+          "label": "Personnel eligibility verified as applicable",
+          "items": [
+            "Photo identification checked",
+            "Company affiliation confirmed",
+            "Facility vendor approval confirmed",
+            "HVAC trade qualification confirmed",
+            "Refrigerant credential confirmed for regulated work",
+            "Electrical qualification confirmed for authorized testing",
+            "Site-required training current",
+            "Insurance requirement current",
+            "Escort requirement assigned",
+            "Subcontractor disclosed and approved"
+          ]
+        },
+        {
+          "key": "lead_contact",
+          "type": "fields",
+          "label": "Vendor lead and accountability",
+          "fields": [
+            {
+              "key": "vendor_lead",
+              "label": "Vendor lead",
+              "units": 1.0
+            },
+            {
+              "key": "mobile_phone",
+              "label": "Mobile phone",
+              "units": 0.75
+            },
+            {
+              "key": "crew_count",
+              "label": "Crew count",
+              "units": 0.55
+            },
+            {
+              "key": "facility_escort",
+              "label": "Facility escort",
+              "units": 0.9
+            },
+            {
+              "key": "expected_departure",
+              "label": "Expected departure",
+              "units": 0.75
+            },
+            {
+              "key": "after_hours_approval",
+              "label": "After-hours approval",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "personnel_exception",
+          "type": "textarea",
+          "label": "Credential exception, unplanned worker, denied access, escort restriction, or authorization obtained",
+          "fields": [
+            {
+              "key": "personnel_exception_detail",
+              "label": "Personnel and credential exception detail"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "safety_orientation",
+      "title": "Roof and site safety orientation",
+      "guidance": "Confirm site-specific hazards and permits before the vendor proceeds beyond check-in.",
+      "blocks": [
+        {
+          "key": "orientation_topics",
+          "type": "checklist",
+          "label": "Site orientation and controls reviewed",
+          "items": [
+            "Roof access route and restricted areas",
+            "Hatch, ladder, gate, and fall hazards",
+            "Required fall protection and tie-off locations",
+            "Dropped-object controls",
+            "Weather stop-work expectations",
+            "Emergency alarm, evacuation, and muster point",
+            "Facility emergency contact",
+            "Electrical disconnect locations",
+            "Facility lockout and tagout coordination",
+            "BAS alarm and control coordination",
+            "Hot-work and fire-watch requirements",
+            "Refrigerant handling and release response",
+            "Chemical use and SDS requirements",
+            "Roof membrane and drainage protection",
+            "Occupied-area noise, dust, and shutdown limits",
+            "Photography and information-security restrictions"
+          ]
+        },
+        {
+          "key": "permit_authorization",
+          "type": "fields",
+          "label": "Permit and energy-control references",
+          "fields": [
+            {
+              "key": "roof_access_permit",
+              "label": "Roof access permit",
+              "units": 0.9
+            },
+            {
+              "key": "lockout_reference",
+              "label": "LOTO or isolation reference",
+              "units": 0.95
+            },
+            {
+              "key": "hot_work_permit",
+              "label": "Hot-work permit",
+              "units": 0.8
+            },
+            {
+              "key": "shutdown_approval",
+              "label": "Shutdown approval",
+              "units": 0.9
+            },
+            {
+              "key": "orientation_by",
+              "label": "Orientation provided by",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "vendor_attestation",
+          "type": "checklist",
+          "label": "Vendor lead confirms",
+          "items": [
+            "Crew understands authorized scope",
+            "Crew will stop for unrecognized hazards",
+            "Crew will coordinate every shutdown or reset",
+            "Crew has required PPE and test equipment",
+            "Crew will not bypass safety devices without authorization",
+            "Crew will report releases, damage, alarms, or injuries",
+            "Crew will protect roof and building finishes",
+            "Crew will provide service evidence before departure"
+          ]
+        },
+        {
+          "key": "safety_exception",
+          "type": "textarea",
+          "label": "Unresolved safety condition, work restriction, permit hold, weather concern, or escalation decision",
+          "fields": [
+            {
+              "key": "safety_exception_detail",
+              "label": "Safety exception and escalation detail"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "access_custody",
+      "title": "Keys, badges, roof access, tools, and custody",
+      "guidance": "Track facility-controlled access and items that must be reconciled before sign-out.",
+      "blocks": [
+        {
+          "key": "issued_items",
+          "type": "table",
+          "label": "Issued access items and controlled equipment",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Key, badge, device, or item",
+              "units": 1.2
+            },
+            {
+              "key": "identifier",
+              "label": "Identifier",
+              "units": 0.75
+            },
+            {
+              "key": "issued_to",
+              "label": "Issued to",
+              "units": 0.9
+            },
+            {
+              "key": "issued_time",
+              "label": "Issued time",
+              "units": 0.65
+            },
+            {
+              "key": "issued_by",
+              "label": "Issued by",
+              "units": 0.8
+            },
+            {
+              "key": "return_status",
+              "label": "Returned time or status",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "special_equipment",
+          "type": "checklist",
+          "label": "Special equipment or materials entering the site",
+          "items": [
+            "Refrigerant cylinder",
+            "Recovery machine and cylinder",
+            "Compressed gas cylinder",
+            "Torch or hot-work equipment",
+            "Coil-cleaning chemical",
+            "Pressure washer or water equipment",
+            "Lifting or rigging equipment",
+            "Large replacement part",
+            "Temporary power or generator",
+            "No special equipment"
+          ]
+        },
+        {
+          "key": "roof_entry",
+          "type": "fields",
+          "label": "Roof entry control",
+          "fields": [
+            {
+              "key": "roof_entry_time",
+              "label": "Roof entry time",
+              "units": 0.65
+            },
+            {
+              "key": "access_point",
+              "label": "Access point",
+              "units": 0.85
+            },
+            {
+              "key": "escort_status",
+              "label": "Escort status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Continuous escort",
+                "Periodic check-in",
+                "Unescorted authorized",
+                "Access denied or paused"
+              ]
+            },
+            {
+              "key": "roof_condition",
+              "label": "Roof and weather condition",
+              "units": 1.1
+            },
+            {
+              "key": "entry_authorized_by",
+              "label": "Entry authorized by",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "custody_exception",
+          "type": "textarea",
+          "label": "Missing access item, damaged property, restricted material, or escalation",
+          "fields": [
+            {
+              "key": "custody_exception_detail",
+              "label": "Access-item and equipment exception detail"
+            }
+          ],
+          "height": 46
+        }
+      ]
+    },
+    {
+      "key": "work_status",
+      "title": "RTU work status, evidence, and change control",
+      "guidance": "Document what the vendor encountered and obtain approval before scope, cost, or shutdown expands.",
+      "blocks": [
+        {
+          "key": "arrival_condition",
+          "type": "textarea",
+          "label": "RTU condition on arrival, active alarms, isolation state, visible damage, and baseline photo references",
+          "fields": [
+            {
+              "key": "arrival_condition_detail",
+              "label": "RTU arrival condition and evidence"
+            }
+          ],
+          "height": 52
+        },
+        {
+          "key": "service_activity",
+          "type": "table",
+          "label": "Vendor service activity and findings",
+          "columns": [
+            {
+              "key": "asset_task",
+              "label": "RTU and task",
+              "units": 1.15
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.1
+            },
+            {
+              "key": "work_performed",
+              "label": "Work performed",
+              "units": 1.2
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or reading",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "change_request",
+          "type": "fields",
+          "label": "Scope or cost change authorization",
+          "fields": [
+            {
+              "key": "change_required",
+              "label": "Change required",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "No change",
+                "Additional diagnosis",
+                "Additional repair",
+                "Shutdown extension",
+                "Part or rental needed",
+                "Specialist required",
+                "Work stopped"
+              ]
+            },
+            {
+              "key": "not_to_exceed",
+              "label": "Revised NTE or cost",
+              "units": 0.8
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.9
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization time",
+              "units": 0.75
+            },
+            {
+              "key": "change_reference",
+              "label": "Change or PO reference",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "work_exception",
+          "type": "textarea",
+          "label": "Out-of-scope work, damage, release, interruption, or escalation",
+          "fields": [
+            {
+              "key": "work_exception_detail",
+              "label": "Vendor work exception and escalation detail"
+            }
+          ],
+          "height": 55
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Vendor deliverables received or pending",
+          "items": [
+            "Arrival photos",
+            "Nameplate photo",
+            "Diagnostic readings",
+            "Before-and-after photos",
+            "Parts record",
+            "Refrigerant service record when applicable",
+            "Service report",
+            "Estimate or change request",
+            "Startup or functional test results",
+            "Open-deficiency list"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "departure_reconciliation",
+      "title": "Personnel sign-out and facility handoff",
+      "guidance": "Do not close the visit until people, access items, equipment state, and open hazards reconcile.",
+      "blocks": [
+        {
+          "key": "departure_roster",
+          "type": "table",
+          "label": "Vendor personnel sign-out roster",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Name",
+              "units": 1.15
+            },
+            {
+              "key": "time_out",
+              "label": "Time out",
+              "units": 0.65
+            },
+            {
+              "key": "badge_returned",
+              "label": "Badge or key returned",
+              "units": 0.95
+            },
+            {
+              "key": "tools_materials",
+              "label": "Tools and materials cleared",
+              "units": 1.05
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.85
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "restoration_checklist",
+          "type": "checklist",
+          "label": "Site and RTU restoration verified",
+          "items": [
+            "All vendor personnel accounted for",
+            "Keys, badges, and controlled items returned",
+            "Tools, chemicals, cylinders, and parts cleared",
+            "Removed components and waste disposition documented",
+            "Panels, guards, and fasteners secured",
+            "Disconnect and control state confirmed",
+            "Locks and tags cleared or transferred correctly",
+            "Roof membrane and drainage left protected",
+            "Hatch, ladder, gate, and access point secured",
+            "Active alarm or operating restriction communicated",
+            "Facility host received service status",
+            "Follow-up owner and due date assigned"
+          ]
+        },
+        {
+          "key": "service_outcome",
+          "type": "fields",
+          "label": "Visit outcome and next action",
+          "fields": [
+            {
+              "key": "visit_status",
+              "label": "Visit status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Scope completed",
+                "Temporary repair",
+                "Parts on order",
+                "Return visit required",
+                "Work stopped",
+                "No work performed"
+              ]
+            },
+            {
+              "key": "rtu_status",
+              "label": "RTU status at departure",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Normal operation",
+                "Operating with restriction",
+                "Off pending repair",
+                "Locked and tagged",
+                "Status not verified"
+              ]
+            },
+            {
+              "key": "departure_time",
+              "label": "Final departure time",
+              "units": 0.7
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            },
+            {
+              "key": "follow_up_due",
+              "label": "Follow-up due",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Work summary, open condition, temporary control, and deliverables",
+          "fields": [
+            {
+              "key": "handoff_notes_detail",
+              "label": "Facility handoff and open commitment"
+            }
+          ],
+          "height": 52
+        },
+        {
+          "key": "vendor_notice",
+          "type": "notice",
+          "label": "Access-record limitation",
+          "guidance": "This record documents vendor access and facility handoff. It does not replace contractor safety programs, permits, lockout procedures, refrigerant records, incident reporting, service reports, or contractual approval requirements."
+        },
+        {
+          "key": "signoff",
+          "type": "signatures",
+          "label": "Visit closeout acknowledgment",
+          "fields": [
+            {
+              "key": "vendor_lead_signature",
+              "label": "Vendor lead name or signature",
+              "units": 1.15
+            },
+            {
+              "key": "facility_host_signature",
+              "label": "Facility host",
+              "units": 1.0
+            },
+            {
+              "key": "security_facilities_review",
+              "label": "Security or facilities review",
+              "units": 1.0
+            },
+            {
+              "key": "signed_date_time",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

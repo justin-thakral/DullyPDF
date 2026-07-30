@@ -1,0 +1,715 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1200__hvac_rooftop_unit_inspection_checklist_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1200__hvac_rooftop_unit_inspection_checklist_form.pdf",
+  "slug": "hvac-rooftop-unit-inspection-checklist-form",
+  "title": "HVAC Rooftop Unit Condition and Safety Inspection Checklist",
+  "subtitle": "Document rooftop access, equipment identity, visible condition, electrical and mechanical observations, operating readings, deficiencies, disposition, and accountable closeout.",
+  "description": "A structured HVAC rooftop unit inspection record covering safe roof access, RTU identification, cabinet and airside condition, electrical and control observations, operating readings, evidence, deficiency classification, and return-to-service decisions.",
+  "use_case": "Use for a periodic or problem-focused RTU inspection when facilities personnel need defensible observations, measurement records, repair priorities, escalation decisions, and proof that the unit and roof area were left secure.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "inspection_identity",
+      "title": "Inspection, site, and RTU identity",
+      "guidance": "Tie every observation to one inspection event and one rooftop asset.",
+      "blocks": [
+        {
+          "key": "inspection_reference",
+          "type": "fields",
+          "label": "Inspection reference",
+          "fields": [
+            {
+              "key": "inspection_number",
+              "label": "Inspection number",
+              "units": 0.85
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.65
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.55
+            },
+            {
+              "key": "inspection_type",
+              "label": "Inspection type",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Routine condition",
+                "Seasonal startup",
+                "Post-repair verification",
+                "Complaint follow-up",
+                "Storm or event check"
+              ]
+            },
+            {
+              "key": "work_order",
+              "label": "Work order or route",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "site_identity",
+          "type": "fields",
+          "label": "Property and roof location",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Property or facility",
+              "units": 1.2
+            },
+            {
+              "key": "street_address",
+              "label": "Street address",
+              "units": 1.35
+            },
+            {
+              "key": "roof_area",
+              "label": "Roof area or grid",
+              "units": 0.8
+            },
+            {
+              "key": "served_area",
+              "label": "Area served",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Rooftop unit identity",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Asset or RTU ID",
+              "units": 0.75
+            },
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 0.85
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 1.0
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.0
+            },
+            {
+              "key": "nominal_capacity",
+              "label": "Nominal capacity",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "configuration",
+          "type": "fields",
+          "label": "Unit configuration",
+          "fields": [
+            {
+              "key": "system_type",
+              "label": "System type",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Packaged cooling",
+                "Gas-electric",
+                "Heat pump",
+                "Electric heat",
+                "Dedicated outdoor air",
+                "Other packaged RTU"
+              ]
+            },
+            {
+              "key": "voltage_phase",
+              "label": "Voltage and phase",
+              "units": 0.75
+            },
+            {
+              "key": "refrigerant",
+              "label": "Refrigerant",
+              "units": 0.65
+            },
+            {
+              "key": "filter_size",
+              "label": "Filter size and count",
+              "units": 0.95
+            },
+            {
+              "key": "economizer",
+              "label": "Economizer or outdoor air",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "access_safety",
+      "title": "Roof access, hazards, and equipment isolation",
+      "guidance": "Stop when access or equipment conditions exceed authorization or training.",
+      "blocks": [
+        {
+          "key": "personnel_conditions",
+          "type": "fields",
+          "label": "Inspector and conditions",
+          "fields": [
+            {
+              "key": "lead_inspector",
+              "label": "Lead inspector",
+              "units": 1.0
+            },
+            {
+              "key": "company_department",
+              "label": "Company or department",
+              "units": 1.0
+            },
+            {
+              "key": "weather",
+              "label": "Weather and roof condition",
+              "units": 1.1
+            },
+            {
+              "key": "roof_temperature",
+              "label": "Outdoor temperature",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "access_controls",
+          "type": "checklist",
+          "label": "Access and safety controls verified",
+          "items": [
+            "Roof access authorized",
+            "Access ladder or hatch secure",
+            "Walking path inspected",
+            "Weather acceptable for work",
+            "Fall hazards identified",
+            "Required fall protection used",
+            "Required PPE used",
+            "Two-person rule followed when required",
+            "Emergency contact available",
+            "Work area protected from dropped objects"
+          ]
+        },
+        {
+          "key": "isolation_status",
+          "type": "fields",
+          "label": "Electrical and energy-control status",
+          "fields": [
+            {
+              "key": "disconnect_location",
+              "label": "Disconnect location",
+              "units": 1.0
+            },
+            {
+              "key": "isolation_status",
+              "label": "Isolation status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Visual inspection only - energized",
+                "De-energized and verified",
+                "Lockout or tagout applied",
+                "Qualified live testing authorized",
+                "Inspection stopped"
+              ]
+            },
+            {
+              "key": "lock_tag_number",
+              "label": "Lock or tag number",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Isolation or live-work authorization",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "hazard_exception",
+          "type": "textarea",
+          "label": "Unsafe access, stop-work reason, temporary control, and escalation contact",
+          "fields": [
+            {
+              "key": "hazard_exception_detail",
+              "label": "Safety exception and escalation detail"
+            }
+          ],
+          "height": 72
+        }
+      ]
+    },
+    {
+      "key": "exterior_airside",
+      "title": "Cabinet, roof interface, and airside condition",
+      "guidance": "Record visible condition before panels are opened or components are disturbed.",
+      "blocks": [
+        {
+          "key": "condition_checklist",
+          "type": "checklist",
+          "label": "Exterior and airside items inspected",
+          "items": [
+            "Asset label and service clearances",
+            "Curb, flashing, and roof membrane",
+            "Cabinet panels, hinges, and fasteners",
+            "Weather seals and penetrations",
+            "Corrosion, impact, or hail damage",
+            "Outdoor coil face and guards",
+            "Condenser fan blades and guards",
+            "Supply and return connections",
+            "Filters, racks, and bypass gaps",
+            "Indoor coil face",
+            "Drain pan, trap, and condensate path",
+            "Blower wheel and housing",
+            "Belts, pulleys, bearings, and mounts",
+            "Economizer dampers and linkages",
+            "Outdoor and relief-air screens",
+            "Visible oil, refrigerant, water, or combustion residue"
+          ]
+        },
+        {
+          "key": "component_condition",
+          "type": "table",
+          "label": "Component condition observations",
+          "columns": [
+            {
+              "key": "component",
+              "label": "Component or location",
+              "units": 1.15
+            },
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.25
+            },
+            {
+              "key": "severity",
+              "label": "Severity",
+              "units": 0.65
+            },
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or evidence ID",
+              "units": 0.85
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "specialty_observations",
+          "type": "checklist",
+          "label": "Configuration-specific observations completed when applicable",
+          "items": [
+            "Heat exchanger and burner area visually checked",
+            "Flue, vent, and combustion-air path checked",
+            "Electric heat rack visually checked",
+            "Heat-pump reversing valve and defrost components checked",
+            "Economizer minimum-position and damper movement observed",
+            "Powered exhaust or relief fan condition observed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "electrical_controls",
+      "title": "Electrical and control observations",
+      "guidance": "Only qualified personnel should open energized compartments or take live measurements.",
+      "blocks": [
+        {
+          "key": "electrical_checklist",
+          "type": "checklist",
+          "label": "Electrical and control items inspected within authorization",
+          "items": [
+            "Disconnect and enclosure condition",
+            "Nameplate and overcurrent information legible",
+            "Grounding and bonding visually intact",
+            "Conductors and terminations visually intact",
+            "Contactors and relays show no overheating",
+            "Capacitors show no visible distress",
+            "Transformer and low-voltage wiring intact",
+            "Fuses or breakers appear correct",
+            "Control board has no visible damage",
+            "Thermostat or BAS communication available",
+            "Sensors mounted and wiring protected",
+            "Pressure, freeze, smoke, and overflow safeties identified",
+            "Service receptacle and lighting condition checked",
+            "Electrical panel covers and dead fronts intact"
+          ]
+        },
+        {
+          "key": "electrical_readings",
+          "type": "table",
+          "label": "Authorized electrical and control readings",
+          "columns": [
+            {
+              "key": "measurement",
+              "label": "Measurement or point",
+              "units": 1.15
+            },
+            {
+              "key": "nameplate_target",
+              "label": "Nameplate or target",
+              "units": 0.85
+            },
+            {
+              "key": "observed",
+              "label": "Observed",
+              "units": 0.75
+            },
+            {
+              "key": "phase_location",
+              "label": "Phase or location",
+              "units": 0.75
+            },
+            {
+              "key": "result",
+              "label": "Result or variance",
+              "units": 0.9
+            },
+            {
+              "key": "instrument",
+              "label": "Instrument ID",
+              "units": 0.75
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "control_findings",
+          "type": "textarea",
+          "label": "Alarm history, control sequence exception, damaged wiring, heat evidence, or test limitation",
+          "fields": [
+            {
+              "key": "control_findings_detail",
+              "label": "Electrical and control findings"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "operating_readings",
+      "title": "Operating readings and functional checks",
+      "guidance": "Record stable conditions, mode, load, and any reason a reading was not obtained.",
+      "blocks": [
+        {
+          "key": "test_conditions",
+          "type": "fields",
+          "label": "Operating test conditions",
+          "fields": [
+            {
+              "key": "operating_mode",
+              "label": "Operating mode",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Cooling",
+                "Heating",
+                "Ventilation",
+                "Economizer",
+                "Standby or off",
+                "Unable to operate"
+              ]
+            },
+            {
+              "key": "indoor_setpoint",
+              "label": "Control setpoint",
+              "units": 0.65
+            },
+            {
+              "key": "outdoor_conditions",
+              "label": "Outdoor dry-bulb and weather",
+              "units": 1.05
+            },
+            {
+              "key": "run_time_before_reading",
+              "label": "Stabilization time",
+              "units": 0.75
+            },
+            {
+              "key": "space_condition",
+              "label": "Served-space condition",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "performance_readings",
+          "type": "table",
+          "label": "Performance and mechanical readings",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter or location",
+              "units": 1.15
+            },
+            {
+              "key": "expected_range",
+              "label": "Expected range",
+              "units": 0.85
+            },
+            {
+              "key": "observed",
+              "label": "Observed value",
+              "units": 0.8
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.5
+            },
+            {
+              "key": "result",
+              "label": "Acceptable or exception",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Instrument or evidence",
+              "units": 0.8
+            }
+          ],
+          "rows": 9
+        },
+        {
+          "key": "functional_checks",
+          "type": "checklist",
+          "label": "Functional observations completed",
+          "items": [
+            "Supply fan starts and runs smoothly",
+            "Condenser fan operation observed",
+            "Compressor staging observed",
+            "Heating stage operation observed when applicable",
+            "Economizer response observed when conditions permit",
+            "Outdoor-air position appears appropriate",
+            "Condensate drains during operation",
+            "No abnormal vibration or noise",
+            "No active leak evidence",
+            "Unit responds to control command",
+            "Safety shutdown tested only when authorized",
+            "BAS status agrees with field condition"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "findings_disposition",
+      "title": "Deficiencies, risk, and unit disposition",
+      "guidance": "Convert observations into an owned decision rather than an unprioritized note list.",
+      "blocks": [
+        {
+          "key": "deficiency_register",
+          "type": "table",
+          "label": "Deficiency and corrective-action register",
+          "columns": [
+            {
+              "key": "deficiency",
+              "label": "Deficiency or failed item",
+              "units": 1.35
+            },
+            {
+              "key": "risk_impact",
+              "label": "Safety or service impact",
+              "units": 1.1
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.6
+            },
+            {
+              "key": "recommended_action",
+              "label": "Recommended action",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due date",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.6
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "disposition_decision",
+          "type": "fields",
+          "label": "Inspection disposition",
+          "fields": [
+            {
+              "key": "unit_status",
+              "label": "Unit status",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Acceptable for continued operation",
+                "Operate with monitoring",
+                "Repair required",
+                "Restricted operation",
+                "Shutdown or isolate",
+                "Inspection incomplete"
+              ]
+            },
+            {
+              "key": "decision_by",
+              "label": "Disposition decided by",
+              "units": 1.0
+            },
+            {
+              "key": "decision_date_time",
+              "label": "Decision date and time",
+              "units": 0.85
+            },
+            {
+              "key": "repair_work_order",
+              "label": "Repair work order",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "temporary_controls",
+          "type": "textarea",
+          "label": "Temporary control, monitoring limit, escalation, approval condition, and communication made",
+          "fields": [
+            {
+              "key": "temporary_control_detail",
+              "label": "Temporary controls and escalation detail"
+            }
+          ],
+          "height": 98
+        },
+        {
+          "key": "evidence_package",
+          "type": "checklist",
+          "label": "Evidence and follow-up records attached or linked",
+          "items": [
+            "Overall RTU photos",
+            "Nameplate photo",
+            "Deficiency close-up photos",
+            "Instrument readings",
+            "Alarm or BAS history",
+            "Thermal image",
+            "Repair request",
+            "Owner or manager notification"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closeout",
+      "title": "Restoration, handoff, and inspection closeout",
+      "guidance": "Confirm final equipment, roof, documentation, and responsibility status.",
+      "blocks": [
+        {
+          "key": "restoration_checklist",
+          "type": "checklist",
+          "label": "Inspection closeout verified",
+          "items": [
+            "Panels and fasteners restored",
+            "Electrical covers restored",
+            "Disconnect left in authorized state",
+            "Locks and tags removed or transferred correctly",
+            "Tools and test leads removed",
+            "Roof debris removed",
+            "Hatch, ladder, gate, and access points secured",
+            "Active hazards barricaded or communicated",
+            "BAS alarms acknowledged only as authorized",
+            "Served-area contact updated"
+          ]
+        },
+        {
+          "key": "closeout_reference",
+          "type": "fields",
+          "label": "Report handoff and next action",
+          "fields": [
+            {
+              "key": "completion_time",
+              "label": "Inspection completed",
+              "units": 0.7
+            },
+            {
+              "key": "report_recipient",
+              "label": "Report delivered to",
+              "units": 1.0
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            },
+            {
+              "key": "follow_up_due",
+              "label": "Follow-up due date",
+              "units": 0.7
+            },
+            {
+              "key": "evidence_folder",
+              "label": "Evidence folder or link",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "inspection_notice",
+          "type": "notice",
+          "label": "Inspection limitation",
+          "guidance": "This checklist documents observed conditions and authorized measurements at the stated time. It does not replace manufacturer procedures, required preventive maintenance, code inspection, refrigerant certification, electrical safe-work practices, or a licensed diagnosis."
+        },
+        {
+          "key": "signoff",
+          "type": "signatures",
+          "label": "Inspection acknowledgment",
+          "fields": [
+            {
+              "key": "inspector_signature",
+              "label": "Lead inspector name or signature",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "facility_representative",
+              "label": "Facility representative",
+              "units": 1.0
+            },
+            {
+              "key": "signed_date",
+              "label": "Date",
+              "units": 0.55
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

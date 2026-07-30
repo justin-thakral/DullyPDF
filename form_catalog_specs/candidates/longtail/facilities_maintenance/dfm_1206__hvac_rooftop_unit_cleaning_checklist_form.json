@@ -1,0 +1,1229 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1206__hvac_rooftop_unit_cleaning_checklist_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1206__hvac_rooftop_unit_cleaning_checklist_form.pdf",
+  "slug": "hvac-rooftop-unit-cleaning-checklist-form",
+  "title": "HVAC Rooftop Unit Cleaning and Restoration Checklist",
+  "subtitle": "Plan, perform, verify, and close out rooftop-unit cleaning while controlling electrical, chemical, roof, water, and contamination hazards and preserving a defensible record of methods, findings, readings, evidence, and restoration.",
+  "description": "A field-ready HVAC rooftop unit cleaning checklist covering asset identity, authorization, pre-clean condition, isolation, products and methods, coil and drain work, cabinet and airside cleaning, waste control, post-clean verification, defect escalation, and accountable return to service.",
+  "use_case": "Use for scheduled or condition-driven RTU cleaning when a facility or service provider needs one fillable record showing what was cleaned, how it was protected, which products were used, what changed, which defects remain, and who authorized normal operation.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_identity",
+      "title": "Cleaning work, site, and equipment identity",
+      "guidance": "Tie this cleaning event to one authorized work scope, one site, and an unmistakable rooftop unit.",
+      "blocks": [
+        {
+          "key": "work_reference",
+          "type": "fields",
+          "label": "Work reference and schedule",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Work order number",
+              "units": 1.0
+            },
+            {
+              "key": "cleaning_date",
+              "label": "Cleaning date",
+              "units": 0.75
+            },
+            {
+              "key": "scheduled_start",
+              "label": "Scheduled start",
+              "units": 0.75
+            },
+            {
+              "key": "actual_start",
+              "label": "Actual start",
+              "units": 0.7
+            },
+            {
+              "key": "frequency",
+              "label": "Service frequency",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Monthly",
+                "Quarterly",
+                "Semiannual",
+                "Annual",
+                "Condition driven",
+                "One time"
+              ]
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.65,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Urgent",
+                "Emergency"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "site_identity",
+          "type": "fields",
+          "label": "Facility and roof location",
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility name",
+              "units": 1.35
+            },
+            {
+              "key": "site_address",
+              "label": "Site address",
+              "units": 1.8
+            },
+            {
+              "key": "building",
+              "label": "Building or wing",
+              "units": 0.9
+            },
+            {
+              "key": "roof_area",
+              "label": "Roof area or grid",
+              "units": 0.9
+            },
+            {
+              "key": "access_point",
+              "label": "Roof access point",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Rooftop unit identity",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Asset ID",
+              "units": 0.75
+            },
+            {
+              "key": "unit_tag",
+              "label": "RTU tag",
+              "units": 0.7
+            },
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 1.0
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 1.0
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.1
+            },
+            {
+              "key": "served_area",
+              "label": "Area served",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "service_team",
+          "type": "fields",
+          "label": "Assigned cleaning team and facility contact",
+          "fields": [
+            {
+              "key": "lead_technician",
+              "label": "Lead technician",
+              "units": 1.0
+            },
+            {
+              "key": "service_company",
+              "label": "Service company",
+              "units": 1.05
+            },
+            {
+              "key": "helper_names",
+              "label": "Additional crew",
+              "units": 1.2
+            },
+            {
+              "key": "facility_contact",
+              "label": "Facility contact",
+              "units": 1.0
+            },
+            {
+              "key": "contact_phone",
+              "label": "Contact phone",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "scope_summary",
+          "type": "textarea",
+          "label": "Authorized cleaning scope and requested outcome",
+          "guidance": "State included components, known access limits, tenant or production constraints, odor or indoor-air-quality concerns, and the expected result.",
+          "height": 64,
+          "fields": [
+            {
+              "key": "scope_notes",
+              "label": "Authorized scope, exclusions, and requested outcome",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "prework_controls",
+      "title": "Authorization, isolation, and protection",
+      "guidance": "Confirm applicable site requirements and establish controls before opening panels, applying water or chemicals, or disturbing accumulated material.",
+      "blocks": [
+        {
+          "key": "work_authorization",
+          "type": "fields",
+          "label": "Authorization and operating constraints",
+          "fields": [
+            {
+              "key": "shutdown_approved_by",
+              "label": "Shutdown approved by",
+              "units": 1.25
+            },
+            {
+              "key": "approved_shutdown_window",
+              "label": "Approved shutdown window",
+              "units": 1.25
+            },
+            {
+              "key": "occupant_notification",
+              "label": "Occupant notification status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Not required",
+                "Pending",
+                "Unable to confirm"
+              ]
+            },
+            {
+              "key": "weather_status",
+              "label": "Weather suitable",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "Conditional"
+              ]
+            },
+            {
+              "key": "roof_access_status",
+              "label": "Roof access status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorized",
+                "Restricted",
+                "Denied",
+                "Not applicable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "hazard_review",
+          "type": "checklist",
+          "label": "Pre-task hazard and requirement review",
+          "guidance": "Mark each item reviewed or controlled; explain any unchecked item in the exception record.",
+          "items": [
+            "Roof access, ladder, hatch, and walking path checked",
+            "Fall exposure and required fall protection assessed",
+            "Weather, wind, lightning, heat, and surfaces acceptable",
+            "Shock, arc, stored energy, and moving parts assessed",
+            "Sharp edges, hot surfaces, growth, and debris assessed",
+            "Safety data sheets and product instructions available",
+            "Respiratory, eye, skin, hand, and foot PPE selected",
+            "Nearby intakes, solar arrays, and roof drains identified",
+            "Occupied-area, food, process, and IAQ impacts reviewed",
+            "Facility policy and environmental requirements reviewed"
+          ]
+        },
+        {
+          "key": "energy_isolation",
+          "type": "fields",
+          "label": "Energy control and zero-energy verification",
+          "fields": [
+            {
+              "key": "disconnect_location",
+              "label": "Disconnect location",
+              "units": 1.15
+            },
+            {
+              "key": "lock_tag_number",
+              "label": "Lock or tag number",
+              "units": 0.9
+            },
+            {
+              "key": "isolated_by",
+              "label": "Isolated by",
+              "units": 0.9
+            },
+            {
+              "key": "isolation_time",
+              "label": "Isolation time",
+              "units": 0.7
+            },
+            {
+              "key": "zero_energy_verified_by",
+              "label": "Zero energy verified by",
+              "units": 1.1
+            },
+            {
+              "key": "verification_method",
+              "label": "Verification method",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "area_protection",
+          "type": "checklist",
+          "label": "Water, chemical, and contamination controls installed",
+          "items": [
+            "Electrical and control components protected from moisture",
+            "Outdoor-air opening and occupied duct path protected",
+            "Roof membrane and coated surfaces protected",
+            "Nearby equipment and pedestrian areas protected",
+            "Runoff kept from roof drains and building openings",
+            "Wet vacuum, absorbent, or recovery method staged",
+            "Loose debris captured before compressed air or rinsing",
+            "Tools, panels, fasteners, and removed parts controlled"
+          ]
+        },
+        {
+          "key": "stop_work_notice",
+          "type": "notice",
+          "label": "Stop-work trigger",
+          "guidance": "Stop cleaning and notify the facility contact if isolation cannot be verified, electrical parts become wet, runoff cannot be contained, an unsafe roof or weather condition develops, suspected hazardous material is encountered, or the requested method conflicts with equipment or chemical instructions. Obtain professional review when the condition is outside the crew's authorization or competence."
+        },
+        {
+          "key": "prework_exception",
+          "type": "textarea",
+          "label": "Pre-work exceptions, alternate controls, and escalation",
+          "guidance": "Document any unconfirmed requirement, unavailable protection, changed method, delayed authorization, or person who accepted an alternate control.",
+          "height": 58,
+          "fields": [
+            {
+              "key": "exception_notes",
+              "label": "Exception, risk, escalation contact, decision, and time",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "baseline_condition",
+      "title": "Pre-clean condition, readings, and evidence",
+      "guidance": "Capture the condition before disturbance so post-clean results and newly discovered defects can be distinguished from existing conditions.",
+      "blocks": [
+        {
+          "key": "operating_status",
+          "type": "fields",
+          "label": "Arrival and baseline operating status",
+          "fields": [
+            {
+              "key": "arrival_status",
+              "label": "Unit status on arrival",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Operating",
+                "Off by schedule",
+                "Locked out",
+                "Failed",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "thermostat_mode",
+              "label": "Control mode",
+              "units": 0.85
+            },
+            {
+              "key": "active_alarm",
+              "label": "Active alarm or code",
+              "units": 1.15
+            },
+            {
+              "key": "filter_condition",
+              "label": "Filter condition",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Clean",
+                "Loaded",
+                "Wet",
+                "Damaged",
+                "Missing",
+                "Not inspected"
+              ]
+            },
+            {
+              "key": "odor_condition",
+              "label": "Odor observed",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "None",
+                "Mild",
+                "Strong",
+                "Unknown"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "baseline_readings",
+          "type": "fields",
+          "label": "Baseline performance readings",
+          "guidance": "Record only readings safely obtained before shutdown and note test conditions.",
+          "fields": [
+            {
+              "key": "return_air_temp",
+              "label": "Return air temperature",
+              "units": 1.0
+            },
+            {
+              "key": "supply_air_temp",
+              "label": "Supply air temperature",
+              "units": 1.0
+            },
+            {
+              "key": "outdoor_air_temp",
+              "label": "Outdoor air temperature",
+              "units": 1.0
+            },
+            {
+              "key": "filter_pressure_drop",
+              "label": "Filter pressure drop",
+              "units": 1.05
+            },
+            {
+              "key": "coil_pressure_drop",
+              "label": "Coil pressure drop",
+              "units": 1.0
+            },
+            {
+              "key": "airflow_or_static",
+              "label": "Airflow or static reading",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "condition_check",
+          "type": "checklist",
+          "label": "Pre-clean visual condition",
+          "items": [
+            "Cabinet exterior and access panels documented",
+            "Coil face loading, bent fins, and corrosion documented",
+            "Blower wheel, housing, motor, and belt area documented",
+            "Drain pan, trap, line, and standing water documented",
+            "Filter rack, bypass gaps, and gasket condition documented",
+            "Economizer, dampers, screens, and linkage documented",
+            "Insulation, liner, seals, and growth documented",
+            "Wiring, sensors, controls, and enclosure documented",
+            "Curb, flashing, membrane, and drainage documented",
+            "Nests, pests, loose objects, and debris documented"
+          ]
+        },
+        {
+          "key": "contamination_profile",
+          "type": "fields",
+          "label": "Observed contamination profile",
+          "fields": [
+            {
+              "key": "primary_material",
+              "label": "Primary material",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Dust",
+                "Grease",
+                "Pollen",
+                "Organic growth",
+                "Construction debris",
+                "Corrosion residue",
+                "Mixed",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "extent",
+              "label": "Extent",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Localized",
+                "Moderate",
+                "Widespread",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "moisture_present",
+              "label": "Moisture present",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "No",
+                "Yes",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "suspected_growth",
+              "label": "Suspected growth",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "No",
+                "Yes",
+                "Uncertain"
+              ]
+            },
+            {
+              "key": "specialist_review",
+              "label": "Specialist review needed",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "No",
+                "Requested",
+                "Completed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "baseline_evidence",
+          "type": "table",
+          "label": "Pre-clean evidence index",
+          "guidance": "Reference photos or attachments without embedding sensitive or unrelated occupant information.",
+          "columns": [
+            {
+              "key": "reference",
+              "label": "Photo or file reference",
+              "units": 1.15
+            },
+            {
+              "key": "component",
+              "label": "Component or view",
+              "units": 1.1
+            },
+            {
+              "key": "condition",
+              "label": "Condition shown",
+              "units": 1.8
+            },
+            {
+              "key": "captured_by",
+              "label": "Captured by",
+              "units": 0.9
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "baseline_notes",
+          "type": "textarea",
+          "label": "Baseline findings and limits",
+          "guidance": "Describe contamination patterns, visible defects, abnormal sounds or odors, unavailable readings, and areas intentionally excluded from cleaning.",
+          "height": 58,
+          "fields": [
+            {
+              "key": "finding_notes",
+              "label": "Baseline findings, limitations, and evidence references",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "cleaning_execution",
+      "title": "Component cleaning execution record",
+      "guidance": "Record completed tasks and the actual method used; a checked task means it was performed and visually verified, not merely planned.",
+      "blocks": [
+        {
+          "key": "dry_removal",
+          "type": "checklist",
+          "label": "Dry debris removal and preparation",
+          "items": [
+            "Large loose debris removed and bagged before washing",
+            "Coil faces vacuumed or brushed with airflow direction",
+            "Cabinet vacuumed; controls and insulation protected",
+            "Blower compartment loose material captured",
+            "Outdoor-air screen and hood debris removed",
+            "Drain pan solids removed before flushing",
+            "Electrical, control, and sensor components protected",
+            "Bent fins or fragile surfaces identified before contact"
+          ]
+        },
+        {
+          "key": "coil_cleaning",
+          "type": "checklist",
+          "label": "Evaporator and condenser coil cleaning",
+          "items": [
+            "Correct coil side and airflow direction confirmed",
+            "Product compatibility checked against coil and coating",
+            "Cleaner applied at documented dilution and dwell time",
+            "Water pressure controlled to avoid fin and coating damage",
+            "Coil rinsed free of residue and loosened material",
+            "Runoff captured through the approved recovery path",
+            "Fin condition rechecked and significant damage documented",
+            "Coil face and accessible depth visually verified clean"
+          ]
+        },
+        {
+          "key": "airside_cleaning",
+          "type": "checklist",
+          "label": "Airside, blower, filter, and cabinet cleaning",
+          "items": [
+            "Blower and housing cleaned; balance weights protected",
+            "Motor exterior and vents cleaned without wetting",
+            "Belt residue and accessible sheave surfaces cleaned",
+            "Filter rack, tracks, clips, and bypass surfaces cleaned",
+            "Filters installed in the correct airflow direction",
+            "Economizer screens, blades, linkage, and hood cleaned",
+            "Cabinet floor, walls, doors, and accessible liner cleaned",
+            "Door seals, gaskets, fasteners, and mating surfaces clean"
+          ]
+        },
+        {
+          "key": "drain_cleaning",
+          "type": "checklist",
+          "label": "Drain pan, trap, and condensate path cleaning",
+          "items": [
+            "Drain pan cleaned without damaging coating or slope",
+            "Trap and drain line cleared by approved method",
+            "Drain opening and fittings checked for damage or leaks",
+            "Drain line flushed to the intended discharge",
+            "Standing water removed and pan dried where practicable",
+            "Treatment product used only when approved and recorded",
+            "Overflow protection and float device left unobstructed",
+            "Leaks, poor slope, or recurring blockage escalated"
+          ]
+        },
+        {
+          "key": "task_result_table",
+          "type": "table",
+          "label": "Cleaning method and result by component",
+          "columns": [
+            {
+              "key": "component",
+              "label": "Component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Actual method",
+              "units": 1.25
+            },
+            {
+              "key": "product_reference",
+              "label": "Product or tool reference",
+              "units": 1.35
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.8
+            },
+            {
+              "key": "technician_initials",
+              "label": "Technician initials",
+              "units": 0.75
+            },
+            {
+              "key": "exception_reference",
+              "label": "Exception reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "unplanned_condition",
+          "type": "textarea",
+          "label": "Unplanned condition, changed method, or stopped work",
+          "guidance": "Record the component, condition discovered, time work stopped, containment taken, person notified, authorization received, and revised scope.",
+          "height": 64,
+          "fields": [
+            {
+              "key": "change_notes",
+              "label": "Condition, containment, escalation, decision, and authorization",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "materials_waste",
+      "title": "Products, runoff, tools, and waste",
+      "guidance": "Create a traceable record of materials introduced at the unit and how wastewater and removed contamination were controlled.",
+      "blocks": [
+        {
+          "key": "product_log",
+          "type": "table",
+          "label": "Chemical and treatment product log",
+          "columns": [
+            {
+              "key": "product_name",
+              "label": "Product name",
+              "units": 1.25
+            },
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 1.0
+            },
+            {
+              "key": "lot_or_reference",
+              "label": "Lot or reference",
+              "units": 0.95
+            },
+            {
+              "key": "dilution",
+              "label": "Dilution",
+              "units": 0.65
+            },
+            {
+              "key": "dwell_time",
+              "label": "Dwell time",
+              "units": 0.75
+            },
+            {
+              "key": "component_used_on",
+              "label": "Component used on",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "water_record",
+          "type": "fields",
+          "label": "Water source and runoff control",
+          "fields": [
+            {
+              "key": "water_source",
+              "label": "Water source",
+              "units": 1.0
+            },
+            {
+              "key": "estimated_water_used",
+              "label": "Estimated water used",
+              "units": 1.0
+            },
+            {
+              "key": "runoff_method",
+              "label": "Runoff control method",
+              "units": 1.15
+            },
+            {
+              "key": "recovery_container",
+              "label": "Recovery container ID",
+              "units": 1.0
+            },
+            {
+              "key": "discharge_destination",
+              "label": "Approved discharge destination",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "waste_log",
+          "type": "table",
+          "label": "Recovered material and waste disposition",
+          "columns": [
+            {
+              "key": "waste_type",
+              "label": "Waste or recovered material",
+              "units": 1.45
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "container_id",
+              "label": "Container ID",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition or destination",
+              "units": 1.25
+            },
+            {
+              "key": "handled_by",
+              "label": "Handled by",
+              "units": 0.85
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "tool_control",
+          "type": "checklist",
+          "label": "Tool, part, and housekeeping accountability",
+          "items": [
+            "Tools, hoses, covers, and containment materials recovered",
+            "Panels, screws, plugs, caps, and guards accounted for",
+            "No chemical, rinse water, debris, or trip hazard left",
+            "Roof drains and scuppers left as authorized",
+            "Nearby equipment and surfaces checked for overspray",
+            "Waste closed, labeled, and removed or transferred",
+            "Roof hatch, ladder, keys, and access controls restored"
+          ]
+        },
+        {
+          "key": "material_exception",
+          "type": "textarea",
+          "label": "Spill, release, damage, or disposal exception",
+          "guidance": "Document any uncontrolled release, affected surface, damaged component, immediate containment, incident reference, notifications, and corrective action.",
+          "height": 34,
+          "fields": [
+            {
+              "key": "material_exception_notes",
+              "label": "Exception, response, incident reference, and unresolved action",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "verification_disposition",
+      "title": "Post-clean verification and disposition",
+      "guidance": "Verify the cleaning outcome under comparable conditions, separate cleaning completion from repair needs, and obtain explicit decisions for unresolved conditions.",
+      "blocks": [
+        {
+          "key": "post_clean_check",
+          "type": "checklist",
+          "label": "Post-clean visual and functional verification",
+          "items": [
+            "Coil faces visibly clean and fins remain serviceable",
+            "Blower, cabinet, filter rack, and airside clean",
+            "Drain pan and path clean, clear, and leak-free",
+            "Filters correctly seated with airflow arrows verified",
+            "Economizer, dampers, linkage, and sensors unobstructed",
+            "Electrical and control components dry and free of residue",
+            "Insulation, liner, gaskets, seals, and panels secure",
+            "No tools, debris, standing water, or residue remains",
+            "Roof, flashing, drains, and nearby equipment undamaged",
+            "Before-and-after evidence captured for cleaned components"
+          ]
+        },
+        {
+          "key": "post_clean_readings",
+          "type": "fields",
+          "label": "Post-clean performance readings",
+          "guidance": "Use comparable operating conditions where practicable and explain unavailable or noncomparable readings.",
+          "fields": [
+            {
+              "key": "return_air_temp",
+              "label": "Return air temperature",
+              "units": 1.0
+            },
+            {
+              "key": "supply_air_temp",
+              "label": "Supply air temperature",
+              "units": 1.0
+            },
+            {
+              "key": "outdoor_air_temp",
+              "label": "Outdoor air temperature",
+              "units": 1.0
+            },
+            {
+              "key": "filter_pressure_drop",
+              "label": "Filter pressure drop",
+              "units": 1.05
+            },
+            {
+              "key": "coil_pressure_drop",
+              "label": "Coil pressure drop",
+              "units": 1.0
+            },
+            {
+              "key": "airflow_or_static",
+              "label": "Airflow or static reading",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "result_comparison",
+          "type": "fields",
+          "label": "Cleaning outcome and evidence",
+          "fields": [
+            {
+              "key": "overall_result",
+              "label": "Overall result",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Acceptable",
+                "Acceptable with follow-up",
+                "Incomplete",
+                "Rejected",
+                "Unable to verify"
+              ]
+            },
+            {
+              "key": "airflow_change",
+              "label": "Airflow or static change",
+              "units": 1.1
+            },
+            {
+              "key": "temperature_change",
+              "label": "Temperature change",
+              "units": 1.0
+            },
+            {
+              "key": "odor_after",
+              "label": "Odor after cleaning",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "None",
+                "Improved",
+                "Unchanged",
+                "Worse",
+                "Not assessed"
+              ]
+            },
+            {
+              "key": "post_evidence_reference",
+              "label": "Post-clean evidence reference",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "defect_log",
+          "type": "table",
+          "label": "Defect, damage, or unresolved condition log",
+          "columns": [
+            {
+              "key": "reference",
+              "label": "Reference",
+              "units": 0.65
+            },
+            {
+              "key": "component_condition",
+              "label": "Component and condition",
+              "units": 1.55
+            },
+            {
+              "key": "risk_impact",
+              "label": "Risk or impact",
+              "units": 1.15
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.2
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due date",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.7
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "repair_decision",
+          "type": "fields",
+          "label": "Repair and escalation decision",
+          "fields": [
+            {
+              "key": "repair_request_number",
+              "label": "Repair request number",
+              "units": 1.1
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "No repair needed",
+                "Monitor",
+                "Schedule repair",
+                "Immediate repair",
+                "Keep out of service",
+                "Professional review"
+              ]
+            },
+            {
+              "key": "decision_by",
+              "label": "Decision by",
+              "units": 0.9
+            },
+            {
+              "key": "decision_date_time",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "verification_notes",
+          "type": "textarea",
+          "label": "Verification limits and unresolved risk",
+          "guidance": "Explain noncomparable readings, inaccessible areas, rejected results, remaining contamination, suspected damage, and the authorized interim condition.",
+          "height": 34,
+          "fields": [
+            {
+              "key": "verification_limit_notes",
+              "label": "Limits, unresolved risk, acceptance basis, and follow-up",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "restoration_closeout",
+      "title": "Restoration, return to service, and closeout",
+      "guidance": "Restore the unit deliberately, confirm the occupied area is protected, hand off open actions, and record accountable completion.",
+      "blocks": [
+        {
+          "key": "restoration_check",
+          "type": "checklist",
+          "label": "Mechanical and site restoration",
+          "items": [
+            "Drains, filters, guards, panels, and seals restored",
+            "Sensors and wiring restored; electrical areas dry",
+            "Isolation cleared; controls returned to approved state",
+            "Unit run without abnormal sound, vibration, odor, or leak",
+            "Roof and access route clean, secure, and hazard-free",
+            "Contact notified; evidence and open work linked"
+          ]
+        },
+        {
+          "key": "return_to_service",
+          "type": "fields",
+          "label": "Return-to-service authorization",
+          "fields": [
+            {
+              "key": "operating_disposition",
+              "label": "Operating disposition",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Returned to normal service",
+                "Limited operation",
+                "Standby only",
+                "Remain off",
+                "Locked out pending repair"
+              ]
+            },
+            {
+              "key": "restart_time",
+              "label": "Restart time",
+              "units": 0.7
+            },
+            {
+              "key": "observed_run_minutes",
+              "label": "Observed run minutes",
+              "units": 0.85
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date_time",
+              "label": "Authorization date and time",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "handoff_record",
+          "type": "fields",
+          "label": "Facility handoff and recurring schedule",
+          "fields": [
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.9
+            },
+            {
+              "key": "handoff_method",
+              "label": "Handoff method",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "In person",
+                "Phone",
+                "Email",
+                "Work system",
+                "Other"
+              ]
+            },
+            {
+              "key": "handoff_date_time",
+              "label": "Handoff date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_cleaning_due",
+              "label": "Next cleaning due",
+              "units": 1.0
+            },
+            {
+              "key": "next_service_basis",
+              "label": "Next service basis",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Fixed interval",
+                "Inspection result",
+                "Pressure drop",
+                "Seasonal",
+                "Repair completion",
+                "To be determined"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "open_action_log",
+          "type": "fields",
+          "label": "Primary open action handoff",
+          "fields": [
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.6
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.7
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.65
+            },
+            {
+              "key": "related_reference",
+              "label": "Related reference",
+              "units": 1.0
+            },
+            {
+              "key": "completion_status",
+              "label": "Status",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "closeout_summary",
+          "type": "textarea",
+          "label": "Closeout summary and final outcome",
+          "height": 34,
+          "fields": [
+            {
+              "key": "closeout_notes",
+              "label": "Completed scope, outcome, exceptions, and handoff",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "completion_signatures",
+          "type": "signatures",
+          "label": "Completion, review, and acceptance",
+          "fields": [
+            {
+              "key": "technician_name_signature",
+              "label": "Lead technician name or signature",
+              "units": 1.35
+            },
+            {
+              "key": "technician_date_time",
+              "label": "Technician date and time",
+              "units": 0.95
+            },
+            {
+              "key": "reviewer_name_signature",
+              "label": "Facility reviewer name or signature",
+              "units": 1.35
+            },
+            {
+              "key": "review_date_time",
+              "label": "Review date and time",
+              "units": 0.95
+            },
+            {
+              "key": "acceptance_status",
+              "label": "Acceptance status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Accepted with open actions",
+                "Rejected",
+                "Pending review"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

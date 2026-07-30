@@ -1,0 +1,598 @@
+{
+  "schema_version": 1,
+  "catalog_id": "manufacturing_quality/dmq_1403__incoming_material_corrective_action_request_form",
+  "source_section": "manufacturing_quality",
+  "source_filename": "dmq_1403__incoming_material_corrective_action_request_form.pdf",
+  "slug": "incoming-material-corrective-action-request-form",
+  "title": "Incoming Material Corrective Action Request Form",
+  "subtitle": "Define the incoming material problem with evidence, contain the affected scope, test causes, control implementation, verify effectiveness, and approve closure.",
+  "description": "A root-cause and recurrence-prevention request specific to supplier receipt inspection that connects the requirement and observed evidence to containment, cause tests, cause-matched actions, effectiveness data, escalation, and accountable closeout.",
+  "use_case": "Use when a problem involving a received material lot needs action beyond immediate correction and the organization must demonstrate that verified causes were addressed and sustained effectiveness was reviewed.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_origin",
+      "title": "Incoming Material corrective action request",
+      "guidance": "Identify the source, requirement, owner, response due date, and exact affected scope.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "inspection_number",
+              "label": "Incoming inspection number",
+              "units": 0.8
+            },
+            {
+              "key": "received_date_time",
+              "label": "Received date and time",
+              "units": 0.85
+            },
+            {
+              "key": "receiving_location",
+              "label": "Receiving dock or location",
+              "units": 0.9
+            },
+            {
+              "key": "supplier_name",
+              "label": "Supplier name",
+              "units": 1.1
+            },
+            {
+              "key": "purchase_order",
+              "label": "Purchase order number",
+              "units": 0.8
+            },
+            {
+              "key": "packing_slip",
+              "label": "Packing slip or ASN",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Received Material Lot identity",
+          "fields": [
+            {
+              "key": "material_number",
+              "label": "Material or component number",
+              "units": 1.0
+            },
+            {
+              "key": "material_description",
+              "label": "Material description",
+              "units": 1.25
+            },
+            {
+              "key": "supplier_lot",
+              "label": "Supplier lot or heat",
+              "units": 0.85
+            },
+            {
+              "key": "internal_lot",
+              "label": "Assigned internal lot",
+              "units": 0.85
+            },
+            {
+              "key": "quantity_received",
+              "label": "Quantity received",
+              "units": 0.7
+            },
+            {
+              "key": "unit_of_measure",
+              "label": "Unit of measure",
+              "units": 0.6
+            }
+          ]
+        },
+        {
+          "key": "request_routing",
+          "type": "fields",
+          "label": "Request source and routing",
+          "fields": [
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "requested_by",
+              "label": "Requested by",
+              "units": 0.8
+            },
+            {
+              "key": "source_record",
+              "label": "Source finding or record",
+              "units": 1.0
+            },
+            {
+              "key": "response_owner",
+              "label": "Response owner",
+              "units": 0.85
+            },
+            {
+              "key": "containment_due",
+              "label": "Containment due",
+              "units": 0.7
+            },
+            {
+              "key": "final_response_due",
+              "label": "Final response due",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "problem_statement",
+          "type": "textarea",
+          "label": "Requirement, objective evidence, issue statement, location, timing, and extent",
+          "fields": [
+            {
+              "key": "problem_detail",
+              "label": "Evidence-based problem statement"
+            }
+          ],
+          "height": 70
+        }
+      ]
+    },
+    {
+      "key": "immediate_control",
+      "title": "Immediate correction, containment, and scope review",
+      "guidance": "Protect current and potentially affected output while evidence is preserved.",
+      "blocks": [
+        {
+          "key": "containment_checkpoints",
+          "type": "checklist",
+          "label": "Containment and affected-scope checkpoints",
+          "items": [
+            "Supplier identity matches the approved purchasing source",
+            "Purchase order item, revision, and quantity match the shipment",
+            "Container labels match the packing documentation and supplier lot",
+            "Seals and tamper-evident features are intact where specified",
+            "Packaging is free of damage, moisture, contamination, or infestation",
+            "Shelf-life or expiration information leaves the required usable life",
+            "Required certificate of analysis or conformance is present and legible",
+            "Storage temperature or handling condition remained within the stated range"
+          ]
+        },
+        {
+          "key": "containment_actions",
+          "type": "table",
+          "label": "Immediate correction and containment action log",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "affected_scope",
+              "label": "Affected scope",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "completion_evidence",
+              "label": "Completion evidence",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "extent_review",
+          "type": "textarea",
+          "label": "Affected product, prior periods, similar processes, customers, suppliers, and residual exposure",
+          "fields": [
+            {
+              "key": "extent_detail",
+              "label": "Containment boundary and extent-review rationale"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "cause_analysis",
+      "title": "Cause analysis and evidence",
+      "guidance": "Distinguish the immediate mechanism, contributing conditions, detection gap, and systemic cause.",
+      "blocks": [
+        {
+          "key": "cause_hypotheses",
+          "type": "table",
+          "label": "Cause hypotheses, tests, and conclusions",
+          "columns": [
+            {
+              "key": "cause_type",
+              "label": "Cause type",
+              "units": 0.75
+            },
+            {
+              "key": "hypothesis",
+              "label": "Hypothesis",
+              "units": 1.25
+            },
+            {
+              "key": "test_evidence",
+              "label": "Test / evidence",
+              "units": 1.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.75
+            },
+            {
+              "key": "conclusion",
+              "label": "Conclusion",
+              "units": 0.8
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.6
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "cause_domains",
+          "type": "checklist",
+          "label": "Incoming Material cause domains reviewed",
+          "items": [
+            "Approved supplier or manufacturing source",
+            "Material specification, grade, composition, or revision",
+            "Sampling level, acceptance number, or test frequency",
+            "Inspection method, fixture, instrument, or laboratory",
+            "Packaging, container, seal, or labeling requirement",
+            "Shelf-life, temperature, humidity, or storage condition",
+            "Quarantine status, location, or inventory transaction",
+            "Certificate, traceability, or retained-sample requirement",
+            "Downstream process or product qualification",
+            "Open purchase orders and material already in transit"
+          ]
+        },
+        {
+          "key": "cause_conclusion",
+          "type": "textarea",
+          "label": "Verified direct, contributing, detection, and systemic causes with rejected alternatives",
+          "fields": [
+            {
+              "key": "cause_detail",
+              "label": "Cause conclusion and supporting evidence"
+            }
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "action_plan",
+      "title": "Corrective action plan and controlled implementation",
+      "guidance": "Map each action to an evidence-supported cause and retain proof of implementation.",
+      "blocks": [
+        {
+          "key": "corrective_action_plan",
+          "type": "table",
+          "label": "Cause-to-action implementation plan",
+          "columns": [
+            {
+              "key": "verified_cause",
+              "label": "Verified cause",
+              "units": 1.0
+            },
+            {
+              "key": "corrective_action",
+              "label": "Corrective action",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "change_record",
+              "label": "Change / evidence ref.",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "implementation_controls",
+          "type": "checklist",
+          "label": "Implementation and communication controls",
+          "items": [
+            "Select and identify samples under the current sampling instruction",
+            "Perform required dimensional, physical, or certificate checks",
+            "Record discrepancy containment and notify the supplier owner",
+            "Apply accepted, quarantined, or rejected status identification",
+            "Transfer material to the authorized storage or return location",
+            "Document, procedure, software, tooling, or system changes are controlled",
+            "Affected personnel receive the approved change before independent work",
+            "Implementation evidence shows the action was completed as approved",
+            "Temporary controls have an owner and defined removal condition"
+          ]
+        },
+        {
+          "key": "implementation_limits",
+          "type": "textarea",
+          "label": "Resource dependency, implementation risk, temporary control, adverse effect, and unresolved action",
+          "fields": [
+            {
+              "key": "implementation_detail",
+              "label": "Implementation constraints and residual limitations"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "effectiveness_review",
+      "title": "Effectiveness criteria, evidence, and escalation",
+      "guidance": "Set the success test before review and reopen the request if sustained evidence is inadequate.",
+      "blocks": [
+        {
+          "key": "effectiveness_plan",
+          "type": "fields",
+          "label": "Effectiveness review plan",
+          "fields": [
+            {
+              "key": "effectiveness_measure",
+              "label": "Measure or indicator",
+              "units": 1.1
+            },
+            {
+              "key": "baseline",
+              "label": "Baseline",
+              "units": 0.65
+            },
+            {
+              "key": "target",
+              "label": "Target or success criterion",
+              "units": 0.9
+            },
+            {
+              "key": "sample_period",
+              "label": "Sample or review period",
+              "units": 0.85
+            },
+            {
+              "key": "review_due",
+              "label": "Review due",
+              "units": 0.65
+            },
+            {
+              "key": "reviewer",
+              "label": "Independent reviewer",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "effectiveness_results",
+          "type": "table",
+          "label": "Incoming Material effectiveness evidence",
+          "columns": [
+            {
+              "key": "characteristic_sample",
+              "label": "Characteristic / sample",
+              "units": 1.15
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement / limit",
+              "units": 1.0
+            },
+            {
+              "key": "method_instrument",
+              "label": "Method / instrument",
+              "units": 1.0
+            },
+            {
+              "key": "observed_result",
+              "label": "Observed result",
+              "units": 0.9
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.45
+            },
+            {
+              "key": "status",
+              "label": "Accept / reject",
+              "units": 0.7
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "effectiveness_checks",
+          "type": "checklist",
+          "label": "Effectiveness conclusion checks",
+          "items": [
+            "Success criteria were established before results were evaluated",
+            "Evidence covers the defined population, sample, and review period",
+            "No recurrence appears in the originating process",
+            "Similar-risk areas were checked for occurrence elsewhere",
+            "Actions did not create an adverse quality, delivery, or control effect",
+            "Temporary controls can be removed under an authorized decision",
+            "Missed target or recurrence has a new owner and escalation",
+            "Conclusion cites records rather than unsupported assurance"
+          ]
+        },
+        {
+          "key": "effectiveness_conclusion",
+          "type": "textarea",
+          "label": "Observed effectiveness, confidence limits, recurrence check, adverse effects, and conclusion",
+          "fields": [
+            {
+              "key": "effectiveness_detail",
+              "label": "Effectiveness-review rationale"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "request_closeout",
+      "title": "Corrective action decision, handoff, and closeout",
+      "guidance": "Close only when causes, actions, effectiveness, residual limits, and accountable ownership are reviewable.",
+      "blocks": [
+        {
+          "key": "corrective_boundary",
+          "type": "notice",
+          "label": "Corrective action boundary",
+          "guidance": "This record supports analysis and routing; qualified reviewers must apply the current purchase order, material specification, and sampling instruction and approve any technical, safety, customer, or regulatory disposition."
+        },
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action and accountable handoff register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Corrective action outcome and routing",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limits",
+                "On hold",
+                "Rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or release date",
+              "units": 0.75
+            },
+            {
+              "key": "remaining_limits",
+              "label": "Remaining limitation reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Final decision basis, residual limitations, next action, and receiving handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome rationale and accountable handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_closeout",
+          "type": "signatures",
+          "label": "Accountable review and closeout",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Quality Or Material Review Owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner or approver / date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not replace required technical or regulatory approval."
+        }
+      ]
+    }
+  ]
+}

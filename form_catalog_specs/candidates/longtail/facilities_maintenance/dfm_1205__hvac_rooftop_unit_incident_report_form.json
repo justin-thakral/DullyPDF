@@ -1,0 +1,969 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1205__hvac_rooftop_unit_incident_report_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1205__hvac_rooftop_unit_incident_report_form.pdf",
+  "slug": "hvac-rooftop-unit-incident-report-form",
+  "title": "HVAC Rooftop Unit Incident Response and Investigation Report",
+  "subtitle": "Document an RTU incident from immediate life-safety response and equipment isolation through factual evidence, affected people and property, notifications, investigation, corrective action, return-to-service authorization, and closure.",
+  "description": "A safety-conscious HVAC rooftop unit incident report for smoke, fire, electrical events, releases, water damage, equipment failure, roof hazards, injuries, indoor-environment impacts, and service interruptions, with evidence preservation and accountable corrective-action tracking.",
+  "use_case": "Use after an RTU-related event that harmed or could have harmed people, property, operations, or the environment and requires one factual record for emergency response, equipment status, notifications, investigation, repair decisions, verification, and final closure.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Incident, site, asset, and reporter identity",
+      "guidance": "Establish when and where the event occurred and preserve the reporter's direct knowledge.",
+      "blocks": [
+        {
+          "key": "incident_reference",
+          "type": "fields",
+          "label": "Incident reference",
+          "fields": [
+            {
+              "key": "incident_number",
+              "label": "Incident number",
+              "units": 0.85
+            },
+            {
+              "key": "incident_date",
+              "label": "Incident date",
+              "units": 0.65
+            },
+            {
+              "key": "incident_time",
+              "label": "Incident time",
+              "units": 0.55
+            },
+            {
+              "key": "discovery_date_time",
+              "label": "Discovery date and time",
+              "units": 0.9
+            },
+            {
+              "key": "report_date_time",
+              "label": "Report date and time",
+              "units": 0.95
+            },
+            {
+              "key": "severity",
+              "label": "Initial severity",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Near miss",
+                "Minor",
+                "Moderate",
+                "Major",
+                "Critical",
+                "Under assessment"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "reporter",
+          "type": "fields",
+          "label": "Reporter and initial contact",
+          "fields": [
+            {
+              "key": "reporter_name",
+              "label": "Reporter name",
+              "units": 0.95
+            },
+            {
+              "key": "role_company",
+              "label": "Role or company",
+              "units": 1.0
+            },
+            {
+              "key": "phone",
+              "label": "Phone",
+              "units": 0.75
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.0
+            },
+            {
+              "key": "direct_observer",
+              "label": "Direct observer",
+              "units": 0.75,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "Partial",
+                "Remote alarm only"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "site_asset",
+          "type": "fields",
+          "label": "Facility and rooftop unit",
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility or property",
+              "units": 1.15
+            },
+            {
+              "key": "address",
+              "label": "Address",
+              "units": 1.2
+            },
+            {
+              "key": "roof_location",
+              "label": "Roof area or grid",
+              "units": 0.8
+            },
+            {
+              "key": "asset_id",
+              "label": "Asset or RTU ID",
+              "units": 0.75
+            },
+            {
+              "key": "served_area",
+              "label": "Area served",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "event_conditions",
+          "type": "fields",
+          "label": "Conditions at event",
+          "fields": [
+            {
+              "key": "operating_mode",
+              "label": "RTU operating mode",
+              "units": 0.85
+            },
+            {
+              "key": "weather",
+              "label": "Weather and roof condition",
+              "units": 1.1
+            },
+            {
+              "key": "outdoor_temperature",
+              "label": "Outdoor temperature",
+              "units": 0.75
+            },
+            {
+              "key": "occupancy_condition",
+              "label": "Occupancy or process condition",
+              "units": 1.0
+            },
+            {
+              "key": "related_work",
+              "label": "Related work order or activity",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "event_response",
+      "title": "Event classification and immediate response",
+      "guidance": "Protect life and property first; document response after urgent actions are underway.",
+      "blocks": [
+        {
+          "key": "event_classification",
+          "type": "checklist",
+          "label": "Incident type - select all that apply",
+          "items": [
+            "Injury or medical event",
+            "Smoke or fire",
+            "Electrical arc, shock, or overheating",
+            "Possible refrigerant release",
+            "Gas odor or combustion concern",
+            "Oil, chemical, or cleaning-product spill",
+            "Water or condensate damage",
+            "Loose panel or falling-object event",
+            "Roof access or fall hazard",
+            "Mechanical failure or flying debris",
+            "Severe vibration or structural concern",
+            "Indoor temperature excursion",
+            "Indoor-air or odor complaint",
+            "BAS or control failure",
+            "Extended service interruption",
+            "Property or roof damage",
+            "Security or unauthorized access",
+            "Near miss without damage"
+          ]
+        },
+        {
+          "key": "emergency_actions",
+          "type": "checklist",
+          "label": "Immediate response actions",
+          "items": [
+            "Emergency services contacted",
+            "Site emergency plan activated",
+            "First aid provided",
+            "Occupants evacuated or relocated",
+            "Area below RTU restricted",
+            "RTU stopped by control",
+            "Disconnect opened",
+            "Lockout or tagout applied",
+            "Gas or other energy source isolated",
+            "Spill or water contained",
+            "Ventilation or temporary conditioning arranged",
+            "Roof access suspended",
+            "Evidence and failed components preserved",
+            "No immediate action required"
+          ]
+        },
+        {
+          "key": "response_record",
+          "type": "fields",
+          "label": "Response and equipment-control record",
+          "fields": [
+            {
+              "key": "response_lead",
+              "label": "Response lead",
+              "units": 0.9
+            },
+            {
+              "key": "response_start",
+              "label": "Response start time",
+              "units": 0.75
+            },
+            {
+              "key": "equipment_state",
+              "label": "RTU state after response",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Operating",
+                "Operating with restriction",
+                "Stopped",
+                "Disconnected",
+                "Locked and tagged",
+                "Damaged or unsafe to approach",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "lock_tag_reference",
+              "label": "Lock or tag reference",
+              "units": 0.85
+            },
+            {
+              "key": "emergency_reference",
+              "label": "Emergency or dispatch reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "factual_account",
+          "type": "textarea",
+          "label": "Chronological factual account of what was seen, heard, smelled, alarmed, or reported and actions taken",
+          "fields": [
+            {
+              "key": "factual_account_detail",
+              "label": "Factual event and response account"
+            }
+          ],
+          "height": 78
+        },
+        {
+          "key": "emergency_notice",
+          "type": "notice",
+          "label": "Emergency and reporting notice",
+          "guidance": "This form does not replace emergency calls, evacuation, medical care, fire or police reporting, electrical incident procedures, refrigerant or environmental response, workers' compensation reporting, insurance notice, or any required government filing."
+        }
+      ]
+    },
+    {
+      "key": "people_property",
+      "title": "People, property, operations, and witnesses",
+      "guidance": "Record impact without including unnecessary medical detail or unsupported conclusions.",
+      "blocks": [
+        {
+          "key": "affected_people",
+          "type": "table",
+          "label": "Affected or potentially exposed people",
+          "columns": [
+            {
+              "key": "name_identifier",
+              "label": "Name or identifier",
+              "units": 1.0
+            },
+            {
+              "key": "role_location",
+              "label": "Role and location",
+              "units": 1.0
+            },
+            {
+              "key": "reported_effect",
+              "label": "Reported effect or exposure",
+              "units": 1.1
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.0
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up reference",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "witnesses",
+          "type": "table",
+          "label": "Witness and information-source log",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Name",
+              "units": 1.0
+            },
+            {
+              "key": "contact",
+              "label": "Contact",
+              "units": 0.9
+            },
+            {
+              "key": "location",
+              "label": "Location at event",
+              "units": 0.9
+            },
+            {
+              "key": "knowledge",
+              "label": "Direct knowledge or source",
+              "units": 1.25
+            },
+            {
+              "key": "statement_reference",
+              "label": "Statement reference",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "impact_summary",
+          "type": "fields",
+          "label": "Property and operational impact",
+          "fields": [
+            {
+              "key": "areas_affected",
+              "label": "Areas or operations affected",
+              "units": 1.2
+            },
+            {
+              "key": "outage_duration",
+              "label": "Outage or disruption duration",
+              "units": 0.85
+            },
+            {
+              "key": "property_damage",
+              "label": "Property damage summary",
+              "units": 1.1
+            },
+            {
+              "key": "temporary_control",
+              "label": "Temporary service or control",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "impact_detail",
+          "type": "textarea",
+          "label": "People, product, tenant, roof, building, environmental, schedule, and business impact details",
+          "fields": [
+            {
+              "key": "impact_detail_record",
+              "label": "Incident impact detail"
+            }
+          ],
+          "height": 104
+        }
+      ]
+    },
+    {
+      "key": "equipment_evidence",
+      "title": "Equipment condition, readings, and evidence",
+      "guidance": "Preserve the scene and distinguish recorded facts from later analysis.",
+      "blocks": [
+        {
+          "key": "equipment_identity",
+          "type": "fields",
+          "label": "RTU nameplate and control identity",
+          "fields": [
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 0.85
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 1.0
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.0
+            },
+            {
+              "key": "refrigerant",
+              "label": "Refrigerant",
+              "units": 0.65
+            },
+            {
+              "key": "controller_bas",
+              "label": "Controller or BAS device",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "condition_evidence",
+          "type": "checklist",
+          "label": "Equipment and scene evidence documented",
+          "items": [
+            "Overall RTU and roof-area photos",
+            "Nameplate photo",
+            "Failed or damaged component photo",
+            "Electrical compartment condition",
+            "Disconnect and overcurrent state",
+            "Alarm display or BAS screenshot",
+            "Trend or event log preserved",
+            "Leak, residue, or water path documented",
+            "Loose panel or debris location documented",
+            "Weather and roof condition documented",
+            "Removed component retained or disposition controlled",
+            "Service settings and overrides recorded"
+          ]
+        },
+        {
+          "key": "incident_readings",
+          "type": "table",
+          "label": "Incident-related readings and states",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter or point",
+              "units": 1.15
+            },
+            {
+              "key": "observed",
+              "label": "Observed value or state",
+              "units": 0.9
+            },
+            {
+              "key": "expected",
+              "label": "Expected or nameplate",
+              "units": 0.85
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "taken_by",
+              "label": "Taken by",
+              "units": 0.75
+            },
+            {
+              "key": "instrument_evidence",
+              "label": "Instrument or evidence ID",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "evidence_log",
+          "type": "table",
+          "label": "Evidence custody and file log",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.75
+            },
+            {
+              "key": "description",
+              "label": "Description",
+              "units": 1.3
+            },
+            {
+              "key": "collected_by",
+              "label": "Collected by",
+              "units": 0.85
+            },
+            {
+              "key": "collected_time",
+              "label": "Date and time",
+              "units": 0.8
+            },
+            {
+              "key": "storage_location",
+              "label": "File or storage location",
+              "units": 1.1
+            },
+            {
+              "key": "custody_status",
+              "label": "Custody or disposition",
+              "units": 0.9
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "evidence_limitation",
+          "type": "textarea",
+          "label": "Evidence gaps, altered scene, missing data, or access limits",
+          "fields": [
+            {
+              "key": "evidence_limitation_detail",
+              "label": "Evidence limitation and escalation"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "notification_control",
+      "title": "Notifications, reporting, and work control",
+      "guidance": "Track who was notified, what they were told, and which follow-up obligation remains open.",
+      "blocks": [
+        {
+          "key": "notification_log",
+          "type": "table",
+          "label": "Incident notification log",
+          "columns": [
+            {
+              "key": "party",
+              "label": "Person, team, or agency",
+              "units": 1.2
+            },
+            {
+              "key": "reason",
+              "label": "Reason for notification",
+              "units": 1.0
+            },
+            {
+              "key": "notified_by",
+              "label": "Notified by",
+              "units": 0.8
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "reference",
+              "label": "Reference or confirmation",
+              "units": 0.95
+            },
+            {
+              "key": "next_action",
+              "label": "Required next action",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "notification_checklist",
+          "type": "checklist",
+          "label": "Notification needs assessed",
+          "items": [
+            "Property or facility leadership",
+            "Safety or EHS",
+            "Security",
+            "Affected tenant or department",
+            "HVAC service provider",
+            "Electrical or other specialty contractor",
+            "Fire or emergency authority",
+            "Utility provider",
+            "Insurance or risk management",
+            "Equipment manufacturer",
+            "Environmental or refrigerant specialist",
+            "Employee injury process",
+            "Customer or product-quality owner",
+            "Legal or communications review"
+          ]
+        },
+        {
+          "key": "work_control",
+          "type": "fields",
+          "label": "Equipment and scene work control",
+          "fields": [
+            {
+              "key": "work_status",
+              "label": "Work status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Scene held",
+                "Emergency stabilization only",
+                "Diagnosis authorized",
+                "Repair authorized",
+                "Replacement authorized",
+                "No work authorized"
+              ]
+            },
+            {
+              "key": "authorization_by",
+              "label": "Authorized by",
+              "units": 0.9
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.9
+            },
+            {
+              "key": "repair_work_order",
+              "label": "Repair work order",
+              "units": 0.85
+            },
+            {
+              "key": "claim_case_reference",
+              "label": "Claim or case reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "reporting_exception",
+          "type": "textarea",
+          "label": "Reporting uncertainty, delayed notice, conflicting direction, and escalation",
+          "fields": [
+            {
+              "key": "reporting_exception_detail",
+              "label": "Notification exception and escalation detail"
+            }
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "investigation_actions",
+      "title": "Cause analysis and corrective action",
+      "guidance": "Test plausible causes and assign actions that address both failure and recurrence.",
+      "blocks": [
+        {
+          "key": "investigation_team",
+          "type": "fields",
+          "label": "Investigation ownership",
+          "fields": [
+            {
+              "key": "investigation_lead",
+              "label": "Investigation lead",
+              "units": 1.0
+            },
+            {
+              "key": "technical_lead",
+              "label": "HVAC technical lead",
+              "units": 1.0
+            },
+            {
+              "key": "safety_reviewer",
+              "label": "Safety or risk reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "investigation_start",
+              "label": "Investigation start",
+              "units": 0.75
+            },
+            {
+              "key": "target_completion",
+              "label": "Target completion",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "cause_categories",
+          "type": "checklist",
+          "label": "Potential contributing factors evaluated",
+          "items": [
+            "Component wear or failure",
+            "Installation or design condition",
+            "Electrical supply or protection",
+            "Control sequence or software",
+            "Sensor or alarm failure",
+            "Drainage or water management",
+            "Refrigerant circuit condition",
+            "Combustion or heating condition",
+            "Deferred maintenance",
+            "Incorrect part or prior repair",
+            "Operating condition or load",
+            "Weather or external damage",
+            "Access or work-practice issue",
+            "Communication or authorization gap",
+            "Vendor or contractor performance",
+            "Cause not yet determined"
+          ]
+        },
+        {
+          "key": "analysis",
+          "type": "textarea",
+          "label": "Evidence-based cause analysis, ruled-out causes, recurrence mechanism, and remaining uncertainty",
+          "fields": [
+            {
+              "key": "analysis_detail",
+              "label": "Cause analysis and uncertainty"
+            }
+          ],
+          "height": 72
+        },
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Corrective and preventive action register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.35
+            },
+            {
+              "key": "action_type",
+              "label": "Immediate or preventive",
+              "units": 0.9
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.65
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            },
+            {
+              "key": "verification",
+              "label": "Verification or evidence",
+              "units": 1.05
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "action_exception",
+          "type": "textarea",
+          "label": "Overdue action, rejected recommendation, residual risk, and escalation",
+          "fields": [
+            {
+              "key": "action_exception_detail",
+              "label": "Corrective-action exception and escalation"
+            }
+          ],
+          "height": 84
+        }
+      ]
+    },
+    {
+      "key": "return_closure",
+      "title": "Return-to-service, effectiveness, and closure",
+      "guidance": "Require an explicit authorization and evidence before normal operation or final closure.",
+      "blocks": [
+        {
+          "key": "return_checks",
+          "type": "checklist",
+          "label": "Return-to-service evidence reviewed",
+          "items": [
+            "Failed component repaired or replaced",
+            "Electrical covers, guards, and panels restored",
+            "Energy-control release completed correctly",
+            "Leak, drainage, and containment checks completed",
+            "Functional cooling or heating test completed",
+            "Fan, vibration, and noise condition acceptable",
+            "Safety controls verified as authorized",
+            "BAS alarms and trends reviewed",
+            "Served-area condition verified",
+            "Roof and access area restored",
+            "Temporary control documented",
+            "Open corrective actions assigned"
+          ]
+        },
+        {
+          "key": "verification_readings",
+          "type": "table",
+          "label": "Return-to-service verification readings",
+          "columns": [
+            {
+              "key": "test",
+              "label": "Test or parameter",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.8
+            },
+            {
+              "key": "acceptance",
+              "label": "Acceptance criterion",
+              "units": 1.0
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.85
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.7
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "disposition",
+          "type": "fields",
+          "label": "Equipment disposition",
+          "fields": [
+            {
+              "key": "return_status",
+              "label": "Return-to-service status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Approved for normal operation",
+                "Approved with restriction",
+                "Temporary operation",
+                "Remain off",
+                "Remain locked and tagged",
+                "Replace asset",
+                "Decision pending"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.9
+            },
+            {
+              "key": "authorization_date_time",
+              "label": "Authorization date and time",
+              "units": 0.9
+            },
+            {
+              "key": "restriction_review",
+              "label": "Restriction review date",
+              "units": 0.8
+            },
+            {
+              "key": "monitoring_owner",
+              "label": "Monitoring owner",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "effectiveness",
+          "type": "textarea",
+          "label": "Effectiveness, recurrence, lessons, procedure changes, and residual risk",
+          "fields": [
+            {
+              "key": "effectiveness_detail",
+              "label": "Effectiveness and residual-risk review"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "closure_status",
+          "type": "fields",
+          "label": "Incident closure",
+          "fields": [
+            {
+              "key": "closure_status",
+              "label": "Closure status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Closed",
+                "Closed with monitored action",
+                "Open corrective actions",
+                "External review pending",
+                "Claim or case remains open"
+              ]
+            },
+            {
+              "key": "closure_date",
+              "label": "Closure date",
+              "units": 0.65
+            },
+            {
+              "key": "record_location",
+              "label": "Final record location",
+              "units": 1.1
+            },
+            {
+              "key": "retention_owner",
+              "label": "Record retention owner",
+              "units": 0.95
+            },
+            {
+              "key": "related_records",
+              "label": "Related claim, WO, or report",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "signoff",
+          "type": "signatures",
+          "label": "Incident review and closure approval",
+          "fields": [
+            {
+              "key": "investigation_lead_signature",
+              "label": "Investigation lead",
+              "units": 1.05
+            },
+            {
+              "key": "technical_reviewer",
+              "label": "Technical reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "safety_facility_approval",
+              "label": "Safety or facility approval",
+              "units": 1.05
+            },
+            {
+              "key": "approval_date",
+              "label": "Date",
+              "units": 0.55
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

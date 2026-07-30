@@ -1,0 +1,663 @@
+{
+  "schema_version": 1,
+  "catalog_id": "manufacturing_quality/dmq_1402__incoming_material_production_log_form",
+  "source_section": "manufacturing_quality",
+  "source_filename": "dmq_1402__incoming_material_production_log_form.pdf",
+  "slug": "incoming-material-production-log-form",
+  "title": "Incoming Material Production Log Form",
+  "subtitle": "Control the starting state, record chronological supplier receipt inspection activity, reconcile quantities and holds, authorize restarts, and hand off the next due check.",
+  "description": "A chronological incoming material production log form for reconstructing how a received material lot moved through readiness, execution, interruptions, measurements, quantity reconciliation, exceptions, restart decisions, and shift closeout.",
+  "use_case": "Use during active supplier receipt inspection work when operators and reviewers need a time-ordered trace that identifies who did what, the actual result, affected range, and last known acceptable status.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_setup",
+      "title": "Incoming Material log setup and control",
+      "guidance": "Establish the exact population, time window, responsible crew, and controlling instruction.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "inspection_number",
+              "label": "Incoming inspection number",
+              "units": 0.8
+            },
+            {
+              "key": "received_date_time",
+              "label": "Received date and time",
+              "units": 0.85
+            },
+            {
+              "key": "receiving_location",
+              "label": "Receiving dock or location",
+              "units": 0.9
+            },
+            {
+              "key": "supplier_name",
+              "label": "Supplier name",
+              "units": 1.1
+            },
+            {
+              "key": "purchase_order",
+              "label": "Purchase order number",
+              "units": 0.8
+            },
+            {
+              "key": "packing_slip",
+              "label": "Packing slip or ASN",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Received Material Lot identity",
+          "fields": [
+            {
+              "key": "material_number",
+              "label": "Material or component number",
+              "units": 1.0
+            },
+            {
+              "key": "material_description",
+              "label": "Material description",
+              "units": 1.25
+            },
+            {
+              "key": "supplier_lot",
+              "label": "Supplier lot or heat",
+              "units": 0.85
+            },
+            {
+              "key": "internal_lot",
+              "label": "Assigned internal lot",
+              "units": 0.85
+            },
+            {
+              "key": "quantity_received",
+              "label": "Quantity received",
+              "units": 0.7
+            },
+            {
+              "key": "unit_of_measure",
+              "label": "Unit of measure",
+              "units": 0.6
+            }
+          ]
+        },
+        {
+          "key": "log_control",
+          "type": "fields",
+          "label": "Log control and ownership",
+          "fields": [
+            {
+              "key": "log_start",
+              "label": "Log start date and time",
+              "units": 0.8
+            },
+            {
+              "key": "log_end",
+              "label": "Log end date and time",
+              "units": 0.8
+            },
+            {
+              "key": "shift_team",
+              "label": "Shift, team, or work center",
+              "units": 0.9
+            },
+            {
+              "key": "log_owner",
+              "label": "Log owner",
+              "units": 0.75
+            },
+            {
+              "key": "instruction_revision",
+              "label": "Instruction and revision",
+              "units": 1.0
+            },
+            {
+              "key": "planned_volume",
+              "label": "Planned volume or count",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "log_scope",
+          "type": "textarea",
+          "label": "Log scope, sequence boundary, starting condition, and carryover from prior work",
+          "fields": [
+            {
+              "key": "log_scope_detail",
+              "label": "Scope and starting condition"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "readiness_resources",
+      "title": "Readiness, resources, and starting status",
+      "guidance": "Confirm that the supplier receipt inspection can begin under the current references.",
+      "blocks": [
+        {
+          "key": "startup_checkpoints",
+          "type": "checklist",
+          "label": "Starting-condition checkpoints",
+          "items": [
+            "Supplier identity matches the approved purchasing source",
+            "Purchase order item, revision, and quantity match the shipment",
+            "Container labels match the packing documentation and supplier lot",
+            "Seals and tamper-evident features are intact where specified",
+            "Packaging is free of damage, moisture, contamination, or infestation",
+            "Shelf-life or expiration information leaves the required usable life",
+            "Required certificate of analysis or conformance is present and legible",
+            "Storage temperature or handling condition remained within the stated range",
+            "Sampling instruction and sample quantity are current for this material",
+            "Uninspected material is segregated and marked pending disposition"
+          ]
+        },
+        {
+          "key": "resource_status",
+          "type": "table",
+          "label": "Resource, material, equipment, and evidence readiness",
+          "columns": [
+            {
+              "key": "resource",
+              "label": "Resource / item",
+              "units": 1.1
+            },
+            {
+              "key": "identifier",
+              "label": "ID / lot / revision",
+              "units": 1.0
+            },
+            {
+              "key": "required_status",
+              "label": "Required status",
+              "units": 0.85
+            },
+            {
+              "key": "actual_status",
+              "label": "Actual status",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.75
+            },
+            {
+              "key": "exception_ref",
+              "label": "Exception ref.",
+              "units": 0.7
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "start_authorization",
+          "type": "fields",
+          "label": "Start authorization",
+          "fields": [
+            {
+              "key": "starting_status",
+              "label": "Starting status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Ready",
+                "Ready with limits",
+                "On hold",
+                "Not ready"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.85
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization time",
+              "units": 0.75
+            },
+            {
+              "key": "starting_reference",
+              "label": "Starting evidence reference",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_execution",
+      "title": "Incoming Material chronological execution log",
+      "guidance": "Record work as it occurs so timing, responsible person, evidence, and status remain reconstructable.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Chronological event and decision log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.75
+            },
+            {
+              "key": "stage_event",
+              "label": "Stage / event",
+              "units": 1.2
+            },
+            {
+              "key": "item_range",
+              "label": "Item / range",
+              "units": 0.85
+            },
+            {
+              "key": "actual_result",
+              "label": "Actual result",
+              "units": 1.0
+            },
+            {
+              "key": "performed_by",
+              "label": "Performed by",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status / ref.",
+              "units": 0.75
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "process_results",
+          "type": "table",
+          "label": "Material characteristic and sample results",
+          "columns": [
+            {
+              "key": "characteristic_sample",
+              "label": "Characteristic / sample",
+              "units": 1.15
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement / limit",
+              "units": 1.0
+            },
+            {
+              "key": "method_instrument",
+              "label": "Method / instrument",
+              "units": 1.0
+            },
+            {
+              "key": "observed_result",
+              "label": "Observed result",
+              "units": 0.9
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.45
+            },
+            {
+              "key": "status",
+              "label": "Accept / reject",
+              "units": 0.7
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "execution_stages",
+          "type": "checklist",
+          "label": "Required execution stages",
+          "items": [
+            "Unload and segregate pending-inspection material",
+            "Match purchase order, packing slip, labels, and lot identity",
+            "Inspect packaging, seals, condition, quantity, and shelf life",
+            "Select and identify samples under the current sampling instruction",
+            "Perform required dimensional, physical, or certificate checks",
+            "Record discrepancy containment and notify the supplier owner",
+            "Apply accepted, quarantined, or rejected status identification",
+            "Transfer material to the authorized storage or return location"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "quantity_holds",
+      "title": "Quantity, status, interruption, and hold control",
+      "guidance": "Reconcile output and preserve every interruption, held range, and restart decision.",
+      "blocks": [
+        {
+          "key": "quantity_reconciliation",
+          "type": "table",
+          "label": "Quantity and status reconciliation",
+          "columns": [
+            {
+              "key": "stage",
+              "label": "Stage / period",
+              "units": 1.0
+            },
+            {
+              "key": "input_qty",
+              "label": "Input qty.",
+              "units": 0.65
+            },
+            {
+              "key": "accepted_qty",
+              "label": "Accepted qty.",
+              "units": 0.7
+            },
+            {
+              "key": "rework_qty",
+              "label": "Rework qty.",
+              "units": 0.65
+            },
+            {
+              "key": "reject_qty",
+              "label": "Reject qty.",
+              "units": 0.65
+            },
+            {
+              "key": "balance_note",
+              "label": "Balance / note",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "interruption_hold_log",
+          "type": "table",
+          "label": "Interruption, hold, affected range, and restart log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.55
+            },
+            {
+              "key": "condition",
+              "label": "Condition / reason",
+              "units": 1.15
+            },
+            {
+              "key": "affected_range",
+              "label": "Affected range",
+              "units": 0.9
+            },
+            {
+              "key": "containment",
+              "label": "Containment",
+              "units": 0.9
+            },
+            {
+              "key": "restart_authority",
+              "label": "Restart authority",
+              "units": 0.85
+            },
+            {
+              "key": "restart_time",
+              "label": "Restart time",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "unreconciled_detail",
+          "type": "textarea",
+          "label": "Unreconciled quantity, data gap, interruption effect, and escalation",
+          "fields": [
+            {
+              "key": "unreconciled_narrative",
+              "label": "Reconciliation and interruption narrative"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "exceptions_response",
+      "title": "Exceptions, response, and controlled restart",
+      "guidance": "Capture the original exception, containment boundary, decision owner, and final disposition.",
+      "blocks": [
+        {
+          "key": "log_exception_types",
+          "type": "checklist",
+          "label": "Incoming Material exceptions requiring action",
+          "items": [
+            "Material or supplier identity mismatch",
+            "Missing, illegible, or inconsistent certificate",
+            "Damaged, wet, open, contaminated, or compromised packaging",
+            "Quantity, weight, count, or unit-of-measure discrepancy",
+            "Shelf-life, temperature, or controlled-storage exception",
+            "Failed dimensional, physical, chemical, or visual requirement",
+            "Mixed supplier lots or untraceable containers",
+            "Required sampling or test could not be completed"
+          ],
+          "guidance": "Select every applicable exception and preserve the original observation."
+        },
+        {
+          "key": "log_exception_log",
+          "type": "table",
+          "label": "Exception, containment, ownership, and disposition log",
+          "columns": [
+            {
+              "key": "exception_evidence",
+              "label": "Exception / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due_point",
+              "label": "Due date / point",
+              "units": 0.7
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_exception_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, containment boundary, and unresolved risk",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception narrative and affected-scope rationale"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "shift_closeout",
+      "title": "Shift or sequence handoff and log closeout",
+      "guidance": "Identify the last known status, the next required check, and every open action.",
+      "blocks": [
+        {
+          "key": "handoff_point",
+          "type": "fields",
+          "label": "Handoff status",
+          "fields": [
+            {
+              "key": "last_completed_stage",
+              "label": "Last completed stage",
+              "units": 1.0
+            },
+            {
+              "key": "last_accepted_item",
+              "label": "Last accepted item or time",
+              "units": 0.9
+            },
+            {
+              "key": "next_required_check",
+              "label": "Next required check",
+              "units": 1.0
+            },
+            {
+              "key": "next_check_due",
+              "label": "Next check due",
+              "units": 0.7
+            },
+            {
+              "key": "held_location",
+              "label": "Held item location",
+              "units": 0.85
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action and accountable handoff register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Production log outcome and routing",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limits",
+                "On hold",
+                "Rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or release date",
+              "units": 0.75
+            },
+            {
+              "key": "remaining_limits",
+              "label": "Remaining limitation reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Final decision basis, residual limitations, next action, and receiving handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome rationale and accountable handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_closeout",
+          "type": "signatures",
+          "label": "Accountable review and closeout",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Quality Or Material Review Owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner or approver / date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not replace required technical or regulatory approval."
+        }
+      ]
+    }
+  ]
+}

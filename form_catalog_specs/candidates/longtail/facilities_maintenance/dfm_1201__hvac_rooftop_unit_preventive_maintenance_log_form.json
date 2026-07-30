@@ -1,0 +1,772 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1201__hvac_rooftop_unit_preventive_maintenance_log_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1201__hvac_rooftop_unit_preventive_maintenance_log_form.pdf",
+  "slug": "hvac-rooftop-unit-preventive-maintenance-log-form",
+  "title": "HVAC Rooftop Unit Preventive Maintenance Service Log",
+  "subtitle": "Record the planned PM visit, safe isolation, baseline condition, maintenance tasks, materials, before-and-after readings, exceptions, follow-up ownership, and service closeout.",
+  "description": "A service-focused HVAC rooftop unit preventive maintenance log that documents the maintenance cycle, technician authorization, energy control, work actually performed, consumables and parts, before-and-after performance, discovered deficiencies, and next scheduled action.",
+  "use_case": "Use for each recurring RTU preventive maintenance visit when a facilities team needs proof of completed tasks, traceable materials and readings, documented deviations from scope, repair escalation, and a reliable next-service date.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "service_identity",
+      "title": "PM visit, contract, and equipment identity",
+      "guidance": "Identify the exact maintenance cycle, service provider, and rooftop unit.",
+      "blocks": [
+        {
+          "key": "visit_reference",
+          "type": "fields",
+          "label": "Preventive maintenance visit",
+          "fields": [
+            {
+              "key": "pm_record_number",
+              "label": "PM record number",
+              "units": 0.85
+            },
+            {
+              "key": "service_date",
+              "label": "Service date",
+              "units": 0.65
+            },
+            {
+              "key": "arrival_time",
+              "label": "Arrival time",
+              "units": 0.55
+            },
+            {
+              "key": "pm_cycle",
+              "label": "PM cycle",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Monthly",
+                "Quarterly",
+                "Semiannual",
+                "Annual",
+                "Seasonal startup",
+                "Contract-specific"
+              ]
+            },
+            {
+              "key": "work_order",
+              "label": "Work order",
+              "units": 0.8
+            },
+            {
+              "key": "contract_number",
+              "label": "Contract or PO",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "service_provider",
+          "type": "fields",
+          "label": "Service provider",
+          "fields": [
+            {
+              "key": "company",
+              "label": "Company or department",
+              "units": 1.15
+            },
+            {
+              "key": "lead_technician",
+              "label": "Lead technician",
+              "units": 1.0
+            },
+            {
+              "key": "technician_id",
+              "label": "Technician or license ID",
+              "units": 0.85
+            },
+            {
+              "key": "site_contact",
+              "label": "Facility contact",
+              "units": 1.0
+            },
+            {
+              "key": "contact_phone",
+              "label": "Contact phone",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "site_asset",
+          "type": "fields",
+          "label": "Property and RTU",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Property or facility",
+              "units": 1.1
+            },
+            {
+              "key": "roof_location",
+              "label": "Roof area or grid",
+              "units": 0.8
+            },
+            {
+              "key": "asset_id",
+              "label": "Asset or RTU ID",
+              "units": 0.75
+            },
+            {
+              "key": "served_area",
+              "label": "Area served",
+              "units": 1.0
+            },
+            {
+              "key": "runtime_hours",
+              "label": "Runtime hours",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "nameplate",
+          "type": "fields",
+          "label": "Nameplate and service configuration",
+          "fields": [
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 0.8
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 0.9
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 0.95
+            },
+            {
+              "key": "refrigerant",
+              "label": "Refrigerant",
+              "units": 0.6
+            },
+            {
+              "key": "filter_size_count",
+              "label": "Filter size and count",
+              "units": 0.95
+            },
+            {
+              "key": "belt_size",
+              "label": "Belt size or direct drive",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "prework_control",
+      "title": "Pre-work condition and safety control",
+      "guidance": "Capture baseline operation and establish safe access before maintenance begins.",
+      "blocks": [
+        {
+          "key": "site_conditions",
+          "type": "fields",
+          "label": "Roof and operating conditions",
+          "fields": [
+            {
+              "key": "weather",
+              "label": "Weather and roof condition",
+              "units": 1.15
+            },
+            {
+              "key": "outdoor_temperature",
+              "label": "Outdoor temperature",
+              "units": 0.75
+            },
+            {
+              "key": "operating_mode",
+              "label": "Mode on arrival",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Cooling",
+                "Heating",
+                "Ventilation",
+                "Standby",
+                "Off",
+                "Alarm or lockout"
+              ]
+            },
+            {
+              "key": "active_alarm",
+              "label": "Active alarm or complaint",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "safety_controls",
+          "type": "checklist",
+          "label": "Pre-work safety controls completed",
+          "items": [
+            "Roof access authorized",
+            "Walking path and fall hazards assessed",
+            "Required PPE and fall protection used",
+            "Work area protected from dropped objects",
+            "Disconnect identified",
+            "Energy sources identified",
+            "Lockout or tagout applied when required",
+            "Absence of voltage verified when required",
+            "Stored mechanical energy controlled",
+            "Hot surfaces and sharp edges identified",
+            "Chemical SDS available when products are used",
+            "Emergency communication available"
+          ]
+        },
+        {
+          "key": "isolation_record",
+          "type": "fields",
+          "label": "Isolation and authorization record",
+          "fields": [
+            {
+              "key": "disconnect_state",
+              "label": "Disconnect state",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Energized observation",
+                "De-energized",
+                "Locked and tagged",
+                "Qualified live test",
+                "Work stopped"
+              ]
+            },
+            {
+              "key": "lock_tag_number",
+              "label": "Lock or tag number",
+              "units": 0.75
+            },
+            {
+              "key": "isolation_by",
+              "label": "Isolation performed by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization",
+              "label": "Authorization or permit",
+              "units": 1.0
+            },
+            {
+              "key": "baseline_photo_set",
+              "label": "Baseline photo set",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "preexisting_condition",
+          "type": "textarea",
+          "label": "Pre-existing damage, alarm history, tenant complaint, unusual noise, leak evidence, or access limitation",
+          "fields": [
+            {
+              "key": "preexisting_condition_detail",
+              "label": "Pre-existing condition and limitation detail"
+            }
+          ],
+          "height": 160
+        },
+        {
+          "key": "maintenance_scope_boundary",
+          "type": "notice",
+          "label": "Maintenance scope boundary",
+          "guidance": "This preventive maintenance visit does not authorize repair work or make deferred safety or service issues acceptable. Stop and obtain approval whenever work exceeds the assigned scope."
+        }
+      ]
+    },
+    {
+      "key": "maintenance_execution",
+      "title": "Planned maintenance tasks performed",
+      "guidance": "Mark only work completed during this visit and explain deferred or inaccessible items.",
+      "blocks": [
+        {
+          "key": "airside_tasks",
+          "type": "checklist",
+          "label": "Airside and condensate maintenance performed",
+          "items": [
+            "Filters inspected",
+            "Filters replaced",
+            "Filter rack and bypass gaps corrected",
+            "Indoor coil inspected",
+            "Indoor coil cleaned as authorized",
+            "Drain pan cleaned",
+            "Condensate trap and line cleared",
+            "Blower wheel inspected",
+            "Blower wheel cleaned as authorized",
+            "Belts inspected and adjusted",
+            "Belt replaced",
+            "Pulleys aligned and secured",
+            "Bearings inspected or lubricated",
+            "Supply and return connection condition checked"
+          ]
+        },
+        {
+          "key": "outdoor_mechanical_tasks",
+          "type": "checklist",
+          "label": "Outdoor and mechanical maintenance performed",
+          "items": [
+            "Outdoor coil inspected",
+            "Outdoor coil cleaned as authorized",
+            "Condenser fan blades and guards checked",
+            "Motor mounts and vibration isolation checked",
+            "Cabinet panels and weather seals checked",
+            "Fasteners tightened",
+            "Corrosion condition documented",
+            "Refrigerant piping supports checked",
+            "Visible oil or refrigerant evidence checked",
+            "Economizer dampers and linkage exercised",
+            "Outdoor-air screens cleaned",
+            "Powered exhaust or relief components checked"
+          ]
+        },
+        {
+          "key": "electrical_control_tasks",
+          "type": "checklist",
+          "label": "Electrical, controls, and heating tasks performed within authorization",
+          "items": [
+            "Electrical compartment visually inspected",
+            "Terminations checked as authorized",
+            "Contactors and relays inspected",
+            "Capacitors inspected or tested",
+            "Control transformer and wiring checked",
+            "Thermostat or BAS command checked",
+            "Sensors inspected",
+            "Alarm history reviewed",
+            "Safety controls identified or tested as authorized",
+            "Burner and heat exchanger area visually inspected",
+            "Ignition and flame signal checked as authorized",
+            "Electric heat components visually inspected"
+          ]
+        },
+        {
+          "key": "task_exception",
+          "type": "textarea",
+          "label": "Required PM task not completed, reason, risk, temporary control, approver, and reschedule commitment",
+          "fields": [
+            {
+              "key": "task_exception_detail",
+              "label": "Deferred task and escalation detail"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "materials_parts",
+      "title": "Consumables, parts, and maintenance evidence",
+      "guidance": "Make installed materials and supporting evidence traceable to the PM visit.",
+      "blocks": [
+        {
+          "key": "material_log",
+          "type": "table",
+          "label": "Consumables and parts used",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part or consumable",
+              "units": 1.15
+            },
+            {
+              "key": "part_number",
+              "label": "Part or product ID",
+              "units": 0.9
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.55
+            },
+            {
+              "key": "old_condition",
+              "label": "Removed item condition",
+              "units": 1.0
+            },
+            {
+              "key": "installed_verified",
+              "label": "Installed and verified by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or receipt ID",
+              "units": 0.75
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "maintenance_adjustments",
+          "type": "fields",
+          "label": "Key maintenance adjustments",
+          "fields": [
+            {
+              "key": "filter_final",
+              "label": "Final filter size, count, and rating",
+              "units": 1.3
+            },
+            {
+              "key": "belt_final",
+              "label": "Final belt size and tension",
+              "units": 1.0
+            },
+            {
+              "key": "lubricant",
+              "label": "Lubricant type and amount",
+              "units": 0.9
+            },
+            {
+              "key": "cleaner",
+              "label": "Cleaner and dilution",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "evidence_checklist",
+          "type": "checklist",
+          "label": "Maintenance evidence retained",
+          "items": [
+            "Nameplate image",
+            "Before-condition photos",
+            "After-condition photos",
+            "Filter or belt label image",
+            "Instrument readings",
+            "Alarm history",
+            "Material receipt",
+            "Deficiency close-up"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "performance_verification",
+      "title": "Before-and-after readings and verification",
+      "guidance": "Compare stable operating conditions and identify every measurement not obtained.",
+      "blocks": [
+        {
+          "key": "reading_conditions",
+          "type": "fields",
+          "label": "Test conditions",
+          "fields": [
+            {
+              "key": "test_mode",
+              "label": "Test mode",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Cooling",
+                "Heating",
+                "Ventilation",
+                "Economizer",
+                "Multiple modes",
+                "Unable to test"
+              ]
+            },
+            {
+              "key": "outdoor_dry_bulb",
+              "label": "Outdoor dry-bulb",
+              "units": 0.7
+            },
+            {
+              "key": "space_temperature",
+              "label": "Space temperature",
+              "units": 0.75
+            },
+            {
+              "key": "setpoint",
+              "label": "Setpoint",
+              "units": 0.55
+            },
+            {
+              "key": "stabilization_time",
+              "label": "Stabilization time",
+              "units": 0.75
+            },
+            {
+              "key": "instrument_set",
+              "label": "Instrument set or IDs",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "before_after_readings",
+          "type": "table",
+          "label": "Performance readings before and after maintenance",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter or point",
+              "units": 1.15
+            },
+            {
+              "key": "before",
+              "label": "Before",
+              "units": 0.7
+            },
+            {
+              "key": "after",
+              "label": "After",
+              "units": 0.7
+            },
+            {
+              "key": "target",
+              "label": "Target or nameplate",
+              "units": 0.85
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.45
+            },
+            {
+              "key": "result",
+              "label": "Result or explanation",
+              "units": 1.15
+            }
+          ],
+          "rows": 10
+        },
+        {
+          "key": "functional_verification",
+          "type": "checklist",
+          "label": "Post-maintenance functional verification",
+          "items": [
+            "Panels and electrical covers restored",
+            "Filters seated with airflow direction correct",
+            "Belts and guards secured",
+            "Drainage verified",
+            "Fans and compressors operate without abnormal noise",
+            "Heating operation verified when applicable",
+            "Economizer operation checked when conditions permit",
+            "Controls respond to command",
+            "Active alarms reviewed",
+            "BAS status agrees with field condition",
+            "No new leak or vibration observed",
+            "Served-area condition checked"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "defects_followup",
+      "title": "Defects, repair authority, and follow-up",
+      "guidance": "Separate completed PM scope from repairs requiring a new decision.",
+      "blocks": [
+        {
+          "key": "defect_log",
+          "type": "table",
+          "label": "Defects and out-of-scope work",
+          "columns": [
+            {
+              "key": "defect",
+              "label": "Defect or condition",
+              "units": 1.3
+            },
+            {
+              "key": "impact",
+              "label": "Safety or service impact",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.55
+            },
+            {
+              "key": "recommendation",
+              "label": "Recommended repair",
+              "units": 1.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due date",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "WO or evidence",
+              "units": 0.75
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "unit_disposition",
+          "type": "fields",
+          "label": "Unit disposition and repair authority",
+          "fields": [
+            {
+              "key": "service_status",
+              "label": "Status after PM",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "PM complete - normal operation",
+                "Operate with monitoring",
+                "Repair required",
+                "Restricted operation",
+                "Shutdown or isolated",
+                "PM incomplete"
+              ]
+            },
+            {
+              "key": "repair_authorization",
+              "label": "Repair authorization or NTE",
+              "units": 1.1
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.9
+            },
+            {
+              "key": "repair_work_order",
+              "label": "Repair work order",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "escalation_notes",
+          "type": "textarea",
+          "label": "Urgent escalation, operating limits, parts, and return visit",
+          "fields": [
+            {
+              "key": "escalation_detail",
+              "label": "Escalation and return-visit detail"
+            }
+          ],
+          "height": 55
+        },
+        {
+          "key": "next_service",
+          "type": "fields",
+          "label": "Next planned maintenance",
+          "fields": [
+            {
+              "key": "next_pm_due",
+              "label": "Next PM due date",
+              "units": 0.75
+            },
+            {
+              "key": "next_pm_scope",
+              "label": "Next cycle or special scope",
+              "units": 1.25
+            },
+            {
+              "key": "parts_to_stock",
+              "label": "Parts or consumables to stock",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "service_closeout",
+      "title": "Restoration, handoff, and service closeout",
+      "guidance": "Confirm the RTU, roof, records, and customer communication are complete.",
+      "blocks": [
+        {
+          "key": "departure_checklist",
+          "type": "checklist",
+          "label": "Departure and restoration checks",
+          "items": [
+            "Disconnect left in authorized state",
+            "Locks and tags cleared or transferred",
+            "All panels and fasteners secured",
+            "Tools, rags, and replaced parts removed",
+            "Roof membrane protected and debris removed",
+            "Access hatch, ladder, gate, and keys secured",
+            "Active alarms communicated",
+            "Facility contact briefed",
+            "Service report and evidence uploaded",
+            "Open repair item assigned"
+          ]
+        },
+        {
+          "key": "completion_record",
+          "type": "fields",
+          "label": "Completion and handoff",
+          "fields": [
+            {
+              "key": "departure_time",
+              "label": "Departure time",
+              "units": 0.6
+            },
+            {
+              "key": "labor_hours",
+              "label": "Total labor hours",
+              "units": 0.7
+            },
+            {
+              "key": "report_recipient",
+              "label": "Report delivered to",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notification",
+              "label": "Customer notification time",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_folder",
+              "label": "Evidence folder or link",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "maintenance_notice",
+          "type": "notice",
+          "label": "Maintenance record limitation",
+          "guidance": "This log records work performed during the stated visit. It does not replace manufacturer instructions, energy-control procedures, electrical safe-work practices, refrigerant certification, combustion-safety requirements, or repair authorization."
+        },
+        {
+          "key": "signoff",
+          "type": "signatures",
+          "label": "Preventive maintenance sign-off",
+          "fields": [
+            {
+              "key": "lead_technician_signature",
+              "label": "Lead technician name or signature",
+              "units": 1.25
+            },
+            {
+              "key": "second_technician",
+              "label": "Second technician or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "facility_acknowledgment",
+              "label": "Facility acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "signed_date",
+              "label": "Date",
+              "units": 0.55
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

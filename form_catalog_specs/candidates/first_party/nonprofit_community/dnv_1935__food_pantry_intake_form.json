@@ -1,0 +1,521 @@
+{
+  "schema_version": 1,
+  "catalog_id": "nonprofit_community/dnv_1935__food_pantry_intake_form",
+  "source_section": "nonprofit_community",
+  "source_filename": "dnv_1935__food_pantry_intake_form.pdf",
+  "slug": "food-pantry-intake-form",
+  "title": "Food Pantry Household Intake and Service Record",
+  "subtitle": "Create a privacy-conscious household record for food needs, accommodations, optional self-attestation, service decisions, distribution, consent-based referrals, and useful follow-up.",
+  "description": "A food pantry household intake and service workflow covering minimal household reference data, age-band roster, food needs and practical limitations, communication and accessibility support, optional attestations and separate consents, policy review and exceptions, distribution history, referrals, privacy controls, and accountable closeout.",
+  "use_case": "Use when pantry staff need one fillable record to understand a household's requested food support, reduce unsuitable distribution, apply the program's approved eligibility process consistently, document each visit, make consent-based referrals, and retain only the information needed for service.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "visit_household_reference",
+      "title": "Program, visit, and household reference",
+      "guidance": "Create a usable household record while collecting only the identity, contact, and service-area information the program actually needs.",
+      "blocks": [
+        {
+          "key": "program_visit",
+          "type": "fields",
+          "label": "Pantry program and visit",
+          "fields": [
+            {"key": "pantry_program", "label": "Pantry or program", "units": 1.3},
+            {"key": "distribution_site", "label": "Distribution site", "units": 1.15},
+            {"key": "intake_date", "label": "Intake or visit date", "units": 0.95},
+            {"key": "intake_time", "label": "Intake time", "units": 0.75},
+            {"key": "household_id", "label": "Household ID or anonymous code", "units": 1.2},
+            {"key": "visit_type", "label": "Visit type", "units": 1.0, "field_type": "choice", "options": ["Select", "First visit", "Recertification", "Household update", "Distribution only", "Emergency service", "Referral visit"]}
+          ]
+        },
+        {
+          "key": "primary_contact",
+          "type": "fields",
+          "label": "Primary contact and communication preference",
+          "fields": [
+            {"key": "preferred_name", "label": "Primary contact or preferred name", "units": 1.35},
+            {"key": "phone", "label": "Phone, if provided", "units": 0.9},
+            {"key": "email", "label": "Email, if provided", "units": 1.15},
+            {"key": "contact_method", "label": "Preferred contact method", "units": 1.05, "field_type": "choice", "options": ["Select", "Phone call", "Text message", "Email", "Mail", "No routine contact", "Other"]},
+            {"key": "safe_contact_time", "label": "Safe or preferred contact time", "units": 1.15},
+            {"key": "authorized_contact", "label": "Authorized household contact, if any", "units": 1.2}
+          ]
+        },
+        {
+          "key": "service_access",
+          "type": "fields",
+          "label": "Service area and access support",
+          "fields": [
+            {"key": "address_service_area", "label": "Address or service area, only if required", "units": 1.55},
+            {"key": "preferred_language", "label": "Preferred language", "units": 1.0},
+            {"key": "interpreter", "label": "Interpreter requested", "units": 0.95, "field_type": "choice", "options": ["Select", "No", "Yes", "Offered and declined", "Pending arrangement"]},
+            {"key": "communication_support", "label": "Communication support", "units": 1.15},
+            {"key": "mobility_access", "label": "Pickup or delivery access need", "units": 1.15},
+            {"key": "intake_staff", "label": "Intake staff", "units": 0.9}
+          ]
+        },
+        {
+          "key": "data_minimization_checks",
+          "type": "checklist",
+          "label": "Privacy-conscious intake controls",
+          "items": [
+            "Household ID used where possible",
+            "Only approved required fields requested",
+            "No Social Security number collected",
+            "No full birth date collected",
+            "No immigration-status detail collected",
+            "No diagnosis detail requested",
+            "Privacy notice available",
+            "Communication preference confirmed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "household_food_needs",
+      "title": "Household roster and food-access needs",
+      "guidance": "Use first names or initials and age bands where sufficient; capture practical food needs without creating unnecessary identity or medical records.",
+      "blocks": [
+        {
+          "key": "household_roster",
+          "type": "table",
+          "label": "Household member roster",
+          "columns": [
+            {"key": "member", "label": "First name or initials", "units": 1.25},
+            {"key": "relationship", "label": "Relationship or household role", "units": 1.2},
+            {"key": "age_band", "label": "Age band", "units": 0.9},
+            {"key": "dietary_need", "label": "Dietary or allergy need", "units": 1.35},
+            {"key": "program_note", "label": "Service note, if needed", "units": 1.25}
+          ],
+          "rows": 8
+        },
+        {
+          "key": "household_counts",
+          "type": "fields",
+          "label": "Household and service counts",
+          "fields": [
+            {"key": "household_size", "label": "Total household size", "units": 0.95},
+            {"key": "children", "label": "Children age 0-17", "units": 0.9},
+            {"key": "adults", "label": "Adults age 18-59", "units": 0.9},
+            {"key": "older_adults", "label": "Adults age 60+", "units": 0.85},
+            {"key": "receiving_today", "label": "People receiving food today", "units": 1.1},
+            {"key": "household_change", "label": "Household change since last review", "units": 1.2}
+          ]
+        },
+        {
+          "key": "practical_food_limits",
+          "type": "checklist",
+          "label": "Storage, preparation, and access limitations",
+          "items": [
+            "No or limited refrigeration",
+            "No or limited freezer space",
+            "No stove or oven access",
+            "No microwave access",
+            "Limited cookware or utensils",
+            "Limited water access",
+            "Limited can-opening ability",
+            "Temporary housing or unstable storage",
+            "Home delivery access constraint",
+            "Transportation or carrying limitation",
+            "Packaging accessibility need",
+            "No practical limitation reported"
+          ]
+        },
+        {
+          "key": "food_need_context",
+          "type": "textarea",
+          "label": "Household food situation, practical limits, allergy or dietary context, urgent need, and what would make today's service useful",
+          "fields": [
+            {"key": "food_need_detail", "label": "Household food need and access context", "multiline": true}
+          ],
+          "height": 62,
+          "guidance": "Record service-relevant facts; avoid medical diagnoses, immigration detail, or explanations the program does not need."
+        }
+      ]
+    },
+    {
+      "key": "preferences_accommodations",
+      "title": "Food preferences, substitutions, and accommodations",
+      "guidance": "Use household preferences to reduce waste, protect allergy needs, and improve equitable access without promising unavailable items.",
+      "blocks": [
+        {
+          "key": "requested_support",
+          "type": "checklist",
+          "label": "Requested food or service support",
+          "items": [
+            "Shelf-stable food",
+            "Fresh produce",
+            "Protein",
+            "Dairy or alternative",
+            "Infant supplies",
+            "Senior-friendly items",
+            "No-cook items",
+            "Low-sodium options",
+            "Diabetic-friendly options",
+            "Culturally preferred foods",
+            "Religious dietary preference",
+            "Allergy-aware selection",
+            "Home delivery",
+            "Transportation support",
+            "Hygiene or household supplies",
+            "Other support documented"
+          ]
+        },
+        {
+          "key": "preference_detail",
+          "type": "textarea",
+          "label": "Allergies, dietary restrictions, religious or cultural preferences, requested substitutions, accessibility needs, and delivery directions",
+          "fields": [
+            {"key": "preference_detail_text", "label": "Food preference and accommodation detail", "multiline": true}
+          ],
+          "height": 72
+        },
+        {
+          "key": "accommodation_plan",
+          "type": "fields",
+          "label": "Accommodation and communication plan",
+          "fields": [
+            {"key": "accommodation_requested", "label": "Accommodation requested", "units": 1.25},
+            {"key": "staff_response", "label": "Staff response", "units": 1.1},
+            {"key": "approved_by", "label": "Approved or reviewed by", "units": 1.1},
+            {"key": "effective_date", "label": "Effective date", "units": 0.85},
+            {"key": "review_date", "label": "Review date", "units": 0.85},
+            {"key": "alternative_offered", "label": "Alternative offered, if any", "units": 1.15}
+          ]
+        },
+        {
+          "key": "substitution_controls",
+          "type": "checklist",
+          "label": "Selection and substitution controls",
+          "items": [
+            "Allergy need flagged for selection",
+            "Ingredient label review requested",
+            "Requested preference available",
+            "Household accepted substitution",
+            "Household declined substitution",
+            "No suitable substitution available",
+            "Quantity or storage limit considered",
+            "Packaging support provided",
+            "Delivery instruction confirmed",
+            "Follow-up needed"
+          ]
+        },
+        {
+          "key": "food_safety_boundary",
+          "type": "notice",
+          "label": "Food-selection boundary",
+          "guidance": "This form records household-reported needs and service decisions; it is not medical or nutrition advice and does not guarantee that a product is allergen-free. Follow the pantry's current food-safety and handling procedures, preserve package labels when needed, and obtain qualified review for questions outside staff authority."
+        }
+      ]
+    },
+    {
+      "key": "attestation_consent",
+      "title": "Optional self-attestation, privacy notice, and separate consents",
+      "guidance": "Apply only the program's approved eligibility process and keep service eligibility separate from optional communication, publicity, and referral permissions.",
+      "blocks": [
+        {
+          "key": "attestation_reference",
+          "type": "fields",
+          "label": "Program self-attestation reference",
+          "fields": [
+            {"key": "policy_version", "label": "Eligibility policy version", "units": 1.15},
+            {"key": "attestation_basis", "label": "Approved attestation basis", "units": 1.25},
+            {"key": "attestation_status", "label": "Attestation status", "units": 1.05, "field_type": "choice", "options": ["Select", "Completed", "Declined", "Not required", "Assistance requested", "Alternative process used", "Pending review"]},
+            {"key": "rules_provided", "label": "Program rules provided by", "units": 1.1},
+            {"key": "privacy_provided", "label": "Privacy notice provided by", "units": 1.1},
+            {"key": "support_used", "label": "Communication support used", "units": 1.25}
+          ]
+        },
+        {
+          "key": "separate_consents",
+          "type": "fields",
+          "label": "Separate and revocable consent choices",
+          "fields": [
+            {"key": "service_contact_consent", "label": "Service contact permission", "units": 1.2, "field_type": "choice", "options": ["Select", "Granted", "Declined", "Not requested", "Revoked"]},
+            {"key": "referral_contact_consent", "label": "Referral contact sharing", "units": 1.2, "field_type": "choice", "options": ["Select", "Granted for named referral", "Declined", "Not requested", "Revoked"]},
+            {"key": "photo_consent", "label": "Photo permission", "units": 1.0, "field_type": "choice", "options": ["Select", "Granted", "Declined", "Not requested", "Revoked"]},
+            {"key": "story_consent", "label": "Story or testimonial permission", "units": 1.15, "field_type": "choice", "options": ["Select", "Granted", "Declined", "Not requested", "Revoked"]},
+            {"key": "consent_date", "label": "Consent decision date", "units": 0.95},
+            {"key": "consent_scope", "label": "Named purpose, scope, or limit", "units": 1.25}
+          ]
+        },
+        {
+          "key": "attestation_checks",
+          "type": "checklist",
+          "label": "Participant acknowledgment",
+          "items": [
+            "Information is accurate to the best of participant's knowledge",
+            "Food is requested for this household",
+            "Program rules received or explained",
+            "Privacy notice received or explained",
+            "Questions answered or routed",
+            "Alternative completion support offered",
+            "Optional consents explained separately",
+            "Participant received a copy or access instructions"
+          ]
+        },
+        {
+          "key": "eligibility_privacy_notice",
+          "type": "notice",
+          "label": "Eligibility, dignity, and privacy safeguard",
+          "guidance": "Do not add income, immigration, disability, identity-document, or other sensitive requirements unless the specific program requires them and authorized staff have approved instructions, privacy controls, retention rules, and reasonable alternatives. Never condition food assistance on photo, story, testimonial, marketing, or unrelated referral consent."
+        },
+        {
+          "key": "attestation_signatures",
+          "type": "signatures",
+          "label": "Self-attestation and intake acknowledgment",
+          "fields": [
+            {"key": "participant_signature", "label": "Participant attestation or acknowledgment", "units": 1.4},
+            {"key": "participant_date", "label": "Date and time", "units": 0.85},
+            {"key": "intake_signature", "label": "Intake staff signature", "units": 1.15},
+            {"key": "interpreter_signature", "label": "Interpreter or support person, if used", "units": 1.25},
+            {"key": "support_date", "label": "Support date and time", "units": 0.9}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "program_review",
+      "title": "Program review, service decision, and exception control",
+      "guidance": "Document how the current written policy was applied, who approved an exception or accommodation, and what the participant should expect next.",
+      "blocks": [
+        {
+          "key": "review_reference",
+          "type": "fields",
+          "label": "Review and service-frequency reference",
+          "fields": [
+            {"key": "household_reference", "label": "Household ID or anonymous code", "units": 1.2},
+            {"key": "reviewed_by", "label": "Reviewed by", "units": 0.95},
+            {"key": "review_date", "label": "Review date", "units": 0.85},
+            {"key": "next_review", "label": "Next review or update due", "units": 1.05},
+            {"key": "service_frequency", "label": "Approved service frequency", "units": 1.15},
+            {"key": "decision_reference", "label": "Decision or case reference", "units": 1.1}
+          ]
+        },
+        {
+          "key": "service_status",
+          "type": "checklist",
+          "label": "Service decision and support status",
+          "items": [
+            "Service provided",
+            "Pending information",
+            "Alternative completion support",
+            "Referred elsewhere",
+            "Outside service area",
+            "Emergency exception",
+            "Home delivery approved",
+            "Accommodation approved",
+            "Accommodation alternative offered",
+            "Supervisor review required",
+            "Participant explanation provided",
+            "Decision pending"
+          ]
+        },
+        {
+          "key": "policy_rationale",
+          "type": "textarea",
+          "label": "Policy basis, service decision, approved exception, accommodation, participant explanation, unresolved question, and next step",
+          "fields": [
+            {"key": "policy_rationale_detail", "label": "Program decision and rationale", "multiline": true}
+          ],
+          "height": 66,
+          "guidance": "Exclude diagnoses and unnecessary financial, immigration, disability, or identity detail."
+        },
+        {
+          "key": "exception_tracker",
+          "type": "table",
+          "label": "Eligibility, access, or service exception tracker",
+          "columns": [
+            {"key": "issue", "label": "Issue or exception", "units": 1.25},
+            {"key": "immediate_service", "label": "Immediate service response", "units": 1.25},
+            {"key": "review_owner", "label": "Review owner", "units": 0.95},
+            {"key": "due_date", "label": "Due date", "units": 0.8},
+            {"key": "decision", "label": "Decision or alternative", "units": 1.2},
+            {"key": "participant_notified", "label": "Participant notified", "units": 1.05}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "decision_signatures",
+          "type": "signatures",
+          "label": "Service decision review",
+          "fields": [
+            {"key": "reviewer_signature", "label": "Program reviewer signature", "units": 1.25},
+            {"key": "supervisor_signature", "label": "Supervisor or exception approval", "units": 1.35},
+            {"key": "decision_date", "label": "Decision date", "units": 0.8},
+            {"key": "notice_by", "label": "Participant notice provided by", "units": 1.2},
+            {"key": "notice_date", "label": "Notice date", "units": 0.8}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "distribution_history",
+      "title": "Distribution and visit history",
+      "guidance": "Create a consistent service history that supports the household, inventory planning, handoff, and exception follow-up without duplicating sensitive intake data.",
+      "blocks": [
+        {
+          "key": "service_history",
+          "type": "table",
+          "label": "Household distribution and service history",
+          "columns": [
+            {"key": "visit_date", "label": "Visit date", "units": 0.8},
+            {"key": "distribution", "label": "Distribution or service", "units": 1.4},
+            {"key": "household_quantity", "label": "Household size or quantity", "units": 1.05},
+            {"key": "staff", "label": "Staff", "units": 0.8},
+            {"key": "method", "label": "Pickup or delivery", "units": 0.95},
+            {"key": "exception", "label": "Exception or note", "units": 1.25}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "current_distribution",
+          "type": "fields",
+          "label": "Current distribution completion",
+          "fields": [
+            {"key": "distribution_type", "label": "Distribution type", "units": 1.15},
+            {"key": "package_quantity", "label": "Package or quantity reference", "units": 1.1},
+            {"key": "pickup_delivery", "label": "Pickup or delivery method", "units": 1.1},
+            {"key": "completed_time", "label": "Completed time", "units": 0.85},
+            {"key": "completed_by", "label": "Completed by", "units": 0.9},
+            {"key": "inventory_reference", "label": "Inventory or transaction reference", "units": 1.2}
+          ]
+        },
+        {
+          "key": "distribution_controls",
+          "type": "checklist",
+          "label": "Distribution and handoff checks",
+          "items": [
+            "Household reference matched",
+            "Household size or quantity confirmed",
+            "Allergy or dietary note reviewed",
+            "Storage and cooking limits considered",
+            "Substitution accepted",
+            "Substitution declined",
+            "Delivery address or handoff verified",
+            "Participant received safe-handling information",
+            "Shortage or unavailable item documented",
+            "Follow-up or exception assigned"
+          ]
+        },
+        {
+          "key": "distribution_exception",
+          "type": "textarea",
+          "label": "Unavailable item, substitution, shortage, delivery problem, participant concern, immediate response, owner, and follow-up",
+          "fields": [
+            {"key": "distribution_exception_detail", "label": "Distribution exception and follow-up", "multiline": true}
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "referrals_closeout",
+      "title": "Consent-based referrals, follow-up, and record closeout",
+      "guidance": "Offer requested resources without coercion, share contact information only within the recorded consent, and make every remaining action and record owner visible.",
+      "blocks": [
+        {
+          "key": "referral_types",
+          "type": "checklist",
+          "label": "Requested or offered referral",
+          "items": [
+            "Benefits navigation",
+            "Housing support",
+            "Utility assistance",
+            "Transportation",
+            "Employment support",
+            "Healthcare access",
+            "Senior services",
+            "Child or family services",
+            "Legal aid",
+            "Domestic violence support",
+            "Emergency food resource",
+            "No referral requested"
+          ]
+        },
+        {
+          "key": "referral_tracker",
+          "type": "table",
+          "label": "Referral and follow-up tracker",
+          "columns": [
+            {"key": "resource", "label": "Resource or agency", "units": 1.3},
+            {"key": "consent_scope", "label": "Consent and scope", "units": 1.0},
+            {"key": "referred_date", "label": "Referred date", "units": 0.8},
+            {"key": "information_shared", "label": "Information shared", "units": 1.1},
+            {"key": "followup_owner", "label": "Follow-up owner", "units": 1.0},
+            {"key": "status_outcome", "label": "Status or outcome", "units": 1.15}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "open_followup",
+          "type": "table",
+          "label": "Open action, limitation, or transferred follow-up",
+          "columns": [
+            {"key": "item", "label": "Open item or limitation", "units": 1.4},
+            {"key": "owner", "label": "Owner or receiving program", "units": 1.2},
+            {"key": "due_point", "label": "Due date or trigger", "units": 0.95},
+            {"key": "participant_handoff", "label": "Participant handoff", "units": 1.15},
+            {"key": "status", "label": "Status or outcome", "units": 1.0}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "referral_privacy_notice",
+          "type": "notice",
+          "label": "Referral, confidentiality, and retention boundary",
+          "guidance": "Ask permission before sharing contact information, share only what the participant authorized for the named purpose, and record revocation or limits. Store this record under the pantry's applicable privacy and retention policy, limit access, avoid free-text medical detail, and never condition service on accepting a referral."
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Visit and record closeout verification",
+          "items": [
+            "Service decision documented",
+            "Distribution or referral outcome documented",
+            "Participant received next-step information",
+            "Consent scope honored",
+            "Open follow-up assigned",
+            "Accommodation or exception handed off",
+            "Access and retention route confirmed",
+            "Unnecessary duplicate records avoided"
+          ]
+        },
+        {
+          "key": "closeout_summary",
+          "type": "textarea",
+          "label": "Service outcome, participant handoff, unresolved limitation, next action, responsible owner, and reason this visit record can close",
+          "fields": [
+            {"key": "closeout_summary_detail", "label": "Visit closeout and handoff summary", "multiline": true}
+          ],
+          "height": 64
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Visit and household record status",
+          "fields": [
+            {"key": "visit_status", "label": "Visit status", "units": 1.0, "field_type": "choice", "options": ["Select", "Completed", "Completed with follow-up", "Pending", "Referred", "Unable to complete", "Declined"]},
+            {"key": "next_service_date", "label": "Next eligible or planned service date", "units": 1.25},
+            {"key": "next_contact", "label": "Next contact, if consented", "units": 1.1},
+            {"key": "record_location", "label": "Record location", "units": 1.0},
+            {"key": "retention_review", "label": "Retention or access review", "units": 1.1},
+            {"key": "last_updated", "label": "Last updated date and time", "units": 1.05}
+          ]
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Service record closeout",
+          "fields": [
+            {"key": "staff_signature", "label": "Staff closeout signature", "units": 1.2},
+            {"key": "supervisor_review", "label": "Supervisor review, if required", "units": 1.25},
+            {"key": "participant_acknowledgment", "label": "Participant acknowledgment, if used", "units": 1.3},
+            {"key": "closeout_date", "label": "Closeout date", "units": 0.8},
+            {"key": "closeout_time", "label": "Closeout time", "units": 0.75}
+          ]
+        }
+      ]
+    }
+  ]
+}

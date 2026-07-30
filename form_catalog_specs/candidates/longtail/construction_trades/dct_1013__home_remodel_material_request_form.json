@@ -1,0 +1,502 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1013__home_remodel_material_request_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1013__home_remodel_material_request_form.pdf",
+  "slug": "home-remodel-material-request-form",
+  "title": "Home Remodel Material Request and Selection Control",
+  "subtitle": "Carry room-specific material needs from field measurement and homeowner selection through allowance approval, occupied-home delivery, receiving inspection, installation custody, and final reconciliation.",
+  "description": "A workflow-complete material request for occupied-home remodeling covering residence and room routing, measured quantities, matching existing finishes, approved selections and samples, owner-furnished items, allowances and upgrade decisions, substitution approval, long-lead planning, protected delivery and storage, children and pets, receiving evidence, damage or shortage disposition, installer issue, returns and spares, invoice reconciliation, warranty records, homeowner handoff, and accountable closeout.",
+  "use_case": "Use when a remodeler, designer, supplier, installer, and homeowner need one fillable record that protects an approved room selection and budget while materials are sourced, delivered into an occupied residence, inspected, controlled through installation, and closed out.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_home_identity",
+      "title": "Request, residence, room, and need-by routing",
+      "guidance": "Identify the controlling request, household setting, exact installation area, schedule need, and people accountable for the material decision.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Material request reference",
+          "fields": [
+            {"key": "request_number", "label": "Request number", "units": 0.75},
+            {"key": "request_date", "label": "Request date", "units": 0.65},
+            {"key": "need_by_date", "label": "Need-by date", "units": 0.7},
+            {"key": "priority", "label": "Priority", "units": 0.85, "field_type": "choice", "options": ["Routine", "Selection deadline", "Schedule critical", "Expedite", "Emergency repair", "Hold for decision"]},
+            {"key": "request_status", "label": "Request status", "units": 0.9, "field_type": "choice", "options": ["Draft", "Submitted", "Pricing", "Owner decision", "Approved", "Ordered", "Partially received", "Closed"]},
+            {"key": "supersedes_request", "label": "Supersedes request", "units": 0.85}
+          ]
+        },
+        {
+          "key": "residence_room",
+          "type": "fields",
+          "label": "Residence and installation location",
+          "fields": [
+            {"key": "homeowner_names", "label": "Homeowner names", "units": 1.05},
+            {"key": "property_address", "label": "Property address", "units": 1.3},
+            {"key": "room_zone", "label": "Room, elevation, or zone", "units": 1.0},
+            {"key": "trade_scope", "label": "Trade or scope", "units": 0.85},
+            {"key": "occupancy_status", "label": "Occupancy status", "units": 0.85, "field_type": "choice", "options": ["Occupied", "Partially occupied", "Temporary move-out", "Vacant"]},
+            {"key": "installation_start", "label": "Planned installation start", "units": 0.95}
+          ]
+        },
+        {
+          "key": "responsible_people",
+          "type": "fields",
+          "label": "Requester, decision makers, and receiving contacts",
+          "fields": [
+            {"key": "requested_by", "label": "Requested by", "units": 0.85},
+            {"key": "project_manager", "label": "Project manager", "units": 0.9},
+            {"key": "designer_selector", "label": "Designer or selection lead", "units": 1.0},
+            {"key": "homeowner_decider", "label": "Homeowner decision maker", "units": 1.05},
+            {"key": "install_lead", "label": "Installing trade lead", "units": 0.95},
+            {"key": "receiving_contact", "label": "On-site receiving contact", "units": 1.0}
+          ]
+        },
+        {
+          "key": "need_context",
+          "type": "textarea",
+          "label": "Why the material is needed, affected room sequence, predecessor work, selection deadline, and consequence if late",
+          "fields": [
+            {"key": "need_context_detail", "label": "Request need and schedule context"}
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "room_material_definition",
+      "title": "Room material, measurement, and match definition",
+      "guidance": "Define each item against verified field conditions, the intended room, and any existing-home feature that must be matched or protected.",
+      "blocks": [
+        {
+          "key": "requested_materials",
+          "type": "table",
+          "label": "Room-specific material line items",
+          "columns": [
+            {"key": "room_use", "label": "Room and use", "units": 0.9},
+            {"key": "material_product", "label": "Material or product", "units": 1.25},
+            {"key": "size_profile", "label": "Size, profile, or model", "units": 1.05},
+            {"key": "quantity_unit", "label": "Quantity and unit", "units": 0.8},
+            {"key": "waste_factor", "label": "Waste or attic stock", "units": 0.8},
+            {"key": "need_by", "label": "Need by", "units": 0.65}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "measurement_control",
+          "type": "fields",
+          "label": "Field measurement and existing-condition control",
+          "fields": [
+            {"key": "measured_by", "label": "Measured by", "units": 0.8},
+            {"key": "measurement_date", "label": "Measurement date", "units": 0.75},
+            {"key": "drawing_sketch_ref", "label": "Drawing or sketch reference", "units": 1.05},
+            {"key": "substrate_condition", "label": "Substrate or opening condition", "units": 1.1},
+            {"key": "tolerance_clearance", "label": "Tolerance or clearance", "units": 0.95},
+            {"key": "remeasure_trigger", "label": "Remeasure trigger", "units": 0.95}
+          ]
+        },
+        {
+          "key": "requirement_basis",
+          "type": "checklist",
+          "label": "Material requirement basis confirmed",
+          "items": [
+            "Field dimensions verified",
+            "Existing substrate exposed enough to verify",
+            "Approved room plan reviewed",
+            "Finish schedule reviewed",
+            "Homeowner selection record reviewed",
+            "Physical sample or mockup reviewed",
+            "Manufacturer installation requirements checked",
+            "Compatibility with adjacent material checked",
+            "Moisture or acclimation requirement checked",
+            "Code listing or certification checked",
+            "Warranty conditions checked",
+            "Waste and future repair stock included"
+          ]
+        },
+        {
+          "key": "existing_finish_match",
+          "type": "table",
+          "label": "Existing-home finish and interface match register",
+          "columns": [
+            {"key": "room_interface", "label": "Room or interface", "units": 1.0},
+            {"key": "existing_feature", "label": "Existing feature", "units": 1.0},
+            {"key": "match_attribute", "label": "Color, grain, profile, or lot", "units": 1.15},
+            {"key": "sample_photo", "label": "Sample or photo ref.", "units": 0.9},
+            {"key": "match_standard", "label": "Acceptance standard", "units": 1.0},
+            {"key": "reviewer_date", "label": "Reviewer and date", "units": 0.95}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "technical_match_notes",
+          "type": "textarea",
+          "label": "Special fabrication, sequencing, dye-lot, grain, transition, repair-stock, compatibility, or matching instructions",
+          "fields": [
+            {"key": "technical_match_detail", "label": "Technical and existing-home match requirements"}
+          ],
+          "height": 72
+        }
+      ]
+    },
+    {
+      "key": "selection_allowance_decision",
+      "title": "Selections, allowances, substitutions, and owner decision",
+      "guidance": "Connect the chosen product to the approved selection, contract allowance, complete installed impact, and required written homeowner authorization.",
+      "blocks": [
+        {
+          "key": "selection_record",
+          "type": "fields",
+          "label": "Approved selection and sample control",
+          "fields": [
+            {"key": "selection_log_id", "label": "Selection log ID", "units": 0.8},
+            {"key": "manufacturer", "label": "Manufacturer", "units": 0.9},
+            {"key": "collection_model", "label": "Collection, model, or SKU", "units": 1.1},
+            {"key": "color_finish", "label": "Color or finish", "units": 0.9},
+            {"key": "sample_location", "label": "Approved sample location", "units": 1.05},
+            {"key": "selection_approved_date", "label": "Selection approval date", "units": 0.85}
+          ]
+        },
+        {
+          "key": "ownership_responsibility",
+          "type": "fields",
+          "label": "Purchase and owner-furnished responsibility",
+          "fields": [
+            {"key": "purchase_responsibility", "label": "Purchased by", "units": 0.9, "field_type": "choice", "options": ["Contractor", "Homeowner", "Designer", "Trade partner", "Direct vendor"]},
+            {"key": "owner_furnished_due", "label": "Owner-furnished handoff date", "units": 1.0},
+            {"key": "freight_responsibility", "label": "Freight responsibility", "units": 0.95},
+            {"key": "tax_responsibility", "label": "Tax responsibility", "units": 0.9},
+            {"key": "damage_risk_transfer", "label": "Damage risk transfers at", "units": 1.05},
+            {"key": "warranty_registrant", "label": "Warranty registrant", "units": 0.95}
+          ]
+        },
+        {
+          "key": "allowance_upgrade_comparison",
+          "type": "table",
+          "label": "Allowance, upgrade, credit, and installed-cost comparison",
+          "columns": [
+            {"key": "room_item", "label": "Room and item", "units": 1.0},
+            {"key": "allowance_baseline", "label": "Allowance or baseline", "units": 0.9},
+            {"key": "selected_cost", "label": "Selected material cost", "units": 0.85},
+            {"key": "related_labor", "label": "Related labor or prep", "units": 0.9},
+            {"key": "tax_freight", "label": "Tax and freight", "units": 0.8},
+            {"key": "overage_credit", "label": "Net overage or credit", "units": 0.95}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "availability_substitution",
+          "type": "checklist",
+          "label": "Availability and substitution review completed",
+          "items": [
+            "Current stock verified",
+            "Production lead time verified",
+            "Required quantity reserved",
+            "Single dye or production lot requested",
+            "Discontinued-product risk checked",
+            "Split shipment evaluated",
+            "Substitute sample provided",
+            "Visual match compared in the room",
+            "Performance and warranty compared",
+            "Related labor and schedule impact priced",
+            "Designer review obtained if required",
+            "Homeowner written approval obtained"
+          ]
+        },
+        {
+          "key": "selection_decision",
+          "type": "fields",
+          "label": "Homeowner cost and product decision",
+          "fields": [
+            {"key": "owner_decision", "label": "Owner decision", "units": 0.95, "field_type": "choice", "options": ["Approve product", "Approve substitute", "Approve overage", "Accept credit", "Revise selection", "Defer decision", "Reject request"]},
+            {"key": "approved_product", "label": "Approved product or option", "units": 1.15},
+            {"key": "approved_net_change", "label": "Approved net change", "units": 0.85},
+            {"key": "change_order_ref", "label": "Change order reference", "units": 0.95},
+            {"key": "decision_by", "label": "Decision by", "units": 0.8},
+            {"key": "decision_date", "label": "Decision date", "units": 0.7}
+          ]
+        },
+        {
+          "key": "selection_exception_notes",
+          "type": "textarea",
+          "label": "Rejected options, unavailable selections, accepted match limitations, conditions of approval, and unresolved decision risk",
+          "fields": [
+            {"key": "selection_exception_detail", "label": "Selection and authorization notes"}
+          ],
+          "height": 62
+        },
+        {
+          "key": "substitution_control_notice",
+          "type": "notice",
+          "label": "Selection and purchasing control",
+          "guidance": "Supplier availability, a verbal preference, or purchasing approval does not by itself authorize a changed product, finish, allowance overage, or schedule impact. Obtain the required written homeowner and project approvals before ordering a material that differs from the accepted selection or contract basis."
+        }
+      ]
+    },
+    {
+      "key": "order_occupied_delivery",
+      "title": "Ordering and protected occupied-home delivery",
+      "guidance": "Place a traceable order and plan delivery, unloading, movement, and storage around household access, property protection, and installation readiness.",
+      "blocks": [
+        {
+          "key": "order_authorization",
+          "type": "fields",
+          "label": "Order and supplier authorization",
+          "fields": [
+            {"key": "supplier", "label": "Supplier", "units": 0.9},
+            {"key": "quote_number", "label": "Quote number", "units": 0.75},
+            {"key": "purchase_order", "label": "Purchase order", "units": 0.8},
+            {"key": "vendor_order", "label": "Vendor order", "units": 0.8},
+            {"key": "ordered_by_date", "label": "Ordered by and date", "units": 1.0},
+            {"key": "committed_total", "label": "Committed total", "units": 0.8}
+          ]
+        },
+        {
+          "key": "shipment_tracking",
+          "type": "table",
+          "label": "Production and shipment milestone tracking",
+          "columns": [
+            {"key": "item_order", "label": "Item or order", "units": 1.05},
+            {"key": "release_status", "label": "Release or production", "units": 1.0},
+            {"key": "ship_date", "label": "Ship date", "units": 0.65},
+            {"key": "tracking", "label": "Tracking", "units": 0.85},
+            {"key": "delivery_window", "label": "Delivery window", "units": 0.85},
+            {"key": "action_owner", "label": "Status and owner", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "household_delivery_controls",
+          "type": "checklist",
+          "label": "Occupied-home delivery controls confirmed",
+          "items": [
+            "Homeowner notified of delivery window",
+            "HOA or building rules checked",
+            "Driveway, gate, or elevator access arranged",
+            "Quiet hours and school or work needs considered",
+            "Children and pets separated from route",
+            "Vehicle and pedestrian route protected",
+            "Doorways, floors, stairs, and corners protected",
+            "Unloading labor and equipment assigned",
+            "Weather exposure plan ready",
+            "Garage or room staging space cleared",
+            "Climate and acclimation conditions ready",
+            "Security and overnight custody assigned",
+            "Packaging and debris removal planned",
+            "Installation area confirmed ready"
+          ]
+        },
+        {
+          "key": "delivery_storage_plan",
+          "type": "fields",
+          "label": "Delivery, movement, and storage plan",
+          "fields": [
+            {"key": "delivery_address", "label": "Delivery address or entrance", "units": 1.15},
+            {"key": "driver_contact", "label": "Carrier or driver contact", "units": 1.0},
+            {"key": "unloading_method", "label": "Unloading method", "units": 0.9},
+            {"key": "interior_route", "label": "Interior movement route", "units": 1.0},
+            {"key": "staging_location", "label": "Staging or acclimation location", "units": 1.1},
+            {"key": "custodian", "label": "Material custodian", "units": 0.85}
+          ]
+        },
+        {
+          "key": "special_delivery_instructions",
+          "type": "textarea",
+          "label": "Split-shipment, room labeling, packaging, lifting, weather, resident-route, protection, acclimation, and after-hours instructions",
+          "fields": [
+            {"key": "special_delivery_detail", "label": "Special delivery and occupied-home handling plan"}
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "receiving_exception_control",
+      "title": "Receiving inspection, evidence, and exception control",
+      "guidance": "Inspect the shipment against the approved room selection before acceptance, movement into the home, fabrication, or installation.",
+      "blocks": [
+        {
+          "key": "receipt_reference",
+          "type": "fields",
+          "label": "Receipt and delivery identity",
+          "fields": [
+            {"key": "receipt_number", "label": "Receipt number", "units": 0.75},
+            {"key": "delivery_date", "label": "Delivery date", "units": 0.7},
+            {"key": "arrival_time", "label": "Arrival time", "units": 0.6},
+            {"key": "packing_slip", "label": "Packing slip", "units": 0.85},
+            {"key": "received_by", "label": "Received by", "units": 0.8},
+            {"key": "homeowner_present", "label": "Homeowner present", "units": 0.85, "field_type": "choice", "options": ["Yes", "No", "Not required"]}
+          ]
+        },
+        {
+          "key": "received_materials",
+          "type": "table",
+          "label": "Room material receipt and condition register",
+          "columns": [
+            {"key": "room_item", "label": "Room and item", "units": 1.05},
+            {"key": "ordered_received", "label": "Ordered and received", "units": 0.9},
+            {"key": "product_finish", "label": "Product and finish", "units": 1.05},
+            {"key": "lot_serial", "label": "Lot, batch, or serial", "units": 0.9},
+            {"key": "condition", "label": "Condition", "units": 0.8},
+            {"key": "accepted_location", "label": "Accepted quantity and location", "units": 1.2}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "receiving_inspection",
+          "type": "checklist",
+          "label": "Receiving and room-selection verification completed",
+          "items": [
+            "Purchase order and packing slip matched",
+            "Correct room labels present",
+            "Manufacturer and product verified",
+            "Size, model, and profile verified",
+            "Color, grain, sheen, and finish verified",
+            "Dye, batch, or production lot recorded",
+            "Quantity counted",
+            "Packaging and concealed damage checked",
+            "Moisture or acclimation reading recorded",
+            "Sample or selection record matched",
+            "Certifications and warranty documents received",
+            "Photos captured before movement",
+            "Homeowner or designer review obtained if required",
+            "Protected storage conditions confirmed"
+          ]
+        },
+        {
+          "key": "receipt_exceptions",
+          "type": "table",
+          "label": "Shortage, damage, mismatch, or nonconformance register",
+          "columns": [
+            {"key": "room_item_issue", "label": "Room, item, and issue", "units": 1.3},
+            {"key": "affected_quantity", "label": "Affected quantity", "units": 0.75},
+            {"key": "evidence_ref", "label": "Photo or evidence", "units": 0.9},
+            {"key": "hold_location", "label": "Hold or quarantine location", "units": 1.0},
+            {"key": "resolution_owner", "label": "Resolution owner", "units": 0.85},
+            {"key": "due_date", "label": "Due date", "units": 0.65}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "receipt_disposition",
+          "type": "fields",
+          "label": "Receipt decision and supplier response",
+          "fields": [
+            {"key": "receipt_decision", "label": "Receipt decision", "units": 1.0, "field_type": "choice", "options": ["Accept", "Accept with noted exception", "Partial reject", "Reject", "Quarantine for review"]},
+            {"key": "supplier_notified", "label": "Supplier notified by and date", "units": 1.05},
+            {"key": "claim_rma", "label": "Claim or RMA reference", "units": 0.9},
+            {"key": "replacement_commitment", "label": "Replacement commitment", "units": 1.0},
+            {"key": "schedule_escalation", "label": "Schedule escalation owner", "units": 1.0},
+            {"key": "disposition_approved", "label": "Disposition approved by and date", "units": 1.1}
+          ]
+        },
+        {
+          "key": "receipt_control_notice",
+          "type": "notice",
+          "label": "Receipt and installation control",
+          "guidance": "Keep damaged, mismatched, unapproved, wet, incomplete, or otherwise questionable material identified and separate from accepted stock. Delivery, homeowner presence, or invoice payment does not authorize installation while selection, quality, certification, or substitution acceptance remains unresolved."
+        }
+      ]
+    },
+    {
+      "key": "custody_handoff_closeout",
+      "title": "Installation custody, homeowner handoff, and closeout",
+      "guidance": "Track accepted material into the correct room, resolve surplus and returns, reconcile allowance and invoice records, and hand over useful spares and warranty evidence.",
+      "blocks": [
+        {
+          "key": "storage_release",
+          "type": "fields",
+          "label": "Storage, acclimation, and installation release",
+          "fields": [
+            {"key": "storage_condition", "label": "Storage condition verified by", "units": 1.05},
+            {"key": "acclimation_start", "label": "Acclimation start", "units": 0.8},
+            {"key": "release_to_install", "label": "Released to install by and date", "units": 1.05},
+            {"key": "final_room", "label": "Final installation room", "units": 0.95},
+            {"key": "installer", "label": "Installer", "units": 0.8},
+            {"key": "installation_complete", "label": "Installation completion date", "units": 1.0}
+          ]
+        },
+        {
+          "key": "installer_issue",
+          "type": "table",
+          "label": "Material issue to room and installer",
+          "columns": [
+            {"key": "item", "label": "Material item", "units": 1.05},
+            {"key": "quantity", "label": "Quantity", "units": 0.65},
+            {"key": "lot_serial", "label": "Lot or serial", "units": 0.85},
+            {"key": "room_location", "label": "Room or location", "units": 1.0},
+            {"key": "issued_date", "label": "Issued date", "units": 0.7},
+            {"key": "installer_ack", "label": "Installer acknowledgment", "units": 1.05}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "surplus_spares_returns",
+          "type": "table",
+          "label": "Surplus, homeowner spares, return, or disposal disposition",
+          "columns": [
+            {"key": "item_quantity", "label": "Item and quantity", "units": 1.15},
+            {"key": "disposition", "label": "Disposition", "units": 0.95},
+            {"key": "homeowner_location", "label": "Handoff or storage location", "units": 1.15},
+            {"key": "return_credit", "label": "Return or credit reference", "units": 1.0},
+            {"key": "verified_by_date", "label": "Verified by and date", "units": 1.0}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "financial_reconciliation",
+          "type": "fields",
+          "label": "Allowance, invoice, and credit reconciliation",
+          "fields": [
+            {"key": "accepted_material_total", "label": "Accepted material total", "units": 0.95},
+            {"key": "freight_tax_total", "label": "Freight and tax total", "units": 0.9},
+            {"key": "return_credit_total", "label": "Return or credit total", "units": 0.9},
+            {"key": "final_invoice", "label": "Final invoice reference", "units": 0.9},
+            {"key": "final_allowance_variance", "label": "Final allowance variance", "units": 1.0},
+            {"key": "reconciliation_owner", "label": "Reconciled by and date", "units": 1.0}
+          ]
+        },
+        {
+          "key": "homeowner_closeout_check",
+          "type": "checklist",
+          "label": "Material handoff and closeout completed",
+          "items": [
+            "All approved items received or canceled",
+            "Shortages and damage resolved",
+            "Room selection and match acceptance recorded",
+            "Installer custody acknowledged",
+            "Unused material removed from living areas",
+            "Homeowner spares labeled by room",
+            "Care and cleaning instructions delivered",
+            "Warranty and registration records delivered",
+            "Returns and credits documented",
+            "Allowance and invoice totals reconciled",
+            "Open defect or backorder owner assigned",
+            "Final material record filed with project closeout"
+          ]
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Material request, receipt, and homeowner handoff acknowledgment",
+          "fields": [
+            {"key": "requester_signature", "label": "Requester signature", "units": 1.15},
+            {"key": "requester_date", "label": "Date", "units": 0.55},
+            {"key": "installer_signature", "label": "Installer signature", "units": 1.15},
+            {"key": "installer_date", "label": "Date", "units": 0.55},
+            {"key": "homeowner_signature", "label": "Homeowner acknowledgment", "units": 1.25},
+            {"key": "homeowner_date", "label": "Date", "units": 0.55}
+          ]
+        },
+        {
+          "key": "closeout_notice",
+          "type": "notice",
+          "label": "Closeout condition",
+          "guidance": "Close this request only when the accepted selection, quantities, room custody, shortages, returns, credits, allowance impact, final invoice, spares, and warranty records reconcile, or when each unresolved outcome has a named owner, due date, and documented homeowner handoff."
+        }
+      ]
+    }
+  ]
+}

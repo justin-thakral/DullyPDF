@@ -1,0 +1,589 @@
+{
+  "schema_version": 1,
+  "catalog_id": "manufacturing_quality/dmq_1457__batch_record_quality_report_form",
+  "source_section": "manufacturing_quality",
+  "source_filename": "dmq_1457__batch_record_quality_report_form.pdf",
+  "slug": "batch-record-quality-report-form",
+  "title": "Batch Record Quality Report Form",
+  "subtitle": "Reconcile the batch execution and production record control population, summarize evidence and trends, separate limitations from conclusions, assign decisions, and track follow-up.",
+  "description": "A decision-ready batch record quality report form that turns source records for a manufacturing batch and its complete execution history into reconciled measures, exception patterns, qualified conclusions, owned actions, and a retrievable reporting package.",
+  "use_case": "Use when the production and quality record reviewer needs a bounded quality report for the batch execution and production record control rather than a raw inspection checklist or chronological log.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "report_scope",
+      "title": "Batch Record report scope and ownership",
+      "guidance": "Define the reporting period, exact population, controlling references, and intended audience.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "batch_record_number",
+              "label": "Batch record number",
+              "units": 0.85
+            },
+            {
+              "key": "batch_number",
+              "label": "Batch or lot number",
+              "units": 0.8
+            },
+            {
+              "key": "product_code",
+              "label": "Product code",
+              "units": 0.8
+            },
+            {
+              "key": "product_name",
+              "label": "Product name",
+              "units": 1.05
+            },
+            {
+              "key": "batch_size",
+              "label": "Planned batch size",
+              "units": 0.7
+            },
+            {
+              "key": "issued_date",
+              "label": "Record issue date",
+              "units": 0.65
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Manufacturing Batch And Its Complete Execution History identity",
+          "fields": [
+            {
+              "key": "master_instruction",
+              "label": "Master instruction and revision",
+              "units": 1.1
+            },
+            {
+              "key": "work_order",
+              "label": "Work order",
+              "units": 0.7
+            },
+            {
+              "key": "manufacturing_area",
+              "label": "Manufacturing area or line",
+              "units": 0.95
+            },
+            {
+              "key": "planned_start",
+              "label": "Planned start",
+              "units": 0.65
+            },
+            {
+              "key": "actual_start",
+              "label": "Actual start",
+              "units": 0.65
+            },
+            {
+              "key": "actual_finish",
+              "label": "Actual finish",
+              "units": 0.65
+            }
+          ]
+        },
+        {
+          "key": "reporting_context",
+          "type": "fields",
+          "label": "Reporting context",
+          "fields": [
+            {
+              "key": "reporting_period",
+              "label": "Reporting period",
+              "units": 0.8
+            },
+            {
+              "key": "population_scope",
+              "label": "Lot, serial, job, or asset population",
+              "units": 1.2
+            },
+            {
+              "key": "report_owner",
+              "label": "Report owner",
+              "units": 0.8
+            },
+            {
+              "key": "review_meeting",
+              "label": "Review meeting or due date",
+              "units": 0.85
+            },
+            {
+              "key": "distribution",
+              "label": "Intended distribution",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "report_purpose",
+          "type": "textarea",
+          "label": "Report purpose, questions to answer, exclusions, and decision required",
+          "fields": [
+            {
+              "key": "purpose_detail",
+              "label": "Purpose and reporting boundary"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "population_evidence",
+      "title": "Population, source records, and data integrity",
+      "guidance": "Reconcile source data to the batch execution and production record control population before summarizing.",
+      "blocks": [
+        {
+          "key": "source_record_reconciliation",
+          "type": "table",
+          "label": "Source-record reconciliation",
+          "columns": [
+            {
+              "key": "source_record",
+              "label": "Source record / system",
+              "units": 1.2
+            },
+            {
+              "key": "population",
+              "label": "Population",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed",
+              "label": "Reviewed count",
+              "units": 0.7
+            },
+            {
+              "key": "excluded",
+              "label": "Excluded count",
+              "units": 0.65
+            },
+            {
+              "key": "reason",
+              "label": "Exclusion / gap",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Data owner",
+              "units": 0.7
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "data_integrity_checks",
+          "type": "checklist",
+          "label": "Data completeness and traceability checks",
+          "items": [
+            "Each issued batch record matches the current approved master instruction",
+            "Unique batch identity is applied to every linked page and record",
+            "Materials and equipment are traceable to significant production steps",
+            "Dates, times, actual values, performers, and verifiers are contemporaneous",
+            "Calculations, units, conversions, and corrections remain reviewable",
+            "Samples and test results identify batch, step, time, and disposition",
+            "Deviations and interruptions retain original evidence and investigation links",
+            "Stage yields and final quantities reconcile to material usage and losses",
+            "Packaging and label accountability is complete",
+            "Open actions are visible to production and quality reviewers"
+          ]
+        },
+        {
+          "key": "data_limitations",
+          "type": "textarea",
+          "label": "Missing data, sampling assumptions, system limitations, and effect on conclusions",
+          "fields": [
+            {
+              "key": "limitations_detail",
+              "label": "Data limitations and qualification"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "results_analysis",
+      "title": "Batch Record results and performance analysis",
+      "guidance": "Preserve counts, actual evidence, targets, trends, and the calculation basis.",
+      "blocks": [
+        {
+          "key": "performance_summary",
+          "type": "table",
+          "label": "Performance measures and comparison",
+          "columns": [
+            {
+              "key": "measure",
+              "label": "Measure",
+              "units": 1.1
+            },
+            {
+              "key": "definition",
+              "label": "Definition / basis",
+              "units": 1.0
+            },
+            {
+              "key": "target",
+              "label": "Target / limit",
+              "units": 0.7
+            },
+            {
+              "key": "actual",
+              "label": "Actual",
+              "units": 0.65
+            },
+            {
+              "key": "trend",
+              "label": "Trend / prior",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "result_evidence",
+          "type": "table",
+          "label": "Batch step execution and parameter evidence",
+          "columns": [
+            {
+              "key": "step_time",
+              "label": "Step / date-time",
+              "units": 1.0
+            },
+            {
+              "key": "equipment_material",
+              "label": "Equipment / material",
+              "units": 1.0
+            },
+            {
+              "key": "parameter_result",
+              "label": "Parameter / actual",
+              "units": 1.0
+            },
+            {
+              "key": "performed_by",
+              "label": "Performed by",
+              "units": 0.7
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.7
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "result_controls",
+          "type": "checklist",
+          "label": "Result interpretation controls",
+          "items": [
+            "Equipment and line IDs are recorded with cleaning or readiness status",
+            "Each significant step records date, time, result, performer, and verifier where required",
+            "Process parameters, calculations, units, conversions, and actual values are legible",
+            "Samples and in-process tests link to the correct batch, step, time, and result",
+            "Yield, scrap, rework, rejects, and material usage are reconciled at defined stages",
+            "Deviations, alarms, interruptions, and atypical results retain original evidence",
+            "Packaging and labeling quantities reconcile to issued, used, returned, and destroyed amounts",
+            "Corrections preserve the original entry, reason, author, and date under site procedure"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "findings_analysis",
+      "title": "Findings, patterns, and escalation",
+      "guidance": "Separate facts from interpretation and route significant or recurring exceptions.",
+      "blocks": [
+        {
+          "key": "report_exception_types",
+          "type": "checklist",
+          "label": "Batch Record exceptions requiring action",
+          "items": [
+            "Issued record or master instruction revision is incorrect",
+            "Material lot, amount, verifier, or equipment identity is missing",
+            "Significant step lacks actual time, value, performer, or required verification",
+            "Parameter, calculation, yield, or test result is outside the instruction",
+            "Deviation, alarm, interruption, or atypical result is not contemporaneously recorded",
+            "Correction obscures the original entry or lacks reason and attribution",
+            "Material, label, scrap, reject, rework, or finished quantity does not reconcile",
+            "Batch disposition occurs with an open deviation, investigation, or review gap"
+          ],
+          "guidance": "Select every applicable exception and preserve the original observation."
+        },
+        {
+          "key": "report_exception_log",
+          "type": "table",
+          "label": "Exception, containment, ownership, and disposition log",
+          "columns": [
+            {
+              "key": "exception_evidence",
+              "label": "Exception / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due_point",
+              "label": "Due date / point",
+              "units": 0.7
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "report_exception_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, containment boundary, and unresolved risk",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception narrative and affected-scope rationale"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "conclusions_decisions",
+      "title": "Conclusions, decisions, and authorized response",
+      "guidance": "State what the evidence supports and who may decide whether to reconcile, review, hold, or release the completed batch record.",
+      "blocks": [
+        {
+          "key": "report_boundary",
+          "type": "notice",
+          "label": "Report and approval boundary",
+          "guidance": "This report summarizes recorded evidence; it does not create a technical or regulatory approval. A qualified reviewer must apply the current approved master instruction, formula or bill, routing, and batch procedure and site procedures."
+        },
+        {
+          "key": "decision_register",
+          "type": "table",
+          "label": "Decision, rationale, owner, and communication register",
+          "columns": [
+            {
+              "key": "decision",
+              "label": "Decision / response",
+              "units": 1.2
+            },
+            {
+              "key": "evidence_basis",
+              "label": "Evidence basis",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Authority",
+              "units": 0.7
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.7
+            },
+            {
+              "key": "communicated_to",
+              "label": "Communicated to",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "management_summary",
+          "type": "textarea",
+          "label": "Evidence-based conclusion, adverse trend, confidence limitations, and decision rationale",
+          "fields": [
+            {
+              "key": "conclusion_detail",
+              "label": "Report conclusion and decision rationale"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "report_review",
+          "type": "signatures",
+          "label": "Report preparation and review",
+          "fields": [
+            {
+              "key": "report_preparer",
+              "label": "Report preparer / date",
+              "units": 1.0
+            },
+            {
+              "key": "data_reviewer",
+              "label": "Data reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Production And Quality Record Reviewer / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "report_closeout",
+      "title": "Action tracking, distribution, and report closeout",
+      "guidance": "Transfer every accepted action and preserve the report package for later comparison.",
+      "blocks": [
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action and accountable handoff register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Report outcome and routing",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limits",
+                "On hold",
+                "Rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or release date",
+              "units": 0.75
+            },
+            {
+              "key": "remaining_limits",
+              "label": "Remaining limitation reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Final decision basis, residual limitations, next action, and receiving handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome rationale and accountable handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_closeout",
+          "type": "signatures",
+          "label": "Accountable review and closeout",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Production And Quality Record Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner or approver / date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not replace required technical or regulatory approval."
+        }
+      ]
+    }
+  ]
+}

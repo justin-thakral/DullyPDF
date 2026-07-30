@@ -1,0 +1,377 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1618__summer_camp_sign_in_sheet_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1618__summer_camp_sign_in_sheet_form.pdf",
+  "slug": "summer-camp-sign-in-sheet-form",
+  "title": "Summer Camp Daily Sign-In, Authorized Release, and Attendance Reconciliation",
+  "subtitle": "Control participant custody from adult handoff through arrival reconciliation, activity head counts, authorized pickup, late-care transfer, and verified site close.",
+  "description": "A custody-aware daily summer camp attendance sheet covering program-day staffing, roster and pickup-authority preparation, camper arrival and exceptions, activity-transition head counts, authorized release, refused or delayed pickup escalation, and end-of-day reconciliation.",
+  "use_case": "Use one fillable packet per camp group, site, and program day when staff need to prove who accepted each camper, resolve roster differences, maintain accountable head counts, release only to an authorized adult, and transfer or close remaining custody.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "program_day",
+      "title": "Program day, group, and staffing",
+      "guidance": "Identify one site, group, and operating day so every arrival, head count, release, and exception belongs to the same custody record.",
+      "blocks": [
+        {
+          "key": "program_reference",
+          "type": "fields",
+          "label": "Camp program and daily record",
+          "fields": [
+            {"key": "camp_name", "label": "Camp or organization", "units": 1.35},
+            {"key": "site_area", "label": "Site or area", "units": 1.1},
+            {"key": "program_date", "label": "Program date", "units": 0.85},
+            {"key": "session_group", "label": "Session, group, or cabin", "units": 1.2},
+            {"key": "record_number", "label": "Daily record number", "units": 0.95},
+            {"key": "operating_hours", "label": "Scheduled operating hours", "units": 1.05}
+          ]
+        },
+        {
+          "key": "staffing_reference",
+          "type": "fields",
+          "label": "Staffing, capacity, and supervision reference",
+          "fields": [
+            {"key": "lead_staff", "label": "Lead staff", "units": 1.0},
+            {"key": "additional_staff", "label": "Additional staff", "units": 1.25},
+            {"key": "group_capacity", "label": "Group capacity", "units": 0.85},
+            {"key": "expected_campers", "label": "Expected campers", "units": 0.9},
+            {"key": "required_ratio", "label": "Required supervision ratio", "units": 1.05},
+            {"key": "attendance_owner", "label": "Attendance record owner", "units": 1.1}
+          ]
+        },
+        {
+          "key": "opening_controls",
+          "type": "checklist",
+          "label": "Opening attendance and custody controls",
+          "items": [
+            "Current roster available",
+            "Current authorized-pickup source available",
+            "Custody restrictions flagged for authorized staff",
+            "Emergency contacts available",
+            "Attendance writing or device station ready",
+            "Medication handoff process ready",
+            "Health-note route ready",
+            "Late pickup procedure available",
+            "Supervision ratio reviewed",
+            "Second staff reconciliation assigned"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authority_preparation",
+      "title": "Roster, pickup authority, and exception preparation",
+      "guidance": "Use the camp's current source records; this daily sheet documents checks and exceptions but does not replace the master authorized-pickup list.",
+      "blocks": [
+        {
+          "key": "source_control",
+          "type": "fields",
+          "label": "Source roster and authorized-release control",
+          "fields": [
+            {"key": "roster_version", "label": "Roster version or date", "units": 1.0},
+            {"key": "pickup_list_version", "label": "Authorized-pickup list version", "units": 1.2},
+            {"key": "restrictions_checked_by", "label": "Restrictions checked by", "units": 1.1},
+            {"key": "source_checked_time", "label": "Source records checked time", "units": 1.0},
+            {"key": "supervisor_contact", "label": "Release supervisor contact", "units": 1.1},
+            {"key": "late_care_location", "label": "Late-care transfer location", "units": 1.1}
+          ]
+        },
+        {
+          "key": "known_exception_controls",
+          "type": "checklist",
+          "label": "Known daily conditions routed to staff",
+          "items": [
+            "Planned absence",
+            "Planned late arrival",
+            "Planned early release",
+            "Transportation arrival or release",
+            "Field trip or off-site movement",
+            "Health information handoff expected",
+            "Medication transfer expected",
+            "Communication support needed",
+            "Pickup authority update pending",
+            "Custody restriction requires supervisor review",
+            "No known daily exception",
+            "Other condition documented"
+          ]
+        },
+        {
+          "key": "authority_boundary",
+          "type": "notice",
+          "label": "Authorized-release boundary",
+          "guidance": "Never release a camper solely because an adult is familiar, knows the camper, or appears on this daily sheet. Verify identity and authority against the camp's current approved source using applicable policy. Refuse or pause release and escalate any mismatch, restriction, disputed custody, or unverified change."
+        }
+      ]
+    },
+    {
+      "key": "arrival",
+      "title": "Arrival, custody acceptance, and morning reconciliation",
+      "guidance": "Record the adult handoff, staff acceptance, and exception reference for each camper, then reconcile all roster differences before activities proceed.",
+      "blocks": [
+        {
+          "key": "arrival_roster",
+          "type": "table",
+          "label": "Daily arrival roster",
+          "columns": [
+            {"key": "camper", "label": "Camper name", "units": 1.3},
+            {"key": "scheduled", "label": "Scheduled status", "units": 0.85},
+            {"key": "time_in", "label": "Time in", "units": 0.65},
+            {"key": "released_by", "label": "Releasing adult or transport", "units": 1.3},
+            {"key": "accepting_staff", "label": "Accepting staff", "units": 0.95},
+            {"key": "exception_reference", "label": "Exception or handoff note", "units": 1.25}
+          ],
+          "rows": 10
+        },
+        {
+          "key": "arrival_counts",
+          "type": "fields",
+          "label": "Arrival reconciliation",
+          "fields": [
+            {"key": "arrived_count", "label": "Arrived count", "units": 0.8},
+            {"key": "absent_count", "label": "Absent count", "units": 0.8},
+            {"key": "late_expected", "label": "Late expected", "units": 0.9},
+            {"key": "unscheduled", "label": "Unscheduled or walk-in", "units": 1.0},
+            {"key": "reconciled_time", "label": "Roster reconciled time", "units": 1.0},
+            {"key": "reconciled_by", "label": "Reconciled by", "units": 0.9}
+          ]
+        },
+        {
+          "key": "arrival_exceptions",
+          "type": "checklist",
+          "label": "Arrival exception and handoff flags",
+          "items": [
+            "Guardian contacted",
+            "Authorization mismatch",
+            "Health note received",
+            "Medication transferred",
+            "Late arrival pending",
+            "Absence confirmed",
+            "Roster corrected",
+            "Unscheduled camper held for review",
+            "Supervisor notified",
+            "No arrival exception"
+          ]
+        },
+        {
+          "key": "arrival_exception_detail",
+          "type": "textarea",
+          "label": "Late or absent follow-up, custody exception, health handoff, medication transfer, roster correction, and resolution",
+          "fields": [
+            {"key": "arrival_detail", "label": "Arrival exception and resolution detail", "multiline": true}
+          ],
+          "height": 58
+        },
+        {
+          "key": "arrival_attestation",
+          "type": "signatures",
+          "label": "Morning roster and head-count attestation",
+          "fields": [
+            {"key": "lead_initials", "label": "Lead staff initials", "units": 1.05},
+            {"key": "second_staff", "label": "Second staff head-count check", "units": 1.35},
+            {"key": "check_time", "label": "Check time", "units": 0.8}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "movement_headcounts",
+      "title": "Activity movement and head-count control",
+      "guidance": "Record head counts at meaningful transitions and resolve any difference immediately before the group moves or an activity resumes.",
+      "blocks": [
+        {
+          "key": "headcount_log",
+          "type": "table",
+          "label": "Transition and activity head-count log",
+          "columns": [
+            {"key": "date_time", "label": "Date and time", "units": 0.85},
+            {"key": "from_location", "label": "From location", "units": 1.0},
+            {"key": "to_location", "label": "To location or activity", "units": 1.15},
+            {"key": "expected", "label": "Expected", "units": 0.65},
+            {"key": "counted", "label": "Counted", "units": 0.65},
+            {"key": "verified_by", "label": "Verified by or exception ref.", "units": 1.35}
+          ],
+          "rows": 10
+        },
+        {
+          "key": "count_discrepancy",
+          "type": "table",
+          "label": "Head-count discrepancy and resolution log",
+          "columns": [
+            {"key": "time", "label": "Time", "units": 0.65},
+            {"key": "difference", "label": "Difference or missing camper", "units": 1.35},
+            {"key": "immediate_action", "label": "Immediate action", "units": 1.35},
+            {"key": "lead_notified", "label": "Lead notified and time", "units": 1.0},
+            {"key": "resolution", "label": "Resolution or incident ref.", "units": 1.3}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "movement_controls",
+          "type": "checklist",
+          "label": "Movement and attendance controls",
+          "items": [
+            "Count completed before departure",
+            "Count completed on arrival",
+            "Names reconciled when count differed",
+            "Bathroom or individual movement tracked",
+            "Early release removed from expected count",
+            "Late arrival added to expected count",
+            "Off-site transport roster reconciled",
+            "Incident route opened for unresolved discrepancy"
+          ]
+        },
+        {
+          "key": "missing_person_boundary",
+          "type": "notice",
+          "label": "Missing-participant stop condition",
+          "guidance": "An unexplained count difference or unaccounted-for camper is an immediate stop condition. Keep the group supervised, activate the camp's missing-participant and emergency procedures, notify the responsible lead, and document the resolution or incident-report reference."
+        }
+      ]
+    },
+    {
+      "key": "authorized_release",
+      "title": "Authorized release and pickup exceptions",
+      "guidance": "Verify each receiving adult against the current approved source, record the staff decision, and preserve the escalation trail for any refused or delayed release.",
+      "blocks": [
+        {
+          "key": "departure_roster",
+          "type": "table",
+          "label": "Daily authorized-release roster",
+          "columns": [
+            {"key": "camper", "label": "Camper name", "units": 1.25},
+            {"key": "time_out", "label": "Time out", "units": 0.65},
+            {"key": "released_to", "label": "Released to", "units": 1.2},
+            {"key": "relationship", "label": "Relationship or role", "units": 0.95},
+            {"key": "verification_staff", "label": "Authority verified by staff", "units": 1.25},
+            {"key": "note", "label": "Method or note", "units": 1.05}
+          ],
+          "rows": 10
+        },
+        {
+          "key": "pickup_exception_log",
+          "type": "table",
+          "label": "Pickup exception and decision log",
+          "columns": [
+            {"key": "camper", "label": "Camper", "units": 1.0},
+            {"key": "issue", "label": "Issue or mismatch", "units": 1.35},
+            {"key": "contact_attempts", "label": "Guardian contact attempts", "units": 1.3},
+            {"key": "decision", "label": "Decision and approving lead", "units": 1.45},
+            {"key": "resolution", "label": "Resolution and time", "units": 1.05}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "release_controls",
+          "type": "checklist",
+          "label": "Release and escalation controls used",
+          "items": [
+            "Photo identification checked",
+            "Current authorized list checked",
+            "Written authorization route checked",
+            "Approved password or code process used",
+            "Guardian reached through known contact",
+            "Custody restriction reviewed",
+            "Pickup refused or paused",
+            "Late pickup procedure used",
+            "Emergency contact used",
+            "Supervisor approved exception",
+            "Incident report linked",
+            "No release exception"
+          ]
+        },
+        {
+          "key": "release_exception_detail",
+          "type": "textarea",
+          "label": "Authorization change, identity mismatch, custody restriction, refusal, late pickup, participant concern, decision rationale, and final resolution",
+          "fields": [
+            {"key": "release_detail", "label": "Pickup exception decision trail", "multiline": true}
+          ],
+          "height": 60
+        },
+        {
+          "key": "release_privacy_notice",
+          "type": "notice",
+          "label": "Identity and custody-information handling",
+          "guidance": "Record the verification method and decision, not copies of identity documents or secret pickup codes unless an approved policy specifically requires secure retention. Limit access to custody restrictions and disputed-pickup details, and route legal or safety questions for qualified review."
+        }
+      ]
+    },
+    {
+      "key": "daily_closeout",
+      "title": "End-of-day reconciliation and custody closeout",
+      "guidance": "Account for every camper, transfer any remaining custody to an identified program and staff member, resolve open exceptions, and obtain a second-person review.",
+      "blocks": [
+        {
+          "key": "final_counts",
+          "type": "fields",
+          "label": "Final attendance and site-close counts",
+          "fields": [
+            {"key": "total_arrivals", "label": "Total arrivals", "units": 0.8},
+            {"key": "total_releases", "label": "Total releases", "units": 0.8},
+            {"key": "remaining_campers", "label": "Remaining campers", "units": 0.9},
+            {"key": "late_care_count", "label": "Transferred to late care", "units": 1.0},
+            {"key": "final_count_time", "label": "Final count time", "units": 0.85},
+            {"key": "site_close_time", "label": "Site close time", "units": 0.85}
+          ]
+        },
+        {
+          "key": "remaining_custody",
+          "type": "table",
+          "label": "Remaining camper and late-care custody transfer",
+          "columns": [
+            {"key": "camper", "label": "Camper", "units": 1.15},
+            {"key": "transfer_time", "label": "Transfer time", "units": 0.85},
+            {"key": "receiving_program", "label": "Receiving program or location", "units": 1.35},
+            {"key": "receiving_staff", "label": "Receiving staff", "units": 1.1},
+            {"key": "guardian_status", "label": "Guardian contact or pickup status", "units": 1.4}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "unresolved_detail",
+          "type": "textarea",
+          "label": "Unresolved pickup issue, late-care transfer, roster correction, medication or property handoff, and linked incident reference",
+          "fields": [
+            {"key": "unresolved_detail_text", "label": "End-of-day exception and handoff", "multiline": true}
+          ],
+          "height": 58
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Daily closeout verification",
+          "items": [
+            "Every arrival has a disposition",
+            "Every release has staff verification",
+            "Remaining campers transferred by name",
+            "Arrival and release totals reconcile",
+            "Head-count discrepancies resolved or escalated",
+            "Medication or participant property transferred",
+            "Incident references linked",
+            "Roster stored under applicable record policy"
+          ]
+        },
+        {
+          "key": "daily_signatures",
+          "type": "signatures",
+          "label": "Attendance reconciliation and site-close approval",
+          "fields": [
+            {"key": "lead_signature", "label": "Lead staff signature", "units": 1.15},
+            {"key": "second_staff_signature", "label": "Second staff reconciliation", "units": 1.25},
+            {"key": "supervisor_review", "label": "Supervisor review", "units": 1.1},
+            {"key": "close_date", "label": "Review date", "units": 0.8},
+            {"key": "close_time", "label": "Review time", "units": 0.75}
+          ]
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Daily record boundary",
+          "guidance": "This sheet supports custody and attendance control but does not replace the camp's authorized-pickup source, emergency plan, medication log, incident report, or applicable childcare recordkeeping requirements. Preserve corrections and reviewer identity; do not silently alter a completed custody record."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,561 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1215__generator_maintenance_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1215__generator_maintenance_service_request_form.pdf",
+  "slug": "generator-maintenance-service-request-form",
+  "title": "Generator Maintenance Service Request and Site Readiness",
+  "subtitle": "Create a dispatch-ready request covering asset identity, symptoms, outage constraints, access, hazards, work authority, and service closeout.",
+  "description": "A generator-specific request and service record that carries site and asset facts through dispatch, pre-work review, findings, work performed, recommendations, return-to-service status, and customer acceptance.",
+  "use_case": "Use when requesting planned or corrective generator and transfer-equipment service so dispatch, qualified technicians, and site representatives share one accountable record from intake through closeout.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_priority",
+      "title": "Requester, site, and service priority",
+      "guidance": "Give dispatch one reliable point of contact and a clear service priority.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Request and customer reference",
+          "fields": [
+            {
+              "key": "customer",
+              "label": "Customer or organization",
+              "units": 1.45
+            },
+            {
+              "key": "ticket_number",
+              "label": "Request or ticket number",
+              "units": 1.2
+            },
+            {
+              "key": "requested_by",
+              "label": "Requested by",
+              "units": 1.0
+            },
+            {
+              "key": "request_date_time",
+              "label": "Request date and time",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "site_contact",
+          "type": "fields",
+          "label": "Generator site and access contact",
+          "fields": [
+            {
+              "key": "site_address",
+              "label": "Generator site or address",
+              "units": 1.6
+            },
+            {
+              "key": "onsite_contact",
+              "label": "On-site contact",
+              "units": 1.1
+            },
+            {
+              "key": "mobile_phone",
+              "label": "Mobile phone",
+              "units": 0.95
+            },
+            {
+              "key": "access_hours",
+              "label": "Access hours",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "priority_status",
+          "type": "checklist",
+          "label": "Service priority and operating status",
+          "items": [
+            "Planned maintenance",
+            "Due soon",
+            "Overdue",
+            "Alarm active",
+            "Failed exercise",
+            "Will not start",
+            "Running abnormally",
+            "Emergency or outage"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "generator_identity",
+      "title": "Generator and system identification",
+      "guidance": "Match the request to the exact generator, transfer equipment, and controller.",
+      "blocks": [
+        {
+          "key": "generator_nameplate",
+          "type": "fields",
+          "label": "Generator asset and nameplate",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Asset or generator ID",
+              "units": 1.25
+            },
+            {
+              "key": "make_model",
+              "label": "Make and model",
+              "units": 1.3
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.1
+            },
+            {
+              "key": "power_rating",
+              "label": "kW or kVA rating",
+              "units": 1.0
+            },
+            {
+              "key": "fuel_type",
+              "label": "Fuel type",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "system_identity",
+          "type": "fields",
+          "label": "Equipment location and system references",
+          "fields": [
+            {
+              "key": "equipment_location",
+              "label": "Exact equipment location",
+              "units": 1.45
+            },
+            {
+              "key": "ats_id",
+              "label": "ATS or switch ID",
+              "units": 1.0
+            },
+            {
+              "key": "controller_firmware",
+              "label": "Controller or firmware",
+              "units": 1.3
+            },
+            {
+              "key": "hour_meter",
+              "label": "Hour meter",
+              "units": 0.8
+            },
+            {
+              "key": "last_service_date",
+              "label": "Last service date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "observed_symptoms",
+          "type": "textarea",
+          "label": "Symptoms, alarms, leaks, noise, failed tests, and prior work",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Symptoms, alarms, leaks, noise, failed tests, and prior work",
+              "multiline": true
+            }
+          ],
+          "height": 68,
+          "guidance": "Record observed facts, alarm codes, recent repairs, and troubleshooting already attempted."
+        }
+      ]
+    },
+    {
+      "key": "requested_scope",
+      "title": "Requested scope and outage constraints",
+      "guidance": "Define the work and power interruption limits before an appointment is scheduled.",
+      "blocks": [
+        {
+          "key": "scope_items",
+          "type": "checklist",
+          "label": "Requested service scope",
+          "items": [
+            "Preventive maintenance",
+            "Inspection or diagnosis",
+            "Load-bank test",
+            "ATS test",
+            "Battery service",
+            "Fuel-system service",
+            "Cooling-system service",
+            "Repair estimate",
+            "Remote monitoring",
+            "Emissions review",
+            "Warranty review",
+            "Other scope documented"
+          ]
+        },
+        {
+          "key": "outage_constraints",
+          "type": "fields",
+          "label": "Service window and outage constraints",
+          "fields": [
+            {
+              "key": "preferred_window",
+              "label": "Preferred service window",
+              "units": 1.35
+            },
+            {
+              "key": "interruption_allowed",
+              "label": "Power interruption allowed",
+              "units": 1.4,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Yes",
+                "No",
+                "Conditional"
+              ]
+            },
+            {
+              "key": "max_outage",
+              "label": "Maximum outage duration",
+              "units": 1.3
+            },
+            {
+              "key": "critical_loads",
+              "label": "Critical loads or occupants",
+              "units": 1.45
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "site_readiness",
+      "title": "Access, safety, and pre-arrival readiness",
+      "guidance": "Identify access and safety controls before a technician is dispatched.",
+      "blocks": [
+        {
+          "key": "readiness_hazards",
+          "type": "checklist",
+          "label": "Site readiness and hazards",
+          "items": [
+            "Escort required",
+            "Gate or badge required",
+            "Roof or confined access",
+            "Lockout procedure applies",
+            "Arc-flash boundary",
+            "Fuel or spill concern",
+            "Ventilation concern",
+            "Noise restriction",
+            "Occupancy coordination",
+            "Permit required",
+            "One-line diagram available",
+            "No known special hazards"
+          ]
+        },
+        {
+          "key": "access_instructions",
+          "type": "textarea",
+          "label": "Access, parking, PPE, permits, and emergency contact",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Access, parking, PPE, permits, and emergency contact",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "guidance": "Include key or code handling, site orientation, and arrival instructions."
+        },
+        {
+          "key": "qualified_work_boundary",
+          "type": "notice",
+          "label": "Qualified generator-service boundary",
+          "guidance": "This request records work authority; it is not an operating, isolation, test, or repair procedure. Stop and obtain qualified review when site conditions, electrical energy, fuel, fire, exhaust, or transfer-equipment risks exceed the approved scope. Follow applicable manufacturer, electrical, fire, environmental, and site requirements."
+        },
+        {
+          "key": "request_authorization",
+          "type": "signatures",
+          "label": "Requester and outage authorization",
+          "fields": [
+            {
+              "key": "requester_signature",
+              "label": "Requester authorization",
+              "units": 1.35
+            },
+            {
+              "key": "facility_approval",
+              "label": "Facility or outage approval",
+              "units": 1.35
+            },
+            {
+              "key": "approval_date_time",
+              "label": "Approval date and time",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "dispatch_review",
+      "title": "Dispatch and pre-work review",
+      "guidance": "Confirm scope, access, parts, and shutdown authority before work starts.",
+      "blocks": [
+        {
+          "key": "dispatch_assignment",
+          "type": "fields",
+          "label": "Service dispatch assignment",
+          "fields": [
+            {
+              "key": "service_company",
+              "label": "Service company",
+              "units": 1.25
+            },
+            {
+              "key": "dispatcher",
+              "label": "Dispatcher",
+              "units": 0.9
+            },
+            {
+              "key": "technician",
+              "label": "Assigned technician",
+              "units": 1.2
+            },
+            {
+              "key": "arrival_window",
+              "label": "Scheduled arrival window",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "commercial_authority",
+          "type": "fields",
+          "label": "Commercial and shutdown authority",
+          "fields": [
+            {
+              "key": "contract_number",
+              "label": "PO or contract number",
+              "units": 1.15
+            },
+            {
+              "key": "not_to_exceed",
+              "label": "Not-to-exceed amount",
+              "units": 1.15
+            },
+            {
+              "key": "warranty_status",
+              "label": "Warranty or contract status",
+              "units": 1.35
+            },
+            {
+              "key": "shutdown_authority",
+              "label": "Shutdown authorized by",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "prework_controls",
+          "type": "checklist",
+          "label": "Pre-work controls confirmed",
+          "items": [
+            "Asset matched",
+            "Scope confirmed",
+            "Hazards reviewed",
+            "Lockout coordinated",
+            "Outage approved",
+            "Critical loads protected",
+            "Parts staged",
+            "Escort confirmed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "service_record",
+      "title": "Service findings and work record",
+      "guidance": "Preserve completed work, readings, evidence, and decisions for the next visit.",
+      "blocks": [
+        {
+          "key": "work_log",
+          "type": "table",
+          "label": "Work performed, reading, and finding log",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or inspection",
+              "units": 1.2
+            },
+            {
+              "key": "result",
+              "label": "Reading or result",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Action performed",
+              "units": 1.25
+            },
+            {
+              "key": "part",
+              "label": "Part or material",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.75
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ref",
+              "units": 0.8
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "technician_diagnosis",
+          "type": "textarea",
+          "label": "Diagnosis, test method, remaining defect, and limitation",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Diagnosis, test method, remaining defect, and limitation",
+              "multiline": true
+            }
+          ],
+          "height": 72,
+          "guidance": "Record alarm interpretation and distinguish verified results from assumptions."
+        }
+      ]
+    },
+    {
+      "key": "service_closeout",
+      "title": "Disposition, recommendations, and return",
+      "guidance": "State whether the generator is available, restricted, or out of service.",
+      "blocks": [
+        {
+          "key": "service_disposition",
+          "type": "checklist",
+          "label": "Service disposition",
+          "items": [
+            "Returned to automatic",
+            "Operational with limits",
+            "Out of service",
+            "Waiting on parts",
+            "Quote required",
+            "Follow-up scheduled",
+            "Load test passed",
+            "Customer notified"
+          ]
+        },
+        {
+          "key": "return_reference",
+          "type": "fields",
+          "label": "Return-to-service and follow-up reference",
+          "fields": [
+            {
+              "key": "hour_meter_out",
+              "label": "Hour meter out",
+              "units": 0.9
+            },
+            {
+              "key": "next_service_due",
+              "label": "Next service due",
+              "units": 1.05
+            },
+            {
+              "key": "followup_reference",
+              "label": "Quote or follow-up ref",
+              "units": 1.25
+            },
+            {
+              "key": "returned_date_time",
+              "label": "Returned date and time",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "open_recommendations",
+          "type": "table",
+          "label": "Open recommendation and commitment tracker",
+          "columns": [
+            {
+              "key": "recommendation",
+              "label": "Recommendation",
+              "units": 1.35
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.75
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.7
+            },
+            {
+              "key": "status",
+              "label": "Status or commitment",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "closeout_notes",
+          "type": "textarea",
+          "label": "Temporary controls, monitoring, limits, and customer commitments",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Temporary controls, monitoring, limits, and customer commitments",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "return_boundary",
+          "type": "notice",
+          "label": "Return-to-service authority",
+          "guidance": "Only qualified personnel may operate, isolate, test, or service generator and transfer equipment. Record the authorized operating state and follow applicable manufacturer instructions, site procedures, and electrical and fire-safety requirements."
+        },
+        {
+          "key": "service_acceptance",
+          "type": "signatures",
+          "label": "Technician completion and site acceptance",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician signature",
+              "units": 1.25
+            },
+            {
+              "key": "site_acceptance",
+              "label": "Site representative acceptance",
+              "units": 1.45
+            },
+            {
+              "key": "closeout_date_time",
+              "label": "Closeout date and time",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

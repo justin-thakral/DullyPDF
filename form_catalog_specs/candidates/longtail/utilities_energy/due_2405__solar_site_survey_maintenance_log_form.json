@@ -1,0 +1,542 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2405__solar_site_survey_maintenance_log_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2405__solar_site_survey_maintenance_log_form.pdf",
+  "slug": "solar-site-survey-maintenance-log-form",
+  "title": "Solar Site Survey Maintenance Log Form",
+  "subtitle": "An original solar site survey workflow that carries planned or condition-based maintenance through safe release, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete solar site survey maintenance log form for the proposed photovoltaic site that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when service personnel need one record for maintenance trigger, asset baseline, work-control references, recurring events, readings, deferred defects, and qualified return-to-service approval. The survey coordinator owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "maintenance_routing",
+      "title": "Solar site survey maintenance log identity and ownership",
+      "guidance": "Define the maintained system, service interval, operating owner, and review period.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Maintenance log and assignment",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Maintenance record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "maintenance_cycle",
+          "type": "fields",
+          "label": "Maintenance trigger and cycle",
+          "fields": [
+            {
+              "key": "trigger",
+              "label": "Scheduled, condition, or fault trigger",
+              "units": 1.2
+            },
+            {
+              "key": "interval_ref",
+              "label": "Interval or maintenance-plan ref",
+              "units": 1.2
+            },
+            {
+              "key": "due_date",
+              "label": "Due date or operating point",
+              "units": 1.1
+            },
+            {
+              "key": "service_provider",
+              "label": "Service provider",
+              "units": 1.0
+            },
+            {
+              "key": "site_contact",
+              "label": "Operations or site contact",
+              "units": 1.1
+            },
+            {
+              "key": "warranty_ref",
+              "label": "Warranty or support reference",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "asset_readiness",
+      "title": "Solar site survey asset baseline and maintenance readiness",
+      "guidance": "Reconcile the exact asset and known condition before maintenance or testing begins.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Solar site survey identity",
+          "fields": [
+            {
+              "key": "property_type",
+              "label": "Property and occupancy type",
+              "units": 1.15
+            },
+            {
+              "key": "array_area",
+              "label": "Roof plane or ground area ID",
+              "units": 1.15
+            },
+            {
+              "key": "roof_surface",
+              "label": "Roof or ground surface",
+              "units": 1.0
+            },
+            {
+              "key": "service_id",
+              "label": "Electric service or meter ID",
+              "units": 1.1
+            },
+            {
+              "key": "service_rating",
+              "label": "Service voltage and rating",
+              "units": 1.05
+            },
+            {
+              "key": "utility_status",
+              "label": "Utility or interconnection status",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "Maintenance baseline",
+          "fields": [
+            {
+              "key": "roof_age",
+              "label": "Roof age or replacement plan",
+              "units": 1.15
+            },
+            {
+              "key": "usable_area",
+              "label": "Estimated usable area",
+              "units": 0.95
+            },
+            {
+              "key": "orientation",
+              "label": "Azimuth and tilt",
+              "units": 0.85
+            },
+            {
+              "key": "annual_usage",
+              "label": "Annual energy use reference",
+              "units": 1.2
+            },
+            {
+              "key": "main_panel",
+              "label": "Main panel location",
+              "units": 1.0
+            },
+            {
+              "key": "equipment_area",
+              "label": "Proposed equipment area",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "planned_tasks",
+          "type": "checklist",
+          "label": "Planned maintenance task set",
+          "items": [
+            "Confirm property, service, and proposed array-area identity",
+            "Measure accessible roof plane or ground footprint",
+            "Map orientation, pitch, obstructions, and shade sources",
+            "Document roof covering and visible condition",
+            "Capture service, meter, and panel label evidence from safe access",
+            "Trace a non-invasive conceptual equipment and conduit route",
+            "Record access, staging, drainage, and maintenance constraints",
+            "Collect load-history and future-load references",
+            "Identify permitting, utility, and property-control dependencies",
+            "Prepare structural and electrical questions for qualified review"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_control",
+      "title": "Solar site survey work control and safe service boundary",
+      "guidance": "Record the qualified roles and controlling references; do not use this log as the controlling procedure.",
+      "blocks": [
+        {
+          "key": "control_references",
+          "type": "fields",
+          "label": "Maintenance-control references",
+          "fields": [
+            {
+              "key": "procedure_ref",
+              "label": "Maintenance procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "energy_control_ref",
+              "label": "Energy-control procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "authorized_person",
+              "label": "Authorized control person",
+              "units": 1.15
+            },
+            {
+              "key": "isolation_check",
+              "label": "Isolation verification ref",
+              "units": 1.15
+            },
+            {
+              "key": "test_authority",
+              "label": "Run, test, or outage authority",
+              "units": 1.1
+            },
+            {
+              "key": "release_owner",
+              "label": "Return-to-service owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "service_readiness",
+          "type": "checklist",
+          "label": "Service readiness confirmations",
+          "items": [
+            "Current procedure, manufacturer information, and applicable requirements were reviewed",
+            "Asset boundaries, every energy source, and affected systems were identified",
+            "Authorized, affected, contractor, and operations roles were coordinated",
+            "Isolation, stored-energy control, and verification references are complete",
+            "Required tools, instruments, parts, and protective controls are available",
+            "Test, temporary energization, and return-to-service steps have explicit authority",
+            "Customer, public, traffic, environmental, and critical-service impacts are controlled",
+            "Stop conditions and emergency escalation path are understood"
+          ]
+        },
+        {
+          "key": "maintenance_boundary",
+          "type": "notice",
+          "label": "Maintenance stop-work boundary",
+          "guidance": "This record does not authorize roof access, structural conclusions, or contact with electrical components. Stop the survey when access, weather, damaged components, exposed conductors, or structural conditions are unsafe. Keep unqualified people clear and route the condition to the site's qualified electrical, structural, or safety reviewer. Maintenance stays restricted when isolation, stored energy, system condition, or work scope is unknown. Only the designated authorized person may direct changes to controls and the qualified release owner may approve return to service."
+        }
+      ]
+    },
+    {
+      "key": "service_entries",
+      "title": "Solar site survey maintenance events, condition, and readings",
+      "guidance": "Create a traceable history of work completed, condition found, evidence, and deferred action.",
+      "blocks": [
+        {
+          "key": "maintenance_events",
+          "type": "table",
+          "label": "Maintenance event log",
+          "columns": [
+            {
+              "key": "date_hours",
+              "label": "Date / hours",
+              "units": 0.85
+            },
+            {
+              "key": "task_component",
+              "label": "Task / component",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition found",
+              "units": 1.1
+            },
+            {
+              "key": "action_parts",
+              "label": "Action / parts",
+              "units": 1.15
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.9
+            },
+            {
+              "key": "result_ref",
+              "label": "Result / evidence",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "condition_readings",
+          "type": "table",
+          "label": "Condition and functional readings",
+          "columns": [
+            {
+              "key": "area_id",
+              "label": "Area or plane",
+              "units": 0.85
+            },
+            {
+              "key": "orientation",
+              "label": "Azimuth / tilt",
+              "units": 0.9
+            },
+            {
+              "key": "dimension",
+              "label": "Dimension",
+              "units": 0.85
+            },
+            {
+              "key": "shade",
+              "label": "Shade time / source",
+              "units": 1.05
+            },
+            {
+              "key": "condition",
+              "label": "Surface condition",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Photo / sketch ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "maintenance_notes",
+          "type": "textarea",
+          "label": "Condition trend and service notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Wear pattern, recurring fault, consumable trend, configuration change, and supporting evidence",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Solar site survey exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Unprotected roof edge, unstable ladder, or unsafe access",
+            "Wet, damaged, loose, or storm-affected roof or PV components",
+            "Exposed conductors, open electrical parts, arcing, or burn marks",
+            "Structural movement, severe deterioration, or falling-object exposure",
+            "High wind, lightning, ice, heat, or other unsafe weather",
+            "Unknown energized equipment or damaged wiring pathway",
+            "Blocked emergency access or uncontrolled public exposure",
+            "Any condition beyond the surveyor's authorization or training"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "This record does not authorize roof access, structural conclusions, or contact with electrical components. Stop the survey when access, weather, damaged components, exposed conductors, or structural conditions are unsafe. Keep unqualified people clear and route the condition to the site's qualified electrical, structural, or safety reviewer."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each maintenance exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "Solar site survey decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Maintenance closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Proposed photovoltaic site identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

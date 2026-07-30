@@ -1,0 +1,685 @@
+{
+  "schema_version": 1,
+  "catalog_id": "manufacturing_quality/dmq_1437__corrective_action_production_log_form",
+  "source_section": "manufacturing_quality",
+  "source_filename": "dmq_1437__corrective_action_production_log_form.pdf",
+  "slug": "corrective-action-production-log-form",
+  "title": "Corrective Action Production Log Form",
+  "subtitle": "Control the starting state, record chronological root-cause and recurrence-prevention action activity, reconcile quantities and holds, authorize restarts, and hand off the next due check.",
+  "description": "A chronological corrective action production log form for reconstructing how a systemic quality issue and affected process scope moved through readiness, execution, interruptions, measurements, quantity reconciliation, exceptions, restart decisions, and shift closeout.",
+  "use_case": "Use during active root-cause and recurrence-prevention action work when operators and reviewers need a time-ordered trace that identifies who did what, the actual result, affected range, and last known acceptable status.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "log_setup",
+      "title": "Corrective Action log setup and control",
+      "guidance": "Establish the exact population, time window, responsible crew, and controlling instruction.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "corrective_action_number",
+              "label": "Corrective action number",
+              "units": 0.9
+            },
+            {
+              "key": "opened_date",
+              "label": "Date opened",
+              "units": 0.65
+            },
+            {
+              "key": "source_type",
+              "label": "Source type",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Audit",
+                "Nonconformance",
+                "Customer",
+                "Supplier",
+                "Process",
+                "Trend",
+                "Other"
+              ]
+            },
+            {
+              "key": "source_reference",
+              "label": "Source record reference",
+              "units": 0.95
+            },
+            {
+              "key": "process_owner",
+              "label": "Process owner",
+              "units": 0.85
+            },
+            {
+              "key": "response_due",
+              "label": "Response due date",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Systemic Quality Issue And Affected Process Scope identity",
+          "fields": [
+            {
+              "key": "affected_process",
+              "label": "Affected process or product",
+              "units": 1.05
+            },
+            {
+              "key": "requirement_reference",
+              "label": "Requirement reference",
+              "units": 0.95
+            },
+            {
+              "key": "issue_priority",
+              "label": "Issue priority",
+              "units": 0.65,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Elevated",
+                "Urgent"
+              ]
+            },
+            {
+              "key": "recurrence_known",
+              "label": "Known recurrence?",
+              "units": 0.65,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "containment_owner",
+              "label": "Containment owner",
+              "units": 0.85
+            },
+            {
+              "key": "target_close_date",
+              "label": "Target close date",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "log_control",
+          "type": "fields",
+          "label": "Log control and ownership",
+          "fields": [
+            {
+              "key": "log_start",
+              "label": "Log start date and time",
+              "units": 0.8
+            },
+            {
+              "key": "log_end",
+              "label": "Log end date and time",
+              "units": 0.8
+            },
+            {
+              "key": "shift_team",
+              "label": "Shift, team, or work center",
+              "units": 0.9
+            },
+            {
+              "key": "log_owner",
+              "label": "Log owner",
+              "units": 0.75
+            },
+            {
+              "key": "instruction_revision",
+              "label": "Instruction and revision",
+              "units": 1.0
+            },
+            {
+              "key": "planned_volume",
+              "label": "Planned volume or count",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "log_scope",
+          "type": "textarea",
+          "label": "Log scope, sequence boundary, starting condition, and carryover from prior work",
+          "fields": [
+            {
+              "key": "log_scope_detail",
+              "label": "Scope and starting condition"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "readiness_resources",
+      "title": "Readiness, resources, and starting status",
+      "guidance": "Confirm that the root-cause and recurrence-prevention action can begin under the current references.",
+      "blocks": [
+        {
+          "key": "startup_checkpoints",
+          "type": "checklist",
+          "label": "Starting-condition checkpoints",
+          "items": [
+            "The problem statement names the requirement, evidence, location, timing, and extent",
+            "Immediate correction and containment are complete or actively owned",
+            "Affected and similar processes, products, suppliers, and prior periods were reviewed",
+            "Cause analysis distinguishes direct, contributing, detection, and systemic causes",
+            "Selected causes are supported by evidence rather than assumption",
+            "Actions address verified causes and prevent recurrence or occurrence elsewhere",
+            "Each action has an owner, due date, completion evidence, and status",
+            "Procedure, training, tooling, system, supplier, and measurement impacts are considered",
+            "Implementation changes are controlled and communicated before use",
+            "Effectiveness criteria, data source, sample, timing, and reviewer were set in advance"
+          ]
+        },
+        {
+          "key": "resource_status",
+          "type": "table",
+          "label": "Resource, material, equipment, and evidence readiness",
+          "columns": [
+            {
+              "key": "resource",
+              "label": "Resource / item",
+              "units": 1.1
+            },
+            {
+              "key": "identifier",
+              "label": "ID / lot / revision",
+              "units": 1.0
+            },
+            {
+              "key": "required_status",
+              "label": "Required status",
+              "units": 0.85
+            },
+            {
+              "key": "actual_status",
+              "label": "Actual status",
+              "units": 0.8
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.75
+            },
+            {
+              "key": "exception_ref",
+              "label": "Exception ref.",
+              "units": 0.7
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "start_authorization",
+          "type": "fields",
+          "label": "Start authorization",
+          "fields": [
+            {
+              "key": "starting_status",
+              "label": "Starting status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Ready",
+                "Ready with limits",
+                "On hold",
+                "Not ready"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.85
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization time",
+              "units": 0.75
+            },
+            {
+              "key": "starting_reference",
+              "label": "Starting evidence reference",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_execution",
+      "title": "Corrective Action chronological execution log",
+      "guidance": "Record work as it occurs so timing, responsible person, evidence, and status remain reconstructable.",
+      "blocks": [
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Chronological event and decision log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.75
+            },
+            {
+              "key": "stage_event",
+              "label": "Stage / event",
+              "units": 1.2
+            },
+            {
+              "key": "item_range",
+              "label": "Item / range",
+              "units": 0.85
+            },
+            {
+              "key": "actual_result",
+              "label": "Actual result",
+              "units": 1.0
+            },
+            {
+              "key": "performed_by",
+              "label": "Performed by",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status / ref.",
+              "units": 0.75
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "process_results",
+          "type": "table",
+          "label": "Corrective action evidence and effectiveness results",
+          "columns": [
+            {
+              "key": "evidence_period",
+              "label": "Evidence / period",
+              "units": 1.0
+            },
+            {
+              "key": "measure",
+              "label": "Measure / indicator",
+              "units": 1.0
+            },
+            {
+              "key": "baseline_target",
+              "label": "Baseline / target",
+              "units": 0.85
+            },
+            {
+              "key": "observed_result",
+              "label": "Observed result",
+              "units": 0.8
+            },
+            {
+              "key": "record_ref",
+              "label": "Record ref.",
+              "units": 0.7
+            },
+            {
+              "key": "conclusion",
+              "label": "Conclusion",
+              "units": 0.65
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "execution_stages",
+          "type": "checklist",
+          "label": "Required execution stages",
+          "items": [
+            "Define the requirement, problem evidence, timing, location, and extent",
+            "Correct immediate conditions and contain affected output",
+            "Review scope, recurrence, similar issues, and potential consequences",
+            "Analyze direct, contributing, detection, and systemic causes",
+            "Select actions that address evidence-supported causes",
+            "Implement controlled changes and retain completion evidence",
+            "Collect effectiveness data against pre-established criteria",
+            "Approve closure or reopen with new ownership and due dates"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "quantity_holds",
+      "title": "Quantity, status, interruption, and hold control",
+      "guidance": "Reconcile output and preserve every interruption, held range, and restart decision.",
+      "blocks": [
+        {
+          "key": "quantity_reconciliation",
+          "type": "table",
+          "label": "Quantity and status reconciliation",
+          "columns": [
+            {
+              "key": "stage",
+              "label": "Stage / period",
+              "units": 1.0
+            },
+            {
+              "key": "input_qty",
+              "label": "Input qty.",
+              "units": 0.65
+            },
+            {
+              "key": "accepted_qty",
+              "label": "Accepted qty.",
+              "units": 0.7
+            },
+            {
+              "key": "rework_qty",
+              "label": "Rework qty.",
+              "units": 0.65
+            },
+            {
+              "key": "reject_qty",
+              "label": "Reject qty.",
+              "units": 0.65
+            },
+            {
+              "key": "balance_note",
+              "label": "Balance / note",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "interruption_hold_log",
+          "type": "table",
+          "label": "Interruption, hold, affected range, and restart log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 0.55
+            },
+            {
+              "key": "condition",
+              "label": "Condition / reason",
+              "units": 1.15
+            },
+            {
+              "key": "affected_range",
+              "label": "Affected range",
+              "units": 0.9
+            },
+            {
+              "key": "containment",
+              "label": "Containment",
+              "units": 0.9
+            },
+            {
+              "key": "restart_authority",
+              "label": "Restart authority",
+              "units": 0.85
+            },
+            {
+              "key": "restart_time",
+              "label": "Restart time",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "unreconciled_detail",
+          "type": "textarea",
+          "label": "Unreconciled quantity, data gap, interruption effect, and escalation",
+          "fields": [
+            {
+              "key": "unreconciled_narrative",
+              "label": "Reconciliation and interruption narrative"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "exceptions_response",
+      "title": "Exceptions, response, and controlled restart",
+      "guidance": "Capture the original exception, containment boundary, decision owner, and final disposition.",
+      "blocks": [
+        {
+          "key": "log_exception_types",
+          "type": "checklist",
+          "label": "Corrective Action exceptions requiring action",
+          "items": [
+            "Problem statement is broad, symptom-only, or unsupported by evidence",
+            "Containment remains incomplete or affected scope is uncertain",
+            "Cause is selected by opinion without testing available alternatives",
+            "Action only corrects the instance and does not address recurrence",
+            "Owner, due date, resources, or completion evidence is missing",
+            "Implementation occurred outside change control or without communication",
+            "Effectiveness test lacks a baseline, target, sample, period, or reviewer",
+            "Issue recurs, target is missed, or action creates an adverse effect"
+          ],
+          "guidance": "Select every applicable exception and preserve the original observation."
+        },
+        {
+          "key": "log_exception_log",
+          "type": "table",
+          "label": "Exception, containment, ownership, and disposition log",
+          "columns": [
+            {
+              "key": "exception_evidence",
+              "label": "Exception / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due_point",
+              "label": "Due date / point",
+              "units": 0.7
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "log_exception_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, containment boundary, and unresolved risk",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception narrative and affected-scope rationale"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "shift_closeout",
+      "title": "Shift or sequence handoff and log closeout",
+      "guidance": "Identify the last known status, the next required check, and every open action.",
+      "blocks": [
+        {
+          "key": "handoff_point",
+          "type": "fields",
+          "label": "Handoff status",
+          "fields": [
+            {
+              "key": "last_completed_stage",
+              "label": "Last completed stage",
+              "units": 1.0
+            },
+            {
+              "key": "last_accepted_item",
+              "label": "Last accepted item or time",
+              "units": 0.9
+            },
+            {
+              "key": "next_required_check",
+              "label": "Next required check",
+              "units": 1.0
+            },
+            {
+              "key": "next_check_due",
+              "label": "Next check due",
+              "units": 0.7
+            },
+            {
+              "key": "held_location",
+              "label": "Held item location",
+              "units": 0.85
+            },
+            {
+              "key": "receiving_owner",
+              "label": "Receiving owner",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action and accountable handoff register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Production log outcome and routing",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limits",
+                "On hold",
+                "Rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or release date",
+              "units": 0.75
+            },
+            {
+              "key": "remaining_limits",
+              "label": "Remaining limitation reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Final decision basis, residual limitations, next action, and receiving handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome rationale and accountable handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_closeout",
+          "type": "signatures",
+          "label": "Accountable review and closeout",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Process Owner And Effectiveness Reviewer / date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner or approver / date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not replace required technical or regulatory approval."
+        }
+      ]
+    }
+  ]
+}

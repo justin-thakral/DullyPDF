@@ -1,0 +1,438 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1011__home_remodel_punch_list_checklist_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1011__home_remodel_punch_list_checklist_form.pdf",
+  "slug": "home-remodel-punch-list-checklist-form",
+  "title": "Home Remodel Punch List and Room Acceptance Register",
+  "subtitle": "Plan the homeowner walkthrough, record room-specific finish and function items, separate preference from contract deficiency, coordinate occupied-home corrections, verify rework, and close out turnover.",
+  "description": "A workflow-complete home remodel punch list covering walkthrough authority, room readiness, selection and sample references, deficiencies and incomplete work, finish matching, homeowner preferences, access constraints, furniture and contents protection, correction ownership, evidence, reinspection, reopened items, deferred work, manuals and warranties, spare materials, keys, cleaning, and final acceptance.",
+  "use_case": "Use near substantial or final completion when a remodeler and homeowner need one fillable register that turns a room-by-room walkthrough into findable correction assignments and distinguishes required contract completion from preferences, deferred work, and warranty follow-up.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "walk_identity",
+      "title": "Walkthrough, home, and milestone identity",
+      "guidance": "Define the residence, inspection purpose, participants, authority, and correction deadline.",
+      "blocks": [
+        {
+          "key": "punch_reference",
+          "type": "fields",
+          "label": "Punch list reference",
+          "fields": [
+            {"key": "punch_list_number", "label": "Punch list number", "units": 0.8},
+            {"key": "walk_date", "label": "Walk date", "units": 0.65},
+            {"key": "walk_start_time", "label": "Start time", "units": 0.55},
+            {"key": "issued_date", "label": "Issued date", "units": 0.65},
+            {"key": "correction_due", "label": "Correction response due", "units": 0.8},
+            {"key": "list_manager", "label": "List manager", "units": 0.85}
+          ]
+        },
+        {
+          "key": "home_reference",
+          "type": "fields",
+          "label": "Home and affected area",
+          "fields": [
+            {"key": "homeowner_names", "label": "Homeowner names", "units": 1.05},
+            {"key": "property_address", "label": "Property address", "units": 1.35},
+            {"key": "contract_number", "label": "Contract number", "units": 0.8},
+            {"key": "rooms_included", "label": "Rooms included", "units": 1.05},
+            {"key": "resident_contact", "label": "Resident contact", "units": 0.9}
+          ]
+        },
+        {
+          "key": "walk_status",
+          "type": "fields",
+          "label": "Walkthrough type and home status",
+          "fields": [
+            {"key": "walk_type", "label": "Walkthrough type", "units": 1.0, "field_type": "choice", "options": ["Contractor pre-punch", "Homeowner walkthrough", "Designer walkthrough", "Substantial completion", "Final completion", "Warranty walk", "Reinspection"]},
+            {"key": "completion_claimed", "label": "Completion claimed", "units": 0.85},
+            {"key": "occupancy_status", "label": "Occupancy status", "units": 0.85, "field_type": "choice", "options": ["Occupied", "Partially occupied", "Temporary move-out", "Vacant"]},
+            {"key": "overall_readiness", "label": "Overall readiness", "units": 0.9, "field_type": "choice", "options": ["Ready", "Ready with exclusions", "Not ready", "Reinspection only"]},
+            {"key": "target_close_date", "label": "Target close date", "units": 0.75}
+          ]
+        },
+        {
+          "key": "participants",
+          "type": "table",
+          "label": "Walkthrough participants and decision authority",
+          "columns": [
+            {"key": "name", "label": "Name", "units": 1.0},
+            {"key": "company_role", "label": "Company or role", "units": 1.0},
+            {"key": "rooms", "label": "Rooms represented", "units": 1.0},
+            {"key": "decision_authority", "label": "Decision authority", "units": 1.0},
+            {"key": "contact", "label": "Contact", "units": 0.9}
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "readiness_protocol",
+      "title": "Room readiness and occupied-home protocol",
+      "guidance": "Confirm each area can be evaluated safely and against the correct selection and scope references.",
+      "blocks": [
+        {
+          "key": "room_readiness",
+          "type": "checklist",
+          "label": "Rooms ready for walkthrough",
+          "items": [
+            "Construction substantially complete",
+            "Contractor pre-punch complete",
+            "Surfaces cleaned for inspection",
+            "Permanent lighting operational",
+            "Water and power operational",
+            "Cabinetry and hardware adjusted",
+            "Appliances or equipment available",
+            "Access panels reachable",
+            "Doors and windows operational",
+            "Protection removed where needed",
+            "Furniture positioned as agreed",
+            "Resident route safe",
+            "Known incomplete work identified",
+            "Excluded rooms identified"
+          ]
+        },
+        {
+          "key": "acceptance_references",
+          "type": "checklist",
+          "label": "Acceptance references available",
+          "items": [
+            "Executed agreement",
+            "Approved changes",
+            "Plan or sketch",
+            "Selection log",
+            "Approved samples or mockups",
+            "Allowance reconciliation",
+            "Manufacturer instructions",
+            "Inspection records",
+            "Prior punch list",
+            "Final cleaning standard"
+          ]
+        },
+        {
+          "key": "home_access",
+          "type": "fields",
+          "label": "Correction access and household constraints",
+          "fields": [
+            {"key": "entry_method", "label": "Entry method", "units": 0.85},
+            {"key": "allowed_hours", "label": "Allowed correction hours", "units": 0.95},
+            {"key": "notice_required", "label": "Advance notice", "units": 0.75},
+            {"key": "pet_child_control", "label": "Pet or child control", "units": 0.95},
+            {"key": "protection_required", "label": "Protection to reinstall", "units": 1.0},
+            {"key": "daily_cleanup", "label": "Cleanup requirement", "units": 0.9}
+          ]
+        },
+        {
+          "key": "excluded_areas",
+          "type": "textarea",
+          "label": "Inaccessible, occupied, unsafe, unfinished, or excluded rooms and the accountable return plan",
+          "fields": [
+            {"key": "exclusion_detail", "label": "Excluded area and return-plan detail"}
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "deficiency_register",
+      "title": "Room deficiency and completion register",
+      "guidance": "Describe each item so another person can find, correct, and verify it without interpretation.",
+      "blocks": [
+        {
+          "key": "item_classification",
+          "type": "checklist",
+          "label": "Punch item classifications used",
+          "items": [
+            "Safety or code",
+            "Water or weather integrity",
+            "System function",
+            "Incomplete contract work",
+            "Incorrect selection",
+            "Damage to new work",
+            "Damage to existing property",
+            "Finish or appearance",
+            "Alignment or adjustment",
+            "Cleaning",
+            "Label or documentation",
+            "Matching limitation",
+            "Homeowner preference pending review",
+            "Warranty observation"
+          ]
+        },
+        {
+          "key": "items_primary",
+          "type": "table",
+          "label": "Room punch items 1 through 6",
+          "columns": [
+            {"key": "item_room", "label": "Item ID and room", "units": 1.0},
+            {"key": "deficiency", "label": "Deficiency or incomplete work", "units": 1.55},
+            {"key": "trade_owner", "label": "Trade or owner", "units": 0.85},
+            {"key": "classification", "label": "Class", "units": 0.65},
+            {"key": "due_date", "label": "Due date", "units": 0.65},
+            {"key": "photo_status", "label": "Photo or status", "units": 0.85}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "items_additional",
+          "type": "table",
+          "label": "Room punch items 7 through 12",
+          "columns": [
+            {"key": "item_room", "label": "Item ID and room", "units": 1.0},
+            {"key": "deficiency", "label": "Deficiency or incomplete work", "units": 1.55},
+            {"key": "trade_owner", "label": "Trade or owner", "units": 0.85},
+            {"key": "classification", "label": "Class", "units": 0.65},
+            {"key": "due_date", "label": "Due date", "units": 0.65},
+            {"key": "photo_status", "label": "Photo or status", "units": 0.85}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "list_summary",
+          "type": "fields",
+          "label": "Initial list summary",
+          "fields": [
+            {"key": "total_items", "label": "Total items", "units": 0.65},
+            {"key": "safety_code_items", "label": "Safety or code items", "units": 0.8},
+            {"key": "inaccessible_items", "label": "Inaccessible items", "units": 0.8},
+            {"key": "preference_items", "label": "Preference items", "units": 0.85},
+            {"key": "reinspection_items", "label": "Reinspection items", "units": 0.85},
+            {"key": "list_issued_by", "label": "List issued by", "units": 0.85}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "finish_decisions",
+      "title": "Finish, selection, preference, and correction planning",
+      "guidance": "Compare installed work with the approved basis and route disputed or preference items before rework.",
+      "blocks": [
+        {
+          "key": "finish_review",
+          "type": "checklist",
+          "label": "Finish and function review areas",
+          "items": [
+            "Cabinet alignment and reveals",
+            "Countertop seams and edges",
+            "Tile layout, grout, and sealant",
+            "Floor transitions and finish",
+            "Paint color, sheen, and touch-up",
+            "Trim joints and caulk",
+            "Door and window operation",
+            "Hardware operation",
+            "Plumbing fixture operation",
+            "Lighting and control operation",
+            "Appliance fit and function",
+            "Heating or ventilation function",
+            "Existing-finish tie-in",
+            "Cleanliness and residue"
+          ]
+        },
+        {
+          "key": "finish_verification",
+          "type": "table",
+          "label": "Selection, sample, and installed-finish verification",
+          "columns": [
+            {"key": "room_item", "label": "Room and item", "units": 1.0},
+            {"key": "approved_reference", "label": "Approved reference", "units": 1.25},
+            {"key": "installed_condition", "label": "Installed condition", "units": 1.2},
+            {"key": "sample_match", "label": "Sample or match", "units": 0.8},
+            {"key": "decision", "label": "Accept or correct", "units": 0.85},
+            {"key": "evidence", "label": "Evidence", "units": 0.75}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "preference_dispute",
+          "type": "table",
+          "label": "Homeowner preference, disputed scope, and decision log",
+          "columns": [
+            {"key": "item_room", "label": "Item and room", "units": 1.0},
+            {"key": "request_dispute", "label": "Preference or dispute", "units": 1.35},
+            {"key": "contract_basis", "label": "Contract or selection basis", "units": 1.15},
+            {"key": "decision_owner", "label": "Decision owner", "units": 0.85},
+            {"key": "decision_due", "label": "Decision due", "units": 0.7},
+            {"key": "resolution_reference", "label": "Resolution reference", "units": 0.95}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "correction_access_plan",
+          "type": "fields",
+          "label": "Correction access and protection commitment",
+          "fields": [
+            {"key": "correction_window", "label": "Correction window", "units": 0.85},
+            {"key": "resident_notice", "label": "Resident notice", "units": 0.8},
+            {"key": "rooms_unavailable", "label": "Rooms unavailable", "units": 0.9},
+            {"key": "utility_shutdown", "label": "Utility shutdown", "units": 0.85},
+            {"key": "protection_owner", "label": "Protection owner", "units": 0.9},
+            {"key": "cleanup_owner", "label": "Cleanup owner", "units": 0.85}
+          ]
+        },
+        {
+          "key": "planning_notes",
+          "type": "textarea",
+          "label": "Sequencing, matching limits, replacement material, resident accommodations, and required approvals",
+          "fields": [
+            {"key": "planning_detail", "label": "Correction planning and exception notes"}
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "verification",
+      "title": "Correction evidence and reinspection",
+      "guidance": "Close an item only after the required room access, correction, evidence, and verification are complete.",
+      "blocks": [
+        {
+          "key": "correction_log",
+          "type": "table",
+          "label": "Correction and reinspection closure log",
+          "columns": [
+            {"key": "item_id", "label": "Item ID", "units": 0.65},
+            {"key": "correction", "label": "Correction completed", "units": 1.35},
+            {"key": "completed_by", "label": "Completed by", "units": 0.85},
+            {"key": "evidence", "label": "Evidence", "units": 0.85},
+            {"key": "verified_by_date", "label": "Verified by and date", "units": 1.05},
+            {"key": "status", "label": "Accepted or reopened", "units": 0.85}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "evidence_check",
+          "type": "checklist",
+          "label": "Acceptable correction evidence",
+          "items": [
+            "Before and after photographs",
+            "Homeowner field reinspection",
+            "Designer review",
+            "Contractor quality review",
+            "Test result",
+            "Authority inspection",
+            "Manufacturer or vendor report",
+            "Approved replacement sample",
+            "As-built update",
+            "Cleaning confirmation",
+            "Document delivery",
+            "Warranty confirmation"
+          ]
+        },
+        {
+          "key": "reinspection_summary",
+          "type": "fields",
+          "label": "Reinspection summary",
+          "fields": [
+            {"key": "reinspection_date", "label": "Reinspection date", "units": 0.75},
+            {"key": "items_accepted", "label": "Items accepted", "units": 0.7},
+            {"key": "items_reopened", "label": "Items reopened", "units": 0.7},
+            {"key": "items_deferred", "label": "Items deferred", "units": 0.7},
+            {"key": "remaining_target", "label": "Remaining target close", "units": 0.9},
+            {"key": "verification_lead", "label": "Verification lead", "units": 0.85}
+          ]
+        },
+        {
+          "key": "reopened_notes",
+          "type": "textarea",
+          "label": "Reopened or rejected correction, additional work required, household impact, responsible party, and new due date",
+          "fields": [
+            {"key": "reopened_detail", "label": "Reopened item and next-action detail"}
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "turnover_closeout",
+      "title": "Home restoration, turnover, and final closeout",
+      "guidance": "Separate punch closure from document turnover, property restoration, and contractual acceptance.",
+      "blocks": [
+        {
+          "key": "restoration_check",
+          "type": "checklist",
+          "label": "Home and property restoration",
+          "items": [
+            "Punch corrections accepted",
+            "Final cleaning accepted",
+            "Furniture restored as agreed",
+            "Floors and stairs released",
+            "Driveway and yard cleaned",
+            "Common areas restored",
+            "Utilities fully restored",
+            "Smoke and carbon-monoxide alarms restored",
+            "Keys and access devices reconciled",
+            "Waste containers removed",
+            "Spare materials identified",
+            "Salvaged items transferred",
+            "Neighbor or association issue resolved",
+            "Final resident restrictions removed"
+          ]
+        },
+        {
+          "key": "deferred_items",
+          "type": "table",
+          "label": "Accepted deferred or seasonal items",
+          "columns": [
+            {"key": "deferred_item", "label": "Deferred item", "units": 1.2},
+            {"key": "reason", "label": "Reason", "units": 1.0},
+            {"key": "responsible_party", "label": "Responsible party", "units": 0.9},
+            {"key": "target_date", "label": "Target date", "units": 0.7},
+            {"key": "holdback_security", "label": "Holdback or security", "units": 0.85},
+            {"key": "acceptance_basis", "label": "Acceptance basis", "units": 1.05}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "turnover_documents",
+          "type": "checklist",
+          "label": "Turnover records and homeowner materials delivered",
+          "items": [
+            "Permit closeout",
+            "Inspection records",
+            "Product manuals",
+            "Warranty information",
+            "Care and cleaning instructions",
+            "Paint and finish references",
+            "Spare tile, flooring, or hardware",
+            "Final selection record",
+            "Final photographs",
+            "Open warranty contact list"
+          ]
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Final punch and acceptance status",
+          "fields": [
+            {"key": "status", "label": "Status", "units": 1.0, "field_type": "choice", "options": ["All items accepted", "Accepted with deferred items", "Open corrections remain", "Not accepted"]},
+            {"key": "open_item_count", "label": "Open item count", "units": 0.7},
+            {"key": "acceptance_date", "label": "Acceptance date", "units": 0.75},
+            {"key": "warranty_start", "label": "Warranty start", "units": 0.75},
+            {"key": "closeout_reference", "label": "Closeout reference", "units": 0.9},
+            {"key": "final_walk_lead", "label": "Final walk lead", "units": 0.85}
+          ]
+        },
+        {
+          "key": "final_signatures",
+          "type": "signatures",
+          "label": "Punch list closeout acknowledgment",
+          "fields": [
+            {"key": "contractor_signature", "label": "Contractor representative", "units": 1.15},
+            {"key": "contractor_date", "label": "Date", "units": 0.55},
+            {"key": "designer_signature", "label": "Designer if applicable", "units": 1.05},
+            {"key": "designer_date", "label": "Date", "units": 0.55},
+            {"key": "homeowner_signature", "label": "Homeowner acknowledgment", "units": 1.2},
+            {"key": "homeowner_date", "label": "Date", "units": 0.55}
+          ]
+        },
+        {
+          "key": "acceptance_notice",
+          "type": "notice",
+          "label": "Acceptance condition",
+          "guidance": "Checking or signing this register documents item review but does not amend the remodeling agreement, waive concealed defects, release unresolved claims, or transfer warranty obligations. Preserve deferred and reopened items with a named owner and target date."
+        }
+      ]
+    }
+  ]
+}

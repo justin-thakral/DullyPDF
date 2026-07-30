@@ -1,0 +1,478 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2456__water_leak_intake_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2456__water_leak_intake_form.pdf",
+  "slug": "water-leak-intake-form",
+  "title": "Water Leak Intake Form",
+  "subtitle": "An original water leak workflow that turns an initial request into a triaged, evidence-backed assignment, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete water leak intake form for the suspected or confirmed water-release location that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when a coordinator receives a new request and must verify identity, scope, evidence, hazards, feasibility, and the next accountable handoff before field activity is scheduled. The leak response coordinator owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "intake_routing",
+      "title": "Water leak intake identity and routing",
+      "guidance": "Create one traceable intake record and assign a person responsible for triage.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Intake record and assignment",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Intake record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "requester_contact",
+          "type": "fields",
+          "label": "Requester and access contact",
+          "fields": [
+            {
+              "key": "requester_name",
+              "label": "Requester name",
+              "units": 1.0
+            },
+            {
+              "key": "organization",
+              "label": "Organization or department",
+              "units": 1.15
+            },
+            {
+              "key": "phone",
+              "label": "Primary phone",
+              "units": 0.9
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.15
+            },
+            {
+              "key": "onsite_contact",
+              "label": "On-site contact",
+              "units": 1.0
+            },
+            {
+              "key": "access_window",
+              "label": "Access window",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "system_context",
+      "title": "Water leak system context and requested scope",
+      "guidance": "Match the request to the exact suspected or confirmed water-release location before feasibility or scheduling decisions.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Water leak identity",
+          "fields": [
+            {
+              "key": "property_zone",
+              "label": "Property, building, or zone",
+              "units": 1.15
+            },
+            {
+              "key": "leak_location",
+              "label": "Observed leak location",
+              "units": 1.2
+            },
+            {
+              "key": "suspected_source",
+              "label": "Suspected source or system",
+              "units": 1.15
+            },
+            {
+              "key": "meter_id",
+              "label": "Meter or submeter ID",
+              "units": 1.0
+            },
+            {
+              "key": "shutoff_location",
+              "label": "Known shutoff location",
+              "units": 1.15
+            },
+            {
+              "key": "occupancy_impact",
+              "label": "Occupancy or service impact",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "Available baseline",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.15
+            },
+            {
+              "key": "flow_status",
+              "label": "Active, intermittent, or stopped",
+              "units": 1.1
+            },
+            {
+              "key": "affected_area",
+              "label": "Affected rooms or area",
+              "units": 1.1
+            },
+            {
+              "key": "water_type",
+              "label": "Known water type or unknown",
+              "units": 1.15
+            },
+            {
+              "key": "meter_baseline",
+              "label": "Baseline meter or flow ref",
+              "units": 1.1
+            },
+            {
+              "key": "prior_history",
+              "label": "Prior leak or repair ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "intake_topics",
+          "type": "checklist",
+          "label": "Requested scope and known conditions",
+          "items": [
+            "Active flow, drip, stain, moisture, pressure loss, or high-use indicator",
+            "Fixture, supply, drain, roof, irrigation, service line, or equipment source",
+            "Meter movement, isolation test, pressure, and before-and-after evidence",
+            "Ceiling, wall, floor, cabinet, insulation, equipment, and contents impact",
+            "Electrical exposure, ceiling sag, slip, contamination, freeze, and structural concerns",
+            "Shutoff authority, critical water service, fire protection, and occupant impact",
+            "Drying, environmental, restoration, plumber, utility, and property-owner routing",
+            "Verification period, recurrence monitoring, and final damage handoff"
+          ],
+          "guidance": "Check only topics raised by the requester or supported by intake evidence."
+        }
+      ]
+    },
+    {
+      "key": "triage_evidence",
+      "title": "Water leak triage, evidence, and information gaps",
+      "guidance": "Separate what is known from what still needs field or qualified review.",
+      "blocks": [
+        {
+          "key": "triage_status",
+          "type": "fields",
+          "label": "Triage status",
+          "fields": [
+            {
+              "key": "request_status",
+              "label": "Request status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Ready to schedule",
+                "Needs information",
+                "Qualified review",
+                "Emergency routed"
+              ]
+            },
+            {
+              "key": "requested_window",
+              "label": "Requested completion window",
+              "units": 1.1
+            },
+            {
+              "key": "impact_summary",
+              "label": "Service or operating impact",
+              "units": 1.15
+            },
+            {
+              "key": "access_status",
+              "label": "Access status",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Assigned technical reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "response_due",
+              "label": "Triage response due",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "evidence_inventory",
+          "type": "table",
+          "label": "Received evidence and gap inventory",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Document / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Source",
+              "units": 0.9
+            },
+            {
+              "key": "reference",
+              "label": "File / system ref",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Received / gap",
+              "units": 0.95
+            },
+            {
+              "key": "gap_owner",
+              "label": "Gap owner / due",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "request_narrative",
+          "type": "textarea",
+          "label": "Requested outcome and known facts",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requester wording, observed facts, desired outcome, exclusions, and unresolved questions",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Water leak exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Water contacting electrical equipment, outlets, panels, cords, or machinery",
+            "Bulging or sagging ceiling, unstable finish, structural movement, or falling material",
+            "Suspected sewage, chemical, fire-water, or other contaminated release",
+            "Rapid flooding, washout, sinkhole, severe pressure, or uncontrolled flow",
+            "Slip exposure, hidden opening, poor visibility, or unsafe access",
+            "Shutoff would impair fire protection, medical, process, or critical service",
+            "Gas odor, steam, hot water, refrigerant, or unknown fluid is also present",
+            "Condition exceeds responder authority, equipment, training, or protective controls"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "Do not enter water near electrical equipment, stand below a sagging ceiling, or handle suspected contaminated water. Keep occupants clear and use the organization's emergency route for rapid flooding, structural movement, gas odor, or critical-service impact. Only authorized personnel may operate shutoffs after evaluating downstream consequences."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each intake exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "Water leak decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Intake closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Suspected or confirmed water-release location identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

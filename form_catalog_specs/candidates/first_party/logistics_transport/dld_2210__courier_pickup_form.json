@@ -1,0 +1,520 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2210__courier_pickup_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2210__courier_pickup_form.pdf",
+  "slug": "courier-pickup-form",
+  "title": "Courier Pickup Request, Manifest, and Handling Instructions",
+  "subtitle": "Create a dispatch-ready request identifying every package, service level, handling control, and authorized handoff.",
+  "description": "A courier pickup request and package manifest that carries sender, recipient, service timing, package-level identity, handling, access, custody acceptance, exceptions, pricing, and signatures through pickup closeout.",
+  "use_case": "Use before a courier pickup when the requester, dispatcher, sender, and accepting courier need one package-specific record of what is expected, what was accepted, and how exceptions were resolved.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_parties",
+      "title": "Request, sender, and recipient",
+      "guidance": "Create a reference that follows the shipment from request through handoff.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Pickup request reference",
+          "fields": [
+            {
+              "key": "request_number",
+              "label": "Pickup request or order number",
+              "units": 1.45
+            },
+            {
+              "key": "requested_date_time",
+              "label": "Requested date and time",
+              "units": 1.2
+            },
+            {
+              "key": "account_cost_center",
+              "label": "Account or cost center",
+              "units": 1.2
+            },
+            {
+              "key": "requested_by",
+              "label": "Requested by",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "sender_contact",
+          "type": "fields",
+          "label": "Sender and pickup contact",
+          "fields": [
+            {
+              "key": "sender",
+              "label": "Sender or organization",
+              "units": 1.35
+            },
+            {
+              "key": "pickup_contact",
+              "label": "Pickup contact",
+              "units": 1.0
+            },
+            {
+              "key": "phone",
+              "label": "Phone",
+              "units": 0.75
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "pickup_delivery",
+          "type": "fields",
+          "label": "Pickup and intended delivery location",
+          "fields": [
+            {
+              "key": "pickup_address",
+              "label": "Pickup address, suite, or dock",
+              "units": 1.55
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient or organization",
+              "units": 1.2
+            },
+            {
+              "key": "delivery_address",
+              "label": "Delivery address or suite",
+              "units": 1.45
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "service_window",
+      "title": "Service level and pickup window",
+      "guidance": "Make timing, routing, and proof requirements explicit before dispatch.",
+      "blocks": [
+        {
+          "key": "requested_service",
+          "type": "checklist",
+          "label": "Requested courier service",
+          "items": [
+            "On-demand",
+            "Same day",
+            "Scheduled route",
+            "Direct or no stops",
+            "After hours",
+            "Weekend",
+            "Return trip",
+            "Wait and return"
+          ]
+        },
+        {
+          "key": "timing_proof",
+          "type": "fields",
+          "label": "Pickup, delivery, and proof commitments",
+          "fields": [
+            {
+              "key": "ready_date_time",
+              "label": "Ready date and time",
+              "units": 1.15
+            },
+            {
+              "key": "pickup_deadline",
+              "label": "Pickup no later than",
+              "units": 1.2
+            },
+            {
+              "key": "delivery_deadline",
+              "label": "Delivery deadline",
+              "units": 1.1
+            },
+            {
+              "key": "proof_requirement",
+              "label": "Proof or signature requirement",
+              "units": 1.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "package_manifest",
+      "title": "Package manifest",
+      "guidance": "List every package separately when identity, value, or handling controls differ.",
+      "blocks": [
+        {
+          "key": "manifest_lines",
+          "type": "table",
+          "label": "Package-level manifest",
+          "columns": [
+            {
+              "key": "package_id",
+              "label": "Package or seal ID",
+              "units": 1.1
+            },
+            {
+              "key": "contents",
+              "label": "Contents description",
+              "units": 1.35
+            },
+            {
+              "key": "pieces",
+              "label": "Pieces",
+              "units": 0.55
+            },
+            {
+              "key": "weight_dimensions",
+              "label": "Weight and dimensions",
+              "units": 1.2
+            },
+            {
+              "key": "declared_value",
+              "label": "Declared value",
+              "units": 0.9
+            },
+            {
+              "key": "handling",
+              "label": "Handling control",
+              "units": 1.15
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "manifest_totals",
+          "type": "fields",
+          "label": "Manifest totals and references",
+          "fields": [
+            {
+              "key": "total_pieces",
+              "label": "Total pieces",
+              "units": 0.8
+            },
+            {
+              "key": "total_weight",
+              "label": "Total weight",
+              "units": 0.85
+            },
+            {
+              "key": "tracking_references",
+              "label": "PO, case, or tracking refs",
+              "units": 1.45
+            },
+            {
+              "key": "billing_reference",
+              "label": "Billing reference",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "handling_access",
+      "title": "Handling, access, and security instructions",
+      "guidance": "Record controls the courier cannot infer from labels or addresses.",
+      "blocks": [
+        {
+          "key": "handling_requirements",
+          "type": "checklist",
+          "label": "Handling requirements",
+          "items": [
+            "Fragile",
+            "Keep upright",
+            "Temperature controlled",
+            "Do not x-ray",
+            "Chain of custody",
+            "Photo at pickup",
+            "Adult signature",
+            "ID verification",
+            "Dock appointment",
+            "Security escort",
+            "Return packaging",
+            "No unattended delivery"
+          ]
+        },
+        {
+          "key": "pickup_instructions",
+          "type": "textarea",
+          "label": "Pickup access, packaging, security, and failed-attempt instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pickup access, packaging, security, and failed-attempt instructions",
+              "multiline": true
+            }
+          ],
+          "height": 68,
+          "guidance": "Include parking or dock access, contact-on-arrival, and packaging limits."
+        },
+        {
+          "key": "manifest_authorization",
+          "type": "signatures",
+          "label": "Requester and manifest authorization",
+          "fields": [
+            {
+              "key": "requester_signature",
+              "label": "Requester authorization",
+              "units": 1.35
+            },
+            {
+              "key": "manifest_preparer",
+              "label": "Manifest prepared by",
+              "units": 1.15
+            },
+            {
+              "key": "authorized_date_time",
+              "label": "Authorized date and time",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "courier_assignment",
+      "title": "Dispatch and courier assignment",
+      "guidance": "Confirm the service commitment and accepting courier before handoff.",
+      "blocks": [
+        {
+          "key": "courier_dispatch",
+          "type": "fields",
+          "label": "Courier and dispatch assignment",
+          "fields": [
+            {
+              "key": "carrier",
+              "label": "Courier or carrier",
+              "units": 1.2
+            },
+            {
+              "key": "dispatch_number",
+              "label": "Dispatch number",
+              "units": 1.05
+            },
+            {
+              "key": "courier_id",
+              "label": "Courier name or ID",
+              "units": 1.15
+            },
+            {
+              "key": "vehicle_route",
+              "label": "Vehicle or route",
+              "units": 1.05
+            },
+            {
+              "key": "eta",
+              "label": "ETA",
+              "units": 0.65
+            }
+          ]
+        },
+        {
+          "key": "pickup_event",
+          "type": "fields",
+          "label": "Arrival and handoff event",
+          "fields": [
+            {
+              "key": "arrival_date_time",
+              "label": "Arrival date and time",
+              "units": 1.15
+            },
+            {
+              "key": "pickup_date_time",
+              "label": "Pickup date and time",
+              "units": 1.15
+            },
+            {
+              "key": "sender_representative",
+              "label": "Sender representative",
+              "units": 1.3
+            },
+            {
+              "key": "handoff_location",
+              "label": "Actual handoff location",
+              "units": 1.35
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "custody_acceptance",
+      "title": "Package count, condition, and custody",
+      "guidance": "Resolve count, seal, condition, and acceptance differences before departure.",
+      "blocks": [
+        {
+          "key": "manifest_reconciliation",
+          "type": "table",
+          "label": "Manifest reconciliation and acceptance",
+          "columns": [
+            {
+              "key": "package_id",
+              "label": "Package or seal ID",
+              "units": 1.15
+            },
+            {
+              "key": "count",
+              "label": "Count",
+              "units": 0.6
+            },
+            {
+              "key": "condition",
+              "label": "Condition",
+              "units": 1.0
+            },
+            {
+              "key": "seal_status",
+              "label": "Seal intact",
+              "units": 0.85
+            },
+            {
+              "key": "exception_ref",
+              "label": "Exception or photo ref",
+              "units": 1.35
+            },
+            {
+              "key": "accepted",
+              "label": "Accepted",
+              "units": 0.75
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "handoff_controls",
+          "type": "checklist",
+          "label": "Handoff controls completed",
+          "items": [
+            "Piece count matched",
+            "Labels readable",
+            "Packaging acceptable",
+            "Seals recorded",
+            "Temperature logged",
+            "Photos captured",
+            "ID verified",
+            "Instructions accepted"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "pickup_closeout",
+      "title": "Exception, price, and pickup closeout",
+      "guidance": "Preserve every change to the request and close the sender-to-courier handoff.",
+      "blocks": [
+        {
+          "key": "pickup_exception",
+          "type": "textarea",
+          "label": "Pickup exception and resolution details",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pickup exception and resolution details",
+              "multiline": true
+            }
+          ],
+          "height": 66,
+          "guidance": "Record the safety concern, decision, package disposition, and immediate resolution."
+        },
+        {
+          "key": "exception_actions",
+          "type": "table",
+          "label": "Unresolved exception and action tracker",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue or package",
+              "units": 1.25
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.7
+            },
+            {
+              "key": "status",
+              "label": "Status or evidence",
+              "units": 1.2
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "price_tracking",
+          "type": "fields",
+          "label": "Pickup price, billing, and tracking",
+          "fields": [
+            {
+              "key": "quoted_charge",
+              "label": "Quoted charge",
+              "units": 0.9
+            },
+            {
+              "key": "surcharge",
+              "label": "Surcharge or wait time",
+              "units": 1.15
+            },
+            {
+              "key": "pickup_charge",
+              "label": "Pickup charge",
+              "units": 0.9
+            },
+            {
+              "key": "billing_code",
+              "label": "Billing or cost code",
+              "units": 1.05
+            },
+            {
+              "key": "master_tracking",
+              "label": "Master tracking number",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "regulated_material_boundary",
+          "type": "notice",
+          "label": "Carrier acceptance and regulated-material boundary",
+          "guidance": "Do not use this general template for prohibited materials or regulated dangerous goods unless the shipment is prepared, documented, and accepted under all applicable carrier and legal requirements. Use any additional customs, medical-courier, claim, or regulated-custody record required."
+        },
+        {
+          "key": "pickup_acceptance",
+          "type": "signatures",
+          "label": "Sender release and courier acceptance",
+          "fields": [
+            {
+              "key": "sender_release",
+              "label": "Sender release or signature",
+              "units": 1.35
+            },
+            {
+              "key": "courier_acceptance",
+              "label": "Courier acceptance or signature",
+              "units": 1.4
+            },
+            {
+              "key": "handoff_date_time",
+              "label": "Handoff date and time",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

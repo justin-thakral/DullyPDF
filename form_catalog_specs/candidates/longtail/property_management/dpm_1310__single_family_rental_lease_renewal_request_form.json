@@ -1,0 +1,438 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1310__single_family_rental_lease_renewal_request_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1310__single_family_rental_lease_renewal_request_form.pdf",
+  "slug": "single-family-rental-lease-renewal-request-form",
+  "title": "Single-Family Rental Lease Renewal Request and Decision Record",
+  "subtitle": "Track resident intent, house-specific change requests, property readiness, consistent review, owner authorization, offer delivery, response, execution, and operational handoff.",
+  "description": "Renewal workflow for a single-family rental where yard care, utilities, exterior equipment, storage, parking, pets, access, seasonal service, or planned owner work may require explicit review.",
+  "use_case": "Use to create a traceable renewal record without treating the resident's request as an approval, separating accommodation or protected-process routing from neutral operational and lease review.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "renewal_property_identity",
+      "title": "Renewal request, resident, lease, and house identity",
+      "guidance": "Tie the request to the current lease and one accountable review record for the correct rental house.",
+      "blocks": [
+        {
+          "key": "renewal_reference",
+          "type": "fields",
+          "label": "Renewal request reference",
+          "fields": [
+            {"key": "request_number", "label": "Renewal request number", "units": 1.1},
+            {"key": "date_received", "label": "Date received", "units": 0.8},
+            {"key": "received_by", "label": "Received by", "units": 0.9},
+            {"key": "request_source", "label": "Request source", "units": 1.0, "field_type": "choice", "options": ["Resident", "Owner or manager outreach", "Joint planning", "Existing option notice", "Other"]},
+            {"key": "review_owner", "label": "Assigned review owner", "units": 1.1}
+          ]
+        },
+        {
+          "key": "rental_property",
+          "type": "fields",
+          "label": "Single-family rental and current lease",
+          "fields": [
+            {"key": "property_address", "label": "Property address", "units": 1.8},
+            {"key": "property_type", "label": "House type", "units": 1.0, "field_type": "choice", "options": ["Detached house", "Townhouse or rowhouse", "Duplex side", "Cottage or accessory dwelling", "Other single-family rental"]},
+            {"key": "lease_reference", "label": "Lease or account reference", "units": 1.1},
+            {"key": "lease_start", "label": "Current lease start", "units": 0.8},
+            {"key": "lease_end", "label": "Current lease end", "units": 0.8}
+          ]
+        },
+        {
+          "key": "resident_contact",
+          "type": "fields",
+          "label": "Resident household and delivery preference",
+          "fields": [
+            {"key": "resident_names", "label": "Resident names on current record", "units": 1.5},
+            {"key": "phone", "label": "Phone", "units": 0.8},
+            {"key": "email", "label": "Email", "units": 1.1},
+            {"key": "delivery_method", "label": "Preferred delivery method", "units": 1.0, "field_type": "choice", "options": ["Resident portal", "Email", "Mail", "In person", "Other"]},
+            {"key": "response_target", "label": "Resident response target", "units": 1.0}
+          ]
+        },
+        {
+          "key": "current_property_terms",
+          "type": "table",
+          "label": "Current house-specific term reference",
+          "columns": [
+            {"key": "term_area", "label": "Term or responsibility area", "units": 1.3},
+            {"key": "current_source", "label": "Current lease or addendum source", "units": 1.4},
+            {"key": "current_term", "label": "Current recorded term", "units": 1.5},
+            {"key": "review_needed", "label": "Review needed", "units": 1.0},
+            {"key": "record_ref", "label": "Supporting record ref", "units": 1.0}
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "resident_intent_changes",
+      "title": "Resident intent, requested changes, and protected routing",
+      "guidance": "Capture requested outcomes without treating a request as an executed agreement or screening an accommodation here.",
+      "blocks": [
+        {
+          "key": "renewal_intent",
+          "type": "fields",
+          "label": "Resident renewal preference",
+          "fields": [
+            {"key": "intent", "label": "Current intent", "units": 1.0, "field_type": "choice", "options": ["Request renewal", "Request shorter term", "Request longer term", "Request month-to-month review", "Undecided", "Plan to vacate"]},
+            {"key": "preferred_term", "label": "Preferred renewal term", "units": 1.0},
+            {"key": "preferred_start", "label": "Preferred start date", "units": 0.9},
+            {"key": "response_window", "label": "Acceptable response window", "units": 1.0},
+            {"key": "household_change_ref", "label": "Household-change record ref", "units": 1.1}
+          ]
+        },
+        {
+          "key": "requested_changes",
+          "type": "checklist",
+          "label": "Requested house or lease changes",
+          "items": [
+            "Renew current terms",
+            "Change lease length",
+            "Request rent or payment-term discussion",
+            "Change utility allocation or account process",
+            "Change lawn, landscape, or snow service",
+            "Change pest, filter, treatment, or fuel plan",
+            "Change parking, driveway, garage, or storage use",
+            "Change shed, yard, fence, or garden use",
+            "Request property alteration review",
+            "Request home-business or equipment review",
+            "Request pet workflow",
+            "Request another approved addendum",
+            "Request accommodation process",
+            "No change requested"
+          ]
+        },
+        {
+          "key": "change_register",
+          "type": "table",
+          "label": "Requested change and accountable routing",
+          "columns": [
+            {"key": "change", "label": "Requested change", "units": 1.5},
+            {"key": "effective_date", "label": "Requested effective date", "units": 1.0},
+            {"key": "separate_process", "label": "Separate process or document", "units": 1.3},
+            {"key": "owner", "label": "Responsible owner", "units": 1.0},
+            {"key": "status", "label": "Status or reference", "units": 1.1}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "routing_notice",
+          "type": "notice",
+          "label": "Accommodation and fair-process routing",
+          "guidance": "If a resident requests an accommodation or communication adjustment, record only the requested operational change here and route the request through the established qualified process. Do not request diagnosis or protected-trait details in this renewal form."
+        },
+        {
+          "key": "communication_needs",
+          "type": "textarea",
+          "label": "Resident questions, delivery needs, requested communication support, unresolved change, or routing confirmation",
+          "fields": [{"key": "communication_detail", "label": "Renewal communication and routing detail"}],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "property_readiness",
+      "title": "Property readiness, open work, and ownership planning",
+      "guidance": "Surface house-specific operational items that affect the renewal timeline without using maintenance history as a protected or retaliatory factor.",
+      "blocks": [
+        {
+          "key": "property_record_review",
+          "type": "checklist",
+          "label": "Property and service records reviewed",
+          "items": [
+            "Current lease and addenda",
+            "Open maintenance requests",
+            "Planned capital or exterior work",
+            "Roof, drainage, tree, or site follow-up",
+            "HVAC or seasonal service plan",
+            "Well, septic, fuel, or treatment plan",
+            "Utility account arrangement",
+            "Lawn, snow, pest, or landscape service",
+            "Garage, shed, gate, or access inventory",
+            "Insurance-required operational item",
+            "Association or shared-boundary item",
+            "No material property item identified"
+          ]
+        },
+        {
+          "key": "open_property_items",
+          "type": "table",
+          "label": "Open property, service, or handover item",
+          "columns": [
+            {"key": "item", "label": "House or site item", "units": 1.4},
+            {"key": "record_source", "label": "Record source", "units": 1.0},
+            {"key": "needed_action", "label": "Needed action", "units": 1.4},
+            {"key": "owner", "label": "Responsible owner", "units": 1.0},
+            {"key": "due_date", "label": "Due date", "units": 0.8},
+            {"key": "status", "label": "Status or reference", "units": 1.0}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "access_planning",
+          "type": "fields",
+          "label": "Walkthrough or work-access planning",
+          "fields": [
+            {"key": "review_needed", "label": "Property review needed", "units": 1.0, "field_type": "choice", "options": ["No", "Resident-requested walkthrough", "Maintenance follow-up", "Owner planning review", "Specialist visit"]},
+            {"key": "target_date", "label": "Target date", "units": 0.8},
+            {"key": "notice_reference", "label": "Notice or appointment ref", "units": 1.1},
+            {"key": "access_coordinator", "label": "Access coordinator", "units": 1.0},
+            {"key": "scope", "label": "Authorized scope", "units": 1.2}
+          ]
+        },
+        {
+          "key": "owner_planning",
+          "type": "textarea",
+          "label": "Planned owner work, sale or occupancy planning routed for review, access limits, timing conflict, or unresolved property question",
+          "fields": [{"key": "owner_planning_detail", "label": "Owner planning and property-readiness detail"}],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "consistent_review",
+      "title": "Consistent property and renewal review",
+      "guidance": "Use documented, consistently applied criteria and preserve protected activity and confidential information.",
+      "blocks": [
+        {
+          "key": "records_reviewed",
+          "type": "checklist",
+          "label": "Neutral records reviewed",
+          "items": [
+            "Current lease record",
+            "Account-status record",
+            "Insurance record if applicable",
+            "Association record if applicable",
+            "Open repair or service schedule",
+            "Owner approval matrix",
+            "Prior renewal communication",
+            "Property-specific addenda",
+            "Resident-provided correction",
+            "Exception or variance authority",
+            "Decision source documented",
+            "Only necessary records reviewed"
+          ]
+        },
+        {
+          "key": "review_controls",
+          "type": "checklist",
+          "label": "Neutral process controls confirmed",
+          "items": [
+            "Comparable renewals use the same criteria",
+            "Protected traits were not considered",
+            "Maintenance requests were not treated adversely",
+            "Complaints or rights activity were not treated adversely",
+            "Accommodation activity was not treated adversely",
+            "Decision maker has recorded authority",
+            "Confidential records access is restricted",
+            "Uncertain criterion routed for qualified review",
+            "Resident correction was considered",
+            "No retaliatory factor identified",
+            "Legal conclusion not made on this form",
+            "Reason for exception is documented"
+          ]
+        },
+        {
+          "key": "review_register",
+          "type": "table",
+          "label": "Renewal criterion and review record",
+          "columns": [
+            {"key": "criterion", "label": "Documented criterion", "units": 1.4},
+            {"key": "source", "label": "Record source", "units": 1.1},
+            {"key": "facts", "label": "Relevant neutral facts", "units": 1.5},
+            {"key": "result", "label": "Result or uncertainty", "units": 1.1},
+            {"key": "next_step", "label": "Next step or review", "units": 1.1}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "objective_summary",
+          "type": "textarea",
+          "label": "Objective review summary, missing record, resident correction, inconsistency concern, or required escalation",
+          "fields": [{"key": "objective_summary_detail", "label": "Neutral renewal review summary"}],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "offer_authorization",
+      "title": "Renewal options, owner authorization, and delivery",
+      "guidance": "Document each option, approval source, house-specific term, and delivery record without representing a promise before execution.",
+      "blocks": [
+        {
+          "key": "renewal_options",
+          "type": "table",
+          "label": "Renewal option under consideration",
+          "columns": [
+            {"key": "option", "label": "Option or term", "units": 1.2},
+            {"key": "dates", "label": "Start and end dates", "units": 1.1},
+            {"key": "recurring_term", "label": "Recurring amount or term", "units": 1.1},
+            {"key": "one_time_term", "label": "One-time amount or term", "units": 1.1},
+            {"key": "property_term", "label": "House or service term", "units": 1.3},
+            {"key": "status", "label": "Status or notes", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "house_terms_reviewed",
+          "type": "checklist",
+          "label": "House-specific terms reviewed",
+          "items": [
+            "Utility account or allocation",
+            "Lawn and landscape service",
+            "Snow or ice response",
+            "Filters, treatment, or consumables",
+            "Fuel delivery or tank monitoring",
+            "Pest reporting or service",
+            "Parking, driveway, garage, or storage",
+            "Yard, fence, garden, or outbuilding use",
+            "Pet or assistance-animal process kept separate",
+            "Maintenance-entry and access plan",
+            "Renewal or inspection date",
+            "No additional house-specific term"
+          ]
+        },
+        {
+          "key": "authorized_offer",
+          "type": "fields",
+          "label": "Authorized offer",
+          "fields": [
+            {"key": "selected_option", "label": "Selected option", "units": 1.0},
+            {"key": "response_date", "label": "Offer response date", "units": 0.9},
+            {"key": "approval_status", "label": "Approval status", "units": 1.0, "field_type": "choice", "options": ["Approved for delivery", "Conditional approval", "Revision required", "Qualified review required", "No offer authorized"]},
+            {"key": "authorized_by", "label": "Authorized by", "units": 1.0},
+            {"key": "authorization_date", "label": "Authorization date", "units": 0.9}
+          ]
+        },
+        {
+          "key": "approval_conditions",
+          "type": "textarea",
+          "label": "Approval conditions, required addenda, authorized exception, review source, work dependency, and delivery instructions",
+          "fields": [{"key": "approval_condition_detail", "label": "Authorized renewal conditions"}],
+          "height": 58
+        },
+        {
+          "key": "offer_notice",
+          "type": "notice",
+          "label": "Offer preparation notice",
+          "guidance": "This workflow record is not a lease, addendum, renewal offer, or promise of renewal. Use approved documents, authorized terms, and any required legal or policy review before communicating final terms."
+        },
+        {
+          "key": "offer_delivery",
+          "type": "fields",
+          "label": "Offer or decision delivery",
+          "fields": [
+            {"key": "document_version", "label": "Offer or decision version", "units": 1.1},
+            {"key": "delivery_method", "label": "Delivery method", "units": 0.9},
+            {"key": "delivered_at", "label": "Delivered date and time", "units": 1.0},
+            {"key": "delivered_by", "label": "Delivered by", "units": 0.9},
+            {"key": "receipt_reference", "label": "Receipt or portal reference", "units": 1.1}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "response_execution_closeout",
+      "title": "Resident response, execution, handoff, and closeout",
+      "guidance": "Preserve revisions and exceptions, confirm executed documents, update property systems, and assign every open action.",
+      "blocks": [
+        {
+          "key": "communication_log",
+          "type": "table",
+          "label": "Renewal communication and revision log",
+          "columns": [
+            {"key": "date_time", "label": "Date and time", "units": 0.9},
+            {"key": "from_to", "label": "From and to", "units": 1.0},
+            {"key": "method", "label": "Method", "units": 0.8},
+            {"key": "content", "label": "Question, response, or revision", "units": 1.6},
+            {"key": "owner", "label": "Follow-up owner", "units": 1.0},
+            {"key": "record_ref", "label": "Record reference", "units": 1.0}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "resident_response",
+          "type": "fields",
+          "label": "Resident response",
+          "fields": [
+            {"key": "response", "label": "Resident response", "units": 1.0, "field_type": "choice", "options": ["Accepted", "Requested revision", "Declined", "No response", "Withdrew request", "Accommodation route opened"]},
+            {"key": "response_date", "label": "Response date", "units": 0.8},
+            {"key": "received_by", "label": "Received by", "units": 0.9},
+            {"key": "response_ref", "label": "Response document or message ref", "units": 1.3}
+          ]
+        },
+        {
+          "key": "exception_plan",
+          "type": "textarea",
+          "label": "Missed response, delivery failure, disputed term, approved variance, accommodation route, or next action",
+          "fields": [{"key": "exception_plan_detail", "label": "Renewal response exception and plan"}],
+          "height": 50
+        },
+        {
+          "key": "execution_checklist",
+          "type": "checklist",
+          "label": "Execution and system-update checklist",
+          "items": [
+            "Final lease or amendment generated",
+            "All required signers identified",
+            "Resident signatures received",
+            "Owner or authorized signatures received",
+            "Required addenda attached",
+            "Resident copy delivered",
+            "Lease system updated",
+            "Recurring charges updated",
+            "Property-service tasks updated",
+            "Access or parking records updated",
+            "Renewal review date scheduled",
+            "Move-out workflow opened if needed",
+            "Original documents retained",
+            "Open condition assigned"
+          ]
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Final renewal outcome",
+          "fields": [
+            {"key": "outcome", "label": "Outcome", "units": 1.0, "field_type": "choice", "options": ["Renewal fully executed", "Renewal declined", "No response", "Resident plans to vacate", "Request withdrawn", "Qualified review pending"]},
+            {"key": "final_term_date", "label": "Final term and effective date", "units": 1.2},
+            {"key": "executed_date", "label": "Fully executed date", "units": 0.9},
+            {"key": "document_ref", "label": "Executed document reference", "units": 1.2}
+          ]
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and accountable ownership",
+          "columns": [
+            {"key": "action", "label": "Remaining action", "units": 1.5},
+            {"key": "owner", "label": "Responsible owner", "units": 1.0},
+            {"key": "due_date", "label": "Due date", "units": 0.8},
+            {"key": "resident_update", "label": "Resident update due", "units": 1.0},
+            {"key": "completion_ref", "label": "Completion reference", "units": 1.1}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "fair_process_notice",
+          "type": "notice",
+          "label": "Fair and accountable process",
+          "guidance": "Apply neutral standards consistently without regard to protected traits, accommodation activity, maintenance requests, complaints, or other protected activity. Follow applicable notice, privacy, record-retention, fair-housing, and legal-review requirements."
+        },
+        {
+          "key": "workflow_closeout",
+          "type": "signatures",
+          "label": "Workflow review and closeout",
+          "fields": [
+            {"key": "renewal_coordinator", "label": "Renewal coordinator", "units": 1.1},
+            {"key": "authorized_approver", "label": "Authorized approver", "units": 1.1},
+            {"key": "system_updated_by", "label": "System updated by", "units": 1.0},
+            {"key": "closed_date", "label": "Closed date", "units": 0.8}
+          ]
+        }
+      ]
+    }
+  ]
+}

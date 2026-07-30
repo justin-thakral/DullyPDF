@@ -1,0 +1,532 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2213__courier_pickup_report_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2213__courier_pickup_report_form.pdf",
+  "slug": "courier-pickup-report-form",
+  "title": "Courier Pickup Completion and Exception Report",
+  "subtitle": "Record actual timing, package reconciliation, condition evidence, custody, service variance, and accountable closure after pickup.",
+  "description": "A post-pickup operational report that reconciles the dispatch commitment with actual events, package and seal condition, exceptions, downstream custody, final disposition, proof, billing impact, corrective action, and review.",
+  "use_case": "Use after courier pickup when operations, customer service, and the sender need an evidence-backed record of what was accepted, what changed, where custody moved, and how every package and exception was closed.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "job_commitment",
+      "title": "Job, courier, and service commitment",
+      "guidance": "Compare actual execution with the dispatch request and customer commitment.",
+      "blocks": [
+        {
+          "key": "job_reference",
+          "type": "fields",
+          "label": "Job and report reference",
+          "fields": [
+            {
+              "key": "dispatch_number",
+              "label": "Job or dispatch number",
+              "units": 1.25
+            },
+            {
+              "key": "master_tracking",
+              "label": "Master tracking number",
+              "units": 1.25
+            },
+            {
+              "key": "service_level",
+              "label": "Service level",
+              "units": 0.9
+            },
+            {
+              "key": "report_status",
+              "label": "Report status",
+              "units": 0.9
+            },
+            {
+              "key": "report_date_time",
+              "label": "Report date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "courier_account",
+          "type": "fields",
+          "label": "Courier, route, and account",
+          "fields": [
+            {
+              "key": "carrier",
+              "label": "Courier or carrier",
+              "units": 1.2
+            },
+            {
+              "key": "courier_id",
+              "label": "Courier name or ID",
+              "units": 1.15
+            },
+            {
+              "key": "vehicle_route",
+              "label": "Route or vehicle",
+              "units": 1.0
+            },
+            {
+              "key": "dispatcher",
+              "label": "Dispatcher",
+              "units": 0.85
+            },
+            {
+              "key": "customer_account",
+              "label": "Customer or account",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "pickup_timing",
+      "title": "Actual pickup events and timing",
+      "guidance": "Use scan-derived or observed times when available and preserve the proof reference.",
+      "blocks": [
+        {
+          "key": "event_timeline",
+          "type": "table",
+          "label": "Pickup execution timeline",
+          "columns": [
+            {
+              "key": "event",
+              "label": "Event",
+              "units": 1.0
+            },
+            {
+              "key": "planned_time",
+              "label": "Planned time",
+              "units": 0.9
+            },
+            {
+              "key": "actual_time",
+              "label": "Actual time",
+              "units": 0.9
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "responsible",
+              "label": "Responsible party",
+              "units": 1.1
+            },
+            {
+              "key": "proof",
+              "label": "Scan or proof ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "pickup_summary",
+          "type": "fields",
+          "label": "Pickup timing and count summary",
+          "fields": [
+            {
+              "key": "wait_minutes",
+              "label": "Wait minutes",
+              "units": 0.75
+            },
+            {
+              "key": "transit_start",
+              "label": "Transit start",
+              "units": 0.9
+            },
+            {
+              "key": "expected_pieces",
+              "label": "Expected pieces",
+              "units": 0.95
+            },
+            {
+              "key": "accepted_pieces",
+              "label": "Accepted pieces",
+              "units": 0.95
+            },
+            {
+              "key": "count_variance",
+              "label": "Count variance",
+              "units": 0.85
+            },
+            {
+              "key": "actual_pickup_point",
+              "label": "Actual pickup point",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "package_reconciliation",
+      "title": "Package reconciliation and condition",
+      "guidance": "Tie each acceptance, control, and exception to a package or seal identifier.",
+      "blocks": [
+        {
+          "key": "package_reconciliation",
+          "type": "table",
+          "label": "Package reconciliation",
+          "columns": [
+            {
+              "key": "package_id",
+              "label": "Package or seal ID",
+              "units": 1.15
+            },
+            {
+              "key": "expected",
+              "label": "Expected",
+              "units": 0.65
+            },
+            {
+              "key": "accepted",
+              "label": "Accepted",
+              "units": 0.65
+            },
+            {
+              "key": "condition",
+              "label": "Condition",
+              "units": 1.0
+            },
+            {
+              "key": "control",
+              "label": "Temp or control",
+              "units": 1.0
+            },
+            {
+              "key": "exception",
+              "label": "Exception or evidence",
+              "units": 1.25
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "reconciliation_notes",
+          "type": "textarea",
+          "label": "Package discrepancy, evidence gap, and reconciliation note",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Package discrepancy, evidence gap, and reconciliation note",
+              "multiline": true
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "pickup_exception",
+      "title": "Pickup exception and immediate resolution",
+      "guidance": "Escalate while people, evidence, and package disposition can still be confirmed.",
+      "blocks": [
+        {
+          "key": "exception_type",
+          "type": "checklist",
+          "label": "Pickup exception type",
+          "items": [
+            "Late arrival",
+            "Sender not ready",
+            "Access denied",
+            "Missing package",
+            "Extra package",
+            "Damaged packaging",
+            "Seal mismatch",
+            "Label issue",
+            "Prohibited item",
+            "Temperature issue",
+            "Pickup refused",
+            "No exception"
+          ]
+        },
+        {
+          "key": "exception_facts",
+          "type": "textarea",
+          "label": "Exception facts, notice, disposition, and corrective action",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Exception facts, notice, disposition, and corrective action",
+              "multiline": true
+            }
+          ],
+          "height": 76,
+          "guidance": "Record who was notified, instructions received, and photo or scan evidence."
+        },
+        {
+          "key": "pickup_attestation",
+          "type": "signatures",
+          "label": "Pickup event attestation",
+          "fields": [
+            {
+              "key": "courier_attestation",
+              "label": "Courier attestation or signature",
+              "units": 1.45
+            },
+            {
+              "key": "sender_confirmation",
+              "label": "Sender confirmation or initials",
+              "units": 1.4
+            },
+            {
+              "key": "handoff_date_time",
+              "label": "Handoff date and time",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "postpickup_custody",
+      "title": "Chain of custody after pickup",
+      "guidance": "Record every person, place, package count, seal, and condition change.",
+      "blocks": [
+        {
+          "key": "custody_log",
+          "type": "table",
+          "label": "Post-pickup custody log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.95
+            },
+            {
+              "key": "released_by",
+              "label": "Released by",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Accepted by",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "units": 1.05
+            },
+            {
+              "key": "count_seal",
+              "label": "Count or seal",
+              "units": 0.95
+            },
+            {
+              "key": "condition_proof",
+              "label": "Condition or scan",
+              "units": 1.2
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "custody_summary",
+          "type": "fields",
+          "label": "Current custody and control summary",
+          "fields": [
+            {
+              "key": "current_custodian",
+              "label": "Current custodian",
+              "units": 1.15
+            },
+            {
+              "key": "current_location",
+              "label": "Current location",
+              "units": 1.1
+            },
+            {
+              "key": "package_count",
+              "label": "Package count",
+              "units": 0.85
+            },
+            {
+              "key": "seal_control_status",
+              "label": "Seal or control status",
+              "units": 1.25
+            },
+            {
+              "key": "latest_proof",
+              "label": "Latest scan or proof ref",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "final_disposition",
+      "title": "Final disposition and proof",
+      "guidance": "Resolve the documented outcome and proof for every package accepted at pickup.",
+      "blocks": [
+        {
+          "key": "shipment_disposition",
+          "type": "checklist",
+          "label": "Shipment disposition",
+          "items": [
+            "Delivered",
+            "Transferred to route",
+            "Held at facility",
+            "Returned to sender",
+            "Partial delivery",
+            "Delivery refused",
+            "Damaged in transit",
+            "Investigation open"
+          ]
+        },
+        {
+          "key": "disposition_proof",
+          "type": "fields",
+          "label": "Final location, recipient, and proof",
+          "fields": [
+            {
+              "key": "final_location",
+              "label": "Final location or recipient",
+              "units": 1.45
+            },
+            {
+              "key": "disposition_date_time",
+              "label": "Disposition date and time",
+              "units": 1.2
+            },
+            {
+              "key": "proof_reference",
+              "label": "Signature, photo, or scan ref",
+              "units": 1.45
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "variance_closeout",
+      "title": "Service variance, billing, and follow-up",
+      "guidance": "Convert each exception or service variance into an owned action and documented closure.",
+      "blocks": [
+        {
+          "key": "followup_tracker",
+          "type": "table",
+          "label": "Issue and follow-up tracker",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue or variance",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.7
+            },
+            {
+              "key": "customer_update",
+              "label": "Customer update",
+              "units": 1.15
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution or evidence",
+              "units": 1.3
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "billing_impact",
+          "type": "fields",
+          "label": "Billing impact and case reference",
+          "fields": [
+            {
+              "key": "original_charge",
+              "label": "Original charge",
+              "units": 0.85
+            },
+            {
+              "key": "surcharge",
+              "label": "Wait or access surcharge",
+              "units": 1.25
+            },
+            {
+              "key": "credit",
+              "label": "Credit",
+              "units": 0.65
+            },
+            {
+              "key": "adjusted_charge",
+              "label": "Adjusted charge",
+              "units": 0.95
+            },
+            {
+              "key": "claim_reference",
+              "label": "Claim or incident ref",
+              "units": 1.15
+            },
+            {
+              "key": "case_status",
+              "label": "Case status",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "review_notes",
+          "type": "textarea",
+          "label": "Root cause, service determination, communication, and prevention",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Root cause, service determination, communication, and prevention",
+              "multiline": true
+            }
+          ],
+          "height": 68,
+          "guidance": "Include billing rationale and any remaining action or limitation."
+        },
+        {
+          "key": "supplemental_records",
+          "type": "notice",
+          "label": "Supplemental carrier and custody records",
+          "guidance": "This report supplements, but does not replace, carrier-required dangerous-goods, loss, damage, claim, customs, medical-courier, or regulated chain-of-custody documentation. Confirm applicable carrier, customer, and legal record requirements."
+        },
+        {
+          "key": "report_closeout",
+          "type": "signatures",
+          "label": "Operations and customer-service review",
+          "fields": [
+            {
+              "key": "operations_review",
+              "label": "Dispatcher or operations review",
+              "units": 1.45
+            },
+            {
+              "key": "qa_review",
+              "label": "Customer service or QA review",
+              "units": 1.4
+            },
+            {
+              "key": "closed_date_time",
+              "label": "Closed date and time",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,497 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dcf_141__equipment_rental_checklist",
+  "source_section": "construction_trades",
+  "source_filename": "dcf_141__equipment_rental_checklist.pdf",
+  "slug": "equipment-rental-checklist",
+  "title": "Equipment Rental Checkout and Return Checklist",
+  "subtitle": "Document the rental agreement, operator, equipment and accessories, checkout condition, orientation and release, return readings, comparison inspection, damage evidence, charge decisions, and agreement closeout.",
+  "description": "A workflow-complete equipment rental checklist covering renter and job identity, authorized operator, asset and serial numbers, attachment and document inventory, pre-rental condition and readings, visible existing damage, safety orientation, authorized release, return receipt, accessory reconciliation, comparative return inspection, new damage or wear evidence, quarantine and corrective actions, charge adjustments, disputes, and accountable renter handoff.",
+  "use_case": "Use when rental-counter staff, an authorized renter or operator, release personnel, and a return inspector need one fillable record linking the signed agreement and checkout baseline to safe release, equipment custody, return condition, exceptions, charges, and final closeout.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "agreement_customer_job",
+      "title": "Rental agreement, customer, operator, and job",
+      "guidance": "Match the customer, authorized operator, jobsite, rental period, and delivery method to the signed agreement.",
+      "blocks": [
+        {
+          "key": "agreement_reference",
+          "type": "fields",
+          "label": "Rental agreement reference",
+          "fields": [
+            {"key": "rental_branch", "label": "Rental company or branch", "units": 1.2},
+            {"key": "agreement_number", "label": "Agreement number", "units": 0.9},
+            {"key": "prepared_by", "label": "Prepared by", "units": 0.8},
+            {"key": "checkout_date_time", "label": "Checkout date and time", "units": 0.95},
+            {"key": "agreement_status", "label": "Agreement status", "units": 0.85, "field_type": "choice", "options": ["Reserved", "Ready", "Released", "Extended", "Returned", "Closed", "Hold"]}
+          ]
+        },
+        {
+          "key": "customer_operator",
+          "type": "fields",
+          "label": "Customer and authorized operator",
+          "fields": [
+            {"key": "customer_company", "label": "Customer or company", "units": 1.2},
+            {"key": "customer_account", "label": "Customer account", "units": 0.9},
+            {"key": "authorized_operator", "label": "Authorized operator", "units": 1.0},
+            {"key": "phone", "label": "Phone", "units": 0.8},
+            {"key": "email", "label": "Email", "units": 1.1},
+            {"key": "billing_contact", "label": "Billing contact", "units": 0.9}
+          ]
+        },
+        {
+          "key": "job_rental_period",
+          "type": "fields",
+          "label": "Jobsite, rental period, and logistics",
+          "fields": [
+            {"key": "jobsite_location", "label": "Jobsite or use location", "units": 1.2},
+            {"key": "po_cost_code", "label": "PO, project, or cost code", "units": 1.0},
+            {"key": "rental_start", "label": "Rental start", "units": 0.8},
+            {"key": "return_due", "label": "Return due date and time", "units": 0.95},
+            {"key": "delivery_method", "label": "Pickup or delivery method", "units": 1.0},
+            {"key": "job_contact", "label": "Jobsite contact", "units": 0.85}
+          ]
+        },
+        {
+          "key": "intended_use",
+          "type": "textarea",
+          "label": "Intended work, operating environment, material handled, terrain, access, expected daily use, and known site constraints",
+          "fields": [
+            {"key": "intended_use_detail", "label": "Intended use and jobsite conditions"}
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "equipment_inventory",
+      "title": "Equipment, attachments, accessories, and documents",
+      "guidance": "Identify the primary asset and account for each serial-numbered attachment, accessory, key, manual, and return-required item.",
+      "blocks": [
+        {
+          "key": "primary_equipment",
+          "type": "fields",
+          "label": "Primary rental equipment",
+          "fields": [
+            {"key": "equipment_description", "label": "Equipment description", "units": 1.2},
+            {"key": "asset_unit_id", "label": "Asset or unit ID", "units": 0.85},
+            {"key": "make_model", "label": "Make and model", "units": 1.05},
+            {"key": "serial_number", "label": "Serial number", "units": 1.0},
+            {"key": "equipment_class", "label": "Equipment class", "units": 0.9},
+            {"key": "rated_capacity", "label": "Rated capacity", "units": 0.85}
+          ]
+        },
+        {
+          "key": "included_inventory",
+          "type": "table",
+          "label": "Included attachment, accessory, and document inventory",
+          "columns": [
+            {"key": "item", "label": "Item or attachment", "units": 1.25},
+            {"key": "asset_serial", "label": "Asset or serial", "units": 1.0},
+            {"key": "quantity", "label": "Quantity", "units": 0.6},
+            {"key": "condition", "label": "Checkout condition", "units": 1.0},
+            {"key": "return_required", "label": "Return required", "units": 0.8},
+            {"key": "note", "label": "Note", "units": 1.0}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "inventory_confirmations",
+          "type": "checklist",
+          "label": "Equipment package verified before inspection",
+          "items": [
+            "Asset and serial numbers match agreement",
+            "Attachments compatible with equipment",
+            "Attachment serial numbers recorded",
+            "Keys or controls counted",
+            "Manuals and safety information present",
+            "Transport components included",
+            "Required return items identified",
+            "Missing package item escalated"
+          ]
+        },
+        {
+          "key": "inventory_exception",
+          "type": "textarea",
+          "label": "Package substitution, missing item, incompatible attachment, special setup, or return-accountability exception",
+          "fields": [
+            {"key": "inventory_exception_detail", "label": "Equipment package exception and resolution"}
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "checkout_inspection",
+      "title": "Pre-rental condition inspection and evidence",
+      "guidance": "Photograph existing damage, record one status per item, retain useful readings, and correct or hold material defects before release.",
+      "blocks": [
+        {
+          "key": "checkout_condition",
+          "type": "table",
+          "label": "Checkout condition inspection",
+          "columns": [
+            {"key": "inspection_item", "label": "Inspection item", "units": 1.25},
+            {"key": "status", "label": "OK, damage, corrected, or N/A", "units": 1.0},
+            {"key": "reading", "label": "Reading", "units": 0.75},
+            {"key": "observation_evidence", "label": "Observation, photo, or action ref.", "units": 2.05}
+          ],
+          "rows": 10
+        },
+        {
+          "key": "inspection_coverage",
+          "type": "checklist",
+          "label": "Pre-rental inspection coverage",
+          "items": [
+            "Frame, body, and guards",
+            "Tires, tracks, and wheels",
+            "Hydraulics, hoses, and cylinders",
+            "Engine, motor, or battery",
+            "Controls, interlocks, and emergency stop",
+            "Lights, alarms, and mirrors",
+            "Couplers, pins, and attachment points",
+            "Leaks and fluid levels",
+            "Labels, manual, and safety decals",
+            "Seat, restraints, and access points",
+            "Transport, charging, and fueling connections"
+          ]
+        },
+        {
+          "key": "checkout_readings",
+          "type": "fields",
+          "label": "Checkout readings and evidence baseline",
+          "fields": [
+            {"key": "hour_meter_out", "label": "Hour meter out", "units": 0.8},
+            {"key": "mileage_out", "label": "Mileage out", "units": 0.75},
+            {"key": "fuel_charge_out", "label": "Fuel or charge out", "units": 0.9},
+            {"key": "condition_photo_ref", "label": "Condition photo reference", "units": 1.1},
+            {"key": "damage_diagram_ref", "label": "Existing damage diagram", "units": 1.0},
+            {"key": "inspected_by_date", "label": "Inspected by and date", "units": 1.0}
+          ]
+        },
+        {
+          "key": "existing_damage",
+          "type": "table",
+          "label": "Existing damage and corrected-condition register",
+          "columns": [
+            {"key": "area_item", "label": "Area or item", "units": 1.15},
+            {"key": "existing_condition", "label": "Existing condition", "units": 1.3},
+            {"key": "photo", "label": "Photo reference", "units": 0.9},
+            {"key": "correction", "label": "Correction or accepted baseline", "units": 1.3},
+            {"key": "verified_by", "label": "Verified by", "units": 0.85}
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "orientation_release",
+      "title": "Safety orientation, acceptance, and release",
+      "guidance": "Document the orientation and release decision without representing the checklist as a substitute for required training, qualification, or the operating manual.",
+      "blocks": [
+        {
+          "key": "orientation_topics",
+          "type": "checklist",
+          "label": "Orientation and documents provided",
+          "items": [
+            "Operating controls reviewed",
+            "Emergency stop reviewed",
+            "Capacity and operating limits reviewed",
+            "Required PPE reviewed",
+            "Manual provided or location shown",
+            "Daily inspection routine reviewed",
+            "Transport and tie-down requirements reviewed",
+            "Attachment, fueling, or charging procedure reviewed",
+            "Shutdown and parking procedure reviewed",
+            "Incident and breakdown contact provided",
+            "Operator questions and limits resolved"
+          ]
+        },
+        {
+          "key": "operator_confirmation",
+          "type": "fields",
+          "label": "Operator and release confirmation",
+          "fields": [
+            {"key": "operator_name", "label": "Operator receiving orientation", "units": 1.1},
+            {"key": "orientation_by", "label": "Orientation provided by", "units": 1.0},
+            {"key": "orientation_date_time", "label": "Orientation date and time", "units": 0.95},
+            {"key": "release_decision", "label": "Release decision", "units": 0.85, "field_type": "choice", "options": ["Release", "Release with condition", "Hold for correction", "Do not release"]},
+            {"key": "release_condition", "label": "Release condition reference", "units": 1.0},
+            {"key": "transport_responsibility", "label": "Transport responsibility", "units": 1.0}
+          ]
+        },
+        {
+          "key": "release_exceptions",
+          "type": "table",
+          "label": "Release exception, stop condition, and assigned correction",
+          "columns": [
+            {"key": "condition", "label": "Condition or unanswered question", "units": 1.35},
+            {"key": "immediate_action", "label": "Immediate action", "units": 1.1},
+            {"key": "owner", "label": "Owner", "units": 0.8},
+            {"key": "due", "label": "Due", "units": 0.7},
+            {"key": "release_verification", "label": "Release verification", "units": 1.25}
+          ],
+          "rows": 2
+        },
+        {
+          "key": "release_signatures",
+          "type": "signatures",
+          "label": "Checkout condition acceptance and release",
+          "fields": [
+            {"key": "renter_signature", "label": "Renter condition acceptance", "units": 1.35},
+            {"key": "renter_date_time", "label": "Date and time", "units": 0.75},
+            {"key": "released_by_signature", "label": "Released by", "units": 1.15},
+            {"key": "release_date_time", "label": "Date and time", "units": 0.75}
+          ]
+        },
+        {
+          "key": "release_notice",
+          "type": "notice",
+          "label": "Training and release boundary",
+          "guidance": "This record confirms the topics reviewed and observable release condition. It does not replace required operator training, qualification, site hazard assessment, the manufacturer's instructions, or the rental agreement. Do not release equipment with an unresolved material defect or incompatible attachment."
+        }
+      ]
+    },
+    {
+      "key": "return_receipt",
+      "title": "Return receipt, readings, and accessory reconciliation",
+      "guidance": "Record when and where the equipment returned, calculate usage from the checkout baseline, and account for every return-required item before closing custody.",
+      "blocks": [
+        {
+          "key": "return_reference",
+          "type": "fields",
+          "label": "Return receipt and usage readings",
+          "fields": [
+            {"key": "return_date_time", "label": "Return date and time", "units": 0.95},
+            {"key": "received_by", "label": "Received by", "units": 0.8},
+            {"key": "return_location", "label": "Return location", "units": 0.95},
+            {"key": "meter_in", "label": "Hour or mileage meter in", "units": 0.95},
+            {"key": "fuel_charge_in", "label": "Fuel or charge in", "units": 0.85},
+            {"key": "usage_total", "label": "Usage total", "units": 0.75}
+          ]
+        },
+        {
+          "key": "return_status",
+          "type": "checklist",
+          "label": "Initial return status",
+          "items": [
+            "On time",
+            "Late",
+            "All accessories returned",
+            "Accessory missing",
+            "Clean",
+            "Cleaning required",
+            "Operational on arrival",
+            "Quarantined or hold",
+            "Authorized return party and photos recorded"
+          ]
+        },
+        {
+          "key": "accessory_return",
+          "type": "table",
+          "label": "Attachment, accessory, key, and document return reconciliation",
+          "columns": [
+            {"key": "item", "label": "Item", "units": 1.15},
+            {"key": "checkout_quantity", "label": "Checkout qty.", "units": 0.8},
+            {"key": "return_quantity", "label": "Return qty.", "units": 0.75},
+            {"key": "return_condition", "label": "Return condition", "units": 1.1},
+            {"key": "missing_damage", "label": "Missing or damage ref.", "units": 1.0},
+            {"key": "reconciled_by", "label": "Reconciled by", "units": 0.85}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "receipt_exception",
+          "type": "textarea",
+          "label": "Late return, after-hours drop, meter discrepancy, missing accessory, contamination, fuel or charge variance, or custody exception",
+          "fields": [
+            {"key": "receipt_exception_detail", "label": "Return receipt and reconciliation exception"}
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "return_inspection",
+      "title": "Return condition inspection and comparison",
+      "guidance": "Compare current condition with the checkout photos and notes, separating unchanged condition, new damage, ordinary wear, and items not applicable.",
+      "blocks": [
+        {
+          "key": "return_condition",
+          "type": "table",
+          "label": "Comparative return inspection",
+          "columns": [
+            {"key": "inspection_item", "label": "Inspection item", "units": 1.25},
+            {"key": "comparison", "label": "Same, damage, wear, or N/A", "units": 1.0},
+            {"key": "reading", "label": "Return reading", "units": 0.8},
+            {"key": "observation_evidence", "label": "Condition, photo, or action ref.", "units": 2.05}
+          ],
+          "rows": 10
+        },
+        {
+          "key": "return_coverage",
+          "type": "checklist",
+          "label": "Return comparison coverage",
+          "items": [
+            "Frame, body, and guards compared",
+            "Tires, tracks, and wheels compared",
+            "Hydraulics, hoses, and cylinders compared",
+            "Engine, motor, or battery compared",
+            "Controls and emergency stop compared",
+            "Lights, alarms, and mirrors compared",
+            "Couplers, pins, and attachments compared",
+            "Leaks and fluid levels compared",
+            "Labels, manual, and decals compared",
+            "Checkout evidence reviewed"
+          ]
+        },
+        {
+          "key": "inspection_summary",
+          "type": "fields",
+          "label": "Return inspection summary",
+          "fields": [
+            {"key": "inspected_by", "label": "Return inspected by", "units": 0.95},
+            {"key": "inspection_date_time", "label": "Inspection date and time", "units": 0.95},
+            {"key": "new_damage_count", "label": "New damage items", "units": 0.8},
+            {"key": "wear_count", "label": "Wear items", "units": 0.7},
+            {"key": "quarantine_location", "label": "Quarantine or hold location", "units": 1.05},
+            {"key": "comparison_photo_ref", "label": "Comparison photo reference", "units": 1.1}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "damage_corrective_action",
+      "title": "Damage, missing items, and corrective action",
+      "guidance": "Separate observations and evidence from liability or charge decisions, then assign each repair, cleaning, claim, or review action.",
+      "blocks": [
+        {
+          "key": "damage_assessment",
+          "type": "table",
+          "label": "Damage and missing-item assessment",
+          "columns": [
+            {"key": "item_area", "label": "Item or area", "units": 1.05},
+            {"key": "observed_condition", "label": "Observed condition", "units": 1.3},
+            {"key": "photo_evidence", "label": "Photo or evidence", "units": 0.95},
+            {"key": "corrective_action", "label": "Repair, replace, or clean", "units": 1.2},
+            {"key": "estimate", "label": "Estimate", "units": 0.7},
+            {"key": "status_owner", "label": "Status and owner", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "incident_context",
+          "type": "textarea",
+          "label": "Incident, breakdown, misuse allegation, customer statement, third-party involvement, site condition, and claim or report reference",
+          "fields": [
+            {"key": "incident_context_detail", "label": "Damage, incident, and customer-statement detail"}
+          ],
+          "height": 72
+        },
+        {
+          "key": "review_routing",
+          "type": "fields",
+          "label": "Damage and dispute review routing",
+          "fields": [
+            {"key": "customer_notified", "label": "Customer notified by and date", "units": 1.05},
+            {"key": "claim_report_ref", "label": "Claim or report reference", "units": 1.0},
+            {"key": "review_owner", "label": "Review owner", "units": 0.85},
+            {"key": "equipment_status", "label": "Equipment status", "units": 0.9, "field_type": "choice", "options": ["Available", "Cleaning hold", "Repair hold", "Safety quarantine", "Claim hold"]},
+            {"key": "corrective_due", "label": "Corrective action due", "units": 0.9},
+            {"key": "final_disposition_ref", "label": "Final disposition reference", "units": 1.05}
+          ]
+        },
+        {
+          "key": "assessment_notice",
+          "type": "notice",
+          "label": "Condition and charge boundary",
+          "guidance": "This inspection records observable condition against the checkout baseline. Keep normal-wear, damage, cleaning, missing-item, liability, insurance, and dispute decisions separate and apply the rental agreement and applicable requirements before assessing a charge."
+        }
+      ]
+    },
+    {
+      "key": "charge_closeout",
+      "title": "Charge reconciliation, renter handoff, and closeout",
+      "guidance": "Show the basis for every adjustment, preserve unresolved review items, and close the rental only after custody, condition, accessories, and charges reconcile.",
+      "blocks": [
+        {
+          "key": "charge_totals",
+          "type": "fields",
+          "label": "Charge reconciliation totals",
+          "fields": [
+            {"key": "base_rental", "label": "Base rental", "units": 0.75},
+            {"key": "usage_overtime", "label": "Usage or overtime", "units": 0.9},
+            {"key": "fuel_recharge", "label": "Fuel or recharge", "units": 0.85},
+            {"key": "cleaning", "label": "Cleaning", "units": 0.65},
+            {"key": "damage_missing", "label": "Damage or missing", "units": 0.9},
+            {"key": "final_total", "label": "Final total", "units": 0.75}
+          ]
+        },
+        {
+          "key": "adjustment_register",
+          "type": "table",
+          "label": "Charge and credit adjustment register",
+          "columns": [
+            {"key": "charge_credit", "label": "Charge or credit", "units": 1.15},
+            {"key": "quantity_basis", "label": "Quantity or basis", "units": 1.05},
+            {"key": "rate", "label": "Rate", "units": 0.65},
+            {"key": "amount", "label": "Amount", "units": 0.7},
+            {"key": "evidence_approval", "label": "Evidence or approval", "units": 1.25},
+            {"key": "status", "label": "Final or disputed", "units": 0.95}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "closeout_check",
+          "type": "checklist",
+          "label": "Rental closeout completed",
+          "items": [
+            "Equipment custody returned",
+            "All accessories reconciled",
+            "Checkout and return readings compared",
+            "Condition comparison completed",
+            "Damage evidence retained",
+            "Cleaning and repair status assigned",
+            "Charge basis reviewed",
+            "Disputed amount identified",
+            "Customer copy or handoff provided",
+            "Open review has owner and due date"
+          ]
+        },
+        {
+          "key": "open_review",
+          "type": "table",
+          "label": "Open claim, repair, charge, or dispute handoff",
+          "columns": [
+            {"key": "open_item", "label": "Open item", "units": 1.25},
+            {"key": "interim_status", "label": "Interim status", "units": 1.0},
+            {"key": "owner", "label": "Owner", "units": 0.8},
+            {"key": "due", "label": "Due", "units": 0.7},
+            {"key": "customer_handoff", "label": "Customer handoff or reference", "units": 1.35}
+          ],
+          "rows": 2
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Return and closeout acknowledgment",
+          "fields": [
+            {"key": "renter_acknowledgment", "label": "Renter return acknowledgment", "units": 1.35},
+            {"key": "renter_date_time", "label": "Date and time", "units": 0.75},
+            {"key": "inspector_signature", "label": "Inspector signature", "units": 1.15},
+            {"key": "inspector_date_time", "label": "Date and time", "units": 0.75},
+            {"key": "closed_by", "label": "Closed by", "units": 0.9},
+            {"key": "closed_date_time", "label": "Closed date and time", "units": 0.85}
+          ]
+        },
+        {
+          "key": "closeout_notice",
+          "type": "notice",
+          "label": "Closeout condition",
+          "guidance": "Do not close the rental record until equipment identity, custody, accessories, usage readings, return condition, damage evidence, corrective status, and final charges reconcile, or each unresolved outcome has a named owner, due point, and documented renter handoff."
+        }
+      ]
+    }
+  ]
+}

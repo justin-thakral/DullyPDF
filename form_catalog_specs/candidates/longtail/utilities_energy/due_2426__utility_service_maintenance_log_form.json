@@ -1,0 +1,542 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2426__utility_service_maintenance_log_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2426__utility_service_maintenance_log_form.pdf",
+  "slug": "utility-service-maintenance-log-form",
+  "title": "Utility Service Maintenance Log Form",
+  "subtitle": "An original utility service workflow that carries planned or condition-based maintenance through safe release, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete utility service maintenance log form for the electric, gas, water, or thermal utility service point that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when service personnel need one record for maintenance trigger, asset baseline, work-control references, recurring events, readings, deferred defects, and qualified return-to-service approval. The utility service coordinator owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "maintenance_routing",
+      "title": "Utility service maintenance log identity and ownership",
+      "guidance": "Define the maintained system, service interval, operating owner, and review period.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Maintenance log and assignment",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Maintenance record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "maintenance_cycle",
+          "type": "fields",
+          "label": "Maintenance trigger and cycle",
+          "fields": [
+            {
+              "key": "trigger",
+              "label": "Scheduled, condition, or fault trigger",
+              "units": 1.2
+            },
+            {
+              "key": "interval_ref",
+              "label": "Interval or maintenance-plan ref",
+              "units": 1.2
+            },
+            {
+              "key": "due_date",
+              "label": "Due date or operating point",
+              "units": 1.1
+            },
+            {
+              "key": "service_provider",
+              "label": "Service provider",
+              "units": 1.0
+            },
+            {
+              "key": "site_contact",
+              "label": "Operations or site contact",
+              "units": 1.1
+            },
+            {
+              "key": "warranty_ref",
+              "label": "Warranty or support reference",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "asset_readiness",
+      "title": "Utility service asset baseline and maintenance readiness",
+      "guidance": "Reconcile the exact asset and known condition before maintenance or testing begins.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Utility service identity",
+          "fields": [
+            {
+              "key": "commodity",
+              "label": "Utility commodity",
+              "units": 0.9
+            },
+            {
+              "key": "account_id",
+              "label": "Customer account reference",
+              "units": 1.15
+            },
+            {
+              "key": "premise_id",
+              "label": "Premise or service-point ID",
+              "units": 1.15
+            },
+            {
+              "key": "meter_id",
+              "label": "Meter or device ID",
+              "units": 1.0
+            },
+            {
+              "key": "service_class",
+              "label": "Service class",
+              "units": 0.9
+            },
+            {
+              "key": "service_status",
+              "label": "Current service status",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "Maintenance baseline",
+          "fields": [
+            {
+              "key": "service_address",
+              "label": "Service address or coordinates",
+              "units": 1.25
+            },
+            {
+              "key": "system_asset",
+              "label": "Upstream system asset ref",
+              "units": 1.15
+            },
+            {
+              "key": "normal_range",
+              "label": "Normal value or status range",
+              "units": 1.05
+            },
+            {
+              "key": "last_service",
+              "label": "Last service activity ref",
+              "units": 1.1
+            },
+            {
+              "key": "access_method",
+              "label": "Access and key-control method",
+              "units": 1.1
+            },
+            {
+              "key": "critical_load",
+              "label": "Critical customer or load flag",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "planned_tasks",
+          "type": "checklist",
+          "label": "Planned maintenance task set",
+          "items": [
+            "Verify account, premise, commodity, meter, and service-point identity",
+            "Confirm scope ownership between utility and customer equipment",
+            "Coordinate interruption, dispatch, traffic, access, and customer notices",
+            "Establish site-specific energy, pressure, flow, and public controls",
+            "Inspect or service only the authorized utility asset and connection",
+            "Record as-found condition, service values, and device status",
+            "Complete approved repair, replacement, adjustment, or connection work",
+            "Perform authorized leak, electrical, pressure, flow, or functional verification",
+            "Record as-left configuration, seals, labels, readings, and photos",
+            "Restore service through operations control and confirm customer handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_control",
+      "title": "Utility service work control and safe service boundary",
+      "guidance": "Record the qualified roles and controlling references; do not use this log as the controlling procedure.",
+      "blocks": [
+        {
+          "key": "control_references",
+          "type": "fields",
+          "label": "Maintenance-control references",
+          "fields": [
+            {
+              "key": "procedure_ref",
+              "label": "Maintenance procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "energy_control_ref",
+              "label": "Energy-control procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "authorized_person",
+              "label": "Authorized control person",
+              "units": 1.15
+            },
+            {
+              "key": "isolation_check",
+              "label": "Isolation verification ref",
+              "units": 1.15
+            },
+            {
+              "key": "test_authority",
+              "label": "Run, test, or outage authority",
+              "units": 1.1
+            },
+            {
+              "key": "release_owner",
+              "label": "Return-to-service owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "service_readiness",
+          "type": "checklist",
+          "label": "Service readiness confirmations",
+          "items": [
+            "Current procedure, manufacturer information, and applicable requirements were reviewed",
+            "Asset boundaries, every energy source, and affected systems were identified",
+            "Authorized, affected, contractor, and operations roles were coordinated",
+            "Isolation, stored-energy control, and verification references are complete",
+            "Required tools, instruments, parts, and protective controls are available",
+            "Test, temporary energization, and return-to-service steps have explicit authority",
+            "Customer, public, traffic, environmental, and critical-service impacts are controlled",
+            "Stop conditions and emergency escalation path are understood"
+          ]
+        },
+        {
+          "key": "maintenance_boundary",
+          "type": "notice",
+          "label": "Maintenance stop-work boundary",
+          "guidance": "Do not use this record to approach downed conductors, investigate a gas odor, enter flooded electrical areas, operate unknown valves or switches, or bypass dispatch control. Keep people clear, use the organization's emergency route, and allow only qualified and authorized personnel to isolate, test, repair, and restore the affected utility service. Maintenance stays restricted when isolation, stored energy, system condition, or work scope is unknown. Only the designated authorized person may direct changes to controls and the qualified release owner may approve return to service."
+        }
+      ]
+    },
+    {
+      "key": "service_entries",
+      "title": "Utility service maintenance events, condition, and readings",
+      "guidance": "Create a traceable history of work completed, condition found, evidence, and deferred action.",
+      "blocks": [
+        {
+          "key": "maintenance_events",
+          "type": "table",
+          "label": "Maintenance event log",
+          "columns": [
+            {
+              "key": "date_hours",
+              "label": "Date / hours",
+              "units": 0.85
+            },
+            {
+              "key": "task_component",
+              "label": "Task / component",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition found",
+              "units": 1.1
+            },
+            {
+              "key": "action_parts",
+              "label": "Action / parts",
+              "units": 1.15
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.9
+            },
+            {
+              "key": "result_ref",
+              "label": "Result / evidence",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "condition_readings",
+          "type": "table",
+          "label": "Condition and functional readings",
+          "columns": [
+            {
+              "key": "service_point",
+              "label": "Service point",
+              "units": 0.95
+            },
+            {
+              "key": "commodity",
+              "label": "Commodity",
+              "units": 0.8
+            },
+            {
+              "key": "timestamp",
+              "label": "Date / time",
+              "units": 0.85
+            },
+            {
+              "key": "value",
+              "label": "Value and unit",
+              "units": 0.95
+            },
+            {
+              "key": "status",
+              "label": "Device / alarm",
+              "units": 1.0
+            },
+            {
+              "key": "observer",
+              "label": "Observer / evidence",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "maintenance_notes",
+          "type": "textarea",
+          "label": "Condition trend and service notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Wear pattern, recurring fault, consumable trend, configuration change, and supporting evidence",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Utility service exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Gas odor, hissing, suspected leak, or atmosphere concern",
+            "Downed conductor, arcing, exposed electrical part, or burn damage",
+            "Major water release, flooding, washout, or energized equipment in water",
+            "Steam, pressure, hot surface, rotating equipment, or uncontrolled stored energy",
+            "Traffic, excavation, unstable surface, animal, or uncontrolled public exposure",
+            "Unknown valve, switch, disconnect, cross-connection, or service ownership",
+            "Critical-load impact or service interruption without operations authorization",
+            "Condition requiring emergency dispatch or work beyond assigned qualification"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "Do not use this record to approach downed conductors, investigate a gas odor, enter flooded electrical areas, operate unknown valves or switches, or bypass dispatch control. Keep people clear, use the organization's emergency route, and allow only qualified and authorized personnel to isolate, test, repair, and restore the affected utility service."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each maintenance exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "Utility service decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Maintenance closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Electric, gas, water, or thermal utility service point identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

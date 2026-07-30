@@ -7,12 +7,13 @@ vi.mock('../../src/config/formCatalogData.mjs', () => {
       formNumber: 'W-9',
       title: 'Request for Taxpayer Identification Number',
       section: 'hr_onboarding',
+      sourceSection: 'hr_onboarding',
       filename: 'w-9__fw9.pdf',
       year: null,
       isPriorYear: false,
       sourceUrl: 'https://www.irs.gov/pub/irs-pdf/fw9.pdf',
       bytes: 140000,
-      sha256: null,
+      sha256: 'a'.repeat(64),
       pageCount: 6,
       pdfUrl: '/form-catalog-assets/hr_onboarding/w-9__fw9.pdf',
       thumbnailUrl: '/form-catalog-assets/hr_onboarding/w-9__fw9.webp',
@@ -109,5 +110,11 @@ describe('renderPublicRouteHtml', () => {
     expect(html).toContain('class="form-catalog-detail__preview-image"');
     expect(html).toContain('src="/form-catalog-assets/hr_onboarding/w-9__fw9.webp"');
     expect(html).toContain('alt="W-9 fillable PDF first-page preview of Request for Taxpayer Identification Number"');
+    expect(html).toContain('data-form-catalog-source-section="hr_onboarding"');
+    expect(html).toContain('data-form-catalog-filename="w-9__fw9.pdf"');
+    expect(html).toContain('data-form-catalog-sha256="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"');
+    expect(html).toContain(
+      'data-form-catalog-pdf-url="/form-catalog-assets/hr_onboarding/w-9__fw9.pdf"',
+    );
   });
 });

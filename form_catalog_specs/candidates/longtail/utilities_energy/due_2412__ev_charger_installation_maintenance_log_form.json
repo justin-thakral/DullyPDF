@@ -1,0 +1,542 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2412__ev_charger_installation_maintenance_log_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2412__ev_charger_installation_maintenance_log_form.pdf",
+  "slug": "ev-charger-installation-maintenance-log-form",
+  "title": "EV Charger Installation Maintenance Log Form",
+  "subtitle": "An original ev charger installation workflow that carries planned or condition-based maintenance through safe release, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete ev charger installation maintenance log form for the electric vehicle charging site that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when service personnel need one record for maintenance trigger, asset baseline, work-control references, recurring events, readings, deferred defects, and qualified return-to-service approval. The charging deployment coordinator owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "maintenance_routing",
+      "title": "EV charger installation maintenance log identity and ownership",
+      "guidance": "Define the maintained system, service interval, operating owner, and review period.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Maintenance log and assignment",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Maintenance record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "maintenance_cycle",
+          "type": "fields",
+          "label": "Maintenance trigger and cycle",
+          "fields": [
+            {
+              "key": "trigger",
+              "label": "Scheduled, condition, or fault trigger",
+              "units": 1.2
+            },
+            {
+              "key": "interval_ref",
+              "label": "Interval or maintenance-plan ref",
+              "units": 1.2
+            },
+            {
+              "key": "due_date",
+              "label": "Due date or operating point",
+              "units": 1.1
+            },
+            {
+              "key": "service_provider",
+              "label": "Service provider",
+              "units": 1.0
+            },
+            {
+              "key": "site_contact",
+              "label": "Operations or site contact",
+              "units": 1.1
+            },
+            {
+              "key": "warranty_ref",
+              "label": "Warranty or support reference",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "asset_readiness",
+      "title": "EV charger installation asset baseline and maintenance readiness",
+      "guidance": "Reconcile the exact asset and known condition before maintenance or testing begins.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "EV charger installation identity",
+          "fields": [
+            {
+              "key": "site_type",
+              "label": "Site and parking use",
+              "units": 1.1
+            },
+            {
+              "key": "charger_location",
+              "label": "Proposed charger location",
+              "units": 1.2
+            },
+            {
+              "key": "port_count",
+              "label": "Planned port count",
+              "units": 0.8
+            },
+            {
+              "key": "charger_output",
+              "label": "Level and output rating",
+              "units": 1.0
+            },
+            {
+              "key": "panel_id",
+              "label": "Supplying panel or service ID",
+              "units": 1.15
+            },
+            {
+              "key": "network_model",
+              "label": "Network or payment model",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "Maintenance baseline",
+          "fields": [
+            {
+              "key": "service_capacity",
+              "label": "Service capacity reference",
+              "units": 1.15
+            },
+            {
+              "key": "circuit_distance",
+              "label": "Estimated circuit distance",
+              "units": 1.05
+            },
+            {
+              "key": "parking_layout",
+              "label": "Stall and traffic layout ref",
+              "units": 1.2
+            },
+            {
+              "key": "mounting_type",
+              "label": "Wall, pedestal, or overhead",
+              "units": 1.1
+            },
+            {
+              "key": "communications",
+              "label": "Communications method",
+              "units": 1.05
+            },
+            {
+              "key": "utility_case",
+              "label": "Utility program or case ref",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "planned_tasks",
+          "type": "checklist",
+          "label": "Planned maintenance task set",
+          "items": [
+            "Verify charger, circuit, panel, and parking-space identities",
+            "Coordinate planned outage and affected-party notification",
+            "Install mounting, foundation, or wall support within approved scope",
+            "Install raceway, conductors, disconnect, and circuit identification",
+            "Complete grounding, bonding, and protective-device checks",
+            "Install impact protection, signage, striping, and cord management",
+            "Configure network, payment, access control, and remote monitoring",
+            "Perform qualified electrical test and representative charging session",
+            "Document as-built route, settings, labels, and equipment serials",
+            "Handoff operating instructions, support path, and open limitations"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_control",
+      "title": "EV charger installation work control and safe service boundary",
+      "guidance": "Record the qualified roles and controlling references; do not use this log as the controlling procedure.",
+      "blocks": [
+        {
+          "key": "control_references",
+          "type": "fields",
+          "label": "Maintenance-control references",
+          "fields": [
+            {
+              "key": "procedure_ref",
+              "label": "Maintenance procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "energy_control_ref",
+              "label": "Energy-control procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "authorized_person",
+              "label": "Authorized control person",
+              "units": 1.15
+            },
+            {
+              "key": "isolation_check",
+              "label": "Isolation verification ref",
+              "units": 1.15
+            },
+            {
+              "key": "test_authority",
+              "label": "Run, test, or outage authority",
+              "units": 1.1
+            },
+            {
+              "key": "release_owner",
+              "label": "Return-to-service owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "service_readiness",
+          "type": "checklist",
+          "label": "Service readiness confirmations",
+          "items": [
+            "Current procedure, manufacturer information, and applicable requirements were reviewed",
+            "Asset boundaries, every energy source, and affected systems were identified",
+            "Authorized, affected, contractor, and operations roles were coordinated",
+            "Isolation, stored-energy control, and verification references are complete",
+            "Required tools, instruments, parts, and protective controls are available",
+            "Test, temporary energization, and return-to-service steps have explicit authority",
+            "Customer, public, traffic, environmental, and critical-service impacts are controlled",
+            "Stop conditions and emergency escalation path are understood"
+          ]
+        },
+        {
+          "key": "maintenance_boundary",
+          "type": "notice",
+          "label": "Maintenance stop-work boundary",
+          "guidance": "This form is not an energized-work permit or energy-control procedure. Stop when exposed parts, unknown circuits, failed protection, water intrusion, heat, smoke, or impact damage is present. A qualified and authorized person must control isolation, testing, commissioning, and return to service under current site procedures and applicable requirements. Maintenance stays restricted when isolation, stored energy, system condition, or work scope is unknown. Only the designated authorized person may direct changes to controls and the qualified release owner may approve return to service."
+        }
+      ]
+    },
+    {
+      "key": "service_entries",
+      "title": "EV charger installation maintenance events, condition, and readings",
+      "guidance": "Create a traceable history of work completed, condition found, evidence, and deferred action.",
+      "blocks": [
+        {
+          "key": "maintenance_events",
+          "type": "table",
+          "label": "Maintenance event log",
+          "columns": [
+            {
+              "key": "date_hours",
+              "label": "Date / hours",
+              "units": 0.85
+            },
+            {
+              "key": "task_component",
+              "label": "Task / component",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition found",
+              "units": 1.1
+            },
+            {
+              "key": "action_parts",
+              "label": "Action / parts",
+              "units": 1.15
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.9
+            },
+            {
+              "key": "result_ref",
+              "label": "Result / evidence",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "condition_readings",
+          "type": "table",
+          "label": "Condition and functional readings",
+          "columns": [
+            {
+              "key": "port_id",
+              "label": "Port or unit",
+              "units": 0.8
+            },
+            {
+              "key": "voltage",
+              "label": "Voltage",
+              "units": 0.75
+            },
+            {
+              "key": "current",
+              "label": "Current / load",
+              "units": 0.9
+            },
+            {
+              "key": "protection",
+              "label": "Protection result",
+              "units": 1.05
+            },
+            {
+              "key": "session",
+              "label": "Session / network",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Test evidence ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "maintenance_notes",
+          "type": "textarea",
+          "label": "Condition trend and service notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Wear pattern, recurring fault, consumable trend, configuration change, and supporting evidence",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "EV charger installation exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Exposed or damaged energized component, conductor, connector, or enclosure",
+            "Arcing, smoke, abnormal heat, burning odor, or repeated protective trip",
+            "Water intrusion, standing water, flood exposure, or damaged seals",
+            "Vehicle impact, unstable mounting, sharp edge, or falling equipment",
+            "Uncontrolled circuit, unknown backfeed, or incomplete energy isolation",
+            "Grounding, bonding, or protective-device result outside approved criteria",
+            "Pedestrian, accessible-route, traffic, or cord trip exposure",
+            "Work beyond the assigned qualified person's authorization"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "This form is not an energized-work permit or energy-control procedure. Stop when exposed parts, unknown circuits, failed protection, water intrusion, heat, smoke, or impact damage is present. A qualified and authorized person must control isolation, testing, commissioning, and return to service under current site procedures and applicable requirements."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each maintenance exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "EV charger installation decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Maintenance closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Electric vehicle charging site identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

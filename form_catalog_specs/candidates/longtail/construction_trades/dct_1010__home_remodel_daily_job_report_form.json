@@ -1,0 +1,466 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1010__home_remodel_daily_job_report_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1010__home_remodel_daily_job_report_form.pdf",
+  "slug": "home-remodel-daily-job-report-form",
+  "title": "Home Remodel Daily Job Report and Resident Handoff",
+  "subtitle": "Record room-level progress, trade labor, household access, utilities, dust and property protection, homeowner decisions, incidents, daily restoration, and next-day commitments.",
+  "description": "A workflow-complete daily report for occupied-home remodeling covering arrival and security, household presence, children and pets, workforce and room access, utility interruptions, work performed, concealed conditions, inspections and photographs, deliveries and storage, dust containment, homeowner communication, property damage or safety events, cleanup, key and alarm status, open actions, and next-day handoff.",
+  "use_case": "Use at the end of each remodeling shift when the site lead must provide a fillable record that connects construction progress with the home's daily condition, resident communication, protected spaces, unresolved decisions, and safe turnover back to the household.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "day_identity",
+      "title": "Daily report, home, and access identity",
+      "guidance": "Anchor the report to one work date, residence, responsible lead, and entry record.",
+      "blocks": [
+        {
+          "key": "report_reference",
+          "type": "fields",
+          "label": "Daily report reference",
+          "fields": [
+            {"key": "report_number", "label": "Daily report number", "units": 0.8},
+            {"key": "report_date", "label": "Report date", "units": 0.65},
+            {"key": "day_of_week", "label": "Day of week", "units": 0.7},
+            {"key": "shift", "label": "Shift", "units": 0.65, "field_type": "choice", "options": ["Day", "Evening", "Weekend", "Emergency"]},
+            {"key": "prepared_by", "label": "Prepared by", "units": 0.85},
+            {"key": "site_lead", "label": "Site lead", "units": 0.85}
+          ]
+        },
+        {
+          "key": "home_reference",
+          "type": "fields",
+          "label": "Home and project reference",
+          "fields": [
+            {"key": "homeowner_names", "label": "Homeowner names", "units": 1.05},
+            {"key": "property_address", "label": "Property address", "units": 1.35},
+            {"key": "contract_number", "label": "Contract number", "units": 0.8},
+            {"key": "active_rooms", "label": "Active rooms or areas", "units": 1.1},
+            {"key": "resident_contact", "label": "Resident contact", "units": 0.9}
+          ]
+        },
+        {
+          "key": "entry_exit",
+          "type": "fields",
+          "label": "Entry, work window, and departure",
+          "fields": [
+            {"key": "crew_arrival", "label": "Crew arrival", "units": 0.65},
+            {"key": "work_started", "label": "Work started", "units": 0.7},
+            {"key": "work_ended", "label": "Work ended", "units": 0.7},
+            {"key": "crew_departure", "label": "Crew departure", "units": 0.7},
+            {"key": "entry_method", "label": "Entry or key method", "units": 0.9},
+            {"key": "home_status_at_exit", "label": "Home status at exit", "units": 1.0, "field_type": "choice", "options": ["Returned to resident", "Resident remained home", "Secured vacant", "After-hours handoff pending"]}
+          ]
+        },
+        {
+          "key": "distribution",
+          "type": "checklist",
+          "label": "Daily report distribution and linked records",
+          "items": [
+            "Homeowner update sent",
+            "Project manager copied",
+            "Designer copied if needed",
+            "Affected trade copied",
+            "Daily photo folder linked",
+            "Inspection record linked",
+            "Change request linked",
+            "Incident or damage record linked"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "conditions_labor",
+      "title": "Conditions, trades, occupancy, and utilities",
+      "guidance": "Record factors that affected productivity, room access, or household use.",
+      "blocks": [
+        {
+          "key": "weather_conditions",
+          "type": "fields",
+          "label": "Weather and site conditions",
+          "fields": [
+            {"key": "morning_weather", "label": "Morning weather", "units": 0.9},
+            {"key": "afternoon_weather", "label": "Afternoon weather", "units": 0.9},
+            {"key": "temperature", "label": "Temperature range", "units": 0.8},
+            {"key": "precipitation", "label": "Precipitation", "units": 0.75},
+            {"key": "exterior_access", "label": "Exterior access condition", "units": 1.0},
+            {"key": "weather_delay", "label": "Weather delay hours", "units": 0.75}
+          ]
+        },
+        {
+          "key": "workforce",
+          "type": "table",
+          "label": "Trade workforce and time",
+          "columns": [
+            {"key": "company", "label": "Company", "units": 1.0},
+            {"key": "trade_crew", "label": "Trade or crew", "units": 1.0},
+            {"key": "lead", "label": "Lead", "units": 0.85},
+            {"key": "workers", "label": "Workers", "units": 0.6},
+            {"key": "regular_hours", "label": "Regular hours", "units": 0.75},
+            {"key": "overtime_hours", "label": "OT hours", "units": 0.65}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_zone_status",
+          "type": "fields",
+          "label": "Work-zone and household status",
+          "fields": [
+            {"key": "rooms_opened", "label": "Rooms opened to work", "units": 1.0},
+            {"key": "rooms_released", "label": "Rooms released today", "units": 1.0},
+            {"key": "residents_present", "label": "Residents present", "units": 0.9},
+            {"key": "pets_status", "label": "Pet location or status", "units": 0.95},
+            {"key": "special_activity", "label": "Household activity affecting work", "units": 1.15}
+          ]
+        },
+        {
+          "key": "occupancy_effects",
+          "type": "checklist",
+          "label": "Occupancy and access conditions affecting the shift",
+          "items": [
+            "Resident remained in active area",
+            "Remote work or school active",
+            "Child-access restriction",
+            "Pet-access restriction",
+            "Mobility-access route required",
+            "Quiet-hour restriction",
+            "Delayed entry",
+            "Room unavailable",
+            "Furniture or contents blocked work",
+            "Shared entry coordination",
+            "Neighbor or association restriction",
+            "Parking or driveway restriction",
+            "Delivery access restriction",
+            "No occupancy effect"
+          ]
+        },
+        {
+          "key": "utility_status",
+          "type": "fields",
+          "label": "Utility interruption and restoration",
+          "fields": [
+            {"key": "water_off_on", "label": "Water off and on", "units": 0.95},
+            {"key": "power_off_on", "label": "Power off and on", "units": 0.95},
+            {"key": "gas_off_on", "label": "Gas off and on", "units": 0.9},
+            {"key": "heating_cooling_status", "label": "Heating or cooling status", "units": 1.05},
+            {"key": "resident_notice", "label": "Resident notice time", "units": 0.85},
+            {"key": "utility_exception", "label": "Utility exception", "units": 0.9}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "room_progress",
+      "title": "Room progress, concealed work, and evidence",
+      "guidance": "Describe installed work with location, quantity, inspection status, and proof.",
+      "blocks": [
+        {
+          "key": "room_work_log",
+          "type": "table",
+          "label": "Room-by-room work completed",
+          "columns": [
+            {"key": "room_area", "label": "Room or area", "units": 0.9},
+            {"key": "activity_scope", "label": "Activity or scope", "units": 1.35},
+            {"key": "quantity", "label": "Quantity", "units": 0.7},
+            {"key": "percent_complete", "label": "Percent complete", "units": 0.75},
+            {"key": "inspection_photo", "label": "Inspection or photo", "units": 1.0},
+            {"key": "next_step", "label": "Next step", "units": 0.95}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_narrative",
+          "type": "textarea",
+          "label": "Work sequence, methods, tie-ins, opened conditions, homeowner property encountered, and notable production facts",
+          "fields": [
+            {"key": "work_detail", "label": "Daily room and work narrative"}
+          ],
+          "height": 120
+        },
+        {
+          "key": "evidence_screen",
+          "type": "checklist",
+          "label": "Progress and concealed-work evidence retained",
+          "items": [
+            "Before-work photographs",
+            "In-progress photographs",
+            "Completed-work photographs",
+            "Opened-wall photographs",
+            "Waterproofing photographs",
+            "Utility rough-in photographs",
+            "Field measurements",
+            "Test result",
+            "Inspection result",
+            "Product or lot label",
+            "Delivery ticket",
+            "Marked plan or as-built note"
+          ]
+        },
+        {
+          "key": "milestone_status",
+          "type": "fields",
+          "label": "Daily milestone and decision status",
+          "fields": [
+            {"key": "planned_activity", "label": "Planned activity", "units": 1.0},
+            {"key": "planned_quantity", "label": "Planned quantity", "units": 0.8},
+            {"key": "actual_quantity", "label": "Actual quantity", "units": 0.8},
+            {"key": "variance", "label": "Variance", "units": 0.65},
+            {"key": "decision_needed", "label": "Homeowner decision needed", "units": 1.05},
+            {"key": "recovery_owner_date", "label": "Recovery owner and date", "units": 1.0}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "protection_deliveries",
+      "title": "Access, protection, deliveries, and storage",
+      "guidance": "Preserve evidence that the residence and its contents remained controlled during the shift.",
+      "blocks": [
+        {
+          "key": "entry_security_check",
+          "type": "checklist",
+          "label": "Entry and security controls verified",
+          "items": [
+            "Arrival notice provided",
+            "Authorized entry used",
+            "Alarm disarmed as agreed",
+            "Work-zone doors controlled",
+            "Resident-only rooms respected",
+            "Exterior doors secured",
+            "Windows secured",
+            "Keys accounted for",
+            "Access code protected",
+            "Valuables area avoided",
+            "Visitors escorted",
+            "Departure notice provided"
+          ]
+        },
+        {
+          "key": "containment_check",
+          "type": "checklist",
+          "label": "Protection and containment condition",
+          "items": [
+            "Floor protection intact",
+            "Stair protection intact",
+            "Corner and door protection intact",
+            "Dust partitions sealed",
+            "Negative air operating",
+            "Return-air openings protected",
+            "Furniture and contents covered",
+            "Debris route controlled",
+            "Exterior weather protection intact",
+            "Tools secured",
+            "Chemicals sealed and ventilated",
+            "Material storage dry and secure",
+            "Daily vacuum completed",
+            "Resident route reopened safely"
+          ]
+        },
+        {
+          "key": "delivery_log",
+          "type": "table",
+          "label": "Material delivery and household custody log",
+          "columns": [
+            {"key": "time_supplier", "label": "Time and supplier", "units": 1.0},
+            {"key": "material", "label": "Material", "units": 1.15},
+            {"key": "quantity", "label": "Quantity", "units": 0.7},
+            {"key": "ticket_po", "label": "Ticket or PO", "units": 0.8},
+            {"key": "condition", "label": "Accepted or exception", "units": 1.0},
+            {"key": "storage_location", "label": "Storage location", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "storage_status",
+          "type": "fields",
+          "label": "Tool, material, and salvage status",
+          "fields": [
+            {"key": "tool_storage", "label": "Tool storage location", "units": 1.0},
+            {"key": "material_storage", "label": "Material storage location", "units": 1.0},
+            {"key": "salvage_storage", "label": "Salvaged-item location", "units": 1.0},
+            {"key": "waste_status", "label": "Waste or dumpster status", "units": 0.9},
+            {"key": "custody_owner", "label": "Custody owner", "units": 0.85}
+          ]
+        },
+        {
+          "key": "protection_exception",
+          "type": "textarea",
+          "label": "Access, property protection, delivery, storage, or resident-route exception and required follow-up",
+          "fields": [
+            {"key": "exception_detail", "label": "Protection and custody exception"}
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "communication_events",
+      "title": "Homeowner communication and consequential events",
+      "guidance": "Preserve questions, directions, damage, hazards, delays, and the person accountable for response.",
+      "blocks": [
+        {
+          "key": "communication_log",
+          "type": "table",
+          "label": "Homeowner communication and decision log",
+          "columns": [
+            {"key": "time", "label": "Time", "units": 0.55},
+            {"key": "person_method", "label": "Person and method", "units": 1.0},
+            {"key": "topic_room", "label": "Topic or room", "units": 1.0},
+            {"key": "question_direction", "label": "Question or direction", "units": 1.35},
+            {"key": "response", "label": "Response", "units": 1.0},
+            {"key": "followup_owner", "label": "Follow-up owner", "units": 0.85}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "event_screen",
+          "type": "checklist",
+          "label": "Events occurring or identified today",
+          "items": [
+            "Safety observation",
+            "Injury or first aid",
+            "Property or contents damage",
+            "Water intrusion or leak",
+            "Dust containment failure",
+            "Unexpected concealed condition",
+            "Failed inspection or test",
+            "Utility outage",
+            "Work stoppage",
+            "Material shortage",
+            "Homeowner selection delay",
+            "Designer direction",
+            "Neighbor or association complaint",
+            "Security or access issue"
+          ]
+        },
+        {
+          "key": "event_log",
+          "type": "table",
+          "label": "Event, notification, and corrective-action log",
+          "columns": [
+            {"key": "time_room", "label": "Time and room", "units": 0.85},
+            {"key": "event_condition", "label": "Event or condition", "units": 1.35},
+            {"key": "immediate_action", "label": "Immediate action", "units": 1.2},
+            {"key": "notified", "label": "Notified", "units": 0.8},
+            {"key": "record_reference", "label": "Report or photo", "units": 0.9},
+            {"key": "owner_due", "label": "Owner and due", "units": 0.9}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "event_narrative",
+          "type": "textarea",
+          "label": "Objective event narrative, property involved, known cause, impact, evidence, resident direction, and escalation",
+          "fields": [
+            {"key": "event_detail", "label": "Daily event and exception narrative"}
+          ],
+          "height": 84
+        },
+        {
+          "key": "separate_reporting_notice",
+          "type": "notice",
+          "label": "Separate reporting requirement",
+          "guidance": "This daily report does not replace a required injury, property-damage, water-loss, environmental, quality, insurance, claim, or contractual notice. Stabilize the condition, protect the household, and complete the applicable record and notification process."
+        }
+      ]
+    },
+    {
+      "key": "daily_closeout",
+      "title": "Daily restoration and next-day handoff",
+      "guidance": "Return the home safely, communicate restrictions, and convert unfinished work into owned next-day actions.",
+      "blocks": [
+        {
+          "key": "cleanup_release",
+          "type": "checklist",
+          "label": "Daily cleanup and room release",
+          "items": [
+            "Loose debris removed",
+            "Floors vacuumed or cleaned",
+            "Sharp objects removed",
+            "Tools and cords secured",
+            "Openings covered or guarded",
+            "Wet finishes protected",
+            "Cabinets and fixtures protected",
+            "Resident route cleared",
+            "Bathroom left usable as planned",
+            "Kitchen left usable as planned",
+            "Exterior gates secured",
+            "Waste container secured",
+            "Work-zone sign or barrier posted",
+            "Resident received restrictions"
+          ]
+        },
+        {
+          "key": "utility_security_close",
+          "type": "checklist",
+          "label": "Utility, fire, and security closeout",
+          "items": [
+            "Water restored or outage posted",
+            "Power restored or outage posted",
+            "Gas status confirmed",
+            "Heating or cooling status confirmed",
+            "Smoke alarms restored or temporary plan active",
+            "Carbon-monoxide alarms restored",
+            "Temporary power de-energized as needed",
+            "Windows closed or protected",
+            "Exterior doors locked",
+            "Alarm armed as agreed",
+            "Keys or access devices accounted for",
+            "Emergency contact information current"
+          ]
+        },
+        {
+          "key": "open_action_log",
+          "type": "table",
+          "label": "Open action, resident issue, and decision log",
+          "columns": [
+            {"key": "action_decision", "label": "Action or decision", "units": 1.35},
+            {"key": "room_reference", "label": "Room or reference", "units": 1.0},
+            {"key": "owner", "label": "Owner", "units": 0.75},
+            {"key": "due", "label": "Due", "units": 0.65},
+            {"key": "interim_condition", "label": "Interim condition", "units": 1.1},
+            {"key": "status", "label": "Status", "units": 0.65}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "next_day_plan",
+          "type": "table",
+          "label": "Next-day work and household readiness plan",
+          "columns": [
+            {"key": "planned_task", "label": "Planned task", "units": 1.25},
+            {"key": "room_area", "label": "Room or area", "units": 0.9},
+            {"key": "crew_trade", "label": "Crew or trade", "units": 0.9},
+            {"key": "prerequisite", "label": "Prerequisite", "units": 1.0},
+            {"key": "resident_need", "label": "Resident need or notice", "units": 1.15},
+            {"key": "owner", "label": "Owner", "units": 0.65}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Next-day access, utility or shutdown needs, household commitments, priority follow-up, and emergency restriction",
+          "fields": [
+            {"key": "handoff_detail", "label": "Resident and next-shift handoff"}
+          ],
+          "height": 76
+        },
+        {
+          "key": "daily_signatures",
+          "type": "signatures",
+          "label": "Daily report certification and acknowledgment",
+          "fields": [
+            {"key": "prepared_by_signature", "label": "Prepared by", "units": 1.0},
+            {"key": "site_lead_signature", "label": "Site lead", "units": 1.0},
+            {"key": "project_manager_review", "label": "Project manager review", "units": 1.1},
+            {"key": "homeowner_acknowledgment", "label": "Homeowner acknowledgment if used", "units": 1.25},
+            {"key": "signed_date", "label": "Date", "units": 0.55},
+            {"key": "signed_time", "label": "Time", "units": 0.55}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2451__battery_storage_work_order_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2451__battery_storage_work_order_form.pdf",
+  "slug": "battery-storage-work-order-form",
+  "title": "Battery Storage Work Order Form",
+  "subtitle": "An original battery storage workflow that controls authorized field work from dispatch through return to service, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete battery storage work order form for the stationary battery energy storage system that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when a qualified crew receives a defined task and must preserve asset identity, work limits, energy-control references, as-found evidence, work performed, testing, exceptions, and operations handoff. The energy storage operations lead owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "work_order_routing",
+      "title": "Battery storage work order identity and dispatch",
+      "guidance": "Issue a traceable order with clear ownership, site contacts, and approved work limits.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Work order and assignment",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Work order record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "dispatch_detail",
+          "type": "fields",
+          "label": "Dispatch and service window",
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew or technician lead",
+              "units": 1.1
+            },
+            {
+              "key": "dispatch_ref",
+              "label": "Dispatch reference",
+              "units": 1.0
+            },
+            {
+              "key": "scheduled_start",
+              "label": "Scheduled start",
+              "units": 1.0
+            },
+            {
+              "key": "scheduled_end",
+              "label": "Scheduled end",
+              "units": 1.0
+            },
+            {
+              "key": "site_contact",
+              "label": "Site or operations contact",
+              "units": 1.1
+            },
+            {
+              "key": "access_method",
+              "label": "Access and key-control method",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "scope_planning",
+      "title": "Battery storage asset context, scope, and resources",
+      "guidance": "Match the order to the exact stationary battery energy storage system and define work that is included and excluded.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Battery storage identity",
+          "fields": [
+            {
+              "key": "system_id",
+              "label": "Storage system asset ID",
+              "units": 1.1
+            },
+            {
+              "key": "chemistry",
+              "label": "Battery chemistry",
+              "units": 0.95
+            },
+            {
+              "key": "capacity",
+              "label": "kW and kWh rating",
+              "units": 1.0
+            },
+            {
+              "key": "pcs_id",
+              "label": "PCS or inverter ID",
+              "units": 1.05
+            },
+            {
+              "key": "enclosure",
+              "label": "Enclosure, rack, or room",
+              "units": 1.1
+            },
+            {
+              "key": "bms_version",
+              "label": "BMS and firmware ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "As-found baseline",
+          "fields": [
+            {
+              "key": "operating_mode",
+              "label": "Operating mode",
+              "units": 0.95
+            },
+            {
+              "key": "soc_range",
+              "label": "Approved SOC range",
+              "units": 1.0
+            },
+            {
+              "key": "temperature_range",
+              "label": "Approved temperature range",
+              "units": 1.15
+            },
+            {
+              "key": "disconnect_ref",
+              "label": "Disconnect and isolation ref",
+              "units": 1.15
+            },
+            {
+              "key": "emergency_plan",
+              "label": "Emergency plan reference",
+              "units": 1.2
+            },
+            {
+              "key": "support_contact",
+              "label": "Manufacturer support case",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "authorized_tasks",
+          "type": "checklist",
+          "label": "Authorized task scope",
+          "items": [
+            "Confirm system, chemistry, rack, module, PCS, inverter, and BMS identities",
+            "Coordinate dispatch state, critical loads, outage limits, and manufacturer support",
+            "Establish site-specific electrical, stored-energy, thermal, and access controls",
+            "Review alarms, events, trends, SOC, SOH, temperatures, and isolation status remotely",
+            "Inspect enclosure, HVAC, detection, suppression, seals, labels, and clearances",
+            "Complete only manufacturer-approved cleaning, filter, connection, or component work",
+            "Record module or string values using an approved method and qualified person",
+            "Perform authorized communications, control, protection, and functional checks",
+            "Reconcile alarms, settings, firmware, parts, photos, and service evidence",
+            "Maintain restriction or return the system through explicit qualified release"
+          ]
+        },
+        {
+          "key": "scope_boundaries",
+          "type": "textarea",
+          "label": "Scope, exclusions, parts, and completion criteria",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Approved work, explicit exclusions, required parts or tools, evidence expected, and completion criteria",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_authorization",
+      "title": "Battery storage pre-work controls and authorization",
+      "guidance": "Do not begin intrusive work until hazards, system effects, isolation ownership, and test authority are explicit.",
+      "blocks": [
+        {
+          "key": "control_references",
+          "type": "fields",
+          "label": "Work-control references",
+          "fields": [
+            {
+              "key": "work_plan_ref",
+              "label": "Approved work-plan reference",
+              "units": 1.15
+            },
+            {
+              "key": "energy_control_ref",
+              "label": "Energy-control procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "isolation_owner",
+              "label": "Isolation control owner",
+              "units": 1.1
+            },
+            {
+              "key": "verification_ref",
+              "label": "Isolation verification ref",
+              "units": 1.15
+            },
+            {
+              "key": "outage_authority",
+              "label": "Outage or test authority",
+              "units": 1.1
+            },
+            {
+              "key": "permit_refs",
+              "label": "Permit or applicable review refs",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "prework_confirmations",
+          "type": "checklist",
+          "label": "Pre-work authorization confirmations",
+          "items": [
+            "Exact asset, boundaries, sources, and affected systems were identified",
+            "Site-specific procedure and applicable requirements were reviewed",
+            "Authorized and affected people, roles, and communications were confirmed",
+            "Electrical, mechanical, pressure, thermal, chemical, gravity, and stored energy were assessed",
+            "Isolation devices and personal or group controls remain under designated ownership",
+            "Stored or residual energy was controlled and verification evidence was recorded",
+            "Test or temporary re-energization steps and authority are explicit",
+            "Public, customer, traffic, environmental, and critical-load controls are in place"
+          ]
+        },
+        {
+          "key": "energy_control_boundary",
+          "type": "notice",
+          "label": "Energy-control and qualified-person boundary",
+          "guidance": "Do not open, enter, touch, reset, or approach a battery system showing heat, smoke, flame, hissing, odor, swelling, leaking, water intrusion, impact damage, or an isolation alarm. Keep people clear and activate the site emergency plan. Stored or stranded energy may remain after shutdown; only designated qualified personnel may assess isolation, recovery, and return to service. This work order records references and decisions; it does not replace the site's energy-control procedure. Unknown, changed, or reaccumulating energy is a stop condition until the designated authorized person re-establishes and verifies control."
+        }
+      ]
+    },
+    {
+      "key": "execution_evidence",
+      "title": "Battery storage work execution and test evidence",
+      "guidance": "Record what was actually done, by whom, against which task, and with what result.",
+      "blocks": [
+        {
+          "key": "work_log",
+          "type": "table",
+          "label": "Task execution log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date / time",
+              "units": 0.8
+            },
+            {
+              "key": "task",
+              "label": "Task / component",
+              "units": 1.2
+            },
+            {
+              "key": "as_found",
+              "label": "As-found condition",
+              "units": 1.1
+            },
+            {
+              "key": "action",
+              "label": "Work performed",
+              "units": 1.15
+            },
+            {
+              "key": "by",
+              "label": "Performed by",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Part / evidence ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "test_results",
+          "type": "table",
+          "label": "As-left readings and test results",
+          "columns": [
+            {
+              "key": "rack_module",
+              "label": "Rack / module",
+              "units": 0.95
+            },
+            {
+              "key": "soc_soh",
+              "label": "SOC / SOH",
+              "units": 0.85
+            },
+            {
+              "key": "volt_current",
+              "label": "Volts / current",
+              "units": 1.0
+            },
+            {
+              "key": "temperature",
+              "label": "Temperature spread",
+              "units": 1.05
+            },
+            {
+              "key": "alarm_state",
+              "label": "Alarm / isolation",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Trend / evidence",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "Record method, instrument, operating state, and acceptance reference in linked evidence when needed."
+        },
+        {
+          "key": "execution_notes",
+          "type": "textarea",
+          "label": "Execution notes and change context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected conditions, approved changes, temporary measures, test context, and evidence links",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Battery storage exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Smoke, flame, rapid heat rise, hissing, popping, or unusual odor",
+            "Swelling, deformation, electrolyte residue, leak, or damaged cell enclosure",
+            "Thermal, gas, fire-detection, suppression, or ventilation alarm",
+            "Water intrusion, flooding, condensation, or damaged environmental seal",
+            "Impact, penetration, dropped module, damaged cable, or exposed conductor",
+            "Unknown isolation, stranded charge, backfeed, or reaccumulating stored energy",
+            "Manufacturer stop condition or emergency-plan activation threshold",
+            "Any entry or task beyond the person's training, PPE, tools, or authorization"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "Do not open, enter, touch, reset, or approach a battery system showing heat, smoke, flame, hissing, odor, swelling, leaking, water intrusion, impact damage, or an isolation alarm. Keep people clear and activate the site emergency plan. Stored or stranded energy may remain after shutdown; only designated qualified personnel may assess isolation, recovery, and return to service."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each work order exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "Battery storage decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Work order closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Stationary battery energy storage system identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

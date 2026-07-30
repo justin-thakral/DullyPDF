@@ -1,0 +1,542 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2461__water_leak_maintenance_log_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2461__water_leak_maintenance_log_form.pdf",
+  "slug": "water-leak-maintenance-log-form",
+  "title": "Water Leak Maintenance Log Form",
+  "subtitle": "An original water leak workflow that carries planned or condition-based maintenance through safe release, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete water leak maintenance log form for the suspected or confirmed water-release location that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when service personnel need one record for maintenance trigger, asset baseline, work-control references, recurring events, readings, deferred defects, and qualified return-to-service approval. The leak response coordinator owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "maintenance_routing",
+      "title": "Water leak maintenance log identity and ownership",
+      "guidance": "Define the maintained system, service interval, operating owner, and review period.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Maintenance log and assignment",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Maintenance record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "maintenance_cycle",
+          "type": "fields",
+          "label": "Maintenance trigger and cycle",
+          "fields": [
+            {
+              "key": "trigger",
+              "label": "Scheduled, condition, or fault trigger",
+              "units": 1.2
+            },
+            {
+              "key": "interval_ref",
+              "label": "Interval or maintenance-plan ref",
+              "units": 1.2
+            },
+            {
+              "key": "due_date",
+              "label": "Due date or operating point",
+              "units": 1.1
+            },
+            {
+              "key": "service_provider",
+              "label": "Service provider",
+              "units": 1.0
+            },
+            {
+              "key": "site_contact",
+              "label": "Operations or site contact",
+              "units": 1.1
+            },
+            {
+              "key": "warranty_ref",
+              "label": "Warranty or support reference",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "asset_readiness",
+      "title": "Water leak asset baseline and maintenance readiness",
+      "guidance": "Reconcile the exact asset and known condition before maintenance or testing begins.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Water leak identity",
+          "fields": [
+            {
+              "key": "property_zone",
+              "label": "Property, building, or zone",
+              "units": 1.15
+            },
+            {
+              "key": "leak_location",
+              "label": "Observed leak location",
+              "units": 1.2
+            },
+            {
+              "key": "suspected_source",
+              "label": "Suspected source or system",
+              "units": 1.15
+            },
+            {
+              "key": "meter_id",
+              "label": "Meter or submeter ID",
+              "units": 1.0
+            },
+            {
+              "key": "shutoff_location",
+              "label": "Known shutoff location",
+              "units": 1.15
+            },
+            {
+              "key": "occupancy_impact",
+              "label": "Occupancy or service impact",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "Maintenance baseline",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.15
+            },
+            {
+              "key": "flow_status",
+              "label": "Active, intermittent, or stopped",
+              "units": 1.1
+            },
+            {
+              "key": "affected_area",
+              "label": "Affected rooms or area",
+              "units": 1.1
+            },
+            {
+              "key": "water_type",
+              "label": "Known water type or unknown",
+              "units": 1.15
+            },
+            {
+              "key": "meter_baseline",
+              "label": "Baseline meter or flow ref",
+              "units": 1.1
+            },
+            {
+              "key": "prior_history",
+              "label": "Prior leak or repair ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "planned_tasks",
+          "type": "checklist",
+          "label": "Planned maintenance task set",
+          "items": [
+            "Confirm leak location, reporter, time, flow status, and affected areas",
+            "Screen electrical, structural, contamination, slip, and public hazards",
+            "Identify likely source without opening unsafe or unauthorized systems",
+            "Coordinate authorized shutoff and critical-service consequences",
+            "Record meter, flow, pressure, moisture, and visual evidence",
+            "Contain water and protect occupants or property within approved scope",
+            "Repair the confirmed source or route it to the correct qualified trade",
+            "Verify flow stopped and record post-repair or post-isolation readings",
+            "Assign drying, electrical, environmental, finish, and contents follow-up",
+            "Monitor for recurrence and document final service and property handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_control",
+      "title": "Water leak work control and safe service boundary",
+      "guidance": "Record the qualified roles and controlling references; do not use this log as the controlling procedure.",
+      "blocks": [
+        {
+          "key": "control_references",
+          "type": "fields",
+          "label": "Maintenance-control references",
+          "fields": [
+            {
+              "key": "procedure_ref",
+              "label": "Maintenance procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "energy_control_ref",
+              "label": "Energy-control procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "authorized_person",
+              "label": "Authorized control person",
+              "units": 1.15
+            },
+            {
+              "key": "isolation_check",
+              "label": "Isolation verification ref",
+              "units": 1.15
+            },
+            {
+              "key": "test_authority",
+              "label": "Run, test, or outage authority",
+              "units": 1.1
+            },
+            {
+              "key": "release_owner",
+              "label": "Return-to-service owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "service_readiness",
+          "type": "checklist",
+          "label": "Service readiness confirmations",
+          "items": [
+            "Current procedure, manufacturer information, and applicable requirements were reviewed",
+            "Asset boundaries, every energy source, and affected systems were identified",
+            "Authorized, affected, contractor, and operations roles were coordinated",
+            "Isolation, stored-energy control, and verification references are complete",
+            "Required tools, instruments, parts, and protective controls are available",
+            "Test, temporary energization, and return-to-service steps have explicit authority",
+            "Customer, public, traffic, environmental, and critical-service impacts are controlled",
+            "Stop conditions and emergency escalation path are understood"
+          ]
+        },
+        {
+          "key": "maintenance_boundary",
+          "type": "notice",
+          "label": "Maintenance stop-work boundary",
+          "guidance": "Do not enter water near electrical equipment, stand below a sagging ceiling, or handle suspected contaminated water. Keep occupants clear and use the organization's emergency route for rapid flooding, structural movement, gas odor, or critical-service impact. Only authorized personnel may operate shutoffs after evaluating downstream consequences. Maintenance stays restricted when isolation, stored energy, system condition, or work scope is unknown. Only the designated authorized person may direct changes to controls and the qualified release owner may approve return to service."
+        }
+      ]
+    },
+    {
+      "key": "service_entries",
+      "title": "Water leak maintenance events, condition, and readings",
+      "guidance": "Create a traceable history of work completed, condition found, evidence, and deferred action.",
+      "blocks": [
+        {
+          "key": "maintenance_events",
+          "type": "table",
+          "label": "Maintenance event log",
+          "columns": [
+            {
+              "key": "date_hours",
+              "label": "Date / hours",
+              "units": 0.85
+            },
+            {
+              "key": "task_component",
+              "label": "Task / component",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition found",
+              "units": 1.1
+            },
+            {
+              "key": "action_parts",
+              "label": "Action / parts",
+              "units": 1.15
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.9
+            },
+            {
+              "key": "result_ref",
+              "label": "Result / evidence",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "condition_readings",
+          "type": "table",
+          "label": "Condition and functional readings",
+          "columns": [
+            {
+              "key": "read_time",
+              "label": "Date / time",
+              "units": 0.8
+            },
+            {
+              "key": "meter_zone",
+              "label": "Meter / zone",
+              "units": 0.95
+            },
+            {
+              "key": "flow_read",
+              "label": "Flow / meter read",
+              "units": 1.0
+            },
+            {
+              "key": "pressure",
+              "label": "Pressure / indicator",
+              "units": 1.0
+            },
+            {
+              "key": "isolation",
+              "label": "Isolation state",
+              "units": 0.95
+            },
+            {
+              "key": "evidence",
+              "label": "Area / evidence",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "maintenance_notes",
+          "type": "textarea",
+          "label": "Condition trend and service notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Wear pattern, recurring fault, consumable trend, configuration change, and supporting evidence",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Water leak exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Water contacting electrical equipment, outlets, panels, cords, or machinery",
+            "Bulging or sagging ceiling, unstable finish, structural movement, or falling material",
+            "Suspected sewage, chemical, fire-water, or other contaminated release",
+            "Rapid flooding, washout, sinkhole, severe pressure, or uncontrolled flow",
+            "Slip exposure, hidden opening, poor visibility, or unsafe access",
+            "Shutoff would impair fire protection, medical, process, or critical service",
+            "Gas odor, steam, hot water, refrigerant, or unknown fluid is also present",
+            "Condition exceeds responder authority, equipment, training, or protective controls"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "Do not enter water near electrical equipment, stand below a sagging ceiling, or handle suspected contaminated water. Keep occupants clear and use the organization's emergency route for rapid flooding, structural movement, gas odor, or critical-service impact. Only authorized personnel may operate shutoffs after evaluating downstream consequences."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each maintenance exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "Water leak decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Maintenance closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Suspected or confirmed water-release location identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,475 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1012__home_remodel_safety_walk_checklist_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1012__home_remodel_safety_walk_checklist_form.pdf",
+  "slug": "home-remodel-safety-walk-checklist-form",
+  "title": "Home Remodel Safety Walk and Resident Protection Log",
+  "subtitle": "Inspect work-zone separation, household routes, dust and exposure controls, utilities, tools and temporary conditions, then assign correction, notify residents, and verify safe release.",
+  "description": "A workflow-complete safety walk for occupied-home remodeling covering inspection authority, children and pets, resident egress, alarms and emergency access, dust containment, lead-safe and hazardous-material controls, temporary power and utilities, open walls and floors, ladders and roof work, tools and chemicals, public and neighbor protection, hazard findings, stop-work decisions, resident notification, correction evidence, and room release.",
+  "use_case": "Use during an occupied residential renovation when the site lead or safety representative needs one fillable record connecting observed home and work-zone hazards with immediate controls, resident communication, responsible trades, reinspection, and accountable restoration.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "inspection_identity",
+      "title": "Inspection, home, authority, and routing",
+      "guidance": "Identify the controlling walk record, residence, inspection area, responsible leaders, and participants.",
+      "blocks": [
+        {
+          "key": "walk_reference",
+          "type": "fields",
+          "label": "Safety walk reference",
+          "fields": [
+            {"key": "walk_number", "label": "Safety walk number", "units": 0.8},
+            {"key": "inspection_date", "label": "Inspection date", "units": 0.65},
+            {"key": "start_time", "label": "Start time", "units": 0.55},
+            {"key": "end_time", "label": "End time", "units": 0.55},
+            {"key": "walk_type", "label": "Walk type", "units": 0.85, "field_type": "choice", "options": ["Routine", "Pre-task", "High-risk work", "Post-event", "Resident concern", "Corrective reinspection"]},
+            {"key": "report_owner", "label": "Report owner", "units": 0.85}
+          ]
+        },
+        {
+          "key": "home_reference",
+          "type": "fields",
+          "label": "Home and inspected area",
+          "fields": [
+            {"key": "homeowner_names", "label": "Homeowner names", "units": 1.05},
+            {"key": "property_address", "label": "Property address", "units": 1.35},
+            {"key": "active_rooms", "label": "Active rooms or zones", "units": 1.05},
+            {"key": "occupied_status", "label": "Occupancy status", "units": 0.85, "field_type": "choice", "options": ["Occupied", "Partially occupied", "Temporary move-out", "Vacant"]},
+            {"key": "resident_contact", "label": "Resident contact", "units": 0.9}
+          ]
+        },
+        {
+          "key": "inspection_leads",
+          "type": "fields",
+          "label": "Inspection authority and project leadership",
+          "fields": [
+            {"key": "conducted_by", "label": "Conducted by", "units": 0.9},
+            {"key": "site_lead", "label": "Site lead", "units": 0.8},
+            {"key": "competent_person", "label": "Applicable competent person", "units": 1.05},
+            {"key": "project_manager", "label": "Project manager", "units": 0.9},
+            {"key": "emergency_contact", "label": "After-hours emergency contact", "units": 1.1}
+          ]
+        },
+        {
+          "key": "participants",
+          "type": "table",
+          "label": "Walk participants and areas represented",
+          "columns": [
+            {"key": "name", "label": "Participant", "units": 1.0},
+            {"key": "employer_role", "label": "Employer or role", "units": 1.0},
+            {"key": "room_trade", "label": "Room or trade", "units": 1.0},
+            {"key": "authority", "label": "Decision authority", "units": 1.0},
+            {"key": "contact", "label": "Contact", "units": 0.9}
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "resident_risk_screen",
+      "title": "Resident separation and high-risk work screen",
+      "guidance": "Confirm household conditions, emergency readiness, and active high-risk tasks before entering work zones.",
+      "blocks": [
+        {
+          "key": "occupancy_snapshot",
+          "type": "fields",
+          "label": "Household conditions during the walk",
+          "fields": [
+            {"key": "residents_present", "label": "Residents present", "units": 0.85},
+            {"key": "children_status", "label": "Children location or status", "units": 1.0},
+            {"key": "pets_status", "label": "Pets location or status", "units": 1.0},
+            {"key": "mobility_needs", "label": "Mobility or care needs", "units": 0.95},
+            {"key": "remote_activity", "label": "Remote work or school", "units": 0.95},
+            {"key": "sensitivity", "label": "Dust, odor, or noise sensitivity", "units": 1.05}
+          ]
+        },
+        {
+          "key": "household_separation",
+          "type": "checklist",
+          "label": "Resident and work-zone separation controls",
+          "items": [
+            "Children excluded from work zone",
+            "Pets secured away from work zone",
+            "Resident-only rooms identified",
+            "Primary egress route open",
+            "Alternate egress route identified",
+            "Accessible route maintained",
+            "Work-zone doors controlled",
+            "Dust barriers sealed",
+            "Warning signs posted",
+            "Floor transitions visible",
+            "Visitor access controlled",
+            "Common areas protected",
+            "Neighbor exposure considered",
+            "Daily resident briefing completed"
+          ]
+        },
+        {
+          "key": "emergency_readiness",
+          "type": "checklist",
+          "label": "Emergency and life-safety readiness",
+          "items": [
+            "Street address visible",
+            "Emergency contact current",
+            "First-aid supplies available",
+            "Fire extinguisher accessible",
+            "Smoke alarms protected or restored",
+            "Carbon-monoxide alarms protected or restored",
+            "Electrical disconnect identified",
+            "Water shutoff identified",
+            "Gas shutoff identified",
+            "Emergency exit unobstructed",
+            "Rescue access maintained",
+            "Temporary alarm plan communicated"
+          ]
+        },
+        {
+          "key": "active_high_risk_work",
+          "type": "checklist",
+          "label": "High-risk work active, planned, or encountered",
+          "items": [
+            "Structural demolition",
+            "Work at height",
+            "Roof or ladder work",
+            "Scaffold or aerial lift",
+            "Excavation or exterior trench",
+            "Energized electrical work",
+            "Utility shutdown or tie-in",
+            "Hot work",
+            "Silica or dust-generating work",
+            "Lead-safe regulated work",
+            "Suspect asbestos or hazardous material",
+            "Chemical coating or solvent use",
+            "Heavy material movement",
+            "Temporary weather opening"
+          ]
+        },
+        {
+          "key": "walk_brief",
+          "type": "textarea",
+          "label": "Today's work sequence, resident interfaces, unusual conditions, permits, and priority inspection areas",
+          "fields": [
+            {"key": "brief_detail", "label": "Safety walk brief and priorities"}
+          ],
+          "height": 66
+        }
+      ]
+    },
+    {
+      "key": "systematic_inspection",
+      "title": "Systematic home and work-zone inspection",
+      "guidance": "Mark items actually observed as acceptable and enter every deficiency in the finding register.",
+      "blocks": [
+        {
+          "key": "access_housekeeping",
+          "type": "checklist",
+          "label": "Access, housekeeping, and property protection acceptable",
+          "items": [
+            "Entry and driveway route clear",
+            "Floors and stairs protected",
+            "Cords and hoses routed safely",
+            "Sharp debris removed",
+            "Materials stacked securely",
+            "Tools secured from residents",
+            "Openings guarded or covered",
+            "Temporary railings secure",
+            "Lighting adequate",
+            "Wet surfaces identified",
+            "Exterior gates secured",
+            "Waste container secured",
+            "Furniture and valuables protected",
+            "Daily cleanup standard maintained"
+          ]
+        },
+        {
+          "key": "dust_exposure",
+          "type": "checklist",
+          "label": "Dust, hazardous-material, and ventilation controls acceptable",
+          "items": [
+            "Dust partitions sealed",
+            "Negative air operating",
+            "Return-air openings protected",
+            "HEPA extraction used",
+            "Silica control effective",
+            "Lead-safe containment maintained",
+            "Required warning signs posted",
+            "Suspect material left undisturbed",
+            "Waste bagged or covered",
+            "Chemical containers labeled",
+            "SDS information available",
+            "Ventilation adequate",
+            "Odor migration controlled",
+            "Resident sensitivity accommodated"
+          ]
+        },
+        {
+          "key": "utilities_fire",
+          "type": "checklist",
+          "label": "Temporary power, utilities, fire, and alarms acceptable",
+          "items": [
+            "Temporary power GFCI protected",
+            "Panels and disconnects accessible",
+            "Extension cords serviceable",
+            "Open electrical boxes protected",
+            "Lockout or tagout applied",
+            "Water lines capped or controlled",
+            "Gas lines capped or controlled",
+            "Hot-work controls active",
+            "Fire watch assigned if required",
+            "Extinguisher accessible",
+            "Combustibles separated",
+            "Smoke alarms restored or plan active",
+            "Carbon-monoxide alarms restored",
+            "Utilities safe for overnight condition"
+          ]
+        },
+        {
+          "key": "tools_elevation_exterior",
+          "type": "checklist",
+          "label": "Tools, elevation work, exterior, and public protection acceptable",
+          "items": [
+            "Power-tool guards installed",
+            "Hand tools serviceable",
+            "Compressed-gas cylinders secured",
+            "Ladders selected and secured",
+            "Fall protection used when required",
+            "Scaffold access and tags current",
+            "Roof-edge exposure controlled",
+            "Falling-object zone controlled",
+            "Temporary weather protection secure",
+            "Exterior excavation protected",
+            "Pedestrian route separated",
+            "Neighbor property protected",
+            "Delivery unloading controlled",
+            "Equipment operator authorized"
+          ]
+        },
+        {
+          "key": "inspection_coverage",
+          "type": "fields",
+          "label": "Inspection coverage",
+          "fields": [
+            {"key": "rooms_walked", "label": "Rooms and zones walked", "units": 1.15},
+            {"key": "crews_observed", "label": "Crews observed", "units": 0.95},
+            {"key": "tasks_sampled", "label": "Tasks sampled", "units": 0.95},
+            {"key": "resident_routes_checked", "label": "Resident routes checked", "units": 1.05},
+            {"key": "areas_not_accessed", "label": "Areas not accessed", "units": 1.05}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "findings_control",
+      "title": "Hazard findings and immediate correction",
+      "guidance": "Record location, affected household exposure, immediate control, ownership, and evidence.",
+      "blocks": [
+        {
+          "key": "risk_basis",
+          "type": "checklist",
+          "label": "Finding classifications used",
+          "items": [
+            "Imminent danger",
+            "High risk",
+            "Moderate risk",
+            "Low risk",
+            "Resident exposure",
+            "Property protection",
+            "Corrected during walk",
+            "Further review required"
+          ]
+        },
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Home and work-zone hazard register",
+          "columns": [
+            {"key": "id_location", "label": "ID and room or location", "units": 1.05},
+            {"key": "hazard_observation", "label": "Hazard or observation", "units": 1.4},
+            {"key": "resident_exposure", "label": "Resident exposure", "units": 0.9},
+            {"key": "immediate_control", "label": "Immediate control", "units": 1.15},
+            {"key": "owner", "label": "Owner", "units": 0.75},
+            {"key": "due", "label": "Due", "units": 0.55}
+          ],
+          "rows": 8
+        },
+        {
+          "key": "finding_evidence",
+          "type": "fields",
+          "label": "Finding evidence and record routing",
+          "fields": [
+            {"key": "photo_reference", "label": "Photo reference range", "units": 1.0},
+            {"key": "document_reference", "label": "Plan, permit, or procedure", "units": 1.05},
+            {"key": "resident_notified", "label": "Resident notified", "units": 0.85},
+            {"key": "trade_notified", "label": "Trade notified", "units": 0.85},
+            {"key": "record_location", "label": "Evidence folder or link", "units": 1.1}
+          ]
+        },
+        {
+          "key": "control_plan",
+          "type": "textarea",
+          "label": "Corrective plan, work-zone boundary, resident restriction, sequencing, resources, and verification required",
+          "fields": [
+            {"key": "control_plan_detail", "label": "Hazard correction and resident protection plan"}
+          ],
+          "height": 76
+        }
+      ]
+    },
+    {
+      "key": "stop_work_notification",
+      "title": "Stop-work and resident notification record",
+      "guidance": "Document authority, affected rooms, household protections, notifications, and restart conditions.",
+      "blocks": [
+        {
+          "key": "stop_work_decision",
+          "type": "fields",
+          "label": "Stop-work or restricted-area decision",
+          "fields": [
+            {"key": "decision", "label": "Decision", "units": 1.0, "field_type": "choice", "options": ["No stop-work action", "Task paused", "Room restricted", "Utility isolated", "Resident relocation needed", "Emergency response activated"]},
+            {"key": "decision_time", "label": "Decision time", "units": 0.65},
+            {"key": "authority_name", "label": "Authority name", "units": 0.9},
+            {"key": "authority_role", "label": "Authority role", "units": 0.8},
+            {"key": "affected_room_trade", "label": "Affected room or trade", "units": 1.0},
+            {"key": "restart_owner", "label": "Restart decision owner", "units": 1.0}
+          ]
+        },
+        {
+          "key": "affected_area",
+          "type": "textarea",
+          "label": "Hazard basis, affected residents and rooms, boundary controls, temporary living restriction, and restart evidence",
+          "fields": [
+            {"key": "affected_area_detail", "label": "Stop-work basis and restart criteria"}
+          ],
+          "height": 84
+        },
+        {
+          "key": "notification_log",
+          "type": "table",
+          "label": "Resident, project, and emergency notification log",
+          "columns": [
+            {"key": "party_notified", "label": "Party notified", "units": 1.1},
+            {"key": "method", "label": "Method", "units": 0.7},
+            {"key": "date_time", "label": "Date and time", "units": 0.85},
+            {"key": "direction_response", "label": "Direction or response", "units": 1.35},
+            {"key": "followup_owner", "label": "Follow-up owner", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "temporary_resident_controls",
+          "type": "checklist",
+          "label": "Temporary resident and property controls evaluated",
+          "items": [
+            "Affected room locked or barricaded",
+            "Alternate egress communicated",
+            "Child and pet controls updated",
+            "Water or power restriction posted",
+            "Temporary bathroom arranged",
+            "Temporary kitchen arranged",
+            "Heating or cooling alternative arranged",
+            "Smoke or carbon-monoxide alarm plan active",
+            "Overnight fire watch considered",
+            "Resident move-out considered",
+            "Insurance or property manager notified",
+            "Next inspection time communicated"
+          ]
+        },
+        {
+          "key": "safety_notice",
+          "type": "notice",
+          "label": "Safety and reporting control",
+          "guidance": "This walk does not replace required competent-person inspections, lead-safe or hazardous-material procedures, permits, emergency action, incident or property-damage reports, or regulatory notifications. Stop work and protect residents whenever a condition presents imminent danger or exceeds the inspector's authority."
+        }
+      ]
+    },
+    {
+      "key": "verification_release",
+      "title": "Correction verification and room release",
+      "guidance": "Verify controls, restore household protections, communicate restrictions, and carry every open item to a named owner.",
+      "blocks": [
+        {
+          "key": "correction_verification",
+          "type": "table",
+          "label": "Correction and reinspection verification",
+          "columns": [
+            {"key": "finding_id", "label": "Finding ID", "units": 0.7},
+            {"key": "correction", "label": "Correction completed", "units": 1.35},
+            {"key": "completed_by", "label": "Completed by", "units": 0.85},
+            {"key": "evidence", "label": "Evidence", "units": 0.85},
+            {"key": "verified_by_date", "label": "Verified by and date", "units": 1.05},
+            {"key": "status", "label": "Status", "units": 0.65}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "resident_restoration",
+          "type": "checklist",
+          "label": "Resident and home restoration verified",
+          "items": [
+            "Hazard removed or controlled",
+            "Room boundary updated",
+            "Resident route reopened",
+            "Floors and stairs cleared",
+            "Dust containment restored",
+            "Utilities restored or restriction posted",
+            "Smoke alarms restored or plan active",
+            "Carbon-monoxide alarms restored",
+            "Tools and chemicals secured",
+            "Doors and windows secured",
+            "Daily cleaning completed",
+            "Resident briefed",
+            "Affected trade acknowledged",
+            "Evidence filed"
+          ]
+        },
+        {
+          "key": "release_decision",
+          "type": "fields",
+          "label": "Follow-up inspection and release decision",
+          "fields": [
+            {"key": "reinspection_date", "label": "Reinspection date", "units": 0.75},
+            {"key": "reinspected_by", "label": "Reinspected by", "units": 0.85},
+            {"key": "outcome", "label": "Overall outcome", "units": 1.0, "field_type": "choice", "options": ["All findings verified", "Room released with controls", "Open actions remain", "Further escalation required"]},
+            {"key": "room_release_time", "label": "Room release time", "units": 0.8},
+            {"key": "next_review", "label": "Next review", "units": 0.7},
+            {"key": "closeout_record", "label": "Closeout record location", "units": 1.0}
+          ]
+        },
+        {
+          "key": "open_exception_log",
+          "type": "table",
+          "label": "Open safety exception and resident handoff",
+          "columns": [
+            {"key": "open_item", "label": "Open item", "units": 1.3},
+            {"key": "interim_control", "label": "Interim control", "units": 1.25},
+            {"key": "owner", "label": "Owner", "units": 0.8},
+            {"key": "due", "label": "Due", "units": 0.65},
+            {"key": "resident_handoff", "label": "Resident handoff", "units": 1.0}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Inspection and room-release acknowledgment",
+          "fields": [
+            {"key": "inspector_signature", "label": "Inspector signature", "units": 1.15},
+            {"key": "inspector_date", "label": "Date", "units": 0.55},
+            {"key": "site_lead_signature", "label": "Site lead signature", "units": 1.1},
+            {"key": "site_lead_date", "label": "Date", "units": 0.55},
+            {"key": "homeowner_acknowledgment", "label": "Homeowner acknowledgment", "units": 1.2},
+            {"key": "homeowner_date", "label": "Date", "units": 0.55}
+          ]
+        },
+        {
+          "key": "release_notice",
+          "type": "notice",
+          "label": "Room-release condition",
+          "guidance": "A signature records review of this safety walk; it does not waive unresolved hazards or transfer a party's safety duties. Keep restrictions active until the authorized verifier documents an acceptable correction or an approved interim control and follow-up owner."
+        }
+      ]
+    }
+  ]
+}

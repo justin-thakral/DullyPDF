@@ -6,6 +6,7 @@
  *   form_catalog/manifest.json       — scraper output / rebuilt on-disk catalog
  *   form_catalog/descriptions.json   — optional `{ _entries: { "section/filename": { description, useCase } } }`
  *   form_catalog/page_counts.json    — sha256-keyed cache of pdfjs page counts (regenerated on first run)
+ *   form_catalog_releases/active.json — reviewed immutable asset replacements
  *
  * Writes:
  *   frontend/src/config/formCatalogData.mjs         — entries array + by-slug index
@@ -19,6 +20,7 @@
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(process.cwd());
 const MANIFEST_PATH = resolve(ROOT, 'form_catalog/manifest.json');
@@ -30,6 +32,7 @@ const OUT_DATA = resolve(ROOT, 'frontend/src/config/formCatalogData.mjs');
 const OUT_CATEGORIES = resolve(ROOT, 'frontend/src/config/formCatalogCategories.mjs');
 const OUT_EXTERNAL_SOURCES = resolve(ROOT, 'frontend/src/config/formCatalogExternalSources.mjs');
 const OUT_SLUG_REDIRECTS = resolve(ROOT, 'form_catalog/slug_redirects.json');
+const ACTIVE_RELEASE_PATH = resolve(ROOT, 'form_catalog_releases/active.json');
 const PREVIOUS_CATALOG_DATA_PATH = process.env.FORM_CATALOG_PREVIOUS_DATA_PATH
   ? resolve(ROOT, process.env.FORM_CATALOG_PREVIOUS_DATA_PATH)
   : OUT_DATA;
@@ -479,6 +482,284 @@ function parseRawCatalogEntries(source) {
 function catalogEntryKey(entry) {
   if (!entry?.filename) return '';
   return `${entry.sourceSection || entry.section}/${entry.filename}`;
+}
+
+const ACTIVE_RELEASE_ID_PATTERN = /^[a-z0-9][a-z0-9._-]{4,79}$/;
+const ACTIVE_RELEASE_COMMIT_PATTERN = /^[0-9a-f]{40}(?:[0-9a-f]{24})?$/;
+const ACTIVE_RELEASE_SECTION_PATTERN = /^[a-z0-9][a-z0-9_]*$/;
+const ACTIVE_RELEASE_FILENAME_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]*\.pdf$/i;
+const ACTIVE_RELEASE_PATH_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._/-]*$/;
+
+function activeReleaseError(message) {
+  return new Error(`[build-form-catalog-index] invalid ${ACTIVE_RELEASE_PATH}: ${message}`);
+}
+
+function requireActiveReleaseString(value, location) {
+  if (typeof value !== 'string' || !value || value !== value.trim()) {
+    throw activeReleaseError(`${location} must be a non-empty trimmed string`);
+  }
+  return value;
+}
+
+function validateActiveReleaseAssetPath(value, location, expectedSuffix) {
+  const assetPath = requireActiveReleaseString(value, location);
+  const parts = assetPath.split('/');
+  if (
+    !ACTIVE_RELEASE_PATH_PATTERN.test(assetPath)
+    || assetPath.includes('//')
+    || parts.includes('.')
+    || parts.includes('..')
+  ) {
+    throw activeReleaseError(`${location} must be a normalized relative object path`);
+  }
+  if (
+    parts.length < 4
+    || parts[0] !== 'releases'
+    || !ACTIVE_RELEASE_ID_PATTERN.test(parts[1])
+    || parts[2] !== 'assets'
+  ) {
+    throw activeReleaseError(
+      `${location} must use releases/<release-id>/assets/<asset-path>`,
+    );
+  }
+  if (!assetPath.toLowerCase().endsWith(expectedSuffix)) {
+    throw activeReleaseError(`${location} must end with ${expectedSuffix}`);
+  }
+  return {
+    assetPath,
+    releaseId: parts[1],
+  };
+}
+
+/**
+ * Validate the tracked active-release contract against the raw catalog.
+ *
+ * Matching by source section and filename intentionally leaves titles, slugs,
+ * categories, and source provenance under the existing catalog's control.
+ * Building the known-entry counts and validating replacements are both O(n),
+ * where n is the number of raw catalog entries plus replacement mappings.
+ */
+export function buildActiveReleaseReplacementLookup(payload, availableEntries) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    throw activeReleaseError('root must be a JSON object');
+  }
+  if (payload.schemaVersion !== 1) {
+    throw activeReleaseError('schemaVersion must equal 1');
+  }
+  if (!Array.isArray(payload.replacements)) {
+    throw activeReleaseError('replacements must be a JSON array');
+  }
+  if (payload.replacements.length === 0) {
+    if (
+      payload.releaseId !== null
+      || payload.sourceCommit !== null
+      || payload.manifestSha256 !== null
+      || payload.previousReleaseId !== null
+      || payload.activatedAt !== null
+    ) {
+      throw activeReleaseError(
+        'an empty replacements array requires null release metadata',
+      );
+    }
+    return {
+      releaseId: null,
+      sourceCommit: null,
+      manifestSha256: null,
+      previousReleaseId: null,
+      activatedAt: null,
+      replacements: new Map(),
+    };
+  }
+
+  const releaseId = requireActiveReleaseString(payload.releaseId, 'releaseId');
+  if (!ACTIVE_RELEASE_ID_PATTERN.test(releaseId)) {
+    throw activeReleaseError('releaseId has an invalid immutable release ID');
+  }
+  const sourceCommit = requireActiveReleaseString(payload.sourceCommit, 'sourceCommit').toLowerCase();
+  if (!ACTIVE_RELEASE_COMMIT_PATTERN.test(sourceCommit)) {
+    throw activeReleaseError('sourceCommit must be a 40- or 64-character Git object ID');
+  }
+  const manifestSha256 = requireActiveReleaseString(
+    payload.manifestSha256,
+    'manifestSha256',
+  ).toLowerCase();
+  if (!/^[0-9a-f]{64}$/.test(manifestSha256)) {
+    throw activeReleaseError('manifestSha256 must be 64 hexadecimal characters');
+  }
+
+  let previousReleaseId = null;
+  if (payload.previousReleaseId !== null) {
+    previousReleaseId = requireActiveReleaseString(
+      payload.previousReleaseId,
+      'previousReleaseId',
+    );
+    if (!ACTIVE_RELEASE_ID_PATTERN.test(previousReleaseId) || previousReleaseId === releaseId) {
+      throw activeReleaseError('previousReleaseId must be a different valid release ID');
+    }
+  }
+
+  const activatedAt = requireActiveReleaseString(payload.activatedAt, 'activatedAt');
+  if (!Number.isFinite(Date.parse(activatedAt))) {
+    throw activeReleaseError('activatedAt must be an ISO-8601 timestamp');
+  }
+
+  const knownEntryCounts = new Map();
+  for (const entry of availableEntries) {
+    const key = catalogEntryKey(entry);
+    if (!key) continue;
+    knownEntryCounts.set(key, (knownEntryCounts.get(key) || 0) + 1);
+  }
+
+  const replacements = new Map();
+  const usedAssetPaths = new Set();
+  for (const [index, rawReplacement] of payload.replacements.entries()) {
+    const location = `replacements[${index}]`;
+    if (!rawReplacement || typeof rawReplacement !== 'object' || Array.isArray(rawReplacement)) {
+      throw activeReleaseError(`${location} must be a JSON object`);
+    }
+
+    const sourceSection = requireActiveReleaseString(
+      rawReplacement.sourceSection,
+      `${location}.sourceSection`,
+    );
+    if (!ACTIVE_RELEASE_SECTION_PATTERN.test(sourceSection)) {
+      throw activeReleaseError(`${location}.sourceSection has an invalid section key`);
+    }
+    const filename = requireActiveReleaseString(
+      rawReplacement.filename,
+      `${location}.filename`,
+    );
+    if (!ACTIVE_RELEASE_FILENAME_PATTERN.test(filename)) {
+      throw activeReleaseError(`${location}.filename must be a PDF basename`);
+    }
+
+    const key = `${sourceSection}/${filename}`;
+    if (replacements.has(key)) {
+      throw activeReleaseError(`duplicate replacement mapping for ${key}`);
+    }
+    const matchCount = knownEntryCounts.get(key) || 0;
+    if (matchCount === 0) {
+      throw activeReleaseError(`replacement target does not exist: ${key}`);
+    }
+    if (matchCount !== 1) {
+      throw activeReleaseError(`replacement target is duplicated in the catalog: ${key}`);
+    }
+
+    const pdfAsset = validateActiveReleaseAssetPath(
+      rawReplacement.pdfPath,
+      `${location}.pdfPath`,
+      '.pdf',
+    );
+    const thumbnailAsset = validateActiveReleaseAssetPath(
+      rawReplacement.thumbnailPath,
+      `${location}.thumbnailPath`,
+      '.webp',
+    );
+    if (pdfAsset.releaseId !== thumbnailAsset.releaseId) {
+      throw activeReleaseError(
+        `${location} PDF and thumbnail must come from the same immutable release`,
+      );
+    }
+    const pdfPath = pdfAsset.assetPath;
+    const thumbnailPath = thumbnailAsset.assetPath;
+    for (const assetPath of [pdfPath, thumbnailPath]) {
+      if (usedAssetPaths.has(assetPath)) {
+        throw activeReleaseError(`duplicate release asset path: ${assetPath}`);
+      }
+      usedAssetPaths.add(assetPath);
+    }
+
+    const sha256 = requireActiveReleaseString(
+      rawReplacement.sha256,
+      `${location}.sha256`,
+    ).toLowerCase();
+    if (!/^[0-9a-f]{64}$/.test(sha256)) {
+      throw activeReleaseError(`${location}.sha256 must be 64 hexadecimal characters`);
+    }
+    const bytes = rawReplacement.bytes;
+    if (!Number.isInteger(bytes) || bytes <= 0) {
+      throw activeReleaseError(`${location}.bytes must be a positive integer`);
+    }
+    const pageCount = rawReplacement.pageCount;
+    if (!Number.isInteger(pageCount) || pageCount <= 0) {
+      throw activeReleaseError(`${location}.pageCount must be a positive integer`);
+    }
+
+    replacements.set(key, {
+      sourceSection,
+      filename,
+      pdfPath,
+      thumbnailPath,
+      sha256,
+      bytes,
+      pageCount,
+    });
+  }
+
+  return {
+    releaseId,
+    sourceCommit,
+    manifestSha256,
+    previousReleaseId,
+    activatedAt,
+    replacements,
+  };
+}
+
+function loadActiveReleaseReplacementLookup(availableEntries) {
+  if (!existsSync(ACTIVE_RELEASE_PATH)) {
+    throw activeReleaseError('tracked active release contract is missing');
+  }
+  let payload;
+  try {
+    payload = JSON.parse(readFileSync(ACTIVE_RELEASE_PATH, 'utf8'));
+  } catch (error) {
+    throw activeReleaseError(`could not parse JSON: ${error.message}`);
+  }
+  const activeRelease = buildActiveReleaseReplacementLookup(payload, availableEntries);
+  console.log(
+    `[build-form-catalog-index] active release: ${activeRelease.releaseId || 'none'} `
+      + `(${activeRelease.replacements.size} replacements)`,
+  );
+  return activeRelease;
+}
+
+export function resolveCatalogAssetState(rawEntry, pageCountCache, activeReleaseReplacements) {
+  const key = catalogEntryKey(rawEntry);
+  const releaseReplacement = activeReleaseReplacements.get(key) || null;
+  const cachedPageCount = rawEntry.sha256 ? pageCountCache[rawEntry.sha256] : null;
+  return {
+    bytes: releaseReplacement?.bytes ?? rawEntry.bytes ?? null,
+    sha256: releaseReplacement?.sha256 || rawEntry.sha256 || null,
+    pageCount: releaseReplacement
+      ? releaseReplacement.pageCount
+      : Number.isFinite(cachedPageCount) && cachedPageCount > 0
+        ? cachedPageCount
+        : null,
+    pdfPath: releaseReplacement?.pdfPath || `${rawEntry.section}/${rawEntry.filename}`,
+    thumbnailPath: releaseReplacement?.thumbnailPath
+      || `${rawEntry.section}/${rawEntry.filename.replace(/\.pdf$/i, '.webp')}`,
+  };
+}
+
+export function assertActiveReleaseSlugIdentity(activeReleaseReplacements, previousSlugLookup) {
+  const previousSlugCounts = new Map();
+  for (const slug of previousSlugLookup.values()) {
+    if (!slug) continue;
+    previousSlugCounts.set(slug, (previousSlugCounts.get(slug) || 0) + 1);
+  }
+
+  for (const key of activeReleaseReplacements.keys()) {
+    const previousSlug = previousSlugLookup.get(key);
+    if (!previousSlug) {
+      throw activeReleaseError(`replacement target has no published slug identity: ${key}`);
+    }
+    if (previousSlugCounts.get(previousSlug) !== 1) {
+      throw activeReleaseError(
+        `replacement target has an ambiguous published slug ${previousSlug}: ${key}`,
+      );
+    }
+  }
 }
 
 function loadPreviousSlugLookup() {
@@ -1000,6 +1281,7 @@ function buildEntry(
   pageCountCache,
   currentTitleLookup,
   titleOverrides,
+  activeReleaseReplacements,
   previousSlugLookup,
   reservedPreviousSlugs,
   usedSlugs,
@@ -1028,8 +1310,11 @@ function buildEntry(
   const legacySlug = legacyUsedSlugs ? computeLegacySlug(rawEntry, legacyUsedSlugs) : null;
   const title = identity.title;
   const description = desc.description || buildAutoDescription(normalizedEntry, title);
-  const cachedPageCount = rawEntry.sha256 ? pageCountCache[rawEntry.sha256] : null;
-  const pageCount = Number.isFinite(cachedPageCount) && cachedPageCount > 0 ? cachedPageCount : null;
+  const assetState = resolveCatalogAssetState(
+    rawEntry,
+    pageCountCache,
+    activeReleaseReplacements,
+  );
   return {
     slug,
     legacySlug,
@@ -1041,11 +1326,7 @@ function buildEntry(
     year: identity.year,
     isPriorYear: Boolean(rawEntry.is_prior_year),
     sourceUrl: rawEntry.url,
-    bytes: rawEntry.bytes ?? null,
-    sha256: rawEntry.sha256 || null,
-    pageCount,
-    pdfPath: `${rawEntry.section}/${rawEntry.filename}`,
-    thumbnailPath: `${rawEntry.section}/${rawEntry.filename.replace(/\.pdf$/i, '.webp')}`,
+    ...assetState,
     description,
     useCase: desc.useCase || '',
   };
@@ -1067,6 +1348,7 @@ async function main() {
   const okForms = rawForms.filter(
     (f) => f?.ok === true && f.section && f.filename && isPublicCatalogRawEntry(f),
   );
+  const activeRelease = loadActiveReleaseReplacementLookup(okForms);
 
   const pageCountCache = await resolvePageCounts(okForms);
   // Prior-year IRS files rebuilt from disk often only preserve filename-like slugs.
@@ -1076,6 +1358,7 @@ async function main() {
   // slugs to newly generated templates. This keeps O(n) slug assignment stable
   // when generated PDF bytes or insertion order change.
   const previousSlugLookup = loadPreviousSlugLookup();
+  assertActiveReleaseSlugIdentity(activeRelease.replacements, previousSlugLookup);
   const reservedPreviousSlugs = new Set(previousSlugLookup.values());
 
   // Group by section; sort within each section by form_number for deterministic output.
@@ -1105,6 +1388,7 @@ async function main() {
         pageCountCache,
         currentTitleLookup,
         titleOverrides,
+        activeRelease.replacements,
         previousSlugLookup,
         reservedPreviousSlugs,
         usedSlugs,
@@ -1205,7 +1489,10 @@ export const FORM_CATALOG_EXTERNAL_SOURCES = ${JSON.stringify(buildExternalSourc
   );
 }
 
-main().catch((error) => {
-  console.error('[build-form-catalog-index] failed:', error);
-  process.exit(1);
-});
+const invokedScriptPath = process.argv[1] ? resolve(process.argv[1]) : '';
+if (invokedScriptPath === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    console.error('[build-form-catalog-index] failed:', error);
+    process.exit(1);
+  });
+}

@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1312__single_family_rental_tenant_complaint_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1312__single_family_rental_tenant_complaint_form.pdf",
+  "slug": "single-family-rental-tenant-complaint-form",
+  "title": "Single-Family Rental Resident Concern and Complaint Case Record",
+  "subtitle": "Receive and triage a resident concern, preserve the resident's account and evidence, route house and site safety or fair-housing issues, document neutral review, authorize response, and verify closeout.",
+  "description": "Complaint case workflow for a single-family rental, including dwelling systems, exclusive-use grounds, trees, drainage, utilities, access, neighboring boundaries, service providers, owner conduct, and property responsibilities.",
+  "use_case": "Use for a resident concern that needs confidential intake, emergency or protected-process routing, factual investigation, interim measures, accountable communication, correction opportunities, and a documented operational outcome.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "complaint_property_identity",
+      "title": "Complaint, resident, lease, and property identity",
+      "guidance": "Create one confidential case record and confirm a safe communication plan for the correct rental house.",
+      "blocks": [
+        {
+          "key": "case_reference",
+          "type": "fields",
+          "label": "Complaint case reference",
+          "fields": [
+            {"key": "case_number", "label": "Case or complaint number", "units": 1.1},
+            {"key": "date_received", "label": "Date received", "units": 0.8},
+            {"key": "time_received", "label": "Time received", "units": 0.7},
+            {"key": "received_by", "label": "Received by", "units": 0.9},
+            {"key": "intake_channel", "label": "Intake channel", "units": 1.0, "field_type": "choice", "options": ["Resident portal", "Phone", "Email", "Mail", "In person", "Other"]}
+          ]
+        },
+        {
+          "key": "rental_property",
+          "type": "fields",
+          "label": "Single-family rental",
+          "fields": [
+            {"key": "property_address", "label": "Property address", "units": 1.8},
+            {"key": "property_type", "label": "House type", "units": 1.0, "field_type": "choice", "options": ["Detached house", "Townhouse or rowhouse", "Duplex side", "Cottage or accessory dwelling", "Other single-family rental"]},
+            {"key": "lease_reference", "label": "Lease or account reference", "units": 1.2},
+            {"key": "owner_manager", "label": "Owner or manager of record", "units": 1.1}
+          ]
+        },
+        {
+          "key": "reporting_person",
+          "type": "fields",
+          "label": "Reporting person and safe contact",
+          "fields": [
+            {"key": "reporting_name", "label": "Reporting person", "units": 1.2},
+            {"key": "role", "label": "Role or relationship", "units": 1.0},
+            {"key": "phone", "label": "Phone", "units": 0.8},
+            {"key": "email", "label": "Email", "units": 1.1},
+            {"key": "safe_contact", "label": "Safe contact method and time", "units": 1.2}
+          ]
+        },
+        {
+          "key": "case_ownership",
+          "type": "fields",
+          "label": "Case ownership and response targets",
+          "fields": [
+            {"key": "case_owner", "label": "Assigned case owner", "units": 1.1},
+            {"key": "supervisor", "label": "Supervisor or reviewer", "units": 1.1},
+            {"key": "ack_target", "label": "Acknowledgment target", "units": 1.0},
+            {"key": "response_target", "label": "Response target", "units": 1.0},
+            {"key": "confidential_location", "label": "Confidential record location", "units": 1.2}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "safety_protected_routing",
+      "title": "Safety, utility, access, and protected-process routing",
+      "guidance": "Address immediate risk and route specialized concerns without prejudging disputed facts.",
+      "blocks": [
+        {
+          "key": "concern_category",
+          "type": "checklist",
+          "label": "Concern category - select all that apply",
+          "items": [
+            "Maintenance or unresolved repair",
+            "Water, sewer, septic, or well concern",
+            "Heating, cooling, electric, or fuel concern",
+            "Roof, moisture, drainage, or foundation concern",
+            "Tree, fence, gate, yard, or exterior concern",
+            "Garage, shed, or outbuilding concern",
+            "Pest or environmental concern",
+            "Access, entry, key, alarm, or privacy concern",
+            "Parking, driveway, or storage concern",
+            "Neighbor, shared boundary, or outside-party concern",
+            "Owner, manager, vendor, or service conduct",
+            "Policy, payment, notice, or communication concern",
+            "Harassment, discrimination, or fair-housing concern",
+            "Accommodation or communication-access concern",
+            "Retaliation or rights-activity concern",
+            "Other concern documented"
+          ]
+        },
+        {
+          "key": "immediate_screen",
+          "type": "checklist",
+          "label": "Immediate safety and preservation screen",
+          "items": [
+            "Immediate danger reported",
+            "Fire, smoke, gas, or fuel concern",
+            "Active electrical or structural concern",
+            "Major water release or sewer backup",
+            "No required heat or unsafe temperature",
+            "Unsafe tree, limb, fence, or exterior condition",
+            "Security or inability to secure property",
+            "Medical assistance requested",
+            "Child or vulnerable-person concern",
+            "Evidence may be lost",
+            "No immediate danger reported",
+            "Emergency or specialist route activated"
+          ],
+          "guidance": "Use emergency services and the property's emergency protocol when immediate danger is reported. Do not wait for routine case review."
+        },
+        {
+          "key": "protected_routes",
+          "type": "checklist",
+          "label": "Protected or specialized process opened",
+          "items": [
+            "Fair-housing review",
+            "Accommodation process",
+            "Communication assistance",
+            "Language assistance",
+            "Retaliation concern review",
+            "Privacy or confidentiality review",
+            "Legal or policy review",
+            "Insurance notification",
+            "Utility or municipal coordination",
+            "Qualified building or environmental specialist",
+            "No specialized process opened",
+            "Routing decision pending"
+          ]
+        },
+        {
+          "key": "routing_decision",
+          "type": "fields",
+          "label": "Triage decision and routing",
+          "fields": [
+            {"key": "case_priority", "label": "Case priority", "units": 1.0, "field_type": "choice", "options": ["Emergency protocol", "Urgent protected review", "Urgent property response", "Standard prompt review", "Routine documented review"]},
+            {"key": "route", "label": "Primary specialized route", "units": 1.2},
+            {"key": "routed_to", "label": "Routed to", "units": 1.0},
+            {"key": "routing_date", "label": "Routing date and time", "units": 1.0},
+            {"key": "triaged_by", "label": "Triaged by", "units": 0.9}
+          ]
+        },
+        {
+          "key": "interim_instruction",
+          "type": "textarea",
+          "label": "Immediate instruction, temporary protection, utility action, safe-contact constraint, access plan, or referral provided",
+          "fields": [{"key": "interim_instruction_detail", "label": "Immediate instruction and safe routing"}],
+          "height": 56
+        },
+        {
+          "key": "neutral_notice",
+          "type": "notice",
+          "label": "Neutral and non-retaliatory handling",
+          "guidance": "Do not retaliate or treat a resident adversely for reporting a concern, requesting maintenance or accommodation, participating in a review, or exercising protected rights. Limit disclosure, avoid promises of confidentiality, and route legal or fair-housing questions for qualified review."
+        }
+      ]
+    },
+    {
+      "key": "resident_account_evidence",
+      "title": "Resident account, chronology, property context, and evidence",
+      "guidance": "Preserve the reporting person's words and distinguish reported facts, observations, records, and third-party information.",
+      "blocks": [
+        {
+          "key": "resident_account",
+          "type": "textarea",
+          "label": "Resident description of what occurred, where on the property it occurred, who was involved, impact, and requested outcome",
+          "fields": [{"key": "resident_account_detail", "label": "Resident complaint account"}],
+          "height": 76
+        },
+        {
+          "key": "chronology",
+          "type": "table",
+          "label": "Event chronology",
+          "columns": [
+            {"key": "date_time", "label": "Date and time", "units": 0.9},
+            {"key": "location", "label": "House or site location", "units": 1.1},
+            {"key": "event", "label": "What was observed or reported", "units": 1.7},
+            {"key": "source", "label": "Information source", "units": 1.1},
+            {"key": "evidence", "label": "Evidence reference", "units": 1.1}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "property_context",
+          "type": "table",
+          "label": "House, utility, yard, access, or boundary context",
+          "columns": [
+            {"key": "area", "label": "Property area or system", "units": 1.2},
+            {"key": "reported_condition", "label": "Reported condition", "units": 1.5},
+            {"key": "record_source", "label": "Record or baseline source", "units": 1.1},
+            {"key": "access_status", "label": "Access or inspection status", "units": 1.1},
+            {"key": "next_step", "label": "Next step", "units": 1.1}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "people_log",
+          "type": "table",
+          "label": "People involved or with relevant information",
+          "columns": [
+            {"key": "person", "label": "Name or identifier", "units": 1.2},
+            {"key": "role", "label": "Role in reported event", "units": 1.2},
+            {"key": "contact", "label": "Contact, if appropriate", "units": 1.1},
+            {"key": "information", "label": "Relevant information", "units": 1.5},
+            {"key": "status", "label": "Contact status", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "evidence_log",
+          "type": "table",
+          "label": "Evidence and record log",
+          "columns": [
+            {"key": "reference", "label": "Evidence reference", "units": 1.0},
+            {"key": "item", "label": "Photo, message, record, or item", "units": 1.5},
+            {"key": "source", "label": "Source", "units": 0.9},
+            {"key": "received", "label": "Received date", "units": 0.9},
+            {"key": "stored", "label": "Stored location and access", "units": 1.3},
+            {"key": "status", "label": "Verified or pending", "units": 1.0}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "prior_related_records",
+          "type": "textarea",
+          "label": "Prior related reports, repair requests, utility cases, service visits, neighbor contacts, recurring pattern, and linked references",
+          "fields": [{"key": "prior_record_detail", "label": "Prior related record summary"}],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "neutral_review_interim",
+      "title": "Neutral review, site access, and interim measures",
+      "guidance": "Define scope, conflicts, sources, communications, and reversible interim actions before reaching an internal assessment.",
+      "blocks": [
+        {
+          "key": "review_assignment",
+          "type": "fields",
+          "label": "Review assignment and scope",
+          "fields": [
+            {"key": "review_lead", "label": "Review lead", "units": 1.0},
+            {"key": "review_scope", "label": "Review scope", "units": 1.3},
+            {"key": "start_date", "label": "Review start date", "units": 0.8},
+            {"key": "completion_target", "label": "Target completion date", "units": 1.0},
+            {"key": "supervisor", "label": "Supervising reviewer", "units": 1.0}
+          ]
+        },
+        {
+          "key": "review_controls",
+          "type": "checklist",
+          "label": "Review controls confirmed",
+          "items": [
+            "Reviewer conflict checked",
+            "Resident acknowledgment sent",
+            "Allegations separated by issue",
+            "Relevant records identified",
+            "Each involved person can respond",
+            "Evidence sources preserved",
+            "Credibility not based on protected traits",
+            "Confidentiality limits explained",
+            "Retaliation concern monitored",
+            "Decision authority identified",
+            "Property access authority confirmed",
+            "Qualified specialist scope confirmed"
+          ]
+        },
+        {
+          "key": "access_plan",
+          "type": "fields",
+          "label": "Property review and access plan",
+          "fields": [
+            {"key": "notice_reference", "label": "Notice or permission reference", "units": 1.1},
+            {"key": "inspection_date", "label": "Review or inspection date", "units": 1.0},
+            {"key": "resident_present", "label": "Resident participation", "units": 1.0},
+            {"key": "areas_in_scope", "label": "House or site areas in scope", "units": 1.3},
+            {"key": "access_coordinator", "label": "Access coordinator", "units": 1.0}
+          ]
+        },
+        {
+          "key": "review_activity",
+          "type": "table",
+          "label": "Review activity and interview log",
+          "columns": [
+            {"key": "date_time", "label": "Date and time", "units": 0.9},
+            {"key": "activity", "label": "Action or source contacted", "units": 1.4},
+            {"key": "participants", "label": "Participants", "units": 1.1},
+            {"key": "summary", "label": "Factual summary", "units": 1.5},
+            {"key": "owner", "label": "Follow-up and owner", "units": 1.1}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "interim_measures",
+          "type": "table",
+          "label": "Interim support or risk-control measure",
+          "columns": [
+            {"key": "measure", "label": "Temporary measure", "units": 1.4},
+            {"key": "reason", "label": "Operational reason", "units": 1.3},
+            {"key": "approved_by", "label": "Approved by", "units": 1.0},
+            {"key": "review_date", "label": "Start and review date", "units": 1.1},
+            {"key": "communication", "label": "Communication reference", "units": 1.2}
+          ],
+          "rows": 4,
+          "guidance": "An interim measure should address safety or process needs without implying a finding or prejudging protected activity."
+        },
+        {
+          "key": "review_exception",
+          "type": "textarea",
+          "label": "Unavailable witness, conflicting account, missing evidence, access refusal, weather delay, specialist escalation, or process exception",
+          "fields": [{"key": "review_exception_detail", "label": "Review exception and mitigation"}],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "assessment_response",
+      "title": "Internal assessment, authorized response, and resident notice",
+      "guidance": "Connect each operational assessment to evidence, scope, authority, and the applicable qualified review.",
+      "blocks": [
+        {
+          "key": "issue_assessment",
+          "type": "table",
+          "label": "Issue-by-issue internal assessment",
+          "columns": [
+            {"key": "issue", "label": "Issue reviewed", "units": 1.2},
+            {"key": "support", "label": "Supporting evidence", "units": 1.3},
+            {"key": "conflict", "label": "Conflicting or missing evidence", "units": 1.3},
+            {"key": "result", "label": "Supported, unclear, or not supported", "units": 1.2},
+            {"key": "response", "label": "Response or next action", "units": 1.2}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "assessment_summary",
+          "type": "textarea",
+          "label": "Factual assessment, unresolved uncertainty, property responsibility route, policy reference, and reason for proposed response",
+          "fields": [{"key": "assessment_summary_detail", "label": "Internal operational assessment"}],
+          "height": 62
+        },
+        {
+          "key": "response_options",
+          "type": "checklist",
+          "label": "Proposed or authorized response",
+          "items": [
+            "Emergency or maintenance work order",
+            "Safety or security measure",
+            "Utility, well, septic, or service coordination",
+            "Tree, drainage, fence, or exterior work",
+            "Resident communication or clarification",
+            "Owner, vendor, or neighboring-party coordination",
+            "Staff or provider coaching",
+            "Policy clarification",
+            "Mediation or facilitated discussion",
+            "Accommodation process action",
+            "Fair-housing or legal review",
+            "Insurance or specialist review",
+            "No further action with explanation",
+            "Additional evidence requested"
+          ]
+        },
+        {
+          "key": "authorization",
+          "type": "fields",
+          "label": "Response authorization",
+          "fields": [
+            {"key": "assessment_status", "label": "Overall internal assessment", "units": 1.2, "field_type": "choice", "options": ["Supported for operational response", "Partially supported", "Unable to determine", "Not supported by available record", "Withdrawn", "Qualified review pending"]},
+            {"key": "decision_authority", "label": "Decision authority", "units": 1.0},
+            {"key": "decision_date", "label": "Decision date", "units": 0.8},
+            {"key": "approval_ref", "label": "Approval or policy reference", "units": 1.2}
+          ]
+        },
+        {
+          "key": "assessment_limit",
+          "type": "notice",
+          "label": "Assessment limitation",
+          "guidance": "An internal case assessment records the operational review; it is not a judicial finding or legal conclusion. Obtain qualified review before taking adverse action or deciding a fair-housing, accommodation, privacy, employment, or criminal matter."
+        },
+        {
+          "key": "resident_notice",
+          "type": "fields",
+          "label": "Resident response communication",
+          "fields": [
+            {"key": "response_method", "label": "Response method", "units": 0.9},
+            {"key": "response_date", "label": "Response date and time", "units": 1.0},
+            {"key": "delivered_by", "label": "Response delivered by", "units": 1.0},
+            {"key": "document_ref", "label": "Response document or message ref", "units": 1.2},
+            {"key": "receipt_status", "label": "Receipt status", "units": 0.9}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "followup_closeout",
+      "title": "Corrective action, follow-up, and accountable closeout",
+      "guidance": "Communicate appropriately, preserve disagreement, and verify every commitment before closing the case.",
+      "blocks": [
+        {
+          "key": "action_register",
+          "type": "table",
+          "label": "Corrective, support, and follow-up action register",
+          "columns": [
+            {"key": "action", "label": "Action or commitment", "units": 1.5},
+            {"key": "owner", "label": "Responsible owner", "units": 1.0},
+            {"key": "due_date", "label": "Due date", "units": 0.8},
+            {"key": "resident_update", "label": "Resident update due", "units": 1.0},
+            {"key": "evidence", "label": "Completion evidence", "units": 1.2}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "resident_followup",
+          "type": "textarea",
+          "label": "Resident response, disagreement, correction, additional evidence, appeal, accommodation request, or requested escalation",
+          "fields": [{"key": "resident_followup_detail", "label": "Resident follow-up and correction"}],
+          "height": 58
+        },
+        {
+          "key": "closure_verification",
+          "type": "checklist",
+          "label": "Closure verification",
+          "items": [
+            "Immediate risk addressed",
+            "Corrective actions verified",
+            "Sensitive records restricted",
+            "Accommodation route completed or linked",
+            "Appeal or escalation recorded",
+            "Resident response delivered",
+            "Open work orders linked",
+            "Fair-housing route completed or linked",
+            "Retaliation monitoring assigned",
+            "Retention location confirmed",
+            "No unresolved commitment",
+            "Open item assigned below"
+          ]
+        },
+        {
+          "key": "case_closeout",
+          "type": "fields",
+          "label": "Case closeout",
+          "fields": [
+            {"key": "case_status", "label": "Case status", "units": 1.0, "field_type": "choice", "options": ["Closed", "Closed with monitoring", "Closed with open property work", "Resident response pending", "Qualified review pending", "Reopened"]},
+            {"key": "monitoring_owner", "label": "Monitoring or follow-up owner", "units": 1.2},
+            {"key": "next_review", "label": "Next review date", "units": 0.9},
+            {"key": "record_location", "label": "Confidential record location", "units": 1.2}
+          ]
+        },
+        {
+          "key": "case_signoff",
+          "type": "signatures",
+          "label": "Case review and closeout",
+          "fields": [
+            {"key": "case_owner", "label": "Case owner", "units": 1.0},
+            {"key": "supervisor", "label": "Supervising reviewer", "units": 1.1},
+            {"key": "specialist", "label": "Specialist review, if applicable", "units": 1.2},
+            {"key": "closed_date", "label": "Closed date", "units": 0.8}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,763 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1002__general_contractor_change_order_request_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1002__general_contractor_change_order_request_form.pdf",
+  "slug": "general-contractor-change-order-request-form",
+  "title": "General Contractor Change Order Request and Decision Log",
+  "subtitle": "Document the origin and scope of a proposed change, substantiate cost and time effects, route review and negotiation, authorize implementation, and reconcile contract closeout.",
+  "description": "A workflow-complete construction change order request covering source direction, supporting evidence, scope definition, itemized pricing, schedule impact, risk and mitigation, review comments, approval conditions, implementation tracking, and contract reconciliation.",
+  "use_case": "Use when a contractor must preserve why a change arose, what it affects, how price and time were calculated, who authorized it, and whether the approved change reached field execution and contract records.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "change_identity",
+      "title": "Change identity, origin, and routing",
+      "guidance": "Create a traceable record before pricing or performing changed work.",
+      "blocks": [
+        {
+          "key": "change_reference",
+          "type": "fields",
+          "label": "Change request reference",
+          "fields": [
+            {
+              "key": "change_request_number",
+              "label": "Change request number",
+              "units": 0.8
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.7
+            },
+            {
+              "key": "date_identified",
+              "label": "Date identified",
+              "units": 0.65
+            },
+            {
+              "key": "response_due",
+              "label": "Response due",
+              "units": 0.65
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.8
+            },
+            {
+              "key": "change_manager",
+              "label": "Change manager",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "project_site",
+          "type": "fields",
+          "label": "Project and affected location",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.2
+            },
+            {
+              "key": "owner_customer",
+              "label": "Owner or customer",
+              "units": 1.0
+            },
+            {
+              "key": "site_address",
+              "label": "Site address",
+              "units": 1.35
+            },
+            {
+              "key": "affected_area",
+              "label": "Affected area or system",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "origin",
+          "type": "fields",
+          "label": "Origin and controlling reference",
+          "fields": [
+            {
+              "key": "requested_by",
+              "label": "Requested or directed by",
+              "units": 1.0
+            },
+            {
+              "key": "origin_type",
+              "label": "Change origin",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Owner request",
+                "Design revision",
+                "RFI response",
+                "Differing condition",
+                "Code or authority",
+                "Contractor proposal",
+                "Correction or rework",
+                "Emergency direction"
+              ]
+            },
+            {
+              "key": "reference_number",
+              "label": "RFI, ASI, bulletin, or directive",
+              "units": 1.0
+            },
+            {
+              "key": "reference_date",
+              "label": "Reference date",
+              "units": 0.65
+            },
+            {
+              "key": "cost_code",
+              "label": "Cost code",
+              "units": 0.6
+            }
+          ]
+        },
+        {
+          "key": "status_routing",
+          "type": "fields",
+          "label": "Routing and urgency",
+          "fields": [
+            {
+              "key": "request_status",
+              "label": "Request status",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Pricing in progress",
+                "Submitted",
+                "Under review",
+                "Negotiation",
+                "Approved",
+                "Rejected",
+                "Void"
+              ]
+            },
+            {
+              "key": "work_urgency",
+              "label": "Field urgency",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Hold pending approval",
+                "Decision needed soon",
+                "Schedule critical",
+                "Emergency work underway"
+              ]
+            },
+            {
+              "key": "owner_reviewer",
+              "label": "Owner or design reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "internal_reviewer",
+              "label": "Internal reviewer",
+              "units": 0.9
+            },
+            {
+              "key": "submission_method",
+              "label": "Submission method",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "change_control_notice",
+          "type": "notice",
+          "label": "Authorization control",
+          "guidance": "Submission of this request does not authorize changed work. Record written direction, emergency authority, or an executed change before proceeding beyond protective or investigative measures allowed by the contract."
+        }
+      ]
+    },
+    {
+      "key": "scope_evidence",
+      "title": "Changed condition, scope, and evidence",
+      "guidance": "Separate observed facts, requested outcome, and proposed work.",
+      "blocks": [
+        {
+          "key": "existing_requirement",
+          "type": "textarea",
+          "label": "Original contract requirement, drawing or specification reference, and baseline assumption",
+          "fields": [
+            {
+              "key": "baseline_detail",
+              "label": "Original requirement and baseline"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "change_description",
+          "type": "textarea",
+          "label": "Observed condition or requested change, affected work, and proposed revised scope",
+          "fields": [
+            {
+              "key": "change_scope_detail",
+              "label": "Changed condition and proposed scope"
+            }
+          ],
+          "height": 72
+        },
+        {
+          "key": "scope_effects",
+          "type": "checklist",
+          "label": "Scope and coordination effects",
+          "items": [
+            "Added work",
+            "Deleted work",
+            "Revised quantity",
+            "Material substitution",
+            "Design clarification",
+            "Demolition or rework",
+            "Temporary work",
+            "Testing or inspection",
+            "Permit revision",
+            "Shutdown or access change",
+            "Predecessor trade effect",
+            "Successor trade effect"
+          ]
+        },
+        {
+          "key": "evidence",
+          "type": "checklist",
+          "label": "Supporting evidence retained",
+          "items": [
+            "Marked drawing",
+            "Revised detail",
+            "Photographs",
+            "Field measurements",
+            "RFI response",
+            "Owner directive",
+            "Subcontractor quote",
+            "Supplier quote",
+            "Daily report",
+            "Schedule analysis",
+            "Inspection record",
+            "Correspondence"
+          ]
+        },
+        {
+          "key": "affected_parties",
+          "type": "table",
+          "label": "Affected trade and coordination register",
+          "columns": [
+            {
+              "key": "trade_party",
+              "label": "Trade or party",
+              "units": 1.0
+            },
+            {
+              "key": "affected_scope",
+              "label": "Affected scope",
+              "units": 1.25
+            },
+            {
+              "key": "notice_date",
+              "label": "Notice date",
+              "units": 0.65
+            },
+            {
+              "key": "pricing_due",
+              "label": "Pricing due",
+              "units": 0.65
+            },
+            {
+              "key": "coordination_need",
+              "label": "Coordination need",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "cost_impact",
+      "title": "Cost build-up, credits, and pricing basis",
+      "guidance": "Show how the proposed adjustment was calculated and supported.",
+      "blocks": [
+        {
+          "key": "direct_costs",
+          "type": "table",
+          "label": "Direct cost detail",
+          "columns": [
+            {
+              "key": "cost_item",
+              "label": "Labor, material, or service",
+              "units": 1.35
+            },
+            {
+              "key": "quantity_hours",
+              "label": "Qty or hours",
+              "units": 0.6
+            },
+            {
+              "key": "unit",
+              "label": "Unit",
+              "units": 0.45
+            },
+            {
+              "key": "unit_rate",
+              "label": "Unit rate",
+              "units": 0.65
+            },
+            {
+              "key": "source_reference",
+              "label": "Quote or rate source",
+              "units": 1.0
+            },
+            {
+              "key": "line_total",
+              "label": "Line total",
+              "units": 0.65
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "subcontractor_costs",
+          "type": "table",
+          "label": "Subcontractor, supplier, and equipment pricing",
+          "columns": [
+            {
+              "key": "company",
+              "label": "Company",
+              "units": 1.0
+            },
+            {
+              "key": "scope",
+              "label": "Scope",
+              "units": 1.25
+            },
+            {
+              "key": "quote_date",
+              "label": "Quote date",
+              "units": 0.6
+            },
+            {
+              "key": "quote_amount",
+              "label": "Amount",
+              "units": 0.7
+            },
+            {
+              "key": "exclusion",
+              "label": "Exclusion or condition",
+              "units": 1.1
+            },
+            {
+              "key": "carried_amount",
+              "label": "Carried amount",
+              "units": 0.75
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "pricing_summary",
+          "type": "fields",
+          "label": "Change pricing summary",
+          "fields": [
+            {
+              "key": "labor_total",
+              "label": "Labor total",
+              "units": 0.65
+            },
+            {
+              "key": "material_total",
+              "label": "Material total",
+              "units": 0.7
+            },
+            {
+              "key": "equipment_subtotal",
+              "label": "Equipment and subs",
+              "units": 0.8
+            },
+            {
+              "key": "credits",
+              "label": "Credits or avoided cost",
+              "units": 0.75
+            },
+            {
+              "key": "markup_bond_tax",
+              "label": "Markup, bond, tax, fees",
+              "units": 0.85
+            },
+            {
+              "key": "net_change",
+              "label": "Net contract change",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "pricing_basis",
+          "type": "textarea",
+          "label": "Rate basis, productivity assumption, credit calculation, quote qualifications, and pricing validity",
+          "fields": [
+            {
+              "key": "pricing_basis_detail",
+              "label": "Pricing basis and qualifications"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "schedule_risk",
+      "title": "Schedule impact, risk, and mitigation",
+      "guidance": "Connect the change to milestones, time entitlement, and response dates.",
+      "blocks": [
+        {
+          "key": "schedule_summary",
+          "type": "fields",
+          "label": "Schedule impact summary",
+          "fields": [
+            {
+              "key": "baseline_activity",
+              "label": "Baseline activity or milestone",
+              "units": 1.15
+            },
+            {
+              "key": "impact_start",
+              "label": "Impact start date",
+              "units": 0.7
+            },
+            {
+              "key": "calendar_days",
+              "label": "Calendar days requested",
+              "units": 0.75
+            },
+            {
+              "key": "working_days",
+              "label": "Working days requested",
+              "units": 0.75
+            },
+            {
+              "key": "new_completion",
+              "label": "Proposed completion date",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "schedule_effects",
+          "type": "checklist",
+          "label": "Schedule effect analysis",
+          "items": [
+            "No time impact",
+            "Critical-path impact",
+            "Near-critical activity impact",
+            "Work resequencing required",
+            "Acceleration proposed",
+            "Overtime or second shift proposed",
+            "Procurement lead-time impact",
+            "Inspection or permit impact",
+            "Access window impact",
+            "Trade remobilization required",
+            "Weather exposure increased",
+            "Notice deadline applies"
+          ]
+        },
+        {
+          "key": "milestone_impacts",
+          "type": "table",
+          "label": "Affected activity and mitigation log",
+          "columns": [
+            {
+              "key": "activity",
+              "label": "Activity or milestone",
+              "units": 1.15
+            },
+            {
+              "key": "baseline_date",
+              "label": "Baseline date",
+              "units": 0.7
+            },
+            {
+              "key": "revised_date",
+              "label": "Revised date",
+              "units": 0.7
+            },
+            {
+              "key": "days",
+              "label": "Days",
+              "units": 0.45
+            },
+            {
+              "key": "mitigation",
+              "label": "Mitigation action",
+              "units": 1.25
+            },
+            {
+              "key": "decision_due",
+              "label": "Decision due",
+              "units": 0.65
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "risk_narrative",
+          "type": "textarea",
+          "label": "Schedule analysis, concurrency, mitigation limits, unresolved risk, and consequence of delayed decision",
+          "fields": [
+            {
+              "key": "schedule_risk_detail",
+              "label": "Schedule and risk narrative"
+            }
+          ],
+          "height": 78
+        }
+      ]
+    },
+    {
+      "key": "review_decision",
+      "title": "Review, negotiation, and authorization",
+      "guidance": "Record comments, revisions, final terms, and the person granting authority.",
+      "blocks": [
+        {
+          "key": "review_log",
+          "type": "table",
+          "label": "Review and negotiation log",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date",
+              "units": 0.55
+            },
+            {
+              "key": "reviewer",
+              "label": "Reviewer or party",
+              "units": 0.9
+            },
+            {
+              "key": "comment",
+              "label": "Comment or requested revision",
+              "units": 1.5
+            },
+            {
+              "key": "response",
+              "label": "Response or revision",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Action owner",
+              "units": 0.7
+            },
+            {
+              "key": "closed",
+              "label": "Closed",
+              "units": 0.5
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "decision_terms",
+          "type": "fields",
+          "label": "Final decision and commercial terms",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with conditions",
+                "Revise and resubmit",
+                "Rejected",
+                "Withdrawn",
+                "Proceed pending formal change"
+              ]
+            },
+            {
+              "key": "approved_amount",
+              "label": "Approved amount",
+              "units": 0.8
+            },
+            {
+              "key": "approved_days",
+              "label": "Approved time adjustment",
+              "units": 0.8
+            },
+            {
+              "key": "change_order_number",
+              "label": "Executed change order number",
+              "units": 0.9
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.65
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "conditions",
+          "type": "textarea",
+          "label": "Approved scope, negotiated exclusions, reservation of rights, implementation limits, and billing conditions",
+          "fields": [
+            {
+              "key": "decision_condition_detail",
+              "label": "Decision conditions and final terms"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "authorization_signoff",
+          "type": "signatures",
+          "label": "Change authorization",
+          "fields": [
+            {
+              "key": "contractor_signature",
+              "label": "Contractor representative",
+              "units": 1.05
+            },
+            {
+              "key": "owner_signature",
+              "label": "Owner representative",
+              "units": 1.05
+            },
+            {
+              "key": "designer_signature",
+              "label": "Designer or reviewer",
+              "units": 0.95
+            },
+            {
+              "key": "signed_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "implementation_closeout",
+      "title": "Implementation and contract closeout",
+      "guidance": "Verify the approved change reached field, schedule, cost, and billing records.",
+      "blocks": [
+        {
+          "key": "implementation",
+          "type": "fields",
+          "label": "Implementation status",
+          "fields": [
+            {
+              "key": "notice_to_proceed",
+              "label": "Field notice date",
+              "units": 0.7
+            },
+            {
+              "key": "work_started",
+              "label": "Changed work started",
+              "units": 0.7
+            },
+            {
+              "key": "work_completed",
+              "label": "Changed work completed",
+              "units": 0.8
+            },
+            {
+              "key": "actual_cost",
+              "label": "Actual tracked cost",
+              "units": 0.75
+            },
+            {
+              "key": "actual_days",
+              "label": "Actual schedule effect",
+              "units": 0.75
+            },
+            {
+              "key": "implementation_owner",
+              "label": "Implementation owner",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "record_updates",
+          "type": "checklist",
+          "label": "Contract and project records updated",
+          "items": [
+            "Executed change distributed",
+            "Budget updated",
+            "Commitment or subcontract updated",
+            "Purchase order updated",
+            "Schedule updated",
+            "Drawings or as-builts updated",
+            "Submittal or procurement updated",
+            "Billing schedule updated",
+            "Forecast updated",
+            "Field team briefed",
+            "Supporting evidence archived",
+            "Related RFI or directive closed"
+          ]
+        },
+        {
+          "key": "variance_closeout",
+          "type": "textarea",
+          "label": "Difference between approved and actual work, open claim, unbilled cost, remaining dispute, and closeout owner",
+          "fields": [
+            {
+              "key": "variance_detail",
+              "label": "Implementation variance and closeout"
+            }
+          ],
+          "height": 160
+        },
+        {
+          "key": "closeout_signoff",
+          "type": "signatures",
+          "label": "Change closeout review",
+          "fields": [
+            {
+              "key": "project_manager",
+              "label": "Project manager",
+              "units": 1.0
+            },
+            {
+              "key": "project_controls",
+              "label": "Project controls or accounting",
+              "units": 1.1
+            },
+            {
+              "key": "field_lead",
+              "label": "Field lead",
+              "units": 0.85
+            },
+            {
+              "key": "closeout_date",
+              "label": "Closeout date",
+              "units": 0.65
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

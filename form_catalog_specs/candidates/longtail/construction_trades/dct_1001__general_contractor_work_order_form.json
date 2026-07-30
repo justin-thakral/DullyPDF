@@ -1,0 +1,629 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1001__general_contractor_work_order_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1001__general_contractor_work_order_form.pdf",
+  "slug": "general-contractor-work-order-form",
+  "title": "General Contractor Work Order and Completion Record",
+  "subtitle": "Authorize a defined construction scope, mobilize the responsible crew, control site requirements and changes, verify work, and close the order with accountable acceptance.",
+  "description": "A workflow-complete contractor work order covering commercial authorization, site and scope identity, crew and resource planning, permits and safety, execution requirements, change control, progress, testing, customer acceptance, and closeout.",
+  "use_case": "Use when a general contractor needs one fillable control record to issue work to a crew or subcontractor, prevent unauthorized scope drift, document completion evidence, and route unresolved items to a named owner.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "order_identity",
+      "title": "Work order identity and authorization basis",
+      "guidance": "Tie the order to the controlling project and commercial approval.",
+      "blocks": [
+        {
+          "key": "order_reference",
+          "type": "fields",
+          "label": "Work order reference",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Work order number",
+              "units": 0.8
+            },
+            {
+              "key": "issue_date",
+              "label": "Issue date",
+              "units": 0.6
+            },
+            {
+              "key": "issued_by",
+              "label": "Issued by",
+              "units": 0.8
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.7,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Schedule critical",
+                "Urgent correction",
+                "Emergency stabilization"
+              ]
+            },
+            {
+              "key": "cost_code",
+              "label": "Cost code",
+              "units": 0.65
+            },
+            {
+              "key": "contract_reference",
+              "label": "Contract or PO reference",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "project_identity",
+          "type": "fields",
+          "label": "Project and site",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.15
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.7
+            },
+            {
+              "key": "site_address",
+              "label": "Site address",
+              "units": 1.4
+            },
+            {
+              "key": "area_location",
+              "label": "Building, floor, or work area",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "parties",
+          "type": "fields",
+          "label": "Responsible parties",
+          "fields": [
+            {
+              "key": "customer_owner",
+              "label": "Customer or owner",
+              "units": 1.0
+            },
+            {
+              "key": "owner_contact",
+              "label": "Owner contact",
+              "units": 0.8
+            },
+            {
+              "key": "performing_company",
+              "label": "Performing company or crew",
+              "units": 1.05
+            },
+            {
+              "key": "foreman",
+              "label": "Foreman or lead",
+              "units": 0.8
+            },
+            {
+              "key": "project_manager",
+              "label": "Project manager",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "commercial_basis",
+          "type": "fields",
+          "label": "Commercial basis and limits",
+          "fields": [
+            {
+              "key": "pricing_basis",
+              "label": "Pricing basis",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Lump sum",
+                "Unit price",
+                "Time and material",
+                "Not to exceed",
+                "Warranty or no charge"
+              ]
+            },
+            {
+              "key": "authorized_amount",
+              "label": "Authorized amount or limit",
+              "units": 0.9
+            },
+            {
+              "key": "retainage",
+              "label": "Retainage or holdback",
+              "units": 0.7
+            },
+            {
+              "key": "billing_document",
+              "label": "Billing document required",
+              "units": 0.9
+            },
+            {
+              "key": "approval_contact",
+              "label": "Approval contact",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "authorization_notice",
+          "type": "notice",
+          "label": "Scope control",
+          "guidance": "Do not perform work outside this order's authorized scope or commercial limit without written direction through the project's change-control process, except immediate action needed to protect life or property."
+        }
+      ]
+    },
+    {
+      "key": "scope_schedule",
+      "title": "Authorized scope, schedule, and acceptance",
+      "guidance": "Translate the order into measurable tasks and completion criteria.",
+      "blocks": [
+        {
+          "key": "scope_summary",
+          "type": "textarea",
+          "label": "Authorized work scope, limits, drawings, specifications, and explicit exclusions",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Authorized scope and exclusions"
+            }
+          ],
+          "height": 72
+        },
+        {
+          "key": "task_schedule",
+          "type": "table",
+          "label": "Task and milestone schedule",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or deliverable",
+              "units": 1.35
+            },
+            {
+              "key": "area",
+              "label": "Area",
+              "units": 0.7
+            },
+            {
+              "key": "responsible_party",
+              "label": "Responsible party",
+              "units": 0.9
+            },
+            {
+              "key": "start",
+              "label": "Start",
+              "units": 0.55
+            },
+            {
+              "key": "finish",
+              "label": "Finish",
+              "units": 0.55
+            },
+            {
+              "key": "acceptance",
+              "label": "Acceptance measure",
+              "units": 1.05
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "schedule_constraints",
+          "type": "checklist",
+          "label": "Schedule and coordination constraints",
+          "items": [
+            "Occupied-area coordination",
+            "Noise or work-hour restriction",
+            "Shutdown window",
+            "Inspection hold point",
+            "Predecessor work required",
+            "Successor trade coordination",
+            "Long-lead dependency",
+            "Weather-sensitive work",
+            "Customer access appointment",
+            "Daily cleanup deadline"
+          ]
+        },
+        {
+          "key": "acceptance_requirements",
+          "type": "checklist",
+          "label": "Required completion evidence",
+          "items": [
+            "Inspection record",
+            "Test result",
+            "Photo evidence",
+            "As-built mark-up",
+            "Equipment startup record",
+            "Manufacturer checklist",
+            "Training or handoff",
+            "Waste disposal record",
+            "Punch correction",
+            "Customer sign-off"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "mobilization",
+      "title": "Mobilization, access, safety, and resources",
+      "guidance": "Confirm the crew can start safely with required approvals and resources.",
+      "blocks": [
+        {
+          "key": "crew_schedule",
+          "type": "fields",
+          "label": "Crew and work window",
+          "fields": [
+            {
+              "key": "planned_start",
+              "label": "Planned start date and time",
+              "units": 0.9
+            },
+            {
+              "key": "planned_finish",
+              "label": "Planned finish date and time",
+              "units": 0.9
+            },
+            {
+              "key": "crew_size",
+              "label": "Crew size",
+              "units": 0.5
+            },
+            {
+              "key": "trade",
+              "label": "Primary trade",
+              "units": 0.8
+            },
+            {
+              "key": "site_contact",
+              "label": "Site contact",
+              "units": 0.85
+            },
+            {
+              "key": "check_in_location",
+              "label": "Check-in location",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "prestart_controls",
+          "type": "checklist",
+          "label": "Pre-start approvals and controls",
+          "items": [
+            "Current drawings available",
+            "Submittals approved",
+            "Permit posted",
+            "Utility locate completed",
+            "Job hazard analysis completed",
+            "Required competent person assigned",
+            "Hot-work permit approved",
+            "Lockout or shutdown approved",
+            "Fall-protection plan reviewed",
+            "Inspection request scheduled",
+            "Site access approved",
+            "Owner-furnished items available"
+          ]
+        },
+        {
+          "key": "resource_plan",
+          "type": "table",
+          "label": "Labor, material, and equipment plan",
+          "columns": [
+            {
+              "key": "resource",
+              "label": "Resource or material",
+              "units": 1.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.55
+            },
+            {
+              "key": "source",
+              "label": "Source or vendor",
+              "units": 0.9
+            },
+            {
+              "key": "required_date",
+              "label": "Required date",
+              "units": 0.65
+            },
+            {
+              "key": "delivery_staging",
+              "label": "Delivery or staging",
+              "units": 1.0
+            },
+            {
+              "key": "confirmed",
+              "label": "Confirmed",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "site_instructions",
+          "type": "textarea",
+          "label": "Access, parking, laydown, protection, shutdown, housekeeping, and communication instructions",
+          "fields": [
+            {
+              "key": "site_instruction_detail",
+              "label": "Site and mobilization instructions"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "execution_control",
+      "title": "Execution, quality, and change control",
+      "guidance": "Track actual work, evidence, and deviations from the issued order.",
+      "blocks": [
+        {
+          "key": "progress_log",
+          "type": "table",
+          "label": "Execution and progress log",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date",
+              "units": 0.5
+            },
+            {
+              "key": "task_area",
+              "label": "Task or area",
+              "units": 1.25
+            },
+            {
+              "key": "work_completed",
+              "label": "Work completed",
+              "units": 1.35
+            },
+            {
+              "key": "crew_hours",
+              "label": "Crew or hours",
+              "units": 0.65
+            },
+            {
+              "key": "inspection_test",
+              "label": "Inspection or test",
+              "units": 0.9
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "quality_controls",
+          "type": "checklist",
+          "label": "Quality-control actions",
+          "items": [
+            "Dimensions verified",
+            "Substrate or existing condition accepted",
+            "Approved material verified",
+            "Mockup or first-work review completed",
+            "Concealed work photographed",
+            "Required test completed",
+            "Inspection passed",
+            "Deficiency corrected",
+            "Protection installed",
+            "As-built condition recorded"
+          ]
+        },
+        {
+          "key": "deviation_log",
+          "type": "table",
+          "label": "Deviation, issue, and change-control log",
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Issue or deviation",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "RFI, change, or photo",
+              "units": 0.9
+            },
+            {
+              "key": "impact",
+              "label": "Cost or schedule impact",
+              "units": 0.95
+            },
+            {
+              "key": "direction_by",
+              "label": "Direction by",
+              "units": 0.75
+            },
+            {
+              "key": "action_owner",
+              "label": "Action owner",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.6
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "exception_detail",
+          "type": "textarea",
+          "label": "Blocked work, differing condition, damage, safety concern, customer direction, or pending decision",
+          "fields": [
+            {
+              "key": "exception_narrative",
+              "label": "Exception and escalation detail"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "completion_verification",
+      "title": "Completion verification and customer handoff",
+      "guidance": "Test the work, reconcile open items, and capture acceptance.",
+      "blocks": [
+        {
+          "key": "completion_status",
+          "type": "fields",
+          "label": "Completion status",
+          "fields": [
+            {
+              "key": "actual_start",
+              "label": "Actual start",
+              "units": 0.7
+            },
+            {
+              "key": "substantial_completion",
+              "label": "Substantial completion",
+              "units": 0.8
+            },
+            {
+              "key": "final_completion",
+              "label": "Final completion",
+              "units": 0.8
+            },
+            {
+              "key": "completion_status",
+              "label": "Order status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Complete",
+                "Complete with open items",
+                "Return required",
+                "Stopped by direction",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "final_cost",
+              "label": "Final reported cost",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "completion_checklist",
+          "type": "checklist",
+          "label": "Completion and handoff checklist",
+          "items": [
+            "Authorized scope completed",
+            "Work area cleaned",
+            "Protection removed or transferred",
+            "Testing completed",
+            "Inspection accepted",
+            "Punch items documented",
+            "As-built mark-up submitted",
+            "Warranty information submitted",
+            "Keys or controls transferred",
+            "Customer orientation completed",
+            "Photos retained",
+            "Billing backup complete"
+          ]
+        },
+        {
+          "key": "open_items",
+          "type": "table",
+          "label": "Open item and follow-up register",
+          "columns": [
+            {
+              "key": "open_item",
+              "label": "Open item",
+              "units": 1.45
+            },
+            {
+              "key": "reason",
+              "label": "Reason",
+              "units": 0.95
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.65
+            },
+            {
+              "key": "verification",
+              "label": "Verification required",
+              "units": 0.9
+            },
+            {
+              "key": "closed",
+              "label": "Closed",
+              "units": 0.55
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "completion_summary",
+          "type": "textarea",
+          "label": "Completed work summary, approved changes, remaining limitations, and customer handoff notes",
+          "fields": [
+            {
+              "key": "completion_detail",
+              "label": "Completion and handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "acceptance",
+          "type": "signatures",
+          "label": "Work order acceptance",
+          "fields": [
+            {
+              "key": "foreman_signature",
+              "label": "Foreman or subcontractor",
+              "units": 1.05
+            },
+            {
+              "key": "project_manager_signature",
+              "label": "Project manager",
+              "units": 0.95
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer or owner representative",
+              "units": 1.15
+            },
+            {
+              "key": "acceptance_date",
+              "label": "Acceptance date",
+              "units": 0.7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

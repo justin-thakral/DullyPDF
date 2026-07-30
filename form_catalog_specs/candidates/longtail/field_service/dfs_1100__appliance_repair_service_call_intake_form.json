@@ -1,0 +1,706 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1100__appliance_repair_service_call_intake_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1100__appliance_repair_service_call_intake_form.pdf",
+  "slug": "appliance-repair-service-call-intake-form",
+  "title": "Appliance Repair Service Call Intake and Resolution Record",
+  "subtitle": "Capture the request, equipment identity, symptoms, dispatch, diagnosis, authorization, completed work, testing, and follow-up in one accountable record.",
+  "description": "A workflow-complete appliance repair service record covering customer intake, equipment identification, safety triage, dispatch, diagnostic findings, estimate authorization, repair documentation, testing, and closeout.",
+  "use_case": "Use when a service coordinator and technician need one fillable record for routing an appliance call, preserving diagnostic evidence, authorizing parts and labor, and documenting customer handoff.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_identity",
+      "title": "Request, customer, and equipment identity",
+      "guidance": "Create one authoritative service record before dispatch.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Service request reference",
+          "fields": [
+            {
+              "key": "service_request_number",
+              "label": "Service request number",
+              "units": 0.9
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "request_time",
+              "label": "Request time",
+              "units": 0.55
+            },
+            {
+              "key": "intake_staff",
+              "label": "Intake staff",
+              "units": 0.85
+            },
+            {
+              "key": "priority",
+              "label": "Initial priority",
+              "units": 0.75,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Priority",
+                "Urgent safety concern"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_contact",
+          "type": "fields",
+          "label": "Customer and contact",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or account name",
+              "units": 1.25
+            },
+            {
+              "key": "primary_contact",
+              "label": "Primary contact",
+              "units": 1.0
+            },
+            {
+              "key": "phone",
+              "label": "Primary phone",
+              "units": 0.8
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "service_location",
+          "type": "fields",
+          "label": "Service location",
+          "fields": [
+            {
+              "key": "street_address",
+              "label": "Street address",
+              "units": 1.5
+            },
+            {
+              "key": "unit",
+              "label": "Unit or suite",
+              "units": 0.55
+            },
+            {
+              "key": "city_state_postal",
+              "label": "City, state, and postal code",
+              "units": 1.25
+            },
+            {
+              "key": "onsite_contact",
+              "label": "Onsite contact",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "equipment_identity",
+          "type": "fields",
+          "label": "Affected appliance",
+          "fields": [
+            {
+              "key": "appliance_type",
+              "label": "Appliance type",
+              "units": 0.95
+            },
+            {
+              "key": "brand",
+              "label": "Brand",
+              "units": 0.75
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 0.9
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.0
+            },
+            {
+              "key": "purchase_install_date",
+              "label": "Purchase or install date",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "reported_problem",
+          "type": "textarea",
+          "label": "Customer-reported problem, exact symptoms, timing, and desired outcome",
+          "fields": [
+            {
+              "key": "reported_problem_detail",
+              "label": "Customer-reported problem and desired outcome"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "triage",
+      "title": "Initial triage, safety, and evidence",
+      "guidance": "Identify hazards and preserve the customer's original account.",
+      "blocks": [
+        {
+          "key": "symptom_classification",
+          "type": "checklist",
+          "label": "Reported symptom - select all that apply",
+          "items": [
+            "Will not power on",
+            "Intermittent operation",
+            "Unusual noise",
+            "Odor or smoke",
+            "Water or refrigerant leak",
+            "Not heating",
+            "Not cooling",
+            "Poor cleaning performance",
+            "Error code displayed",
+            "Breaker or outlet issue",
+            "Physical damage",
+            "Other symptom documented"
+          ]
+        },
+        {
+          "key": "symptom_pattern",
+          "type": "fields",
+          "label": "Symptom pattern and conditions",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 0.95
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency or recurrence",
+              "units": 0.85
+            },
+            {
+              "key": "last_normal_use",
+              "label": "Last known normal operation",
+              "units": 1.0
+            },
+            {
+              "key": "error_code",
+              "label": "Error code or display text",
+              "units": 0.85
+            },
+            {
+              "key": "load_conditions",
+              "label": "Load or operating conditions",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "safety_actions",
+          "type": "checklist",
+          "label": "Immediate safety and preservation actions",
+          "items": [
+            "Unit switched off",
+            "Unit unplugged or isolated",
+            "Water or gas supply closed",
+            "Area kept clear",
+            "Food or contents protected",
+            "Photos or video retained",
+            "Error display photographed",
+            "No immediate hazard reported"
+          ]
+        },
+        {
+          "key": "history",
+          "type": "textarea",
+          "label": "Prior service, previous parts, warranty history, recent changes, and customer troubleshooting",
+          "fields": [
+            {
+              "key": "service_history",
+              "label": "Prior service and troubleshooting history"
+            }
+          ],
+          "height": 55
+        },
+        {
+          "key": "evidence_available",
+          "type": "checklist",
+          "label": "Evidence or records available",
+          "items": [
+            "Purchase receipt",
+            "Warranty documentation",
+            "Prior service invoice",
+            "Photos",
+            "Video",
+            "Model or serial label image"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "dispatch",
+      "title": "Dispatch, access, and appointment preparation",
+      "guidance": "Give the technician what is needed for a productive first visit.",
+      "blocks": [
+        {
+          "key": "assignment",
+          "type": "fields",
+          "label": "Assignment and schedule",
+          "fields": [
+            {
+              "key": "assigned_technician",
+              "label": "Assigned technician",
+              "units": 1.0
+            },
+            {
+              "key": "appointment_date",
+              "label": "Appointment date",
+              "units": 0.7
+            },
+            {
+              "key": "arrival_window",
+              "label": "Arrival window",
+              "units": 0.7
+            },
+            {
+              "key": "dispatch_time",
+              "label": "Dispatch time",
+              "units": 0.6
+            },
+            {
+              "key": "work_order_reference",
+              "label": "Work order reference",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "access_readiness",
+          "type": "checklist",
+          "label": "Access and site readiness confirmed",
+          "items": [
+            "Adult contact will be present",
+            "Parking or loading instructions provided",
+            "Gate, building, or lockbox access provided",
+            "Appliance accessible",
+            "Contents removed when necessary",
+            "Pets secured",
+            "Utility shutoff location known",
+            "Building authorization confirmed"
+          ]
+        },
+        {
+          "key": "anticipated_needs",
+          "type": "checklist",
+          "label": "Anticipated tools, parts, or coordination",
+          "items": [
+            "Diagnostic equipment",
+            "Appliance dolly or lifting support",
+            "Common replacement parts",
+            "Manufacturer technical information",
+            "Second technician",
+            "Licensed trade referral",
+            "Property manager coordination",
+            "Warranty administrator contact"
+          ]
+        },
+        {
+          "key": "dispatch_instructions",
+          "type": "textarea",
+          "label": "Dispatch instructions, access limitations, parking, contact sequence, and promised customer updates",
+          "fields": [
+            {
+              "key": "dispatch_notes",
+              "label": "Dispatch and access instructions"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "diagnosis",
+      "title": "Onsite condition, diagnostic work, and findings",
+      "guidance": "Separate observed evidence from conclusions and repair options.",
+      "blocks": [
+        {
+          "key": "arrival_condition",
+          "type": "fields",
+          "label": "Arrival and equipment condition",
+          "fields": [
+            {
+              "key": "arrival_date",
+              "label": "Arrival date",
+              "units": 0.6
+            },
+            {
+              "key": "arrival_time",
+              "label": "Arrival time",
+              "units": 0.55
+            },
+            {
+              "key": "customer_present",
+              "label": "Customer or contact present",
+              "units": 1.0
+            },
+            {
+              "key": "condition_on_arrival",
+              "label": "Condition on arrival",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "diagnostic_checks",
+          "type": "checklist",
+          "label": "Diagnostic checks completed",
+          "items": [
+            "Visual condition",
+            "Power supply",
+            "Outlet, breaker, or disconnect",
+            "Controls and user settings",
+            "Error history or service mode",
+            "Water, gas, vent, or drain connection",
+            "Temperature or pressure",
+            "Mechanical movement",
+            "Electrical continuity or current",
+            "Leak inspection",
+            "Safety device operation",
+            "Manufacturer procedure reviewed"
+          ]
+        },
+        {
+          "key": "readings_findings",
+          "type": "table",
+          "label": "Diagnostic readings and observed findings",
+          "columns": [
+            {
+              "key": "test_point",
+              "label": "Test point or component",
+              "units": 1.15
+            },
+            {
+              "key": "expected",
+              "label": "Expected value",
+              "units": 0.8
+            },
+            {
+              "key": "observed",
+              "label": "Observed value",
+              "units": 0.8
+            },
+            {
+              "key": "result",
+              "label": "Pass, fail, or condition",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or reference",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "diagnosis_summary",
+          "type": "textarea",
+          "label": "Diagnosis, probable cause, uncertainty, safety implications, and recommended repair path",
+          "fields": [
+            {
+              "key": "diagnosis_detail",
+              "label": "Diagnosis and recommended repair path"
+            }
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "authorization",
+      "title": "Repair options, estimate, and authorization",
+      "guidance": "Record the customer's decision before work exceeds the agreed scope.",
+      "blocks": [
+        {
+          "key": "estimate_lines",
+          "type": "table",
+          "label": "Parts, labor, fees, and approved scope",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, labor, or fee",
+              "units": 1.25
+            },
+            {
+              "key": "part_number",
+              "label": "Part or task ID",
+              "units": 0.85
+            },
+            {
+              "key": "quantity_hours",
+              "label": "Qty or hours",
+              "units": 0.55
+            },
+            {
+              "key": "unit_price",
+              "label": "Unit price",
+              "units": 0.65
+            },
+            {
+              "key": "line_total",
+              "label": "Line total",
+              "units": 0.65
+            },
+            {
+              "key": "status",
+              "label": "Approved, ordered, or used",
+              "units": 0.95
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "estimate_totals",
+          "type": "fields",
+          "label": "Estimate and payment summary",
+          "fields": [
+            {
+              "key": "parts_total",
+              "label": "Parts total",
+              "units": 0.7
+            },
+            {
+              "key": "labor_total",
+              "label": "Labor total",
+              "units": 0.7
+            },
+            {
+              "key": "fees_tax",
+              "label": "Fees and tax",
+              "units": 0.7
+            },
+            {
+              "key": "estimate_total",
+              "label": "Estimated total",
+              "units": 0.75
+            },
+            {
+              "key": "deposit_payment",
+              "label": "Deposit or payment",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "customer_decision",
+          "type": "fields",
+          "label": "Customer authorization",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limit",
+                "Declined",
+                "Pending"
+              ]
+            },
+            {
+              "key": "approval_limit",
+              "label": "Approval limit or condition",
+              "units": 1.1
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_date_time",
+              "label": "Authorization date and time",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "repair_options",
+          "type": "checklist",
+          "label": "Options discussed with customer",
+          "items": [
+            "Repair during current visit",
+            "Order parts and return",
+            "Manufacturer or warranty referral",
+            "Specialty trade referral",
+            "Replacement recommended",
+            "No repair authorized"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "completion",
+      "title": "Repair completion, testing, and closeout",
+      "guidance": "Document results, customer handoff, warranty, and next action.",
+      "blocks": [
+        {
+          "key": "work_completed",
+          "type": "textarea",
+          "label": "Work completed, parts installed or removed, settings changed, and deviations from approved scope",
+          "fields": [
+            {
+              "key": "work_completed_detail",
+              "label": "Completed repair and deviation notes"
+            }
+          ],
+          "height": 52
+        },
+        {
+          "key": "final_tests",
+          "type": "checklist",
+          "label": "Final test and handoff checklist",
+          "items": [
+            "Unit reassembled",
+            "Connections restored",
+            "Leak check completed",
+            "Controls tested",
+            "Full operating cycle tested",
+            "Safety devices tested",
+            "Customer shown completed work",
+            "Remaining limitation explained"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Closeout status",
+          "fields": [
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.65
+            },
+            {
+              "key": "completion_time",
+              "label": "Completion time",
+              "units": 0.55
+            },
+            {
+              "key": "service_status",
+              "label": "Service status",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Temporary repair",
+                "Return visit required",
+                "Referred",
+                "Customer declined"
+              ]
+            },
+            {
+              "key": "warranty_terms",
+              "label": "Repair or parts warranty",
+              "units": 1.1
+            },
+            {
+              "key": "next_action_date",
+              "label": "Next action or follow-up date",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "follow_up",
+          "type": "textarea",
+          "label": "Remaining issue, ordered parts, return-visit scope, customer commitment, and responsible owner",
+          "fields": [
+            {
+              "key": "follow_up_detail",
+              "label": "Follow-up requirements and ownership"
+            }
+          ],
+          "height": 42
+        },
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open parts, return visit, and accountability register",
+          "guidance": "Use one row per unresolved part, customer commitment, referral, or return-visit task; give every item an owner and traceable status.",
+          "columns": [
+            {
+              "key": "action_or_part",
+              "label": "Action, part, or commitment",
+              "units": 1.55
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 0.9
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.65
+            },
+            {
+              "key": "status_reference",
+              "label": "Status or reference",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "limitations_notice",
+          "type": "notice",
+          "label": "Operational notice",
+          "guidance": "This service record documents observations, authorization, and work performed. It does not replace manufacturer instructions, licensed-trade requirements, warranty terms, or mandatory safety procedures."
+        },
+        {
+          "key": "signoff",
+          "type": "signatures",
+          "label": "Completion acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician name or signature",
+              "units": 1.15
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer or site contact",
+              "units": 1.15
+            },
+            {
+              "key": "reviewer",
+              "label": "Office review",
+              "units": 0.9
+            },
+            {
+              "key": "signed_date",
+              "label": "Date",
+              "units": 0.55
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

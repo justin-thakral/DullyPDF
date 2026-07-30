@@ -1,0 +1,992 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1207__boiler_inspection_checklist_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1207__boiler_inspection_checklist_form.pdf",
+  "slug": "boiler-inspection-checklist-form",
+  "title": "Boiler Condition and Safety Inspection Checklist",
+  "subtitle": "Document boiler condition, safeguards, operating evidence, defects, disposition, and accountable closeout.",
+  "description": "A boiler-specific inspection record for facility teams and qualified inspectors to capture pressure, fuel, combustion, water, control, and safety-device findings without substituting for required inspection procedures.",
+  "use_case": "Use for a scheduled, turnover, pre-service, or condition inspection when the organization needs traceable observations, readings, evidence, escalation decisions, and return-to-service authorization.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "inspection_identity",
+      "title": "Inspection, site, and boiler identity",
+      "guidance": "Tie every observation to one inspection event, one facility, and one boiler.",
+      "blocks": [
+        {
+          "key": "inspection_reference",
+          "type": "fields",
+          "label": "Inspection reference and schedule",
+          "fields": [
+            {
+              "key": "inspection_number",
+              "label": "Inspection number",
+              "units": 1.15
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.85
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.65
+            },
+            {
+              "key": "inspection_basis",
+              "label": "Inspection basis",
+              "units": 1.15
+            },
+            {
+              "key": "work_order",
+              "label": "Work order",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "facility_location",
+          "type": "fields",
+          "label": "Facility and boiler-room location",
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility name",
+              "units": 1.2
+            },
+            {
+              "key": "street_address",
+              "label": "Street address",
+              "units": 1.5
+            },
+            {
+              "key": "building_area",
+              "label": "Building or area",
+              "units": 1.0
+            },
+            {
+              "key": "boiler_room",
+              "label": "Boiler room",
+              "units": 0.9
+            },
+            {
+              "key": "area_served",
+              "label": "Area served",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "boiler_identity",
+          "type": "fields",
+          "label": "Boiler nameplate identity",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Asset or boiler ID",
+              "units": 1.0
+            },
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 1.0
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 0.9
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.0
+            },
+            {
+              "key": "year_built",
+              "label": "Year built",
+              "units": 0.7
+            },
+            {
+              "key": "boiler_type",
+              "label": "Boiler type",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select type",
+                "Firetube",
+                "Watertube",
+                "Condensing",
+                "Electric",
+                "Other"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "inspection_team",
+          "type": "fields",
+          "label": "Inspector and facility contacts",
+          "fields": [
+            {
+              "key": "inspector_name",
+              "label": "Inspector name",
+              "units": 1.15
+            },
+            {
+              "key": "employer",
+              "label": "Employer",
+              "units": 1.0
+            },
+            {
+              "key": "credential",
+              "label": "Credential or role",
+              "units": 1.25
+            },
+            {
+              "key": "facility_contact",
+              "label": "Facility contact",
+              "units": 1.15
+            },
+            {
+              "key": "contact_phone",
+              "label": "Contact phone",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "inspection_scope",
+          "type": "textarea",
+          "label": "Authorized inspection scope, exclusions, and expected outcome",
+          "height": 62,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Authorized inspection scope, exclusions, and expected outcome",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record the governing work order, inspection basis, and any areas intentionally excluded."
+        }
+      ]
+    },
+    {
+      "key": "inspection_controls",
+      "title": "Authorization, isolation, and limits",
+      "guidance": "Confirm safe access and the boundary between observation and qualified technical work.",
+      "blocks": [
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Operating status and authorization",
+          "fields": [
+            {
+              "key": "operating_state",
+              "label": "Boiler state",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select state",
+                "Operating",
+                "Standby",
+                "Shutdown",
+                "Isolated"
+              ]
+            },
+            {
+              "key": "inspection_mode",
+              "label": "Inspection mode",
+              "units": 1.0
+            },
+            {
+              "key": "shutdown_approved_by",
+              "label": "Shutdown approved by",
+              "units": 1.3
+            },
+            {
+              "key": "permit_reference",
+              "label": "Permit or policy ref",
+              "units": 1.15
+            },
+            {
+              "key": "process_impact",
+              "label": "Process impact",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "pre_entry_review",
+          "type": "checklist",
+          "label": "Pre-entry hazard and requirement review",
+          "items": [
+            "Boiler-room access and egress checked",
+            "Hot surfaces and burn exposure assessed",
+            "Pressure and stored-energy hazards assessed",
+            "Fuel, gas, or electrical hazards assessed",
+            "Combustion air and ventilation status checked",
+            "Water, steam, and condensate hazards assessed",
+            "Chemical treatment exposure assessed",
+            "Required PPE identified and available",
+            "Confined-space status reviewed when applicable",
+            "Nearby occupants and processes considered",
+            "Emergency contacts and shutdown authority known",
+            "Inspection limits communicated to the team"
+          ]
+        },
+        {
+          "key": "energy_control",
+          "type": "fields",
+          "label": "Energy-control and safe-state record",
+          "fields": [
+            {
+              "key": "fuel_shutoff",
+              "label": "Fuel shutoff or source",
+              "units": 1.2
+            },
+            {
+              "key": "disconnect",
+              "label": "Electrical disconnect",
+              "units": 1.2
+            },
+            {
+              "key": "lock_tag_reference",
+              "label": "Lock or tag reference",
+              "units": 1.2
+            },
+            {
+              "key": "pressure_state",
+              "label": "Pressure state",
+              "units": 0.9
+            },
+            {
+              "key": "temperature_state",
+              "label": "Temperature state",
+              "units": 1.05
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "qualified_review_notice",
+          "type": "notice",
+          "label": "Qualified-person and applicable-requirements notice",
+          "guidance": "This checklist records an inspection; it is not a boiler operating, isolation, test, or repair procedure. Only qualified personnel may open pressure, fuel, combustion, electrical, or control systems. Confirm applicable code, jurisdictional inspection rules, site policy, manufacturer requirements, and professional review before acting on findings."
+        },
+        {
+          "key": "control_exception",
+          "type": "textarea",
+          "label": "Unverified control, access limit, stop-work event, and escalation",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unverified control, access limit, stop-work event, and escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "pressure_safety",
+      "title": "Pressure boundary, piping, and safety devices",
+      "guidance": "Document visible condition and traceable safety-device records without adjusting settings.",
+      "blocks": [
+        {
+          "key": "pressure_boundary_review",
+          "type": "checklist",
+          "label": "External pressure-boundary and piping observations",
+          "items": [
+            "Shell or vessel exterior condition documented",
+            "Tube-sheet or header areas observed where accessible",
+            "Visible seams, plugs, and closures checked",
+            "Steam or hot-water piping condition documented",
+            "Valves, flanges, and unions checked for leakage",
+            "Supports, anchors, and expansion provisions observed",
+            "Insulation and jacketing condition documented",
+            "Corrosion, scale, staining, or wetness recorded",
+            "Drains and blowdown piping visually checked",
+            "Feedwater and return connections observed",
+            "Gauge glass or level indication condition recorded",
+            "Pressure and temperature indicators identified",
+            "Nameplates and required markings legible",
+            "Inaccessible areas listed as inspection limits"
+          ]
+        },
+        {
+          "key": "safety_device_register",
+          "type": "table",
+          "label": "Relief, cutoff, limit, and safety-device record",
+          "columns": [
+            {
+              "key": "device",
+              "label": "Device or tag",
+              "units": 1.15
+            },
+            {
+              "key": "setpoint",
+              "label": "Setpoint or rating",
+              "units": 1.1
+            },
+            {
+              "key": "seal_state",
+              "label": "Seal or state",
+              "units": 0.9
+            },
+            {
+              "key": "last_test",
+              "label": "Last test date",
+              "units": 0.9
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.2
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.85
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "pressure_findings",
+          "type": "table",
+          "label": "Pressure-boundary finding and disposition log",
+          "columns": [
+            {
+              "key": "component",
+              "label": "Component or area",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Condition",
+              "units": 1.0
+            },
+            {
+              "key": "leak_note",
+              "label": "Leak or corrosion note",
+              "units": 1.35
+            },
+            {
+              "key": "severity",
+              "label": "Severity",
+              "units": 0.75
+            },
+            {
+              "key": "action",
+              "label": "Action or reference",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "pressure_limits",
+          "type": "textarea",
+          "label": "Pressure-system inspection limits and required follow-up",
+          "height": 50,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pressure-system inspection limits and required follow-up",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "combustion_venting",
+      "title": "Burner, fuel, combustion, and venting",
+      "guidance": "Preserve the observed fuel and combustion condition and qualified test evidence.",
+      "blocks": [
+        {
+          "key": "fuel_configuration",
+          "type": "fields",
+          "label": "Fuel and burner configuration",
+          "fields": [
+            {
+              "key": "primary_fuel",
+              "label": "Primary fuel",
+              "units": 0.9
+            },
+            {
+              "key": "alternate_fuel",
+              "label": "Alternate fuel",
+              "units": 1.0
+            },
+            {
+              "key": "burner_make",
+              "label": "Burner manufacturer",
+              "units": 1.25
+            },
+            {
+              "key": "burner_model",
+              "label": "Burner model",
+              "units": 1.0
+            },
+            {
+              "key": "input_rating",
+              "label": "Input rating",
+              "units": 0.9
+            },
+            {
+              "key": "fuel_train_id",
+              "label": "Fuel-train ID",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "burner_fuel_review",
+          "type": "checklist",
+          "label": "Burner and fuel-train observations",
+          "items": [
+            "Burner assembly condition documented",
+            "Fuel piping and visible joints observed",
+            "Manual shutoff identification confirmed",
+            "Regulator and valve-train condition recorded",
+            "Flame safeguard identity documented",
+            "Ignition equipment condition recorded",
+            "Flame observation port condition checked",
+            "Wiring and control enclosure condition recorded",
+            "Evidence of soot or abnormal deposits recorded",
+            "Abnormal odor, noise, or vibration recorded",
+            "Leak-detection evidence referenced when available",
+            "Combustible storage near boiler addressed",
+            "Burner service labels and settings preserved",
+            "Defects routed for qualified review"
+          ]
+        },
+        {
+          "key": "combustion_readings",
+          "type": "table",
+          "label": "Qualified combustion-test reading record",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter",
+              "units": 1.05
+            },
+            {
+              "key": "observed",
+              "label": "Observed",
+              "units": 0.9
+            },
+            {
+              "key": "expected",
+              "label": "Expected range",
+              "units": 1.1
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.55
+            },
+            {
+              "key": "instrument",
+              "label": "Instrument and date",
+              "units": 1.25
+            },
+            {
+              "key": "technician",
+              "label": "Taken by",
+              "units": 0.8
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "venting_review",
+          "type": "checklist",
+          "label": "Combustion-air and venting observations",
+          "items": [
+            "Combustion-air openings appear unobstructed",
+            "Mechanical combustion-air status recorded",
+            "Breeching and vent connectors observed",
+            "Draft-control components identified",
+            "Chimney or termination condition referenced",
+            "Visible corrosion or condensate paths recorded",
+            "Clearances and nearby materials observed",
+            "Spillage or draft concern escalated",
+            "Room ventilation condition documented",
+            "Applicable alarm status referenced"
+          ]
+        },
+        {
+          "key": "combustion_exception",
+          "type": "textarea",
+          "label": "Combustion, fuel, or venting exception and escalation",
+          "height": 50,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Combustion, fuel, or venting exception and escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "water_treatment",
+      "title": "Water, feed, treatment, and blowdown systems",
+      "guidance": "Capture water-system condition and treatment evidence that affects safe, reliable service.",
+      "blocks": [
+        {
+          "key": "water_configuration",
+          "type": "fields",
+          "label": "Water, steam, and treatment configuration",
+          "fields": [
+            {
+              "key": "service_type",
+              "label": "Steam or hot water",
+              "units": 1.15
+            },
+            {
+              "key": "feedwater_source",
+              "label": "Feedwater source",
+              "units": 1.1
+            },
+            {
+              "key": "makeup_source",
+              "label": "Makeup-water source",
+              "units": 1.2
+            },
+            {
+              "key": "treatment_vendor",
+              "label": "Treatment provider",
+              "units": 1.2
+            },
+            {
+              "key": "condensate_return",
+              "label": "Condensate return",
+              "units": 1.05
+            },
+            {
+              "key": "blowdown_method",
+              "label": "Blowdown method",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "feedwater_review",
+          "type": "checklist",
+          "label": "Feedwater, condensate, and blowdown observations",
+          "items": [
+            "Feedwater equipment condition documented",
+            "Makeup-water arrangement identified",
+            "Condensate return condition observed",
+            "Visible leakage or overflow recorded",
+            "Level-control components identified",
+            "Low-water protection records referenced",
+            "Blowdown piping and discharge path observed",
+            "Treatment equipment condition documented",
+            "Chemical storage and labels observed",
+            "Sampling points identified where applicable",
+            "Water-side deposits or corrosion recorded",
+            "Abnormal water-use condition escalated"
+          ]
+        },
+        {
+          "key": "water_readings",
+          "type": "table",
+          "label": "Water-treatment sample and evidence log",
+          "columns": [
+            {
+              "key": "sample_point",
+              "label": "Sample point",
+              "units": 1.0
+            },
+            {
+              "key": "parameter",
+              "label": "Parameter",
+              "units": 1.0
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.8
+            },
+            {
+              "key": "target",
+              "label": "Target range",
+              "units": 1.0
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or source",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "water_safety_review",
+          "type": "checklist",
+          "label": "Water-level and feed protection record",
+          "items": [
+            "Normal level indication documented",
+            "Independent level indication referenced",
+            "Low-water cutoff status recorded",
+            "Feedwater control status recorded",
+            "Pump or valve condition documented",
+            "Alarm or trip records reviewed",
+            "Manual test evidence referenced if performed",
+            "Unverified protection escalated before service"
+          ]
+        },
+        {
+          "key": "water_exception",
+          "type": "textarea",
+          "label": "Water-treatment variance, limitation, and follow-up",
+          "height": 50,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Water-treatment variance, limitation, and follow-up",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "readings_evidence",
+      "title": "Controls, operating readings, and evidence",
+      "guidance": "Distinguish recorded facts from assumptions and link each significant finding to evidence.",
+      "blocks": [
+        {
+          "key": "control_identity",
+          "type": "fields",
+          "label": "Operating control and alarm identity",
+          "fields": [
+            {
+              "key": "control_system",
+              "label": "Control system",
+              "units": 1.05
+            },
+            {
+              "key": "operating_control",
+              "label": "Operating control",
+              "units": 1.15
+            },
+            {
+              "key": "high_limit",
+              "label": "High-limit control",
+              "units": 1.05
+            },
+            {
+              "key": "pressure_control",
+              "label": "Pressure control",
+              "units": 1.05
+            },
+            {
+              "key": "level_control",
+              "label": "Level control",
+              "units": 1.0
+            },
+            {
+              "key": "alarm_panel",
+              "label": "Alarm panel or ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_readings",
+          "type": "table",
+          "label": "Operating reading and load record",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter",
+              "units": 1.05
+            },
+            {
+              "key": "reading",
+              "label": "Reading",
+              "units": 0.8
+            },
+            {
+              "key": "expected",
+              "label": "Expected range",
+              "units": 1.1
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.55
+            },
+            {
+              "key": "conditions",
+              "label": "Time and load",
+              "units": 1.0
+            },
+            {
+              "key": "taken_by",
+              "label": "Taken by",
+              "units": 0.8
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "control_status",
+          "type": "checklist",
+          "label": "Control, indication, and alarm observations",
+          "items": [
+            "Operating control status documented",
+            "High-limit control identity verified",
+            "Pressure or temperature indication recorded",
+            "Water-level indication recorded",
+            "Flame safeguard status documented",
+            "Fuel-pressure indication recorded if present",
+            "Interlock status evidence referenced",
+            "Alarm history reviewed when available",
+            "Control bypass or override status recorded",
+            "Remote monitoring status documented",
+            "Unusual cycling or instability recorded",
+            "Unverified function routed to qualified review"
+          ]
+        },
+        {
+          "key": "evidence_log",
+          "type": "table",
+          "label": "Photo, document, and instrument evidence index",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.8
+            },
+            {
+              "key": "evidence_type",
+              "label": "Photo or document",
+              "units": 1.1
+            },
+            {
+              "key": "component",
+              "label": "Component",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition shown",
+              "units": 1.2
+            },
+            {
+              "key": "captured_by",
+              "label": "Captured by",
+              "units": 0.9
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "defect_register",
+          "type": "table",
+          "label": "Defect, interim control, and escalation register",
+          "columns": [
+            {
+              "key": "reference",
+              "label": "Reference",
+              "units": 0.7
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.25
+            },
+            {
+              "key": "risk",
+              "label": "Risk or impact",
+              "units": 1.0
+            },
+            {
+              "key": "control",
+              "label": "Interim control",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "inspection_closeout",
+      "title": "Disposition, return to service, and closeout",
+      "guidance": "Make the final boiler status, restrictions, handoff, and accountable approval explicit.",
+      "blocks": [
+        {
+          "key": "inspection_disposition",
+          "type": "fields",
+          "label": "Inspection disposition and routing",
+          "fields": [
+            {
+              "key": "overall_result",
+              "label": "Overall result",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select result",
+                "Acceptable",
+                "Monitor",
+                "Corrective action",
+                "Restricted",
+                "Not inspected"
+              ]
+            },
+            {
+              "key": "restriction",
+              "label": "Restriction or limit",
+              "units": 1.3
+            },
+            {
+              "key": "repair_request",
+              "label": "Repair request",
+              "units": 1.0
+            },
+            {
+              "key": "followup_due",
+              "label": "Follow-up due",
+              "units": 0.9
+            },
+            {
+              "key": "decision_by",
+              "label": "Decision by",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "return_service_evidence",
+          "type": "checklist",
+          "label": "Return-to-service evidence reviewed",
+          "items": [
+            "Inspection limits and findings communicated",
+            "Required immediate actions completed",
+            "Open corrective actions assigned",
+            "Protective covers and guards restored",
+            "Fuel and electrical systems left authorized",
+            "Water and pressure state documented",
+            "Combustion-air path left unobstructed",
+            "Area housekeeping and access restored",
+            "Operating restrictions communicated",
+            "Qualified return-to-service approval recorded"
+          ]
+        },
+        {
+          "key": "residual_risk",
+          "type": "textarea",
+          "label": "Unresolved condition, residual risk, and required review",
+          "height": 56,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unresolved condition, residual risk, and required review",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "facility_handoff",
+          "type": "fields",
+          "label": "Facility handoff and next action",
+          "fields": [
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 1.0
+            },
+            {
+              "key": "handoff_method",
+              "label": "Handoff method",
+              "units": 1.05
+            },
+            {
+              "key": "handoff_date",
+              "label": "Handoff date and time",
+              "units": 1.35
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 1.2
+            },
+            {
+              "key": "next_due",
+              "label": "Next due",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "inspection_approval",
+          "type": "signatures",
+          "label": "Inspection review and closeout approval",
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Inspector name or signature",
+              "units": 1.35
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "facility_approval",
+              "label": "Facility approval",
+              "units": 1.1
+            },
+            {
+              "key": "approval_date",
+              "label": "Date",
+              "units": 0.65
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

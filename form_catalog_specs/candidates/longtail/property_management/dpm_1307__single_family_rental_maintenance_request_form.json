@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1307__single_family_rental_maintenance_request_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1307__single_family_rental_maintenance_request_form.pdf",
+  "slug": "single-family-rental-maintenance-request-form",
+  "title": "Single-Family Rental Maintenance and Resolution Record",
+  "subtitle": "Route a house-specific maintenance need through safety triage, utility and site access planning, diagnosis, authorization, repair, and verified resident handoff.",
+  "description": "Operational record for maintenance affecting a detached or attached single-family rental, including the dwelling, exclusive-use grounds, exterior components, utility systems, garage, and authorized outbuildings.",
+  "use_case": "Use from the resident's first report through closeout when ownership, access, weather exposure, utilities, warranties, or resident and owner maintenance allocations may affect the response.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_property_identity",
+      "title": "Request, resident, and rental-property identity",
+      "guidance": "Open one traceable request for the correct house, lease record, and responsible manager.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Maintenance request reference",
+          "fields": [
+            {"key": "request_number", "label": "Request or work-order number", "units": 1.2},
+            {"key": "date_received", "label": "Date received", "units": 0.8},
+            {"key": "time_received", "label": "Time received", "units": 0.7},
+            {"key": "received_by", "label": "Received by", "units": 0.9},
+            {"key": "intake_channel", "label": "Intake channel", "units": 0.9, "field_type": "choice", "options": ["Resident portal", "Phone", "Email", "Inspection follow-up", "Emergency line", "Other"]}
+          ]
+        },
+        {
+          "key": "rental_property",
+          "type": "fields",
+          "label": "Single-family rental property",
+          "fields": [
+            {"key": "property_address", "label": "Rental property address", "units": 1.8},
+            {"key": "property_type", "label": "Property type", "units": 1.0, "field_type": "choice", "options": ["Detached house", "Townhouse or rowhouse", "Duplex side", "Cottage or accessory dwelling", "Other single-family rental"]},
+            {"key": "lease_reference", "label": "Lease or account reference", "units": 1.1},
+            {"key": "manager", "label": "Owner or manager contact", "units": 1.1}
+          ]
+        },
+        {
+          "key": "resident_contact",
+          "type": "fields",
+          "label": "Resident and communication",
+          "fields": [
+            {"key": "resident_name", "label": "Reporting resident", "units": 1.3},
+            {"key": "phone", "label": "Phone", "units": 0.8},
+            {"key": "email", "label": "Email", "units": 1.2},
+            {"key": "contact_method", "label": "Preferred contact method", "units": 1.0, "field_type": "choice", "options": ["Phone", "Text", "Email", "Resident portal", "Other"]},
+            {"key": "occupancy_status", "label": "Current occupancy", "units": 0.9, "field_type": "choice", "options": ["Occupied", "Temporarily away", "Move-in pending", "Move-out pending", "Vacant"]}
+          ]
+        },
+        {
+          "key": "resident_report",
+          "type": "textarea",
+          "label": "Resident-reported condition, exact location, first occurrence, current impact, and requested outcome",
+          "fields": [{"key": "report_detail", "label": "Resident maintenance report"}],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "safety_access_utility_triage",
+      "title": "Safety, access, weather, and utility triage",
+      "guidance": "Escalate active hazards and plan lawful, safe access without delaying emergency protocol.",
+      "blocks": [
+        {
+          "key": "hazard_screen",
+          "type": "checklist",
+          "label": "Immediate condition screen",
+          "items": [
+            "Fire, smoke, or burning odor",
+            "Gas or fuel odor",
+            "Active electrical hazard",
+            "Major water release or no water",
+            "Sewer backup or septic overflow",
+            "No required heat or unsafe temperature",
+            "Structural movement or collapse concern",
+            "Tree, limb, fence, or exterior fall hazard",
+            "Storm or weather exposure",
+            "Security or inability to secure the house",
+            "Well, pump, or pressure failure",
+            "No immediate danger reported"
+          ],
+          "guidance": "If an active danger exists, use the property's emergency protocol and appropriate emergency or utility contacts before routine scheduling."
+        },
+        {
+          "key": "utility_status",
+          "type": "fields",
+          "label": "Utility and service status",
+          "fields": [
+            {"key": "electric_status", "label": "Electric service", "units": 1.0, "field_type": "choice", "options": ["On", "Partially affected", "Off", "Unknown"]},
+            {"key": "water_status", "label": "Water source", "units": 1.0, "field_type": "choice", "options": ["Municipal on", "Well operating", "Shut off", "No service", "Unknown"]},
+            {"key": "fuel_status", "label": "Gas, oil, or propane", "units": 1.0, "field_type": "choice", "options": ["In service", "Shut off", "Not applicable", "Unknown"]},
+            {"key": "sewer_status", "label": "Sewer or septic status", "units": 1.0, "field_type": "choice", "options": ["Normal", "Restricted", "Backup reported", "Unknown"]},
+            {"key": "utility_case", "label": "Utility case or outage reference", "units": 1.2}
+          ]
+        },
+        {
+          "key": "access_conditions",
+          "type": "checklist",
+          "label": "House and site access conditions",
+          "items": [
+            "Resident will be present",
+            "Authorized entry without resident",
+            "Gate, lockbox, or key instructions needed",
+            "Alarm or camera notice provided",
+            "Dog or other animal must be secured",
+            "Garage, cellar, attic, or crawlspace access needed",
+            "Yard, fence line, shed, or outbuilding access needed",
+            "Driveway or parking must remain clear",
+            "Weather or ground conditions affect access",
+            "Communication assistance requested",
+            "Separate accommodation request routed",
+            "Support person requested by resident"
+          ],
+          "guidance": "Record operational access needs only. Route accommodation, protected-trait, or legal questions through the appropriate qualified process."
+        },
+        {
+          "key": "triage_route",
+          "type": "fields",
+          "label": "Triage decision and routing",
+          "fields": [
+            {"key": "priority", "label": "Operational priority", "units": 1.0, "field_type": "choice", "options": ["Emergency protocol", "Urgent response", "Prompt appointment", "Routine appointment", "Monitor or obtain information"]},
+            {"key": "specialty", "label": "Initial specialty or route", "units": 1.2},
+            {"key": "routed_to", "label": "Routed to", "units": 1.0},
+            {"key": "target_response", "label": "Target response", "units": 1.0},
+            {"key": "triaged_by", "label": "Triaged by", "units": 0.9}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "location_history_evidence",
+      "title": "House location, condition history, and evidence",
+      "guidance": "Separate resident reports, staff observations, and stored evidence while identifying the precise house system or site area.",
+      "blocks": [
+        {
+          "key": "affected_area",
+          "type": "checklist",
+          "label": "Affected house or site area",
+          "items": [
+            "Kitchen, bath, or laundry",
+            "Bedroom or living area",
+            "Basement, cellar, or crawlspace",
+            "Attic or roof space",
+            "Roof, flashing, or gutters",
+            "Siding, windows, doors, or foundation",
+            "Porch, deck, steps, or rails",
+            "Driveway, walk, or parking area",
+            "Yard, grading, or drainage",
+            "Fence, gate, retaining wall, or tree",
+            "Garage, carport, shed, or outbuilding",
+            "HVAC, plumbing, electric, well, or septic"
+          ]
+        },
+        {
+          "key": "condition_history",
+          "type": "fields",
+          "label": "Condition history",
+          "fields": [
+            {"key": "first_observed", "label": "First observed date and time", "units": 1.2},
+            {"key": "pattern", "label": "Frequency or pattern", "units": 1.0},
+            {"key": "weather_link", "label": "Weather or seasonal link", "units": 1.0},
+            {"key": "prior_request", "label": "Prior request or repair reference", "units": 1.2},
+            {"key": "recent_change", "label": "Recent work or change", "units": 1.1}
+          ]
+        },
+        {
+          "key": "observation_log",
+          "type": "table",
+          "label": "Reported and observed condition log",
+          "columns": [
+            {"key": "location", "label": "House or site location", "units": 1.2},
+            {"key": "source", "label": "Information source", "units": 0.9},
+            {"key": "condition", "label": "Reported or observed condition", "units": 1.6},
+            {"key": "impact", "label": "Impact or status", "units": 1.0},
+            {"key": "next_step", "label": "Next step", "units": 1.0}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Photo, video, reading, document, and supporting-record register",
+          "columns": [
+            {"key": "evidence_ref", "label": "Evidence reference", "units": 1.0},
+            {"key": "captured_by", "label": "Captured or supplied by", "units": 1.0},
+            {"key": "date_time", "label": "Date and time", "units": 0.9},
+            {"key": "content", "label": "What the evidence shows", "units": 1.6},
+            {"key": "stored_location", "label": "Stored location", "units": 1.1}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "temporary_actions",
+          "type": "textarea",
+          "label": "Resident precautions, temporary mitigation, utility action, unavailable area, and unresolved factual question",
+          "fields": [{"key": "temporary_action_detail", "label": "Temporary action and unresolved question"}],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "responsibility_dispatch",
+      "title": "Responsibility review, dispatch, and work authorization",
+      "guidance": "Use the lease, approved maintenance plan, warranty, and owner authority without making a legal responsibility conclusion.",
+      "blocks": [
+        {
+          "key": "allocation_review",
+          "type": "table",
+          "label": "Operational responsibility and external-party review",
+          "columns": [
+            {"key": "item", "label": "Issue or task", "units": 1.4},
+            {"key": "record_source", "label": "Lease, plan, or record source", "units": 1.3},
+            {"key": "possible_owner", "label": "Possible owner or party", "units": 1.1},
+            {"key": "review_status", "label": "Review status", "units": 0.9},
+            {"key": "route", "label": "Routing or approval needed", "units": 1.3}
+          ],
+          "rows": 4,
+          "guidance": "Possible parties may include owner, resident, utility, warranty provider, insurer, municipality, association, or neighboring owner. Record the source and route uncertainty for review."
+        },
+        {
+          "key": "dispatch_plan",
+          "type": "fields",
+          "label": "Dispatch and appointment plan",
+          "fields": [
+            {"key": "assigned_provider", "label": "Assigned staff or provider", "units": 1.2},
+            {"key": "appointment", "label": "Appointment date and window", "units": 1.1},
+            {"key": "entry_coordinator", "label": "Entry coordinator", "units": 1.0},
+            {"key": "utility_coordination", "label": "Utility coordination", "units": 1.0},
+            {"key": "authorization_ref", "label": "Authorization reference", "units": 1.0}
+          ]
+        },
+        {
+          "key": "work_scope",
+          "type": "textarea",
+          "label": "Authorized diagnostic scope, exclusions, shutoff plan, site protection, pets, gates, keys, and resident notice",
+          "fields": [{"key": "work_scope_detail", "label": "Authorized house and site work scope"}],
+          "height": 60
+        },
+        {
+          "key": "dispatch_exceptions",
+          "type": "checklist",
+          "label": "Coordination or approval needs",
+          "items": [
+            "Owner approval required",
+            "Warranty or service-plan claim",
+            "Utility locate or utility attendance",
+            "Permit or qualified specialist review",
+            "Association or shared-boundary coordination",
+            "Insurance notification",
+            "Weather-dependent scheduling",
+            "Resident relocation or unavailable-area plan",
+            "Material or equipment lead time",
+            "No additional coordination identified"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "onsite_work",
+      "title": "Onsite findings, repair, and exception control",
+      "guidance": "Document facts, authorized work, changed scope, and any specialist or follow-up need.",
+      "blocks": [
+        {
+          "key": "arrival_access",
+          "type": "fields",
+          "label": "Arrival and access record",
+          "fields": [
+            {"key": "arrival_date", "label": "Arrival date", "units": 0.8},
+            {"key": "arrival_time", "label": "Arrival time", "units": 0.7},
+            {"key": "provider", "label": "Staff or provider", "units": 1.2},
+            {"key": "entry_basis", "label": "Entry basis confirmed", "units": 1.1},
+            {"key": "resident_present", "label": "Resident or representative", "units": 1.1}
+          ]
+        },
+        {
+          "key": "diagnostic_checks",
+          "type": "checklist",
+          "label": "House-system and site checks completed",
+          "items": [
+            "Visible condition documented",
+            "Water source and shutoffs checked",
+            "Drain, sewer, or septic symptoms checked",
+            "Electric panel or affected circuit checked",
+            "Fuel source and appliance supply checked",
+            "HVAC, thermostat, or ventilation checked",
+            "Roof, gutter, grading, or drainage checked",
+            "Foundation, crawlspace, or moisture checked",
+            "Garage, gate, fence, or outbuilding checked",
+            "Tree, exterior, or weather exposure checked",
+            "Manufacturer or warranty instructions checked",
+            "Qualified specialist considered"
+          ],
+          "guidance": "Checklist completion records the operational review performed; it does not certify code compliance or replace a licensed inspection."
+        },
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Diagnostic findings and authorized action",
+          "columns": [
+            {"key": "location", "label": "Location or system", "units": 1.1},
+            {"key": "finding", "label": "Observed finding", "units": 1.5},
+            {"key": "evidence", "label": "Evidence or reading", "units": 1.1},
+            {"key": "approved_action", "label": "Approved action", "units": 1.4},
+            {"key": "result", "label": "Result or next step", "units": 1.1}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "labor_materials",
+          "type": "table",
+          "label": "Labor, materials, equipment, and external service",
+          "columns": [
+            {"key": "item", "label": "Task, material, or service", "units": 1.5},
+            {"key": "provider", "label": "Staff or vendor", "units": 1.1},
+            {"key": "quantity", "label": "Quantity or hours", "units": 0.9},
+            {"key": "status", "label": "Used, ordered, or returned", "units": 1.1},
+            {"key": "reference", "label": "Cost or work reference", "units": 1.1}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "scope_exception",
+          "type": "textarea",
+          "label": "Changed condition, access failure, expanded scope, deferred item, weather delay, resident concern, or escalation plan",
+          "fields": [{"key": "scope_exception_detail", "label": "Work exception and escalation plan"}],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "verification_closeout",
+      "title": "Verification, resident handoff, and closeout",
+      "guidance": "Restore services, verify the agreed outcome, and assign every remaining action.",
+      "blocks": [
+        {
+          "key": "verification_checks",
+          "type": "checklist",
+          "label": "House and site verification",
+          "items": [
+            "Requested function or condition rechecked",
+            "Water, power, fuel, or equipment restored",
+            "No active leak, backup, or exposed hazard observed",
+            "Locks, gates, alarms, and access restored",
+            "Work area, yard, drive, and outbuilding secured",
+            "Debris, tools, and temporary protection removed",
+            "Resident shown operating or shutoff information",
+            "Photos or completion evidence stored",
+            "Warranty or permit record linked",
+            "Follow-up inspection scheduled if needed",
+            "Resident response recorded",
+            "No remaining concern observed"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Closeout status and resident communication",
+          "fields": [
+            {"key": "request_status", "label": "Request status", "units": 1.0, "field_type": "choice", "options": ["Completed", "Completed with follow-up", "Temporary repair", "Awaiting part or provider", "Awaiting access", "Escalated"]},
+            {"key": "completed_at", "label": "Completed date and time", "units": 1.1},
+            {"key": "resident_update", "label": "Resident update date and method", "units": 1.2},
+            {"key": "closed_by", "label": "Closed by", "units": 0.9}
+          ]
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining action and accountable ownership",
+          "columns": [
+            {"key": "action", "label": "Remaining action", "units": 1.5},
+            {"key": "owner", "label": "Responsible owner", "units": 1.0},
+            {"key": "due_date", "label": "Due date", "units": 0.8},
+            {"key": "resident_update", "label": "Resident update due", "units": 1.0},
+            {"key": "completion_ref", "label": "Completion reference", "units": 1.1}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "operational_notice",
+          "type": "notice",
+          "label": "Operational record limitation",
+          "guidance": "This record documents maintenance workflow and observed facts. Confirm applicable lease, safety, privacy, licensing, permit, insurance, utility, fair-housing, and local requirements through qualified review."
+        },
+        {
+          "key": "closeout_signoff",
+          "type": "signatures",
+          "label": "Completion acknowledgment",
+          "fields": [
+            {"key": "staff_or_provider", "label": "Staff or provider", "units": 1.1},
+            {"key": "resident_acknowledgment", "label": "Resident acknowledgment", "units": 1.2},
+            {"key": "manager_review", "label": "Manager review", "units": 1.0},
+            {"key": "review_date", "label": "Review date", "units": 0.7}
+          ],
+          "guidance": "Acknowledgment confirms receipt of the recorded update and does not waive rights or resolve a disputed responsibility."
+        }
+      ]
+    }
+  ]
+}

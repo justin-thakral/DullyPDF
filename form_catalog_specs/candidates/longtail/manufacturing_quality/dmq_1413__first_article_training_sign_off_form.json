@@ -1,0 +1,618 @@
+{
+  "schema_version": 1,
+  "catalog_id": "manufacturing_quality/dmq_1413__first_article_training_sign_off_form",
+  "source_section": "manufacturing_quality",
+  "source_filename": "dmq_1413__first_article_training_sign_off_form.pdf",
+  "slug": "first-article-training-sign-off-form",
+  "title": "First Article Training Sign-Off Form",
+  "subtitle": "Assign the first article curriculum, teach controlled references, observe task performance, remediate gaps, define authorization limits, and update qualification.",
+  "description": "A competency-based first article training sign-off form that records more than attendance by connecting instruction for the first article build and inspection to observed demonstrations, explicit criteria, coaching, reassessment, authorization boundaries, and recurring review.",
+  "use_case": "Use before a learner independently performs the first article build and inspection or after a procedure change, transfer, lapse, or performance gap requires documented evaluation and role-specific sign-off.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "training_assignment",
+      "title": "First Article training assignment",
+      "guidance": "Identify the learner, role, trainer, authorized curriculum, and completion deadline.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "first_article_record",
+              "label": "First article record number",
+              "units": 0.9
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.65
+            },
+            {
+              "key": "work_order",
+              "label": "Work order or job",
+              "units": 0.75
+            },
+            {
+              "key": "part_number",
+              "label": "Part number",
+              "units": 0.8
+            },
+            {
+              "key": "part_name",
+              "label": "Part name",
+              "units": 1.15
+            },
+            {
+              "key": "part_revision",
+              "label": "Part revision",
+              "units": 0.6
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "First Production-Representative Article identity",
+          "fields": [
+            {
+              "key": "article_serial_lot",
+              "label": "Article serial or lot",
+              "units": 0.85
+            },
+            {
+              "key": "drawing_revision",
+              "label": "Drawing or model revision",
+              "units": 0.85
+            },
+            {
+              "key": "manufacturing_site",
+              "label": "Manufacturing site",
+              "units": 0.9
+            },
+            {
+              "key": "line_cell",
+              "label": "Line or cell",
+              "units": 0.65
+            },
+            {
+              "key": "machine_tooling",
+              "label": "Machine, fixture, and tooling IDs",
+              "units": 1.25
+            },
+            {
+              "key": "customer_reference",
+              "label": "Customer or contract reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "learner_session",
+          "type": "fields",
+          "label": "Learner and training session",
+          "fields": [
+            {
+              "key": "learner_name",
+              "label": "Learner name",
+              "units": 0.9
+            },
+            {
+              "key": "employee_contractor_id",
+              "label": "Employee or contractor ID",
+              "units": 0.8
+            },
+            {
+              "key": "role_assignment",
+              "label": "Role or assignment",
+              "units": 0.95
+            },
+            {
+              "key": "department_shift",
+              "label": "Department and shift",
+              "units": 0.85
+            },
+            {
+              "key": "trainer_name",
+              "label": "Trainer or evaluator",
+              "units": 0.9
+            },
+            {
+              "key": "training_due",
+              "label": "Training due date",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "curriculum_control",
+          "type": "fields",
+          "label": "Curriculum and qualification control",
+          "fields": [
+            {
+              "key": "curriculum_id",
+              "label": "Curriculum or qualification ID",
+              "units": 1.0
+            },
+            {
+              "key": "curriculum_revision",
+              "label": "Curriculum revision",
+              "units": 0.65
+            },
+            {
+              "key": "procedure_revision",
+              "label": "Procedure and revision",
+              "units": 1.0
+            },
+            {
+              "key": "training_type",
+              "label": "Training type",
+              "units": 0.75,
+              "field_type": "choice",
+              "options": [
+                "Initial",
+                "Refresher",
+                "Change-driven",
+                "Remedial",
+                "Transfer"
+              ]
+            },
+            {
+              "key": "supervision_required",
+              "label": "Supervision required?",
+              "units": 0.75,
+              "field_type": "choice",
+              "options": [
+                "Yes",
+                "No",
+                "Until qualified"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "training_need",
+          "type": "textarea",
+          "label": "Assigned tasks, prior experience, prerequisite gap, language or accessibility need, and expected authorization",
+          "fields": [
+            {
+              "key": "training_need_detail",
+              "label": "Training need and scope"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "prerequisites_instruction",
+      "title": "Prerequisites, references, and instruction",
+      "guidance": "Confirm readiness and teach the current drawing, specification, purchase order, and approved process configuration within the role boundary.",
+      "blocks": [
+        {
+          "key": "prerequisite_checklist",
+          "type": "checklist",
+          "label": "Prerequisites and learning resources",
+          "items": [
+            "Role assignment and supervisor authorization are confirmed",
+            "Current procedure, work instruction, forms, and reference examples are available",
+            "Required foundational or safety training is current",
+            "Tools, equipment, software, and practice materials are available",
+            "Learner can identify when to stop and request qualified support",
+            "Language, literacy, accessibility, or accommodation needs are addressed",
+            "Trainer is authorized for the assigned curriculum",
+            "Practice work is clearly separated from live production records"
+          ]
+        },
+        {
+          "key": "instruction_topics",
+          "type": "checklist",
+          "label": "First Article instruction topics",
+          "items": [
+            "First article triggers, full versus partial scope, and record boundaries",
+            "Design revision, work order, site, tooling, and process configuration",
+            "Characteristic ballooning or other accountability method",
+            "Recording actual values, tolerances, units, and inspection evidence",
+            "Material and special-process traceability review",
+            "Functional and interface evidence handling",
+            "Nonconformance, deviation, and production-hold escalation",
+            "Technical, quality, and customer approval routing",
+            "Baseline retention and production release communication"
+          ]
+        },
+        {
+          "key": "instruction_notes",
+          "type": "textarea",
+          "label": "Examples used, questions answered, procedure emphasis, prohibited shortcuts, and learner feedback",
+          "fields": [
+            {
+              "key": "instruction_detail",
+              "label": "Instruction and learner-response notes"
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "demonstration_assessment",
+      "title": "Observed demonstration and competency assessment",
+      "guidance": "Assess observable performance against explicit criteria, not attendance alone.",
+      "blocks": [
+        {
+          "key": "demonstration_log",
+          "type": "table",
+          "label": "Observed task demonstration",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task / scenario",
+              "units": 1.2
+            },
+            {
+              "key": "criteria",
+              "label": "Performance criteria",
+              "units": 1.1
+            },
+            {
+              "key": "attempt_date",
+              "label": "Attempt date",
+              "units": 0.65
+            },
+            {
+              "key": "observed_result",
+              "label": "Observed result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Evidence / record",
+              "units": 0.75
+            },
+            {
+              "key": "evaluator",
+              "label": "Evaluator",
+              "units": 0.65
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "knowledge_check",
+          "type": "table",
+          "label": "Knowledge, decision, and escalation check",
+          "columns": [
+            {
+              "key": "question_scenario",
+              "label": "Question / scenario",
+              "units": 1.3
+            },
+            {
+              "key": "expected_response",
+              "label": "Expected response",
+              "units": 1.1
+            },
+            {
+              "key": "learner_result",
+              "label": "Learner result",
+              "units": 0.85
+            },
+            {
+              "key": "coaching_needed",
+              "label": "Coaching needed",
+              "units": 0.8
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "critical_behaviors",
+          "type": "checklist",
+          "label": "Critical behaviors demonstrated",
+          "items": [
+            "Article was produced at the intended production site and line",
+            "Part number, revision, drawing, model, and specification are aligned",
+            "Production-representative material, tooling, equipment, and methods were used",
+            "Raw material and purchased-component traceability is available",
+            "Special-process or outside-service evidence is linked to the article",
+            "Every required characteristic has an accountable result or valid not-applicable basis",
+            "Variable characteristics include actual values rather than pass-only entries",
+            "Functional, performance, fit, or interface checks are complete where specified",
+            "Original observations remain distinguishable from later corrections",
+            "Uncertainty, exception, and authority limits trigger escalation"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "gaps_coaching",
+      "title": "Performance gaps, coaching, and reassessment",
+      "guidance": "Keep the learner within supervised scope until every critical gap is resolved.",
+      "blocks": [
+        {
+          "key": "gap_action_log",
+          "type": "table",
+          "label": "Observed gap and remediation plan",
+          "columns": [
+            {
+              "key": "gap_evidence",
+              "label": "Gap / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "risk_effect",
+              "label": "Potential effect",
+              "units": 0.95
+            },
+            {
+              "key": "coaching_action",
+              "label": "Coaching / practice",
+              "units": 1.05
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.6
+            },
+            {
+              "key": "reassess_due",
+              "label": "Reassess due",
+              "units": 0.65
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "escalation_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring supervision or escalation",
+          "items": [
+            "Design, drawing, model, or specification revision conflict",
+            "Production-representative site, process, equipment, or tooling not used",
+            "Characteristic missing from the accountability record",
+            "Actual result outside requirement or tolerance",
+            "Material, component, or special-process traceability gap",
+            "Test method, gage capability, or calibration status unsuitable",
+            "Unapproved deviation, repair, rework, or configuration difference",
+            "Production started beyond an explicitly authorized limited quantity"
+          ]
+        },
+        {
+          "key": "coaching_summary",
+          "type": "textarea",
+          "label": "Observed difficulty, coaching delivered, supervised-work limit, and reassessment plan",
+          "fields": [
+            {
+              "key": "coaching_detail",
+              "label": "Coaching and restriction summary"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "qualification_decision",
+      "title": "Qualification decision and authorization limits",
+      "guidance": "Record exactly what the learner may perform, under what supervision, and when review is due.",
+      "blocks": [
+        {
+          "key": "training_boundary",
+          "type": "notice",
+          "label": "Training record boundary",
+          "guidance": "Attendance or signature alone does not demonstrate competency. The evaluator must use approved criteria and the current drawing, specification, purchase order, and approved process configuration; site authorization rules remain controlling."
+        },
+        {
+          "key": "qualification_outcome",
+          "type": "fields",
+          "label": "Qualification outcome",
+          "fields": [
+            {
+              "key": "assessment_result",
+              "label": "Assessment result",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Qualified",
+                "Qualified with limits",
+                "Additional practice required",
+                "Not qualified"
+              ]
+            },
+            {
+              "key": "authorized_tasks",
+              "label": "Authorized task or scope reference",
+              "units": 1.2
+            },
+            {
+              "key": "supervision_level",
+              "label": "Required supervision",
+              "units": 0.9
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 0.65
+            },
+            {
+              "key": "expiration_review",
+              "label": "Expiration or review date",
+              "units": 0.75
+            },
+            {
+              "key": "qualification_record",
+              "label": "Qualification record reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorization_limits",
+          "type": "textarea",
+          "label": "Authorized scope, excluded tasks, equipment or product limits, escalation triggers, and supervision plan",
+          "fields": [
+            {
+              "key": "authorization_detail",
+              "label": "Qualification scope and limits"
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "qualification_signoff",
+          "type": "signatures",
+          "label": "Learner, evaluator, and supervisor acknowledgment",
+          "fields": [
+            {
+              "key": "learner_ack",
+              "label": "Learner / date",
+              "units": 1.0
+            },
+            {
+              "key": "evaluator_signoff",
+              "label": "Evaluator / date",
+              "units": 1.0
+            },
+            {
+              "key": "supervisor_authorization",
+              "label": "Supervisor or qualification owner / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "training_closeout",
+      "title": "Record update, follow-up, and training closeout",
+      "guidance": "Transfer qualification status to the system of record and schedule any recurring review.",
+      "blocks": [
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action and accountable handoff register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Training outcome and routing",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limits",
+                "On hold",
+                "Rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or release date",
+              "units": 0.75
+            },
+            {
+              "key": "remaining_limits",
+              "label": "Remaining limitation reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Final decision basis, residual limitations, next action, and receiving handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome rationale and accountable handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_closeout",
+          "type": "signatures",
+          "label": "Accountable review and closeout",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Design, Manufacturing, Or Quality Approval Owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner or approver / date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not replace required technical or regulatory approval."
+        }
+      ]
+    }
+  ]
+}

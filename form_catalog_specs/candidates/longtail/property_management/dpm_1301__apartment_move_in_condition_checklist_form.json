@@ -1,0 +1,643 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1301__apartment_move_in_condition_checklist_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1301__apartment_move_in_condition_checklist_form.pdf",
+  "slug": "apartment-move-in-condition-checklist-form",
+  "title": "Apartment Move-In Condition and Handover Record",
+  "subtitle": "Create a shared, evidence-linked baseline for apartment condition, utilities, access devices, unresolved items, resident comments, corrective work, and handover closeout.",
+  "description": "A room-by-room apartment move-in condition record covering unit and lease identity, inspection participation, photo references, fixtures and finishes, utility readings, keys and devices, pre-existing concerns, corrective work, exceptions, and accountable acknowledgment.",
+  "use_case": "Use during apartment turnover and resident handover to document observable condition without legal conclusions, distinguish pre-existing items from new work requests, assign corrections, and preserve a reviewable baseline for later operations.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "handover_identity",
+      "title": "Handover, lease, and unit identity",
+      "guidance": "Tie the condition baseline to the correct unit, lease, and inspection event.",
+      "blocks": [
+        {
+          "key": "record_reference",
+          "type": "fields",
+          "label": "Move-in record reference",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Condition record number",
+              "units": 1.0
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.7
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.55
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.55
+            },
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "property_unit",
+          "type": "fields",
+          "label": "Property and apartment",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Property name",
+              "units": 1.05
+            },
+            {
+              "key": "property_address",
+              "label": "Property address",
+              "units": 1.5
+            },
+            {
+              "key": "building",
+              "label": "Building",
+              "units": 0.55
+            },
+            {
+              "key": "unit",
+              "label": "Unit",
+              "units": 0.5
+            },
+            {
+              "key": "unit_type",
+              "label": "Unit type or layout",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "lease_context",
+          "type": "fields",
+          "label": "Lease and possession context",
+          "fields": [
+            {
+              "key": "lease_reference",
+              "label": "Lease or account reference",
+              "units": 1.05
+            },
+            {
+              "key": "lease_start",
+              "label": "Lease start date",
+              "units": 0.75
+            },
+            {
+              "key": "possession_date",
+              "label": "Possession date",
+              "units": 0.75
+            },
+            {
+              "key": "resident_names",
+              "label": "Resident names on record",
+              "units": 1.5
+            }
+          ]
+        },
+        {
+          "key": "participants",
+          "type": "fields",
+          "label": "Inspection participants",
+          "fields": [
+            {
+              "key": "resident_participant",
+              "label": "Resident participant",
+              "units": 1.15
+            },
+            {
+              "key": "staff_participant",
+              "label": "Property representative",
+              "units": 1.15
+            },
+            {
+              "key": "other_participant",
+              "label": "Other participant and role",
+              "units": 1.15
+            },
+            {
+              "key": "inspection_method",
+              "label": "Inspection method",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Joint walkthrough",
+                "Resident self-review",
+                "Staff review",
+                "Remote review",
+                "Other"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "method_evidence",
+      "title": "Inspection method and evidence controls",
+      "guidance": "Use consistent condition language and link every material observation to a location.",
+      "blocks": [
+        {
+          "key": "condition_code_notice",
+          "type": "notice",
+          "label": "Condition coding",
+          "guidance": "Suggested codes: G for good or serviceable, W for worn or marked, D for damaged or not operating, C for cleaning needed, and NI for not inspected. Describe observable facts rather than assigning fault or making a legal conclusion."
+        },
+        {
+          "key": "inspection_scope",
+          "type": "checklist",
+          "label": "Inspection scope and preparation",
+          "items": [
+            "Unit compared with turnover record",
+            "Resident invited to participate",
+            "Rooms accessible for review",
+            "Utilities available for basic checks",
+            "Date-stamped photos captured",
+            "Existing work orders reviewed",
+            "Inventory or appliance list reviewed",
+            "Uninspected areas identified",
+            "Communication assistance provided",
+            "Separate accommodation request routed"
+          ],
+          "guidance": "Record only operational assistance provided; do not collect diagnosis or protected-trait information here."
+        },
+        {
+          "key": "photo_series",
+          "type": "fields",
+          "label": "Photo or video series",
+          "fields": [
+            {
+              "key": "evidence_set_reference",
+              "label": "Evidence set reference",
+              "units": 1.1
+            },
+            {
+              "key": "first_image",
+              "label": "First image or file",
+              "units": 0.85
+            },
+            {
+              "key": "last_image",
+              "label": "Last image or file",
+              "units": 0.85
+            },
+            {
+              "key": "captured_by",
+              "label": "Captured by",
+              "units": 0.8
+            },
+            {
+              "key": "storage_location",
+              "label": "Stored location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "inspection_limits",
+          "type": "textarea",
+          "label": "Areas not inspected, obstructed views, unavailable utilities, weather limits, or other exceptions",
+          "fields": [
+            {
+              "key": "inspection_limit_detail",
+              "label": "Inspection limitations and exceptions"
+            }
+          ],
+          "height": 120
+        }
+      ]
+    },
+    {
+      "key": "living_sleeping_areas",
+      "title": "Entry, living, dining, and sleeping areas",
+      "guidance": "Record the condition code, objective detail, evidence, and needed action.",
+      "blocks": [
+        {
+          "key": "entry_living_items",
+          "type": "table",
+          "label": "Entry, hall, living, and dining observations",
+          "columns": [
+            {
+              "key": "area_item",
+              "label": "Area or item",
+              "units": 1.15
+            },
+            {
+              "key": "condition_code",
+              "label": "Condition code",
+              "units": 0.65
+            },
+            {
+              "key": "observation",
+              "label": "Observed condition",
+              "units": 1.75
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Photo or file ref",
+              "units": 0.85
+            },
+            {
+              "key": "action",
+              "label": "Action needed",
+              "units": 1.1
+            }
+          ],
+          "rows": 8,
+          "guidance": "Suggested items include doors, locks, walls, ceilings, floors, windows, coverings, lights, outlets, and built-in storage."
+        },
+        {
+          "key": "bedroom_items",
+          "type": "table",
+          "label": "Bedroom and closet observations",
+          "columns": [
+            {
+              "key": "room_item",
+              "label": "Room or item",
+              "units": 1.15
+            },
+            {
+              "key": "condition_code",
+              "label": "Condition code",
+              "units": 0.65
+            },
+            {
+              "key": "observation",
+              "label": "Observed condition",
+              "units": 1.75
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Photo or file ref",
+              "units": 0.85
+            },
+            {
+              "key": "action",
+              "label": "Action needed",
+              "units": 1.1
+            }
+          ],
+          "rows": 8,
+          "guidance": "Identify each bedroom or closet by number or location so later comparisons remain unambiguous."
+        },
+        {
+          "key": "living_area_notes",
+          "type": "textarea",
+          "label": "Additional finish details, marks, odors, cleanliness, resident comments, or area-specific context",
+          "fields": [
+            {
+              "key": "living_area_detail",
+              "label": "Living and sleeping area notes"
+            }
+          ],
+          "height": 160
+        }
+      ]
+    },
+    {
+      "key": "kitchen_bath_systems",
+      "title": "Kitchen, bath, appliances, and systems",
+      "guidance": "Document basic observable operation without representing a specialist inspection.",
+      "blocks": [
+        {
+          "key": "kitchen_appliances",
+          "type": "table",
+          "label": "Kitchen, laundry, and provided appliance observations",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Fixture or appliance",
+              "units": 1.15
+            },
+            {
+              "key": "asset_id",
+              "label": "Model, serial, or asset ID",
+              "units": 1.15
+            },
+            {
+              "key": "condition_code",
+              "label": "Condition",
+              "units": 0.65
+            },
+            {
+              "key": "operation_observed",
+              "label": "Observed operation or issue",
+              "units": 1.55
+            },
+            {
+              "key": "evidence_action",
+              "label": "Evidence or action ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 9
+        },
+        {
+          "key": "bath_plumbing",
+          "type": "table",
+          "label": "Bathroom and plumbing observations",
+          "columns": [
+            {
+              "key": "location_item",
+              "label": "Location or fixture",
+              "units": 1.2
+            },
+            {
+              "key": "condition_code",
+              "label": "Condition",
+              "units": 0.65
+            },
+            {
+              "key": "flow_drain",
+              "label": "Flow, drain, or operation",
+              "units": 1.15
+            },
+            {
+              "key": "leak_moisture",
+              "label": "Leak or moisture observation",
+              "units": 1.4
+            },
+            {
+              "key": "evidence_action",
+              "label": "Evidence or action ref",
+              "units": 1.15
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "basic_system_checks",
+          "type": "checklist",
+          "label": "Basic system and safety observations",
+          "items": [
+            "Heating control responded",
+            "Cooling control responded",
+            "Hot water observed",
+            "Visible supply leaks checked",
+            "Visible drain leaks checked",
+            "Smoke alarms visually present",
+            "Carbon monoxide alarms visually present",
+            "Alarm test documented separately",
+            "Windows and exterior doors operated",
+            "Locks and latches operated",
+            "Breaker panel accessible",
+            "No immediate concern observed"
+          ],
+          "guidance": "A basic walkthrough does not replace code, fire, electrical, mechanical, or other qualified inspection requirements."
+        },
+        {
+          "key": "system_exception",
+          "type": "textarea",
+          "label": "System concern, failed basic check, safety routing, specialist referral, or temporary control",
+          "fields": [
+            {
+              "key": "system_exception_detail",
+              "label": "System exception and routing detail"
+            }
+          ],
+          "height": 76
+        }
+      ]
+    },
+    {
+      "key": "utilities_access_inventory",
+      "title": "Utilities, access devices, and inventory",
+      "guidance": "Record handover quantities and readings so discrepancies can be resolved.",
+      "blocks": [
+        {
+          "key": "meter_readings",
+          "type": "table",
+          "label": "Utility and equipment readings",
+          "columns": [
+            {
+              "key": "service",
+              "label": "Utility or equipment",
+              "units": 1.2
+            },
+            {
+              "key": "meter_id",
+              "label": "Meter or device ID",
+              "units": 1.05
+            },
+            {
+              "key": "reading",
+              "label": "Reading",
+              "units": 0.8
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.9
+            },
+            {
+              "key": "evidence_ref",
+              "label": "Photo reference",
+              "units": 0.95
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "keys_devices",
+          "type": "table",
+          "label": "Keys, credentials, remotes, and access devices issued",
+          "columns": [
+            {
+              "key": "device",
+              "label": "Key or device",
+              "units": 1.3
+            },
+            {
+              "key": "identifier",
+              "label": "Identifier",
+              "units": 0.95
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.65
+            },
+            {
+              "key": "condition",
+              "label": "Condition",
+              "units": 0.9
+            },
+            {
+              "key": "issued_to",
+              "label": "Issued to",
+              "units": 1.0
+            },
+            {
+              "key": "notes",
+              "label": "Notes",
+              "units": 1.1
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "supplied_items",
+          "type": "checklist",
+          "label": "Supplied items and information reviewed",
+          "items": [
+            "Mailbox information",
+            "Parking credential",
+            "Building access credential",
+            "Appliance instructions",
+            "Emergency contact process",
+            "Maintenance request process",
+            "Waste and recycling information",
+            "Common-area information",
+            "Resident portal access",
+            "Move-in packet",
+            "Known open work order list",
+            "No additional item issued"
+          ],
+          "guidance": "Reconcile quantities against the property key register. Record missing, disputed, duplicated, disabled, or unissued devices in the correction register with an owner and target date. Do not infer responsibility from a quantity difference, and update access controls only through an authorized process."
+        }
+      ]
+    },
+    {
+      "key": "corrections_closeout",
+      "title": "Corrections, resident comments, and closeout",
+      "guidance": "Assign open items, preserve disagreement, and document final handoff.",
+      "blocks": [
+        {
+          "key": "correction_register",
+          "type": "table",
+          "label": "Pre-existing condition and corrective-work register",
+          "columns": [
+            {
+              "key": "item_reference",
+              "label": "Area or item reference",
+              "units": 1.2
+            },
+            {
+              "key": "condition",
+              "label": "Observed condition",
+              "units": 1.5
+            },
+            {
+              "key": "action",
+              "label": "Agreed next action",
+              "units": 1.35
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "target_date",
+              "label": "Target date",
+              "units": 0.8
+            },
+            {
+              "key": "work_order",
+              "label": "Work order or close ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "resident_comments",
+          "type": "textarea",
+          "label": "Resident additions, disputed descriptions, later-submitted evidence, or requested corrections",
+          "fields": [
+            {
+              "key": "resident_comment_detail",
+              "label": "Resident comments and requested corrections"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "comment_tracking",
+          "type": "fields",
+          "label": "Comment and correction tracking",
+          "fields": [
+            {
+              "key": "comments_received",
+              "label": "Comments received date",
+              "units": 0.8
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 0.75
+            },
+            {
+              "key": "response_due",
+              "label": "Property response target",
+              "units": 0.9
+            },
+            {
+              "key": "final_record_location",
+              "label": "Final record location",
+              "units": 1.15
+            },
+            {
+              "key": "closeout_status",
+              "label": "Closeout status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Accepted as recorded",
+                "Comments attached",
+                "Correction pending",
+                "Work order open",
+                "Escalated for review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "record_notice",
+          "type": "notice",
+          "label": "Record-use notice",
+          "guidance": "This form records observable condition and handover activity. It does not determine responsibility, charges, code compliance, or legal rights. Attach resident comments and follow applicable notice, retention, privacy, and fair housing procedures."
+        },
+        {
+          "key": "acknowledgment",
+          "type": "signatures",
+          "label": "Condition record acknowledgment",
+          "fields": [
+            {
+              "key": "resident_signature",
+              "label": "Resident name or signature",
+              "units": 1.2
+            },
+            {
+              "key": "property_signature",
+              "label": "Property representative",
+              "units": 1.15
+            },
+            {
+              "key": "signed_date",
+              "label": "Date",
+              "units": 0.65
+            },
+            {
+              "key": "copy_delivery",
+              "label": "Copy delivered by and method",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Acknowledgment confirms participation or receipt only and does not waive a right to add comments or dispute an observation."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,474 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1313__single_family_rental_property_walkthrough_report_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1313__single_family_rental_property_walkthrough_report_form.pdf",
+  "slug": "single-family-rental-property-walkthrough-report-form",
+  "title": "Single-Family Rental Property Walkthrough and Action Report",
+  "subtitle": "Plan and document an authorized operational walkthrough of one rental house, its exclusive-use site, exterior envelope, utilities, interior systems, resident-reported concerns, prioritized work, and verified closeout.",
+  "description": "Periodic or event-driven property walkthrough record tailored to a detached or attached single-family rental with yard, drainage, trees, paving, fence, garage, outbuildings, well or septic features, and resident access considerations.",
+  "use_case": "Use for a routine property review, seasonal readiness check, owner planning visit, maintenance follow-up, insurance-readiness walkthrough, or other authorized operational review that is not a licensed inspection.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "walkthrough_identity_scope",
+      "title": "Walkthrough identity, purpose, participants, and scope",
+      "guidance": "Define why the house is being reviewed, who owns each action, and what is authorized before entry.",
+      "blocks": [
+        {
+          "key": "report_reference",
+          "type": "fields",
+          "label": "Walkthrough report reference",
+          "fields": [
+            {"key": "report_number", "label": "Walkthrough report number", "units": 1.1},
+            {"key": "walkthrough_date", "label": "Walkthrough date", "units": 0.8},
+            {"key": "start_time", "label": "Start time", "units": 0.7},
+            {"key": "end_time", "label": "End time", "units": 0.7},
+            {"key": "report_owner", "label": "Report owner", "units": 1.0}
+          ]
+        },
+        {
+          "key": "rental_property",
+          "type": "fields",
+          "label": "Single-family rental identity",
+          "fields": [
+            {"key": "property_address", "label": "Property address", "units": 1.8},
+            {"key": "property_type", "label": "House type", "units": 1.0, "field_type": "choice", "options": ["Detached house", "Townhouse or rowhouse", "Duplex side", "Cottage or accessory dwelling", "Other single-family rental"]},
+            {"key": "lease_reference", "label": "Lease or account reference", "units": 1.1},
+            {"key": "owner_manager", "label": "Owner or manager of record", "units": 1.1}
+          ]
+        },
+        {
+          "key": "purpose_trigger",
+          "type": "fields",
+          "label": "Walkthrough purpose and trigger",
+          "fields": [
+            {"key": "walkthrough_type", "label": "Walkthrough type", "units": 1.1, "field_type": "choice", "options": ["Routine property review", "Seasonal readiness", "Maintenance follow-up", "Resident-requested review", "Owner planning", "Insurance-readiness", "Other operational review"]},
+            {"key": "trigger_reference", "label": "Trigger or prior-report reference", "units": 1.2},
+            {"key": "requested_by", "label": "Requested by", "units": 1.0},
+            {"key": "report_due", "label": "Report due date", "units": 0.9}
+          ]
+        },
+        {
+          "key": "participants",
+          "type": "fields",
+          "label": "Walkthrough participants",
+          "fields": [
+            {"key": "walkthrough_lead", "label": "Walkthrough lead", "units": 1.1},
+            {"key": "resident_participant", "label": "Resident participant", "units": 1.1},
+            {"key": "owner_representative", "label": "Owner or asset representative", "units": 1.2},
+            {"key": "vendor_specialist", "label": "Vendor or specialist", "units": 1.1}
+          ]
+        },
+        {
+          "key": "authorized_scope",
+          "type": "textarea",
+          "label": "Authorized dwelling areas, yard boundaries, exterior components, garage or outbuildings, priorities, exclusions, and expected decisions",
+          "fields": [{"key": "authorized_scope_detail", "label": "Authorized single-family walkthrough scope"}],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "access_safety_evidence",
+      "title": "Notice, access, safety, weather, utilities, and evidence",
+      "guidance": "Confirm notice and privacy controls, prepare for house and site hazards, and preserve evidence consistently.",
+      "blocks": [
+        {
+          "key": "notice_access",
+          "type": "fields",
+          "label": "Notice and entry basis",
+          "fields": [
+            {"key": "notice_reference", "label": "Notice or permission reference", "units": 1.2},
+            {"key": "notice_date", "label": "Notice date and time", "units": 1.0},
+            {"key": "entry_basis", "label": "Entry basis confirmed", "units": 1.0},
+            {"key": "resident_present", "label": "Resident participation", "units": 1.0},
+            {"key": "access_coordinator", "label": "Access coordinator", "units": 1.0}
+          ]
+        },
+        {
+          "key": "preparation",
+          "type": "checklist",
+          "label": "Pre-walkthrough preparation",
+          "items": [
+            "Prior walkthrough and incident records reviewed",
+            "Open work orders and resident concerns reviewed",
+            "Seasonal service records reviewed",
+            "Well, septic, fuel, or treatment records reviewed",
+            "Warranty or service-plan records reviewed",
+            "Weather conditions considered",
+            "Utility status confirmed",
+            "Required access arranged",
+            "Safety equipment available",
+            "Evidence protocol confirmed"
+          ]
+        },
+        {
+          "key": "weather_conditions",
+          "type": "fields",
+          "label": "Weather, occupancy, and site conditions",
+          "fields": [
+            {"key": "weather", "label": "Weather", "units": 0.9},
+            {"key": "temperature", "label": "Temperature", "units": 0.8},
+            {"key": "ground_condition", "label": "Ground or surface condition", "units": 1.2},
+            {"key": "occupancy_condition", "label": "Occupancy or activity condition", "units": 1.2},
+            {"key": "utility_status", "label": "Utility status", "units": 1.0}
+          ]
+        },
+        {
+          "key": "hazard_screen",
+          "type": "checklist",
+          "label": "Immediate walkthrough hazard screen",
+          "items": [
+            "Fire, smoke, gas, or fuel concern",
+            "Active electrical hazard",
+            "Major water release or sewer backup",
+            "Structural movement concern",
+            "Tree or limb hazard",
+            "Unsafe step, rail, deck, or walkway",
+            "Blocked emergency access or exit",
+            "Security concern",
+            "Weather exposure or storm damage",
+            "Environmental or pest concern",
+            "No immediate hazard observed",
+            "Emergency or specialist route activated"
+          ],
+          "guidance": "Stop or limit the walkthrough when conditions are unsafe. Use emergency protocol and qualified specialists rather than exceeding the authorized operational scope."
+        },
+        {
+          "key": "evidence_controls",
+          "type": "fields",
+          "label": "Evidence and privacy controls",
+          "fields": [
+            {"key": "evidence_set", "label": "Evidence set reference", "units": 1.1},
+            {"key": "captured_by", "label": "Captured by", "units": 0.9},
+            {"key": "first_last_file", "label": "First and last file reference", "units": 1.2},
+            {"key": "stored_location", "label": "Stored location", "units": 1.1},
+            {"key": "privacy_review", "label": "Privacy review status", "units": 1.0}
+          ],
+          "guidance": "Avoid photographing residents, personal papers, or unrelated possessions unless necessary and authorized."
+        },
+        {
+          "key": "resident_access_notice",
+          "type": "notice",
+          "label": "Resident access and fair process",
+          "guidance": "Follow applicable entry and notice requirements. Select areas using the documented operational scope, not protected traits or protected activity. Route accommodation or communication requests through the established process and limit personal information in this report."
+        }
+      ]
+    },
+    {
+      "key": "exterior_site_review",
+      "title": "Exterior envelope, drainage, grounds, and accessory structures",
+      "guidance": "Record visible condition, evidence, operational impact, and required specialist follow-up for the house and exclusive-use site.",
+      "blocks": [
+        {
+          "key": "roof_envelope",
+          "type": "table",
+          "label": "Roofline, gutters, envelope, openings, and visible foundation",
+          "columns": [
+            {"key": "component", "label": "Component or location", "units": 1.2},
+            {"key": "observed_condition", "label": "Observed condition", "units": 1.6},
+            {"key": "impact", "label": "Safety, access, or service impact", "units": 1.2},
+            {"key": "evidence", "label": "Photo or reading ref", "units": 1.0},
+            {"key": "action", "label": "Recommended action", "units": 1.2}
+          ],
+          "rows": 5,
+          "guidance": "Suggested components include roofing viewed from an authorized location, flashing, gutters, downspouts, siding, trim, windows, doors, foundation, vents, and visible utility entries."
+        },
+        {
+          "key": "drainage_grounds",
+          "type": "table",
+          "label": "Grading, drainage, yard, trees, landscape, paving, fence, and gate",
+          "columns": [
+            {"key": "area", "label": "Site area or feature", "units": 1.2},
+            {"key": "observed_condition", "label": "Observed condition", "units": 1.6},
+            {"key": "impact", "label": "Safety, access, or service impact", "units": 1.2},
+            {"key": "evidence", "label": "Photo or reading ref", "units": 1.0},
+            {"key": "action", "label": "Recommended action", "units": 1.2}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "accessory_structures",
+          "type": "table",
+          "label": "Porch, deck, steps, rails, garage, carport, shed, and authorized outbuildings",
+          "columns": [
+            {"key": "structure", "label": "Structure or location", "units": 1.2},
+            {"key": "observed_condition", "label": "Observed condition", "units": 1.6},
+            {"key": "impact", "label": "Safety, access, or service impact", "units": 1.2},
+            {"key": "evidence", "label": "Photo or reading ref", "units": 1.0},
+            {"key": "action", "label": "Recommended action", "units": 1.2}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "site_features",
+          "type": "checklist",
+          "label": "Property-specific exterior features reviewed when in scope",
+          "items": [
+            "Driveway and parking surface",
+            "Walks and entry route",
+            "Retaining feature",
+            "Storm drain, swale, or culvert",
+            "Irrigation or exterior water",
+            "Wellhead or pump equipment",
+            "Septic or drain-field area",
+            "Fuel tank or delivery access",
+            "Trash, recycling, or compost area",
+            "Mailbox or address visibility",
+            "Pool, spa, or water feature not in scope",
+            "Pool, spa, or water feature controls recorded",
+            "Neighboring or shared-boundary concern",
+            "Specialist follow-up required"
+          ]
+        },
+        {
+          "key": "exterior_exception",
+          "type": "textarea",
+          "label": "Seasonal limitation, inaccessible area, concealed condition, storm impact, neighboring issue, resident report, or specialist question",
+          "fields": [{"key": "exterior_exception_detail", "label": "Exterior and site review exception"}],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "interior_system_review",
+      "title": "Interior areas, dwelling systems, utilities, and resident input",
+      "guidance": "Record basic operational observations without representing a code, engineering, environmental, accessibility, or licensed system inspection.",
+      "blocks": [
+        {
+          "key": "interior_observations",
+          "type": "table",
+          "label": "Interior room, finish, opening, and moisture observations",
+          "columns": [
+            {"key": "location", "label": "Room or location", "units": 1.0},
+            {"key": "component", "label": "Feature or component", "units": 1.2},
+            {"key": "observed_condition", "label": "Observed condition", "units": 1.6},
+            {"key": "evidence", "label": "Photo or record ref", "units": 1.0},
+            {"key": "action", "label": "Recommended action", "units": 1.2}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "system_observations",
+          "type": "table",
+          "label": "HVAC, plumbing, electric, fuel, well, septic, and equipment observations",
+          "columns": [
+            {"key": "system", "label": "System or asset", "units": 1.1},
+            {"key": "location_id", "label": "Location or asset ID", "units": 1.1},
+            {"key": "reading", "label": "Reading or basic status", "units": 1.2},
+            {"key": "observed_condition", "label": "Visible condition", "units": 1.5},
+            {"key": "action", "label": "Service or follow-up", "units": 1.2}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "basic_safety",
+          "type": "checklist",
+          "label": "Visible life-safety and access observations",
+          "items": [
+            "Exit routes visibly unobstructed",
+            "Exterior doors visibly secure",
+            "Smoke alarms visibly present",
+            "Carbon monoxide alarms visibly present",
+            "Fire doors visibly unobstructed",
+            "Panels and shutoffs accessible",
+            "Required testing record checked separately",
+            "Accessible route visibly unobstructed",
+            "Emergency contact posting observed",
+            "Concern routed to qualified reviewer"
+          ],
+          "guidance": "Visual presence does not confirm inspection, testing, code compliance, accessibility compliance, or proper operation."
+        },
+        {
+          "key": "resident_feedback",
+          "type": "table",
+          "label": "Resident-reported property concerns and operational feedback",
+          "columns": [
+            {"key": "location", "label": "House or site location", "units": 1.2},
+            {"key": "topic", "label": "Topic", "units": 1.0},
+            {"key": "reported_facts", "label": "Resident-reported facts", "units": 1.6},
+            {"key": "case_ref", "label": "Work order or case ref", "units": 1.2},
+            {"key": "owner", "label": "Follow-up owner", "units": 1.0}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "interior_exception",
+          "type": "textarea",
+          "label": "Declined access, privacy concern, accommodation need, unavailable utility, incomplete review, or alternate follow-up plan",
+          "fields": [{"key": "interior_exception_detail", "label": "Interior review exception and alternate plan"}],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "responsibility_findings",
+      "title": "Prioritized findings, responsibility routing, and work authorization",
+      "guidance": "Convert evidence into assigned action while distinguishing maintenance allocation, external-party coordination, and legal conclusions.",
+      "blocks": [
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Prioritized finding register",
+          "columns": [
+            {"key": "finding", "label": "Finding and location", "units": 1.4},
+            {"key": "evidence", "label": "Evidence reference", "units": 0.9},
+            {"key": "priority", "label": "Priority", "units": 0.8},
+            {"key": "recommended_action", "label": "Recommended action", "units": 1.4},
+            {"key": "owner", "label": "Responsible owner", "units": 1.0},
+            {"key": "target_date", "label": "Target date or work ref", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "priority_guide",
+          "type": "notice",
+          "label": "Operational priority guide",
+          "guidance": "Suggested priorities: immediate for active danger under emergency protocol; urgent for prompt risk control; planned for scheduled repair or assessment; monitor for a documented recheck. Priority does not determine code status, liability, or legal compliance."
+        },
+        {
+          "key": "responsibility_route",
+          "type": "table",
+          "label": "Responsibility and external-party routing",
+          "columns": [
+            {"key": "finding_ref", "label": "Finding reference", "units": 1.0},
+            {"key": "record_source", "label": "Lease, plan, warranty, or record source", "units": 1.5},
+            {"key": "possible_party", "label": "Possible party or provider", "units": 1.2},
+            {"key": "review_status", "label": "Review status", "units": 1.0},
+            {"key": "route", "label": "Routing or decision ref", "units": 1.2}
+          ],
+          "rows": 3,
+          "guidance": "Possible routes include owner, resident, utility, warranty provider, insurer, municipality, association, neighboring owner, or qualified specialist. Record uncertainty and do not decide a disputed legal responsibility here."
+        },
+        {
+          "key": "work_authorization",
+          "type": "table",
+          "label": "Authorized work order, project, estimate, or specialist review",
+          "columns": [
+            {"key": "finding_ref", "label": "Finding reference", "units": 1.0},
+            {"key": "scope", "label": "Authorized scope", "units": 1.4},
+            {"key": "provider", "label": "Staff, vendor, or specialist", "units": 1.2},
+            {"key": "limit", "label": "Budget or scope limit", "units": 1.0},
+            {"key": "authorized_by", "label": "Authorized by and date", "units": 1.1},
+            {"key": "work_ref", "label": "Work or project ref", "units": 1.0}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "decision_summary",
+          "type": "textarea",
+          "label": "Management decision, deferred item, budget constraint, external-party issue, specialist need, and reason for exception",
+          "fields": [{"key": "decision_summary_detail", "label": "Management decision and exception rationale"}],
+          "height": 56
+        },
+        {
+          "key": "approval",
+          "type": "fields",
+          "label": "Report and action-plan approval",
+          "fields": [
+            {"key": "approval_status", "label": "Approval status", "units": 1.0, "field_type": "choice", "options": ["Approved", "Approved with revisions", "Additional evidence needed", "Owner decision pending", "Qualified review required"]},
+            {"key": "approved_by", "label": "Approved by", "units": 1.0},
+            {"key": "approval_date", "label": "Approval date", "units": 0.9},
+            {"key": "next_review", "label": "Next property review", "units": 1.1}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "communication_verification_closeout",
+      "title": "Communication, verification, seasonal handoff, and closeout",
+      "guidance": "Notify affected parties appropriately, verify assigned work, update recurring service plans, and close only with accountable ownership.",
+      "blocks": [
+        {
+          "key": "communication_log",
+          "type": "table",
+          "label": "Owner, resident, vendor, utility, and specialist communication",
+          "columns": [
+            {"key": "audience", "label": "Audience", "units": 1.0},
+            {"key": "purpose", "label": "Message or purpose", "units": 1.5},
+            {"key": "method", "label": "Method", "units": 0.8},
+            {"key": "sent_date", "label": "Sent date", "units": 0.9},
+            {"key": "sent_by", "label": "Sent by", "units": 0.9},
+            {"key": "record_ref", "label": "Response or record ref", "units": 1.1}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "verification_log",
+          "type": "table",
+          "label": "Completed-work and reinspection verification",
+          "columns": [
+            {"key": "action_ref", "label": "Action or work ref", "units": 1.1},
+            {"key": "completion_date", "label": "Completion date", "units": 0.9},
+            {"key": "verified_by", "label": "Verified by", "units": 0.9},
+            {"key": "result", "label": "Observed result", "units": 1.4},
+            {"key": "evidence", "label": "Evidence reference", "units": 1.1},
+            {"key": "remaining", "label": "Remaining action", "units": 1.1}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "seasonal_handoff",
+          "type": "table",
+          "label": "Recurring and seasonal service handoff",
+          "columns": [
+            {"key": "service", "label": "Service or responsibility", "units": 1.3},
+            {"key": "record_source", "label": "Lease, plan, or instruction source", "units": 1.4},
+            {"key": "assigned_party", "label": "Assigned party", "units": 1.0},
+            {"key": "schedule", "label": "Schedule or trigger", "units": 1.0},
+            {"key": "next_ref", "label": "Next service or record ref", "units": 1.1}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "closeout_checklist",
+          "type": "checklist",
+          "label": "Report closeout checklist",
+          "items": [
+            "Immediate hazards routed",
+            "Work orders or projects linked",
+            "Affected residents updated",
+            "Sensitive images restricted",
+            "Completed actions verified",
+            "Next walkthrough scheduled",
+            "All findings assigned",
+            "Owner report delivered",
+            "Vendors received authorized scope",
+            "Specialist reports linked",
+            "Seasonal or recurring plan updated",
+            "Records stored in approved location"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Walkthrough closeout",
+          "fields": [
+            {"key": "report_status", "label": "Report status", "units": 1.0, "field_type": "choice", "options": ["Closed", "Closed with open work", "Monitoring", "Owner decision pending", "Qualified review pending", "Reinspection scheduled"]},
+            {"key": "open_item_owner", "label": "Open-item owner", "units": 1.1},
+            {"key": "next_check", "label": "Next check date", "units": 0.9},
+            {"key": "record_location", "label": "Final report location", "units": 1.2}
+          ]
+        },
+        {
+          "key": "operational_limit",
+          "type": "notice",
+          "label": "Operational report limitation",
+          "guidance": "This walkthrough records visible operational observations and assigned actions. It is not a code, engineering, environmental, accessibility, fire, legal, or other specialist inspection. Follow applicable notice, safety, privacy, fair-housing, licensing, permit, insurance, warranty, and retention requirements."
+        },
+        {
+          "key": "closeout_signoff",
+          "type": "signatures",
+          "label": "Report approval and closeout",
+          "fields": [
+            {"key": "walkthrough_lead", "label": "Walkthrough lead", "units": 1.1},
+            {"key": "property_manager", "label": "Property manager", "units": 1.0},
+            {"key": "owner_reviewer", "label": "Owner or asset reviewer", "units": 1.2},
+            {"key": "closed_date", "label": "Closed date", "units": 0.8}
+          ]
+        }
+      ]
+    }
+  ]
+}

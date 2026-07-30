@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2437__outage_report_work_order_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2437__outage_report_work_order_form.pdf",
+  "slug": "outage-report-work-order-form",
+  "title": "Outage Report Work Order Form",
+  "subtitle": "An original outage report workflow that controls authorized field work from dispatch through return to service, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete outage report work order form for the utility interruption and restoration event that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when a qualified crew receives a defined task and must preserve asset identity, work limits, energy-control references, as-found evidence, work performed, testing, exceptions, and operations handoff. The outage coordination lead owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "work_order_routing",
+      "title": "Outage report work order identity and dispatch",
+      "guidance": "Issue a traceable order with clear ownership, site contacts, and approved work limits.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Work order and assignment",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Work order record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "dispatch_detail",
+          "type": "fields",
+          "label": "Dispatch and service window",
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew or technician lead",
+              "units": 1.1
+            },
+            {
+              "key": "dispatch_ref",
+              "label": "Dispatch reference",
+              "units": 1.0
+            },
+            {
+              "key": "scheduled_start",
+              "label": "Scheduled start",
+              "units": 1.0
+            },
+            {
+              "key": "scheduled_end",
+              "label": "Scheduled end",
+              "units": 1.0
+            },
+            {
+              "key": "site_contact",
+              "label": "Site or operations contact",
+              "units": 1.1
+            },
+            {
+              "key": "access_method",
+              "label": "Access and key-control method",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "scope_planning",
+      "title": "Outage report asset context, scope, and resources",
+      "guidance": "Match the order to the exact utility interruption and restoration event and define work that is included and excluded.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Outage report identity",
+          "fields": [
+            {
+              "key": "event_id",
+              "label": "Outage event ID",
+              "units": 1.0
+            },
+            {
+              "key": "commodity",
+              "label": "Affected utility service",
+              "units": 1.05
+            },
+            {
+              "key": "area",
+              "label": "Affected area or circuit",
+              "units": 1.2
+            },
+            {
+              "key": "start_time",
+              "label": "Known or estimated start",
+              "units": 1.05
+            },
+            {
+              "key": "affected_count",
+              "label": "Affected customer estimate",
+              "units": 1.1
+            },
+            {
+              "key": "critical_impacts",
+              "label": "Critical or lifeline impacts",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "As-found baseline",
+          "fields": [
+            {
+              "key": "system_asset",
+              "label": "Feeder, main, zone, or asset",
+              "units": 1.2
+            },
+            {
+              "key": "control_center",
+              "label": "Operations control reference",
+              "units": 1.15
+            },
+            {
+              "key": "weather_event",
+              "label": "Weather or external event ref",
+              "units": 1.15
+            },
+            {
+              "key": "crew_assignment",
+              "label": "Crew or incident assignment",
+              "units": 1.1
+            },
+            {
+              "key": "update_cadence",
+              "label": "Required update cadence",
+              "units": 1.05
+            },
+            {
+              "key": "public_message",
+              "label": "Customer message reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "authorized_tasks",
+          "type": "checklist",
+          "label": "Authorized task scope",
+          "items": [
+            "Validate outage event, service type, location, and reporting source",
+            "Screen life safety and route emergency indicators immediately",
+            "Link duplicate reports and map distinct affected pockets",
+            "Identify critical facilities, dependent services, and priority consequences",
+            "Coordinate crew, operations control, access, and public-protection actions",
+            "Record device or area status without directing unauthorized switching",
+            "Track affected count, restoration stage, estimated time, and confidence",
+            "Publish approved customer and partner updates at the assigned cadence",
+            "Verify restoration by system evidence and representative customer feedback",
+            "Transfer remaining pockets, damage, and corrective work to named owners"
+          ]
+        },
+        {
+          "key": "scope_boundaries",
+          "type": "textarea",
+          "label": "Scope, exclusions, parts, and completion criteria",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Approved work, explicit exclusions, required parts or tools, evidence expected, and completion criteria",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_authorization",
+      "title": "Outage report pre-work controls and authorization",
+      "guidance": "Do not begin intrusive work until hazards, system effects, isolation ownership, and test authority are explicit.",
+      "blocks": [
+        {
+          "key": "control_references",
+          "type": "fields",
+          "label": "Work-control references",
+          "fields": [
+            {
+              "key": "work_plan_ref",
+              "label": "Approved work-plan reference",
+              "units": 1.15
+            },
+            {
+              "key": "energy_control_ref",
+              "label": "Energy-control procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "isolation_owner",
+              "label": "Isolation control owner",
+              "units": 1.1
+            },
+            {
+              "key": "verification_ref",
+              "label": "Isolation verification ref",
+              "units": 1.15
+            },
+            {
+              "key": "outage_authority",
+              "label": "Outage or test authority",
+              "units": 1.1
+            },
+            {
+              "key": "permit_refs",
+              "label": "Permit or applicable review refs",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "prework_confirmations",
+          "type": "checklist",
+          "label": "Pre-work authorization confirmations",
+          "items": [
+            "Exact asset, boundaries, sources, and affected systems were identified",
+            "Site-specific procedure and applicable requirements were reviewed",
+            "Authorized and affected people, roles, and communications were confirmed",
+            "Electrical, mechanical, pressure, thermal, chemical, gravity, and stored energy were assessed",
+            "Isolation devices and personal or group controls remain under designated ownership",
+            "Stored or residual energy was controlled and verification evidence was recorded",
+            "Test or temporary re-energization steps and authority are explicit",
+            "Public, customer, traffic, environmental, and critical-load controls are in place"
+          ]
+        },
+        {
+          "key": "energy_control_boundary",
+          "type": "notice",
+          "label": "Energy-control and qualified-person boundary",
+          "guidance": "This record supports situational awareness; it does not authorize switching, valve operation, entry, or approach to damaged utility equipment. Keep callers and the public away from downed lines, gas odors, flooding, fire, and unstable areas. Route emergency indicators immediately and leave isolation and restoration decisions to designated operations control and qualified crews. This work order records references and decisions; it does not replace the site's energy-control procedure. Unknown, changed, or reaccumulating energy is a stop condition until the designated authorized person re-establishes and verifies control."
+        }
+      ]
+    },
+    {
+      "key": "execution_evidence",
+      "title": "Outage report work execution and test evidence",
+      "guidance": "Record what was actually done, by whom, against which task, and with what result.",
+      "blocks": [
+        {
+          "key": "work_log",
+          "type": "table",
+          "label": "Task execution log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date / time",
+              "units": 0.8
+            },
+            {
+              "key": "task",
+              "label": "Task / component",
+              "units": 1.2
+            },
+            {
+              "key": "as_found",
+              "label": "As-found condition",
+              "units": 1.1
+            },
+            {
+              "key": "action",
+              "label": "Work performed",
+              "units": 1.15
+            },
+            {
+              "key": "by",
+              "label": "Performed by",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Part / evidence ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "test_results",
+          "type": "table",
+          "label": "As-left readings and test results",
+          "columns": [
+            {
+              "key": "update_time",
+              "label": "Update time",
+              "units": 0.8
+            },
+            {
+              "key": "area_device",
+              "label": "Area / device",
+              "units": 1.05
+            },
+            {
+              "key": "service_status",
+              "label": "Service status",
+              "units": 0.95
+            },
+            {
+              "key": "affected",
+              "label": "Affected estimate",
+              "units": 0.95
+            },
+            {
+              "key": "crew_evidence",
+              "label": "Crew / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "eta_conf",
+              "label": "ETA / confidence",
+              "units": 1.0
+            }
+          ],
+          "rows": 5,
+          "guidance": "Record method, instrument, operating state, and acceptance reference in linked evidence when needed."
+        },
+        {
+          "key": "execution_notes",
+          "type": "textarea",
+          "label": "Execution notes and change context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected conditions, approved changes, temporary measures, test context, and evidence links",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Outage report exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Downed or sagging conductor, arcing, fire, or damaged electrical asset",
+            "Gas odor, hissing, damaged main, regulator, or atmosphere concern",
+            "Water-main break, flooding, washout, sinkhole, or energized water exposure",
+            "Steam, pressure, chemical, traffic, debris, or unstable structure",
+            "Public entry into an uncontrolled utility work or damage zone",
+            "Unknown system state, backfeed, switching, valve, or isolation status",
+            "Critical-service consequence beyond the current response capability",
+            "Any condition requiring emergency command or operations control"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "This record supports situational awareness; it does not authorize switching, valve operation, entry, or approach to damaged utility equipment. Keep callers and the public away from downed lines, gas odors, flooding, fire, and unstable areas. Route emergency indicators immediately and leave isolation and restoration decisions to designated operations control and qualified crews."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each work order exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "Outage report decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Work order closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Utility interruption and restoration event identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

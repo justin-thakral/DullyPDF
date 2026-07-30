@@ -1,0 +1,466 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2106__oil_change_inspection_checklist",
+  "source_section": "automotive_service",
+  "source_filename": "das_2106__oil_change_inspection_checklist.pdf",
+  "slug": "oil-change-inspection-checklist",
+  "title": "Oil Change Service and Multi-Point Inspection",
+  "subtitle": "Connect the customer's request to exact oil and filter specifications, visible-condition evidence, authorization limits, installed products, recommendations, and vehicle release.",
+  "description": "A workflow-complete oil change inspection checklist covering shop and vehicle intake, requested maintenance, exact oil specification and capacity, customer-supplied products, underhood and exterior observations, an initial authorization boundary, installed product and torque records, tire and brake readings, recommendation decisions, declined work, quality control, invoice details, and customer pickup.",
+  "use_case": "Use when a service advisor and technician need one fillable record that carries an oil service from vehicle intake and product confirmation through visible inspection, customer authorization, installation, quality checks, recommendations, and accountable release.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "shop_vehicle_intake",
+      "title": "Shop, customer, vehicle, and service intake",
+      "guidance": "Confirm the customer, repair order, vehicle, mileage, and service routing before opening product containers.",
+      "blocks": [
+        {
+          "key": "service_reference",
+          "type": "fields",
+          "label": "Shop and service reference",
+          "fields": [
+            {"key": "shop_location", "label": "Shop or service location", "units": 1.2},
+            {"key": "repair_order", "label": "Repair order", "units": 0.75},
+            {"key": "service_advisor", "label": "Service advisor", "units": 0.9},
+            {"key": "opened_date_time", "label": "Opened date and time", "units": 0.9},
+            {"key": "arrival_method", "label": "Customer status", "units": 0.85, "field_type": "choice", "options": ["Waiting", "Drop-off", "After-hours drop", "Fleet delivery", "Tow-in"]},
+            {"key": "promised_completion", "label": "Promised completion", "units": 0.9}
+          ]
+        },
+        {
+          "key": "customer_contact",
+          "type": "fields",
+          "label": "Customer and communication",
+          "fields": [
+            {"key": "customer_account", "label": "Customer or account", "units": 1.15},
+            {"key": "phone", "label": "Phone", "units": 0.85},
+            {"key": "email", "label": "Email", "units": 1.1},
+            {"key": "preferred_contact", "label": "Preferred contact method", "units": 0.95},
+            {"key": "authorization_contact", "label": "Authorization contact", "units": 1.05}
+          ]
+        },
+        {
+          "key": "vehicle_identity",
+          "type": "fields",
+          "label": "Vehicle identity and readings",
+          "fields": [
+            {"key": "year_make_model", "label": "Year, make, and model", "units": 1.25},
+            {"key": "vin", "label": "VIN", "units": 1.25},
+            {"key": "plate_state", "label": "Plate and state", "units": 0.8},
+            {"key": "mileage_in", "label": "Mileage in", "units": 0.75},
+            {"key": "fleet_unit", "label": "Fleet or unit number", "units": 0.85},
+            {"key": "key_tag", "label": "Key tag", "units": 0.65}
+          ]
+        },
+        {
+          "key": "intake_condition",
+          "type": "checklist",
+          "label": "Intake condition and communication confirmed",
+          "items": [
+            "Vehicle identity matched to repair order",
+            "Mileage recorded",
+            "Dashboard warning lights noted",
+            "Customer concerns reviewed",
+            "Visible arrival damage noted",
+            "Wheel-lock key location confirmed",
+            "Service history available if provided",
+            "Customer contact method confirmed"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "requested_oil_service",
+      "title": "Requested service and oil specification",
+      "guidance": "Document the authorized maintenance request and exact product requirement before draining oil or opening parts.",
+      "blocks": [
+        {
+          "key": "requested_services",
+          "type": "checklist",
+          "label": "Requested service",
+          "items": [
+            "Engine oil and filter",
+            "Tire rotation",
+            "Fluid top-off",
+            "Battery test",
+            "Wiper replacement",
+            "Cabin air filter",
+            "Engine air filter",
+            "Maintenance reminder reset",
+            "Tire-pressure adjustment",
+            "Visible leak inspection"
+          ]
+        },
+        {
+          "key": "oil_product_spec",
+          "type": "fields",
+          "label": "Required oil, filter, and capacity",
+          "fields": [
+            {"key": "oil_grade_spec", "label": "Oil grade and specification", "units": 1.2},
+            {"key": "oil_type", "label": "Conventional, blend, or synthetic", "units": 1.15},
+            {"key": "capacity", "label": "Specified capacity", "units": 0.75},
+            {"key": "filter_part_number", "label": "Filter part number", "units": 0.95},
+            {"key": "manufacturer_source", "label": "Specification source", "units": 1.0},
+            {"key": "customer_product", "label": "Customer-supplied product", "units": 1.0, "field_type": "choice", "options": ["No", "Yes - accepted", "Yes - declined", "Pending compatibility"]}
+          ]
+        },
+        {
+          "key": "customer_product_control",
+          "type": "checklist",
+          "label": "Product and service basis verified",
+          "items": [
+            "Grade matches manufacturer requirement",
+            "Viscosity matches operating requirement",
+            "Oil approval or performance standard verified",
+            "Capacity includes filter change",
+            "Filter application verified",
+            "Customer-supplied container sealed",
+            "Customer-supplied quantity sufficient",
+            "Different product requires approval"
+          ]
+        },
+        {
+          "key": "customer_concerns",
+          "type": "textarea",
+          "label": "Customer concerns, warning lights, leaks, noises, recent repairs, driving conditions, and service-history notes",
+          "fields": [
+            {"key": "concern_detail", "label": "Customer concern and service-history detail"}
+          ],
+          "height": 74
+        }
+      ]
+    },
+    {
+      "key": "initial_inspection",
+      "title": "Underhood, exterior, and arrival inspection",
+      "guidance": "Record one status for each visible item, add a reading when useful, and route every concern into the authorization decision.",
+      "blocks": [
+        {
+          "key": "underhood_results",
+          "type": "table",
+          "label": "Underhood and fluid inspection results",
+          "columns": [
+            {"key": "inspection_item", "label": "Inspection item", "units": 1.35},
+            {"key": "status", "label": "OK, service, monitor, or N/A", "units": 1.0},
+            {"key": "reading", "label": "Level or reading", "units": 0.8},
+            {"key": "observation", "label": "Observation", "units": 1.25},
+            {"key": "action", "label": "Recommended action", "units": 1.15}
+          ],
+          "rows": 8
+        },
+        {
+          "key": "underhood_items",
+          "type": "checklist",
+          "label": "Underhood items included in the inspection",
+          "items": [
+            "Engine oil level and condition before service",
+            "Visible engine or oil-pan leakage",
+            "Coolant level and visible condition",
+            "Brake fluid level and visible condition",
+            "Power steering or hydraulic fluid",
+            "Washer fluid and spray operation",
+            "Battery terminals and hold-down",
+            "Engine air filter",
+            "Cabin air filter",
+            "Belts and hoses visible condition"
+          ]
+        },
+        {
+          "key": "exterior_arrival_results",
+          "type": "table",
+          "label": "Exterior, dashboard, and service-access observations",
+          "columns": [
+            {"key": "area", "label": "Area or item", "units": 1.15},
+            {"key": "status", "label": "Status", "units": 0.7},
+            {"key": "evidence", "label": "Photo or reading", "units": 0.95},
+            {"key": "observation", "label": "Condition observed", "units": 1.35},
+            {"key": "customer_notified", "label": "Customer notified", "units": 0.9}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "inspection_evidence",
+          "type": "fields",
+          "label": "Inspection evidence and routing",
+          "fields": [
+            {"key": "inspection_by", "label": "Inspected by", "units": 0.85},
+            {"key": "inspection_date_time", "label": "Inspection date and time", "units": 0.95},
+            {"key": "photo_reference", "label": "Photo reference", "units": 0.9},
+            {"key": "urgent_finding", "label": "Urgent finding", "units": 0.95},
+            {"key": "advisor_notified", "label": "Advisor notified by and time", "units": 1.1}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "initial_authorization",
+      "title": "Initial findings and authorization boundary",
+      "guidance": "Confirm the price and service limit, resolve safety or product exceptions, and obtain customer authorization before work proceeds.",
+      "blocks": [
+        {
+          "key": "initial_estimate",
+          "type": "fields",
+          "label": "Initial estimate and approval limit",
+          "fields": [
+            {"key": "initial_estimate", "label": "Initial estimate", "units": 0.8},
+            {"key": "not_to_exceed", "label": "Not-to-exceed amount", "units": 0.9},
+            {"key": "approval_method", "label": "Approval method or confirmation", "units": 1.2},
+            {"key": "approval_date_time", "label": "Approval date and time", "units": 0.95},
+            {"key": "authorized_scope", "label": "Authorized scope reference", "units": 1.0},
+            {"key": "approval_status", "label": "Approval status", "units": 0.85, "field_type": "choice", "options": ["Approved", "Approved with limit", "Awaiting approval", "Declined", "Stop work"]}
+          ]
+        },
+        {
+          "key": "pre_service_exceptions",
+          "type": "table",
+          "label": "Pre-service exception and resolution register",
+          "columns": [
+            {"key": "finding", "label": "Finding or conflict", "units": 1.3},
+            {"key": "immediate_action", "label": "Immediate action", "units": 1.15},
+            {"key": "customer_decision", "label": "Customer decision", "units": 1.0},
+            {"key": "owner", "label": "Owner", "units": 0.75},
+            {"key": "resolution", "label": "Resolution or hold", "units": 1.1}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Service authorization",
+          "fields": [
+            {"key": "customer_authorization", "label": "Customer authorization", "units": 1.25},
+            {"key": "customer_date_time", "label": "Date and time", "units": 0.75},
+            {"key": "advisor_signature", "label": "Advisor signature", "units": 1.15},
+            {"key": "advisor_date_time", "label": "Date and time", "units": 0.75}
+          ]
+        },
+        {
+          "key": "authorization_notice",
+          "type": "notice",
+          "label": "Authorization and stop-work control",
+          "guidance": "Do not expand service beyond the documented approval or substitute an oil, filter, or part that does not meet the recorded requirement. Stop and contact the customer when a safety concern, incompatible product, damaged component, or cost increase changes the authorized work."
+        }
+      ]
+    },
+    {
+      "key": "installed_service_record",
+      "title": "Installed product and service record",
+      "guidance": "Create a traceable maintenance record for the technician, installed products, quantities, service method, and completion evidence.",
+      "blocks": [
+        {
+          "key": "service_timing",
+          "type": "fields",
+          "label": "Technician and service timing",
+          "fields": [
+            {"key": "technician", "label": "Technician", "units": 0.9},
+            {"key": "service_start", "label": "Service start", "units": 0.75},
+            {"key": "service_complete", "label": "Service complete", "units": 0.8},
+            {"key": "bay", "label": "Bay", "units": 0.55},
+            {"key": "mileage_service", "label": "Service mileage", "units": 0.75},
+            {"key": "work_status", "label": "Work status", "units": 0.8, "field_type": "choice", "options": ["Completed", "Completed with note", "Paused", "Unable to complete"]}
+          ]
+        },
+        {
+          "key": "installed_products",
+          "type": "table",
+          "label": "Installed product and material record",
+          "columns": [
+            {"key": "product", "label": "Product or part", "units": 1.15},
+            {"key": "brand_spec", "label": "Brand, grade, or spec", "units": 1.15},
+            {"key": "part_lot", "label": "Part or lot number", "units": 0.95},
+            {"key": "quantity", "label": "Quantity", "units": 0.65},
+            {"key": "source", "label": "Shop or customer supplied", "units": 1.0},
+            {"key": "installed_by", "label": "Installed by", "units": 0.8}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "service_controls",
+          "type": "fields",
+          "label": "Oil service control values",
+          "fields": [
+            {"key": "quantity_installed", "label": "Oil quantity installed", "units": 0.95},
+            {"key": "drain_plug_torque", "label": "Drain plug torque", "units": 0.9},
+            {"key": "filter_torque_method", "label": "Filter torque or method", "units": 1.05},
+            {"key": "reminder_setting", "label": "Maintenance reminder set to", "units": 1.05},
+            {"key": "used_oil_disposition", "label": "Used oil disposition", "units": 0.9}
+          ]
+        },
+        {
+          "key": "service_variance",
+          "type": "textarea",
+          "label": "Product variance, damaged fastener, access issue, leak found during service, or other departure from the planned procedure",
+          "fields": [
+            {"key": "variance_detail", "label": "Service variance and resolution"}
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "completion_inspection",
+      "title": "Tires, brakes, lights, and underbody inspection",
+      "guidance": "Record visible-condition status and useful measurements that support a clear recommendation without implying a comprehensive safety inspection.",
+      "blocks": [
+        {
+          "key": "tire_brake_results",
+          "type": "table",
+          "label": "Tire and brake observations",
+          "columns": [
+            {"key": "inspection_item", "label": "Inspection item", "units": 1.25},
+            {"key": "status", "label": "OK, service, monitor, or N/A", "units": 1.0},
+            {"key": "reading", "label": "Pressure, tread, or reading", "units": 1.0},
+            {"key": "observation", "label": "Observation", "units": 1.15},
+            {"key": "recommendation_ref", "label": "Recommendation ref.", "units": 1.0}
+          ],
+          "rows": 8
+        },
+        {
+          "key": "tire_brake_items",
+          "type": "checklist",
+          "label": "Tire and brake items included",
+          "items": [
+            "Left front tire pressure and tread",
+            "Right front tire pressure and tread",
+            "Left rear tire pressure and tread",
+            "Right rear tire pressure and tread",
+            "Front brake visible condition",
+            "Rear brake visible condition",
+            "Tire damage or uneven wear",
+            "Wheel fastener concern visible"
+          ]
+        },
+        {
+          "key": "lights_underbody_results",
+          "type": "table",
+          "label": "Lights, belts, hoses, shields, and underbody observations",
+          "columns": [
+            {"key": "inspection_item", "label": "Inspection item", "units": 1.25},
+            {"key": "status", "label": "Status", "units": 0.75},
+            {"key": "reading", "label": "Reading if useful", "units": 0.9},
+            {"key": "observation", "label": "Observation", "units": 1.35},
+            {"key": "recommendation_ref", "label": "Recommendation ref.", "units": 1.0}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "inspection_limit",
+          "type": "notice",
+          "label": "Inspection boundary",
+          "guidance": "These observations are limited to the visible and listed items at the time of service. They do not replace a comprehensive mechanical, diagnostic, or safety inspection. Escalate any observed safety concern under shop procedure before vehicle release."
+        }
+      ]
+    },
+    {
+      "key": "recommendation_decision",
+      "title": "Recommendations and customer decision",
+      "guidance": "Separate completed work from future recommendations and document the evidence, priority, estimate, and customer decision for each item.",
+      "blocks": [
+        {
+          "key": "recommendation_register",
+          "type": "table",
+          "label": "Recommended, authorized, deferred, or declined services",
+          "columns": [
+            {"key": "service_part", "label": "Service or part", "units": 1.2},
+            {"key": "reason_evidence", "label": "Reason or evidence", "units": 1.3},
+            {"key": "priority", "label": "Priority", "units": 0.65},
+            {"key": "estimate", "label": "Estimate", "units": 0.7},
+            {"key": "decision", "label": "Authorize, defer, or decline", "units": 1.05},
+            {"key": "followup", "label": "Follow-up date or ref.", "units": 0.95}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "decision_summary",
+          "type": "fields",
+          "label": "Recommendation decision summary",
+          "fields": [
+            {"key": "authorized_count", "label": "Authorized today", "units": 0.8},
+            {"key": "deferred_count", "label": "Deferred items", "units": 0.75},
+            {"key": "declined_count", "label": "Declined items", "units": 0.75},
+            {"key": "urgent_item", "label": "Urgent item communicated", "units": 1.0},
+            {"key": "decision_contact", "label": "Decision contact", "units": 0.9},
+            {"key": "decision_date_time", "label": "Decision date and time", "units": 0.95}
+          ]
+        },
+        {
+          "key": "decision_notes",
+          "type": "textarea",
+          "label": "Customer questions, reason for deferral or decline, safety communication, parts availability, and follow-up commitment",
+          "fields": [
+            {"key": "decision_note_detail", "label": "Recommendation decision and follow-up notes"}
+          ],
+          "height": 68
+        }
+      ]
+    },
+    {
+      "key": "quality_delivery_closeout",
+      "title": "Quality control, invoice, vehicle delivery, and closeout",
+      "guidance": "Verify the oil service, resolve open exceptions, issue the final record, and obtain accountable technician and customer handoff.",
+      "blocks": [
+        {
+          "key": "completion_checks",
+          "type": "checklist",
+          "label": "Oil service completion checks",
+          "items": [
+            "Oil level verified",
+            "Leaks checked",
+            "Drain plug verified",
+            "Filter verified",
+            "Caps and dipstick secure",
+            "Warning lights reviewed",
+            "Maintenance reminder reset",
+            "Road or bay check complete",
+            "Underbody shield secured",
+            "Tools and protective materials removed"
+          ]
+        },
+        {
+          "key": "release_values",
+          "type": "fields",
+          "label": "Invoice, mileage, and next-service record",
+          "fields": [
+            {"key": "mileage_out", "label": "Mileage out", "units": 0.7},
+            {"key": "invoice_number", "label": "Invoice number", "units": 0.8},
+            {"key": "final_total", "label": "Final total", "units": 0.7},
+            {"key": "next_service", "label": "Next service mileage or date", "units": 1.1},
+            {"key": "released_by", "label": "Released by", "units": 0.8},
+            {"key": "pickup_date_time", "label": "Pickup date and time", "units": 0.9}
+          ]
+        },
+        {
+          "key": "open_items",
+          "type": "table",
+          "label": "Open exception and handoff register",
+          "columns": [
+            {"key": "open_item", "label": "Open item or limitation", "units": 1.35},
+            {"key": "interim_condition", "label": "Interim condition", "units": 1.15},
+            {"key": "owner", "label": "Owner", "units": 0.8},
+            {"key": "due", "label": "Due", "units": 0.7},
+            {"key": "handoff", "label": "Customer handoff", "units": 1.15}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "release_signatures",
+          "type": "signatures",
+          "label": "Vehicle release acknowledgment",
+          "fields": [
+            {"key": "customer_signature", "label": "Customer pickup acknowledgment", "units": 1.35},
+            {"key": "customer_date_time", "label": "Date and time", "units": 0.75},
+            {"key": "technician_signature", "label": "Technician sign-off", "units": 1.15},
+            {"key": "technician_date_time", "label": "Date and time", "units": 0.75}
+          ]
+        },
+        {
+          "key": "release_notice",
+          "type": "notice",
+          "label": "Release condition",
+          "guidance": "Release the vehicle only after installed products, oil level, leak check, dashboard status, invoice, recommendations, and unresolved items have been reviewed. Retain declined work and visible-condition observations as service records rather than representing them as completed repairs."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,443 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1009__home_remodel_change_order_request_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1009__home_remodel_change_order_request_form.pdf",
+  "slug": "home-remodel-change-order-request-form",
+  "title": "Home Remodel Change Order Request and Owner Decision",
+  "subtitle": "Document the room-level change, compare the approved baseline, reconcile selections and allowances, price household and schedule effects, authorize the decision, and verify restoration.",
+  "description": "A workflow-complete home remodel change request covering homeowner requests, concealed conditions, inspection corrections, room and finish effects, photographs and field evidence, selection substitutions, allowance reconciliation, direct cost, occupied-home disruption, temporary arrangements, option review, written authorization, implementation evidence, property restoration, and closeout.",
+  "use_case": "Use whenever remodeling work may depart from the executed scope and the homeowner, contractor, or designer needs a fillable record that makes room impacts, product decisions, allowance credits, cost, schedule, access, and final authorization visible before work proceeds.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "change_identity",
+      "title": "Change identity, home, and authorization path",
+      "guidance": "Create a traceable request and identify who may review and authorize it.",
+      "blocks": [
+        {
+          "key": "change_reference",
+          "type": "fields",
+          "label": "Change request reference",
+          "fields": [
+            {"key": "change_number", "label": "Change request number", "units": 0.85},
+            {"key": "date_identified", "label": "Date identified", "units": 0.7},
+            {"key": "response_due", "label": "Decision due", "units": 0.7},
+            {"key": "prepared_by", "label": "Prepared by", "units": 0.85},
+            {"key": "change_owner", "label": "Change manager", "units": 0.85},
+            {"key": "status", "label": "Request status", "units": 0.8, "field_type": "choice", "options": ["Draft", "Pricing", "Owner review", "Approved", "Rejected", "On hold", "Implemented", "Closed"]}
+          ]
+        },
+        {
+          "key": "property_reference",
+          "type": "fields",
+          "label": "Home and contract reference",
+          "fields": [
+            {"key": "homeowner_names", "label": "Homeowner names", "units": 1.05},
+            {"key": "property_address", "label": "Property address", "units": 1.35},
+            {"key": "contract_number", "label": "Contract number", "units": 0.8},
+            {"key": "work_order", "label": "Work order", "units": 0.7},
+            {"key": "affected_rooms", "label": "Affected rooms or areas", "units": 1.1}
+          ]
+        },
+        {
+          "key": "origin_routing",
+          "type": "fields",
+          "label": "Origin, urgency, and decision routing",
+          "fields": [
+            {"key": "requested_by", "label": "Requested or identified by", "units": 1.05},
+            {"key": "origin", "label": "Change origin", "units": 0.95, "field_type": "choice", "options": ["Homeowner request", "Selection revision", "Concealed condition", "Code or inspection", "Design clarification", "Product unavailable", "Property damage repair", "Contractor proposal"]},
+            {"key": "field_urgency", "label": "Field urgency", "units": 0.8, "field_type": "choice", "options": ["Routine", "Decision blocks work", "Protection work needed", "Emergency stabilization"]},
+            {"key": "homeowner_reviewer", "label": "Homeowner reviewer", "units": 0.9},
+            {"key": "design_reviewer", "label": "Design reviewer", "units": 0.9},
+            {"key": "submission_method", "label": "Submission method", "units": 0.85}
+          ]
+        },
+        {
+          "key": "authorization_notice",
+          "type": "notice",
+          "label": "Authorization control",
+          "guidance": "Submitting or pricing this request does not authorize changed work. Perform only protective or investigative measures allowed by the agreement until the required homeowner, contractor, design, lender, or association approval is documented."
+        }
+      ]
+    },
+    {
+      "key": "condition_scope",
+      "title": "Changed condition, room scope, and evidence",
+      "guidance": "Separate the approved baseline from the new observation, request, or desired result.",
+      "blocks": [
+        {
+          "key": "approved_baseline",
+          "type": "textarea",
+          "label": "Original room scope, selection, allowance, drawing detail, and acceptance requirement",
+          "fields": [
+            {"key": "baseline_detail", "label": "Approved baseline and reference"}
+          ],
+          "height": 64
+        },
+        {
+          "key": "requested_change",
+          "type": "textarea",
+          "label": "Observed condition or homeowner request, proposed revised work, and reason for the change",
+          "fields": [
+            {"key": "change_detail", "label": "Changed condition and proposed scope"}
+          ],
+          "height": 76
+        },
+        {
+          "key": "room_effects",
+          "type": "checklist",
+          "label": "Room, finish, and household effects identified",
+          "items": [
+            "Added demolition",
+            "Added or deleted installation",
+            "Layout or dimension revision",
+            "Cabinet or millwork revision",
+            "Fixture or appliance revision",
+            "Electrical or plumbing relocation",
+            "Tile, flooring, or paint revision",
+            "Matching existing finish",
+            "Structural or substrate repair",
+            "Permit or inspection effect",
+            "Access to another room",
+            "Furniture or contents relocation",
+            "Utility shutdown",
+            "Temporary kitchen or bath effect"
+          ]
+        },
+        {
+          "key": "evidence_retained",
+          "type": "checklist",
+          "label": "Supporting evidence retained",
+          "items": [
+            "Existing-condition photographs",
+            "Opened-wall photographs",
+            "Field measurements",
+            "Marked plan or sketch",
+            "Homeowner written request",
+            "Designer direction",
+            "Inspection correction notice",
+            "RFI or clarification",
+            "Supplier availability notice",
+            "Product sample or link",
+            "Trade quotation",
+            "Moisture, test, or survey result"
+          ]
+        },
+        {
+          "key": "affected_parties",
+          "type": "fields",
+          "label": "Affected work and coordination parties",
+          "fields": [
+            {"key": "affected_trade", "label": "Affected trade", "units": 0.9},
+            {"key": "successor_trade", "label": "Successor trade", "units": 0.9},
+            {"key": "inspection_contact", "label": "Inspector or permit contact", "units": 1.05},
+            {"key": "supplier_contact", "label": "Supplier contact", "units": 0.9},
+            {"key": "resident_contact", "label": "Resident coordination contact", "units": 1.05}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "selection_cost",
+      "title": "Selections, allowances, credits, and cost",
+      "guidance": "Show product changes and the complete price movement from the approved baseline.",
+      "blocks": [
+        {
+          "key": "selection_changes",
+          "type": "table",
+          "label": "Selection or product change register",
+          "columns": [
+            {"key": "room_item", "label": "Room and item", "units": 1.0},
+            {"key": "approved_selection", "label": "Approved selection", "units": 1.15},
+            {"key": "proposed_selection", "label": "Proposed selection", "units": 1.2},
+            {"key": "availability", "label": "Availability", "units": 0.8},
+            {"key": "sample_status", "label": "Sample status", "units": 0.8},
+            {"key": "decision_due", "label": "Decision due", "units": 0.7}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "direct_cost",
+          "type": "table",
+          "label": "Added work, deleted work, and direct-cost detail",
+          "columns": [
+            {"key": "labor_material", "label": "Labor, material, or service", "units": 1.35},
+            {"key": "quantity_hours", "label": "Qty or hours", "units": 0.75},
+            {"key": "unit", "label": "Unit", "units": 0.55},
+            {"key": "unit_rate", "label": "Unit rate", "units": 0.7},
+            {"key": "source", "label": "Quote or rate source", "units": 1.1},
+            {"key": "line_total", "label": "Line total", "units": 0.75}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "allowance_reconciliation",
+          "type": "table",
+          "label": "Allowance, owner purchase, and credit reconciliation",
+          "columns": [
+            {"key": "category", "label": "Category", "units": 1.0},
+            {"key": "included_allowance", "label": "Included allowance", "units": 0.95},
+            {"key": "actual_selected", "label": "Actual or selected", "units": 1.0},
+            {"key": "credit_overage", "label": "Credit or overage", "units": 0.9},
+            {"key": "tax_delivery_labor", "label": "Tax, delivery, or labor note", "units": 1.25}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "cost_summary",
+          "type": "fields",
+          "label": "Change pricing summary",
+          "fields": [
+            {"key": "added_cost", "label": "Added cost", "units": 0.7},
+            {"key": "deleted_credit", "label": "Deleted-work credit", "units": 0.8},
+            {"key": "allowance_adjustment", "label": "Allowance adjustment", "units": 0.9},
+            {"key": "markup_tax", "label": "Markup and tax", "units": 0.75},
+            {"key": "net_change", "label": "Net contract change", "units": 0.85},
+            {"key": "revised_contract_total", "label": "Revised contract total", "units": 0.95}
+          ]
+        },
+        {
+          "key": "pricing_assumptions",
+          "type": "textarea",
+          "label": "Pricing basis, quantity assumptions, credits, product lead time, validity, and exclusions",
+          "fields": [
+            {"key": "pricing_detail", "label": "Change pricing assumptions and qualifications"}
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "schedule_occupancy",
+      "title": "Schedule and occupied-home impact",
+      "guidance": "Make disruption, access, temporary facilities, and recovery commitments part of the decision.",
+      "blocks": [
+        {
+          "key": "schedule_effect",
+          "type": "fields",
+          "label": "Schedule effect",
+          "fields": [
+            {"key": "baseline_milestone", "label": "Baseline milestone", "units": 1.0},
+            {"key": "baseline_date", "label": "Baseline date", "units": 0.7},
+            {"key": "added_work_days", "label": "Added work days", "units": 0.75},
+            {"key": "procurement_days", "label": "Procurement days", "units": 0.8},
+            {"key": "revised_milestone", "label": "Revised milestone", "units": 1.0},
+            {"key": "decision_deadline", "label": "Decision deadline", "units": 0.8}
+          ]
+        },
+        {
+          "key": "household_impact",
+          "type": "checklist",
+          "label": "Household and property impact reviewed",
+          "items": [
+            "Work zone expands",
+            "Additional room unavailable",
+            "Kitchen downtime changes",
+            "Bathroom downtime changes",
+            "Water shutdown changes",
+            "Power shutdown changes",
+            "Heating or cooling changes",
+            "Dust-control plan changes",
+            "Noise or work hours change",
+            "Resident move-out considered",
+            "Pet or child route changes",
+            "Driveway or parking changes",
+            "Association or neighbor notice",
+            "Protection or cleanup changes"
+          ]
+        },
+        {
+          "key": "temporary_arrangements",
+          "type": "table",
+          "label": "Temporary arrangement and access commitments",
+          "columns": [
+            {"key": "need", "label": "Household need", "units": 1.2},
+            {"key": "temporary_solution", "label": "Temporary solution", "units": 1.4},
+            {"key": "provided_by", "label": "Provided by", "units": 0.85},
+            {"key": "start_end", "label": "Start and end", "units": 0.85},
+            {"key": "cost_responsibility", "label": "Cost responsibility", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "impact_mitigation",
+          "type": "textarea",
+          "label": "Resequencing, temporary protection, resident communication, schedule recovery, and consequences of delayed decision",
+          "fields": [
+            {"key": "mitigation_detail", "label": "Schedule and household mitigation plan"}
+          ],
+          "height": 74
+        }
+      ]
+    },
+    {
+      "key": "review_authorization",
+      "title": "Option review and written authorization",
+      "guidance": "Compare alternatives, preserve revisions, and identify the people granting authority.",
+      "blocks": [
+        {
+          "key": "option_comparison",
+          "type": "table",
+          "label": "Change option comparison",
+          "columns": [
+            {"key": "option", "label": "Option", "units": 0.8},
+            {"key": "scope_result", "label": "Scope or finish result", "units": 1.35},
+            {"key": "price", "label": "Price", "units": 0.65},
+            {"key": "time", "label": "Time effect", "units": 0.7},
+            {"key": "household_effect", "label": "Household effect", "units": 1.15},
+            {"key": "decision", "label": "Decision", "units": 0.7}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "review_log",
+          "type": "table",
+          "label": "Homeowner, contractor, and design review log",
+          "columns": [
+            {"key": "date", "label": "Date", "units": 0.6},
+            {"key": "reviewer", "label": "Reviewer", "units": 0.9},
+            {"key": "comment_revision", "label": "Comment or revision", "units": 1.35},
+            {"key": "response", "label": "Response", "units": 1.15},
+            {"key": "action_owner", "label": "Action owner", "units": 0.85},
+            {"key": "closed", "label": "Closed", "units": 0.55}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "final_terms",
+          "type": "fields",
+          "label": "Final decision and commercial terms",
+          "fields": [
+            {"key": "decision", "label": "Decision", "units": 0.9, "field_type": "choice", "options": ["Approved", "Approved with conditions", "Rejected", "Revise and resubmit", "Deferred"]},
+            {"key": "approved_amount", "label": "Approved amount", "units": 0.8},
+            {"key": "approved_days", "label": "Approved days", "units": 0.7},
+            {"key": "selection_option", "label": "Approved selection or option", "units": 1.05},
+            {"key": "effective_date", "label": "Effective date", "units": 0.7},
+            {"key": "change_order_number", "label": "Executed change number", "units": 0.9}
+          ]
+        },
+        {
+          "key": "decision_conditions",
+          "type": "textarea",
+          "label": "Approved scope, selected option, negotiated exclusions, household conditions, and implementation limits",
+          "fields": [
+            {"key": "decision_condition_detail", "label": "Final change terms and conditions"}
+          ],
+          "height": 64
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Change authorization",
+          "fields": [
+            {"key": "homeowner_one", "label": "Homeowner signature", "units": 1.2},
+            {"key": "homeowner_one_date", "label": "Date", "units": 0.55},
+            {"key": "homeowner_two", "label": "Second decision maker", "units": 1.1},
+            {"key": "homeowner_two_date", "label": "Date", "units": 0.55},
+            {"key": "contractor_signature", "label": "Contractor signature", "units": 1.15},
+            {"key": "contractor_date", "label": "Date", "units": 0.55}
+          ]
+        },
+        {
+          "key": "approval_notice",
+          "type": "notice",
+          "label": "Approval record",
+          "guidance": "Use the executed change document required by the remodeling agreement when this request is approved. Product approval, field access, or a schedule discussion alone does not authorize a contract price or scope change."
+        }
+      ]
+    },
+    {
+      "key": "implementation_closeout",
+      "title": "Implementation, restoration, and closeout",
+      "guidance": "Verify the approved change reached the correct room, product, cost, schedule, and household record.",
+      "blocks": [
+        {
+          "key": "implementation_readiness",
+          "type": "checklist",
+          "label": "Implementation readiness confirmed",
+          "items": [
+            "Executed change distributed",
+            "Revised selection released",
+            "Revised drawing or sketch issued",
+            "Permit or inspection update complete",
+            "Affected trades briefed",
+            "Product availability confirmed",
+            "Access window confirmed",
+            "Resident disruption notice delivered",
+            "Protection plan updated",
+            "Temporary arrangement ready",
+            "Budget commitment updated",
+            "Schedule updated"
+          ]
+        },
+        {
+          "key": "implementation_status",
+          "type": "fields",
+          "label": "Approved change implementation status",
+          "fields": [
+            {"key": "field_notice_date", "label": "Field notice date", "units": 0.75},
+            {"key": "work_started", "label": "Changed work started", "units": 0.85},
+            {"key": "work_completed", "label": "Changed work completed", "units": 0.9},
+            {"key": "actual_cost_reference", "label": "Actual cost reference", "units": 0.9},
+            {"key": "actual_schedule_effect", "label": "Actual schedule effect", "units": 0.9},
+            {"key": "implementation_owner", "label": "Implementation owner", "units": 0.95}
+          ]
+        },
+        {
+          "key": "verification_log",
+          "type": "table",
+          "label": "Room, product, and change verification",
+          "columns": [
+            {"key": "room_item", "label": "Room and item", "units": 1.05},
+            {"key": "approved_requirement", "label": "Approved requirement", "units": 1.25},
+            {"key": "installed_result", "label": "Installed result", "units": 1.15},
+            {"key": "evidence", "label": "Photo or inspection", "units": 0.95},
+            {"key": "verified_by", "label": "Verified by", "units": 0.8},
+            {"key": "status", "label": "Status", "units": 0.65}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "restoration_check",
+          "type": "checklist",
+          "label": "Household and property restoration verified",
+          "items": [
+            "Affected room cleaned",
+            "Adjacent finishes protected",
+            "Utilities restored",
+            "Temporary facilities removed",
+            "Furniture or contents restored",
+            "Resident route reopened",
+            "Keys and alarm status confirmed",
+            "Unused product disposition recorded",
+            "Warranty record updated",
+            "Homeowner briefed"
+          ]
+        },
+        {
+          "key": "variance_closeout",
+          "type": "textarea",
+          "label": "Difference between approved and installed work, unresolved claim, open household issue, and accountable owner",
+          "fields": [
+            {"key": "variance_detail", "label": "Implementation variance and closeout"}
+          ],
+          "height": 92
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Change implementation closeout",
+          "fields": [
+            {"key": "project_manager", "label": "Project manager signature", "units": 1.2},
+            {"key": "project_manager_date", "label": "Date", "units": 0.55},
+            {"key": "site_lead", "label": "Site lead signature", "units": 1.05},
+            {"key": "site_lead_date", "label": "Date", "units": 0.55},
+            {"key": "homeowner_acknowledgment", "label": "Homeowner acknowledgment", "units": 1.2},
+            {"key": "homeowner_date", "label": "Date", "units": 0.55}
+          ]
+        }
+      ]
+    }
+  ]
+}

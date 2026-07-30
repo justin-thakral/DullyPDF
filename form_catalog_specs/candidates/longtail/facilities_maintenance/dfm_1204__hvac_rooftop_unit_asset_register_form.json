@@ -1,0 +1,1017 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1204__hvac_rooftop_unit_asset_register_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1204__hvac_rooftop_unit_asset_register_form.pdf",
+  "slug": "hvac-rooftop-unit-asset-register-form",
+  "title": "HVAC Rooftop Unit Asset Register and Lifecycle Record",
+  "subtitle": "Maintain one authoritative RTU record for identity, roof location, nameplate data, configuration, controls, access and isolation, documents, maintenance strategy, condition, capital decisions, changes, and retirement.",
+  "description": "A lifecycle-oriented HVAC rooftop unit asset register covering ownership and location, equipment and component data, electrical and refrigerant configuration, controls integration, safe access and isolation references, warranties and documents, maintenance planning, baseline readings, condition, capital review, and decommissioning.",
+  "use_case": "Use when facilities, service providers, and capital planners need a durable master record for one RTU that supports dispatch, preventive maintenance, parts planning, safe isolation, warranty claims, condition decisions, replacement forecasting, and controlled asset changes.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "asset_ownership",
+      "title": "Asset identity, ownership, and location",
+      "guidance": "Establish the stable identity used by work orders, controls, drawings, and field labels.",
+      "blocks": [
+        {
+          "key": "asset_identifiers",
+          "type": "fields",
+          "label": "Asset identifiers",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Primary asset or RTU ID",
+              "units": 1.0
+            },
+            {
+              "key": "alternate_id",
+              "label": "Alternate or legacy ID",
+              "units": 0.9
+            },
+            {
+              "key": "barcode_qr",
+              "label": "Barcode or QR reference",
+              "units": 0.9
+            },
+            {
+              "key": "record_created",
+              "label": "Record created date",
+              "units": 0.7
+            },
+            {
+              "key": "record_owner",
+              "label": "Record owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "property_location",
+          "type": "fields",
+          "label": "Property and rooftop location",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Property or facility",
+              "units": 1.15
+            },
+            {
+              "key": "street_address",
+              "label": "Street address",
+              "units": 1.25
+            },
+            {
+              "key": "building",
+              "label": "Building or wing",
+              "units": 0.8
+            },
+            {
+              "key": "roof_area",
+              "label": "Roof area or grid",
+              "units": 0.8
+            },
+            {
+              "key": "gps_drawing",
+              "label": "GPS or drawing reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "service_coverage",
+          "type": "fields",
+          "label": "Served space and operational ownership",
+          "fields": [
+            {
+              "key": "served_area",
+              "label": "Area, zone, or process served",
+              "units": 1.25
+            },
+            {
+              "key": "department_tenant",
+              "label": "Department or tenant",
+              "units": 1.0
+            },
+            {
+              "key": "facility_owner",
+              "label": "Facility asset owner",
+              "units": 0.95
+            },
+            {
+              "key": "criticality",
+              "label": "Operational criticality",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Low",
+                "Standard",
+                "High",
+                "Mission critical",
+                "Life-safety support"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "location_notes",
+          "type": "textarea",
+          "label": "How to find the RTU, nearby landmarks, service clearance limits, roof hazards, and access restrictions",
+          "fields": [
+            {
+              "key": "location_notes_detail",
+              "label": "RTU location and access notes"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "equipment_nameplate",
+      "title": "Nameplate, capacity, and configuration",
+      "guidance": "Transcribe field-verified data and retain a nameplate image for future service.",
+      "blocks": [
+        {
+          "key": "manufacturer_identity",
+          "type": "fields",
+          "label": "Manufacturer identity",
+          "fields": [
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 0.9
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 1.1
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.1
+            },
+            {
+              "key": "manufacture_date",
+              "label": "Manufacture date",
+              "units": 0.75
+            },
+            {
+              "key": "nameplate_photo",
+              "label": "Nameplate photo ID",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "system_capacity",
+          "type": "fields",
+          "label": "System type and capacity",
+          "fields": [
+            {
+              "key": "system_type",
+              "label": "Packaged system type",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Cooling only",
+                "Gas-electric",
+                "Heat pump",
+                "Electric heat",
+                "Dual fuel",
+                "Dedicated outdoor air",
+                "Other packaged RTU"
+              ]
+            },
+            {
+              "key": "nominal_tonnage",
+              "label": "Nominal tonnage",
+              "units": 0.7
+            },
+            {
+              "key": "cooling_capacity",
+              "label": "Cooling capacity",
+              "units": 0.8
+            },
+            {
+              "key": "heating_type",
+              "label": "Heating type",
+              "units": 0.85
+            },
+            {
+              "key": "heating_capacity",
+              "label": "Heating capacity",
+              "units": 0.85
+            },
+            {
+              "key": "design_airflow",
+              "label": "Design airflow",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "electrical_nameplate",
+          "type": "fields",
+          "label": "Electrical nameplate",
+          "fields": [
+            {
+              "key": "voltage",
+              "label": "Voltage",
+              "units": 0.55
+            },
+            {
+              "key": "phase",
+              "label": "Phase",
+              "units": 0.45
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency",
+              "units": 0.55
+            },
+            {
+              "key": "mca",
+              "label": "Minimum circuit ampacity",
+              "units": 0.9
+            },
+            {
+              "key": "mocp",
+              "label": "Maximum overcurrent protection",
+              "units": 1.0
+            },
+            {
+              "key": "disconnect_rating",
+              "label": "Disconnect rating",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "refrigerant_airside",
+          "type": "fields",
+          "label": "Refrigerant and airside configuration",
+          "fields": [
+            {
+              "key": "refrigerant_type",
+              "label": "Refrigerant type",
+              "units": 0.75
+            },
+            {
+              "key": "factory_charge",
+              "label": "Factory charge",
+              "units": 0.7
+            },
+            {
+              "key": "field_charge_record",
+              "label": "Field charge record",
+              "units": 0.85
+            },
+            {
+              "key": "filter_size_count",
+              "label": "Filter size and count",
+              "units": 1.0
+            },
+            {
+              "key": "filter_rating",
+              "label": "Filter rating",
+              "units": 0.7
+            },
+            {
+              "key": "belt_drive",
+              "label": "Belt size or direct drive",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "configuration_options",
+          "type": "checklist",
+          "label": "Installed options and accessories",
+          "items": [
+            "Economizer",
+            "Powered exhaust",
+            "Energy-recovery section",
+            "Smoke detector",
+            "Low-ambient control",
+            "Hot-gas reheat",
+            "Electric heat",
+            "Gas heat",
+            "UV or air-treatment accessory",
+            "Service receptacle",
+            "Factory curb",
+            "Roof curb adapter",
+            "Vibration isolation",
+            "Remote monitoring",
+            "Freeze or overflow protection",
+            "Other accessory documented"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "components_controls",
+      "title": "Components, controls, and BAS integration",
+      "guidance": "Record replaceable assemblies and control references needed for diagnosis and parts planning.",
+      "blocks": [
+        {
+          "key": "component_register",
+          "type": "table",
+          "label": "Major component register",
+          "columns": [
+            {
+              "key": "component",
+              "label": "Component",
+              "units": 1.05
+            },
+            {
+              "key": "manufacturer_model",
+              "label": "Manufacturer or model",
+              "units": 1.15
+            },
+            {
+              "key": "serial_part",
+              "label": "Serial or part number",
+              "units": 1.0
+            },
+            {
+              "key": "rating_size",
+              "label": "Rating or size",
+              "units": 0.8
+            },
+            {
+              "key": "installed_date",
+              "label": "Installed date",
+              "units": 0.7
+            },
+            {
+              "key": "warranty_status",
+              "label": "Warranty or status",
+              "units": 0.85
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "controls_identity",
+          "type": "fields",
+          "label": "Controls and BAS identity",
+          "fields": [
+            {
+              "key": "controller_model",
+              "label": "Unit controller model",
+              "units": 1.0
+            },
+            {
+              "key": "thermostat_sensor",
+              "label": "Thermostat or zone sensor",
+              "units": 1.0
+            },
+            {
+              "key": "bas_system",
+              "label": "BAS platform",
+              "units": 0.9
+            },
+            {
+              "key": "network_address",
+              "label": "Network or device address",
+              "units": 0.9
+            },
+            {
+              "key": "graphics_point",
+              "label": "Graphics or point reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "control_points",
+          "type": "table",
+          "label": "Critical control and alarm points",
+          "columns": [
+            {
+              "key": "point",
+              "label": "Point or alarm",
+              "units": 1.15
+            },
+            {
+              "key": "source",
+              "label": "Sensor or source",
+              "units": 0.95
+            },
+            {
+              "key": "normal_range",
+              "label": "Normal range or state",
+              "units": 1.0
+            },
+            {
+              "key": "alarm_limit",
+              "label": "Alarm limit",
+              "units": 0.75
+            },
+            {
+              "key": "response_owner",
+              "label": "Response owner",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "control_notes",
+          "type": "textarea",
+          "label": "Control sequence, overrides, limits, reset authority, and document",
+          "fields": [
+            {
+              "key": "control_notes_detail",
+              "label": "Control sequence and limitation notes"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "access_isolation",
+      "title": "Service access, isolation, and known hazards",
+      "guidance": "Give future technicians reliable access and energy-control information without replacing field verification.",
+      "blocks": [
+        {
+          "key": "access_information",
+          "type": "fields",
+          "label": "Roof and equipment access",
+          "fields": [
+            {
+              "key": "access_method",
+              "label": "Roof access method",
+              "units": 0.9
+            },
+            {
+              "key": "key_badge_control",
+              "label": "Key, badge, or lock control",
+              "units": 1.0
+            },
+            {
+              "key": "escort_requirement",
+              "label": "Escort requirement",
+              "units": 0.85
+            },
+            {
+              "key": "fall_protection",
+              "label": "Fall-protection requirement",
+              "units": 1.0
+            },
+            {
+              "key": "material_route",
+              "label": "Part or material route",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "energy_control",
+          "type": "fields",
+          "label": "Energy-control references",
+          "fields": [
+            {
+              "key": "disconnect_location",
+              "label": "Local disconnect location",
+              "units": 1.0
+            },
+            {
+              "key": "upstream_panel",
+              "label": "Upstream panel and circuit",
+              "units": 1.0
+            },
+            {
+              "key": "other_energy",
+              "label": "Gas, stored, or other energy",
+              "units": 1.0
+            },
+            {
+              "key": "loto_procedure",
+              "label": "LOTO procedure reference",
+              "units": 1.0
+            },
+            {
+              "key": "shutdown_contact",
+              "label": "Shutdown approval contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "known_hazards",
+          "type": "checklist",
+          "label": "Known access and service hazards",
+          "items": [
+            "Unprotected roof edge",
+            "Fragile or restricted roof surface",
+            "Fixed ladder or hatch hazard",
+            "Overhead or nearby electrical hazard",
+            "Multiple electrical sources",
+            "Gas heat or hot surface",
+            "Sharp sheet-metal edges",
+            "Rotating components",
+            "Dropped-object exposure below",
+            "Weather or ice exposure",
+            "Restricted occupied area below",
+            "Chemical or refrigerant response requirement",
+            "Two-person work requirement",
+            "No known special hazard"
+          ]
+        },
+        {
+          "key": "hazard_controls",
+          "type": "textarea",
+          "label": "Site control, stop-work trigger, emergency contact, and exception",
+          "fields": [
+            {
+              "key": "hazard_controls_detail",
+              "label": "Known hazard and control detail"
+            }
+          ],
+          "height": 54
+        },
+        {
+          "key": "safety_notice",
+          "type": "notice",
+          "label": "Field-verification requirement",
+          "guidance": "Stored access and isolation information is a planning aid only. Qualified personnel must verify current site conditions, energy sources, disconnect identity, absence of voltage, permits, PPE, weather, and fall protection before work."
+        }
+      ]
+    },
+    {
+      "key": "installation_documents",
+      "title": "Installation, warranty, providers, documents",
+      "guidance": "Link the asset to records needed for warranty, service, compliance, and replacement.",
+      "blocks": [
+        {
+          "key": "installation_record",
+          "type": "fields",
+          "label": "Installation and commissioning",
+          "fields": [
+            {
+              "key": "installation_date",
+              "label": "Installation date",
+              "units": 0.7
+            },
+            {
+              "key": "installer",
+              "label": "Installer",
+              "units": 1.0
+            },
+            {
+              "key": "startup_date",
+              "label": "Startup date",
+              "units": 0.7
+            },
+            {
+              "key": "commissioning_agent",
+              "label": "Commissioning agent",
+              "units": 1.0
+            },
+            {
+              "key": "permit_reference",
+              "label": "Permit or inspection reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "warranty_record",
+          "type": "fields",
+          "label": "Warranty and ownership terms",
+          "fields": [
+            {
+              "key": "equipment_warranty_end",
+              "label": "Equipment warranty end",
+              "units": 0.9
+            },
+            {
+              "key": "compressor_warranty_end",
+              "label": "Compressor warranty end",
+              "units": 0.95
+            },
+            {
+              "key": "labor_warranty_end",
+              "label": "Labor warranty end",
+              "units": 0.85
+            },
+            {
+              "key": "warranty_provider",
+              "label": "Warranty provider",
+              "units": 0.95
+            },
+            {
+              "key": "registration_claim",
+              "label": "Registration or claim reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "service_contacts",
+          "type": "fields",
+          "label": "Service and parts contacts",
+          "fields": [
+            {
+              "key": "primary_service_vendor",
+              "label": "Primary service vendor",
+              "units": 1.1
+            },
+            {
+              "key": "service_phone",
+              "label": "Service phone",
+              "units": 0.75
+            },
+            {
+              "key": "contract_number",
+              "label": "Service contract",
+              "units": 0.85
+            },
+            {
+              "key": "parts_source",
+              "label": "Parts source",
+              "units": 0.9
+            },
+            {
+              "key": "technical_support",
+              "label": "Manufacturer support",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "document_register",
+          "type": "table",
+          "label": "Asset document and evidence register",
+          "columns": [
+            {
+              "key": "document",
+              "label": "Document or record",
+              "units": 1.2
+            },
+            {
+              "key": "reference",
+              "label": "Number or file link",
+              "units": 1.2
+            },
+            {
+              "key": "revision_date",
+              "label": "Revision or date",
+              "units": 0.75
+            },
+            {
+              "key": "owner",
+              "label": "Record owner",
+              "units": 0.85
+            },
+            {
+              "key": "status",
+              "label": "Current or missing",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "maintenance_condition",
+      "title": "Maintenance, baselines, and capital plan",
+      "guidance": "Translate asset data into service intervals, spares, performance baselines, and renewal priorities.",
+      "blocks": [
+        {
+          "key": "maintenance_strategy",
+          "type": "fields",
+          "label": "Preventive maintenance strategy",
+          "fields": [
+            {
+              "key": "pm_frequency",
+              "label": "PM frequency",
+              "units": 0.75
+            },
+            {
+              "key": "filter_frequency",
+              "label": "Filter service frequency",
+              "units": 0.9
+            },
+            {
+              "key": "coil_frequency",
+              "label": "Coil cleaning frequency",
+              "units": 0.9
+            },
+            {
+              "key": "primary_pm_owner",
+              "label": "Primary PM owner",
+              "units": 0.9
+            },
+            {
+              "key": "last_pm_date",
+              "label": "Last PM date",
+              "units": 0.65
+            },
+            {
+              "key": "next_pm_due",
+              "label": "Next PM due",
+              "units": 0.65
+            }
+          ]
+        },
+        {
+          "key": "stocked_parts",
+          "type": "table",
+          "label": "Recommended stocked consumables and critical spares",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part or consumable",
+              "units": 1.15
+            },
+            {
+              "key": "part_number",
+              "label": "Part number",
+              "units": 0.9
+            },
+            {
+              "key": "stock_quantity",
+              "label": "Stock quantity",
+              "units": 0.7
+            },
+            {
+              "key": "storage_location",
+              "label": "Storage location",
+              "units": 0.95
+            },
+            {
+              "key": "reorder_point",
+              "label": "Reorder point",
+              "units": 0.7
+            },
+            {
+              "key": "lead_time",
+              "label": "Lead time",
+              "units": 0.65
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "baseline_readings",
+          "type": "table",
+          "label": "Accepted baseline operating readings",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter or point",
+              "units": 1.25
+            },
+            {
+              "key": "baseline_value",
+              "label": "Baseline value",
+              "units": 0.8
+            },
+            {
+              "key": "acceptable_range",
+              "label": "Accepted range",
+              "units": 0.9
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.5
+            },
+            {
+              "key": "date_conditions",
+              "label": "Date and conditions",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or instrument",
+              "units": 0.95
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "condition_decision",
+          "type": "fields",
+          "label": "Condition and capital status",
+          "fields": [
+            {
+              "key": "condition_rating",
+              "label": "Current condition",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Excellent",
+                "Good",
+                "Fair",
+                "Poor",
+                "Critical",
+                "Not assessed"
+              ]
+            },
+            {
+              "key": "remaining_life",
+              "label": "Estimated remaining life",
+              "units": 0.85
+            },
+            {
+              "key": "replacement_target",
+              "label": "Replacement target year",
+              "units": 0.85
+            },
+            {
+              "key": "budget_estimate",
+              "label": "Budget estimate",
+              "units": 0.75
+            },
+            {
+              "key": "capital_project",
+              "label": "Capital project or decision reference",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "condition_rationale",
+          "type": "textarea",
+          "label": "Condition rationale, recurring failures, repair-or-replace decision, and approval",
+          "fields": [
+            {
+              "key": "condition_rationale_detail",
+              "label": "Condition and capital decision rationale"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "change_retirement",
+      "title": "Asset changes, record approval, and retirement",
+      "guidance": "Preserve lifecycle changes and prevent obsolete data from driving future service decisions.",
+      "blocks": [
+        {
+          "key": "change_log",
+          "type": "table",
+          "label": "Asset configuration and record change log",
+          "columns": [
+            {
+              "key": "change_date",
+              "label": "Change date",
+              "units": 0.7
+            },
+            {
+              "key": "change",
+              "label": "Component, setting, or data change",
+              "units": 1.35
+            },
+            {
+              "key": "reason",
+              "label": "Reason",
+              "units": 1.0
+            },
+            {
+              "key": "work_order",
+              "label": "Work order or project",
+              "units": 0.9
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or revision",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "record_review",
+          "type": "fields",
+          "label": "Current record review",
+          "fields": [
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.65
+            },
+            {
+              "key": "review_status",
+              "label": "Record status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Current",
+                "Update required",
+                "Field verification required",
+                "Pending capital decision",
+                "Retired"
+              ]
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by",
+              "units": 0.9
+            },
+            {
+              "key": "exception_owner",
+              "label": "Data exception owner",
+              "units": 0.9
+            },
+            {
+              "key": "exception_due",
+              "label": "Correction due",
+              "units": 0.7
+            }
+          ]
+        },
+        {
+          "key": "retirement_record",
+          "type": "fields",
+          "label": "Retirement or replacement record",
+          "fields": [
+            {
+              "key": "retirement_date",
+              "label": "Retirement date",
+              "units": 0.7
+            },
+            {
+              "key": "replacement_asset",
+              "label": "Replacement asset ID",
+              "units": 0.9
+            },
+            {
+              "key": "decommission_work_order",
+              "label": "Decommission work order",
+              "units": 0.95
+            },
+            {
+              "key": "refrigerant_disposition",
+              "label": "Refrigerant recovery record",
+              "units": 1.05
+            },
+            {
+              "key": "asset_disposition",
+              "label": "Equipment disposition",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "retirement_checklist",
+          "type": "checklist",
+          "label": "Retirement closeout when applicable",
+          "items": [
+            "Electrical source disconnected and documented",
+            "Gas or other energy source closed",
+            "Refrigerant handled by qualified personnel",
+            "Controls and BAS point retired or reassigned",
+            "Roof opening, curb, and weather protection resolved",
+            "Salvaged parts recorded",
+            "Warranty and service contract updated",
+            "Drawings and asset system updated",
+            "Replacement asset linked",
+            "Final evidence retained"
+          ]
+        },
+        {
+          "key": "signoff",
+          "type": "signatures",
+          "label": "Asset record approval",
+          "fields": [
+            {
+              "key": "record_preparer",
+              "label": "Record preparer",
+              "units": 1.0
+            },
+            {
+              "key": "field_verifier",
+              "label": "Field verifier",
+              "units": 1.0
+            },
+            {
+              "key": "asset_owner_approval",
+              "label": "Asset owner approval",
+              "units": 1.0
+            },
+            {
+              "key": "approval_date",
+              "label": "Date",
+              "units": 0.55
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

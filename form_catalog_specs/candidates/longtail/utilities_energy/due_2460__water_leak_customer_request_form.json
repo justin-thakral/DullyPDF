@@ -1,0 +1,455 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2460__water_leak_customer_request_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2460__water_leak_customer_request_form.pdf",
+  "slug": "water-leak-customer-request-form",
+  "title": "Water Leak Customer Request Form",
+  "subtitle": "An original water leak workflow that preserves the customer's observation and routes a clear service response, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete water leak customer request form for the suspected or confirmed water-release location that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when a customer asks for service, investigation, or follow-up and staff need a traceable account of the requested outcome, symptoms, evidence, safety screen, communication, and disposition. The leak response coordinator owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "customer_routing",
+      "title": "Water leak customer request and communication routing",
+      "guidance": "Capture the customer's own observation and give the request a clear service owner.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Customer request record",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Customer request record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "customer_contact",
+          "type": "fields",
+          "label": "Customer and communication preferences",
+          "fields": [
+            {
+              "key": "customer_name",
+              "label": "Customer or organization",
+              "units": 1.2
+            },
+            {
+              "key": "contact_name",
+              "label": "Primary contact",
+              "units": 1.0
+            },
+            {
+              "key": "phone",
+              "label": "Phone",
+              "units": 0.85
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.1
+            },
+            {
+              "key": "contact_method",
+              "label": "Preferred contact",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Phone",
+                "Text",
+                "Email",
+                "Portal"
+              ]
+            },
+            {
+              "key": "contact_window",
+              "label": "Best contact window",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "requested_outcome",
+      "title": "Water leak requested outcome and customer constraints",
+      "guidance": "Describe the requested result without treating the customer's suspected cause as confirmed.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Water leak identity",
+          "fields": [
+            {
+              "key": "property_zone",
+              "label": "Property, building, or zone",
+              "units": 1.15
+            },
+            {
+              "key": "leak_location",
+              "label": "Observed leak location",
+              "units": 1.2
+            },
+            {
+              "key": "suspected_source",
+              "label": "Suspected source or system",
+              "units": 1.15
+            },
+            {
+              "key": "meter_id",
+              "label": "Meter or submeter ID",
+              "units": 1.0
+            },
+            {
+              "key": "shutoff_location",
+              "label": "Known shutoff location",
+              "units": 1.15
+            },
+            {
+              "key": "occupancy_impact",
+              "label": "Occupancy or service impact",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "customer_needs",
+          "type": "checklist",
+          "label": "Customer request type",
+          "items": [
+            "Active leak or uncontrolled water",
+            "Intermittent drip or recurring moisture",
+            "High usage or moving-meter concern",
+            "Low pressure or suspected service-line leak",
+            "Roof, ceiling, wall, floor, or window intrusion",
+            "Fixture, appliance, drain, or equipment leak",
+            "Post-repair verification or recurrence",
+            "Damage, drying, restoration, or insurance documentation"
+          ]
+        },
+        {
+          "key": "customer_description",
+          "type": "textarea",
+          "label": "Customer observation in their own words",
+          "fields": [
+            {
+              "key": "details",
+              "label": "What was observed, when it began, frequency, affected service, desired outcome, and prior contact",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "condition_evidence",
+      "title": "Water leak condition timeline and supplied evidence",
+      "guidance": "Preserve dates, sources, and attachments so service staff can distinguish symptoms from verified findings.",
+      "blocks": [
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "Known system baseline",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.15
+            },
+            {
+              "key": "flow_status",
+              "label": "Active, intermittent, or stopped",
+              "units": 1.1
+            },
+            {
+              "key": "affected_area",
+              "label": "Affected rooms or area",
+              "units": 1.1
+            },
+            {
+              "key": "water_type",
+              "label": "Known water type or unknown",
+              "units": 1.15
+            },
+            {
+              "key": "meter_baseline",
+              "label": "Baseline meter or flow ref",
+              "units": 1.1
+            },
+            {
+              "key": "prior_history",
+              "label": "Prior leak or repair ref",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "symptom_timeline",
+          "type": "table",
+          "label": "Customer observation timeline",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date / time",
+              "units": 0.85
+            },
+            {
+              "key": "observation",
+              "label": "Observed condition",
+              "units": 1.25
+            },
+            {
+              "key": "service_impact",
+              "label": "Service impact",
+              "units": 1.05
+            },
+            {
+              "key": "action",
+              "label": "Action already taken",
+              "units": 1.05
+            },
+            {
+              "key": "evidence",
+              "label": "Photo / message ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "supplied_evidence",
+          "type": "checklist",
+          "label": "Customer-supplied evidence",
+          "items": [
+            "Photograph or video reference",
+            "Bill, usage, or account reference",
+            "Display, alarm, or fault wording",
+            "Prior ticket or service record",
+            "Site plan, equipment document, or product reference",
+            "Access instruction, property permission, or appointment detail",
+            "Critical-service or accessibility information",
+            "No supporting attachment; follow-up owner assigned"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Water leak exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Water contacting electrical equipment, outlets, panels, cords, or machinery",
+            "Bulging or sagging ceiling, unstable finish, structural movement, or falling material",
+            "Suspected sewage, chemical, fire-water, or other contaminated release",
+            "Rapid flooding, washout, sinkhole, severe pressure, or uncontrolled flow",
+            "Slip exposure, hidden opening, poor visibility, or unsafe access",
+            "Shutoff would impair fire protection, medical, process, or critical service",
+            "Gas odor, steam, hot water, refrigerant, or unknown fluid is also present",
+            "Condition exceeds responder authority, equipment, training, or protective controls"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "Do not enter water near electrical equipment, stand below a sagging ceiling, or handle suspected contaminated water. Keep occupants clear and use the organization's emergency route for rapid flooding, structural movement, gas odor, or critical-service impact. Only authorized personnel may operate shutoffs after evaluating downstream consequences."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each customer request exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "Water leak decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Customer request closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Suspected or confirmed water-release location identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

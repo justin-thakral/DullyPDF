@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "catalog_id": "utilities_energy/due_2430__meter_reading_work_order_form",
+  "source_section": "utilities_energy",
+  "source_filename": "due_2430__meter_reading_work_order_form.pdf",
+  "slug": "meter-reading-work-order-form",
+  "title": "Meter Reading Work Order Form",
+  "subtitle": "An original meter reading workflow that controls authorized field work from dispatch through return to service, with explicit qualified-review, stop-work, escalation, and accountable handoff controls.",
+  "description": "A workflow-complete meter reading work order form for the utility meter and register that captures exact identity, domain observations, supporting evidence, decisions, exceptions, responsible owners, and closeout without replacing professional judgment or the organization's controlling procedures.",
+  "use_case": "Use when a qualified crew receives a defined task and must preserve asset identity, work limits, energy-control references, as-found evidence, work performed, testing, exceptions, and operations handoff. The meter operations lead owns routing, and closure requires documented evidence, disposition of restrictions, and acceptance by the designated reviewer.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "work_order_routing",
+      "title": "Meter reading work order identity and dispatch",
+      "guidance": "Issue a traceable order with clear ownership, site contacts, and approved work limits.",
+      "blocks": [
+        {
+          "key": "record_routing",
+          "type": "fields",
+          "label": "Work order and assignment",
+          "fields": [
+            {
+              "key": "record_id",
+              "label": "Work order record ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_at",
+              "label": "Opened date and time",
+              "units": 1.0
+            },
+            {
+              "key": "site_name",
+              "label": "Site or customer name",
+              "units": 1.2
+            },
+            {
+              "key": "site_location",
+              "label": "Service address or location",
+              "units": 1.3
+            },
+            {
+              "key": "record_owner",
+              "label": "Assigned record owner",
+              "units": 1.05
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Routine",
+                "Soon",
+                "Urgent",
+                "Emergency routed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "dispatch_detail",
+          "type": "fields",
+          "label": "Dispatch and service window",
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew or technician lead",
+              "units": 1.1
+            },
+            {
+              "key": "dispatch_ref",
+              "label": "Dispatch reference",
+              "units": 1.0
+            },
+            {
+              "key": "scheduled_start",
+              "label": "Scheduled start",
+              "units": 1.0
+            },
+            {
+              "key": "scheduled_end",
+              "label": "Scheduled end",
+              "units": 1.0
+            },
+            {
+              "key": "site_contact",
+              "label": "Site or operations contact",
+              "units": 1.1
+            },
+            {
+              "key": "access_method",
+              "label": "Access and key-control method",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "scope_planning",
+      "title": "Meter reading asset context, scope, and resources",
+      "guidance": "Match the order to the exact utility meter and register and define work that is included and excluded.",
+      "blocks": [
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Meter reading identity",
+          "fields": [
+            {
+              "key": "commodity",
+              "label": "Metered commodity",
+              "units": 0.9
+            },
+            {
+              "key": "account_id",
+              "label": "Account or premise ID",
+              "units": 1.1
+            },
+            {
+              "key": "meter_number",
+              "label": "Meter serial number",
+              "units": 1.05
+            },
+            {
+              "key": "register_id",
+              "label": "Register or channel ID",
+              "units": 1.0
+            },
+            {
+              "key": "read_unit",
+              "label": "Unit and multiplier",
+              "units": 0.95
+            },
+            {
+              "key": "route_book",
+              "label": "Route, book, or cycle",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "baseline_context",
+          "type": "fields",
+          "label": "As-found baseline",
+          "fields": [
+            {
+              "key": "service_address",
+              "label": "Service address",
+              "units": 1.2
+            },
+            {
+              "key": "meter_location",
+              "label": "Exact meter location",
+              "units": 1.1
+            },
+            {
+              "key": "read_method",
+              "label": "Manual, AMI, or remote",
+              "units": 1.0
+            },
+            {
+              "key": "prior_read",
+              "label": "Prior accepted reading",
+              "units": 1.0
+            },
+            {
+              "key": "prior_date",
+              "label": "Prior read date",
+              "units": 0.85
+            },
+            {
+              "key": "expected_band",
+              "label": "Expected use or variance band",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "authorized_tasks",
+          "type": "checklist",
+          "label": "Authorized task scope",
+          "items": [
+            "Verify route, account, premise, commodity, and meter identity",
+            "Assess access and stop conditions before approaching the meter",
+            "Capture register, unit, multiplier, decimal, and flow direction",
+            "Record date, time, method, operator, and evidence reference",
+            "Compare against prior accepted read and expected use pattern",
+            "Recheck transcription and photograph when variance is material",
+            "Document access failure, obstruction, display, seal, or device issue",
+            "Route suspected leak, electrical, gas, tamper, or safety condition",
+            "Submit accepted reading or hold with a named review owner",
+            "Schedule reread, service investigation, or customer follow-up"
+          ]
+        },
+        {
+          "key": "scope_boundaries",
+          "type": "textarea",
+          "label": "Scope, exclusions, parts, and completion criteria",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Approved work, explicit exclusions, required parts or tools, evidence expected, and completion criteria",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_authorization",
+      "title": "Meter reading pre-work controls and authorization",
+      "guidance": "Do not begin intrusive work until hazards, system effects, isolation ownership, and test authority are explicit.",
+      "blocks": [
+        {
+          "key": "control_references",
+          "type": "fields",
+          "label": "Work-control references",
+          "fields": [
+            {
+              "key": "work_plan_ref",
+              "label": "Approved work-plan reference",
+              "units": 1.15
+            },
+            {
+              "key": "energy_control_ref",
+              "label": "Energy-control procedure ref",
+              "units": 1.15
+            },
+            {
+              "key": "isolation_owner",
+              "label": "Isolation control owner",
+              "units": 1.1
+            },
+            {
+              "key": "verification_ref",
+              "label": "Isolation verification ref",
+              "units": 1.15
+            },
+            {
+              "key": "outage_authority",
+              "label": "Outage or test authority",
+              "units": 1.1
+            },
+            {
+              "key": "permit_refs",
+              "label": "Permit or applicable review refs",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "prework_confirmations",
+          "type": "checklist",
+          "label": "Pre-work authorization confirmations",
+          "items": [
+            "Exact asset, boundaries, sources, and affected systems were identified",
+            "Site-specific procedure and applicable requirements were reviewed",
+            "Authorized and affected people, roles, and communications were confirmed",
+            "Electrical, mechanical, pressure, thermal, chemical, gravity, and stored energy were assessed",
+            "Isolation devices and personal or group controls remain under designated ownership",
+            "Stored or residual energy was controlled and verification evidence was recorded",
+            "Test or temporary re-energization steps and authority are explicit",
+            "Public, customer, traffic, environmental, and critical-load controls are in place"
+          ]
+        },
+        {
+          "key": "energy_control_boundary",
+          "type": "notice",
+          "label": "Energy-control and qualified-person boundary",
+          "guidance": "A reading record does not authorize opening, bypassing, adjusting, or repairing a meter or related service equipment. Stop for gas odor, exposed electrical parts, water near energized equipment, flooding, animals, traffic, or unsafe access. Withdraw, keep others clear, and route the condition to qualified utility or emergency personnel under current site procedures. This work order records references and decisions; it does not replace the site's energy-control procedure. Unknown, changed, or reaccumulating energy is a stop condition until the designated authorized person re-establishes and verifies control."
+        }
+      ]
+    },
+    {
+      "key": "execution_evidence",
+      "title": "Meter reading work execution and test evidence",
+      "guidance": "Record what was actually done, by whom, against which task, and with what result.",
+      "blocks": [
+        {
+          "key": "work_log",
+          "type": "table",
+          "label": "Task execution log",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date / time",
+              "units": 0.8
+            },
+            {
+              "key": "task",
+              "label": "Task / component",
+              "units": 1.2
+            },
+            {
+              "key": "as_found",
+              "label": "As-found condition",
+              "units": 1.1
+            },
+            {
+              "key": "action",
+              "label": "Work performed",
+              "units": 1.15
+            },
+            {
+              "key": "by",
+              "label": "Performed by",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Part / evidence ref",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "test_results",
+          "type": "table",
+          "label": "As-left readings and test results",
+          "columns": [
+            {
+              "key": "account_meter",
+              "label": "Account / meter",
+              "units": 1.05
+            },
+            {
+              "key": "read_time",
+              "label": "Date / time",
+              "units": 0.85
+            },
+            {
+              "key": "register",
+              "label": "Register",
+              "units": 0.85
+            },
+            {
+              "key": "reading",
+              "label": "Reading",
+              "units": 0.9
+            },
+            {
+              "key": "unit_mult",
+              "label": "Unit / multiplier",
+              "units": 0.95
+            },
+            {
+              "key": "exception",
+              "label": "Variance / evidence",
+              "units": 1.1
+            }
+          ],
+          "rows": 5,
+          "guidance": "Record method, instrument, operating state, and acceptance reference in linked evidence when needed."
+        },
+        {
+          "key": "execution_notes",
+          "type": "textarea",
+          "label": "Execution notes and change context",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected conditions, approved changes, temporary measures, test context, and evidence links",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "exceptions_escalation",
+      "title": "Meter reading exceptions, stop conditions, and escalation",
+      "guidance": "Make every unresolved condition visible with an immediate control, owner, due point, and final disposition.",
+      "blocks": [
+        {
+          "key": "stop_condition_screen",
+          "type": "checklist",
+          "label": "Stop-condition screen",
+          "items": [
+            "Gas odor, hissing, damaged regulator, or suspected leak",
+            "Exposed conductor, arcing, heat, burn mark, or damaged electric enclosure",
+            "Flooding, standing water, active leak, ice, or unstable walking surface",
+            "Aggressive animal, insect nest, traffic, excavation, or restricted access",
+            "Broken seal or enclosure requiring opening or equipment manipulation",
+            "Unknown meter identity, cross-connection, or unsafe customer equipment",
+            "Weather or site condition prevents a safe, reliable observation",
+            "Any work beyond a normal-interface read and assigned authorization"
+          ],
+          "guidance": "Check any condition observed or reported; checking an item does not mean the condition is controlled."
+        },
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Qualified-person and stop-work boundary",
+          "guidance": "A reading record does not authorize opening, bypassing, adjusting, or repairing a meter or related service equipment. Stop for gas odor, exposed electrical parts, water near energized equipment, flooding, animals, traffic, or unsafe access. Withdraw, keep others clear, and route the condition to qualified utility or emergency personnel under current site procedures."
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Exception and escalation register",
+          "columns": [
+            {
+              "key": "condition",
+              "label": "Condition / location",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner / route",
+              "units": 0.95
+            },
+            {
+              "key": "due",
+              "label": "Due / update",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Link each work order exception to supporting evidence and keep it open until disposition is recorded."
+        }
+      ]
+    },
+    {
+      "key": "decision_handoff",
+      "title": "Meter reading decision, handoff, and accountable closeout",
+      "guidance": "Record the decision, remaining limitations, next action, and the people accountable for acceptance.",
+      "blocks": [
+        {
+          "key": "closeout_decision",
+          "type": "fields",
+          "label": "Work order closeout decision",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Final status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select",
+                "Accepted",
+                "Accepted with follow-up",
+                "Restricted or held",
+                "Escalated",
+                "Cancelled"
+              ]
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date and time",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_index",
+              "label": "Evidence package reference",
+              "units": 1.2
+            },
+            {
+              "key": "next_owner",
+              "label": "Next-action owner",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Next-action due point",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "closeout_checks",
+          "type": "checklist",
+          "label": "Closeout completeness",
+          "items": [
+            "Utility meter and register identity and location were reconciled",
+            "Observed facts, measurements, and evidence references are complete",
+            "Decision authority and applicable review requirements were confirmed",
+            "Stop conditions, restrictions, and open exceptions remain visible",
+            "Customer, operations, or site handoff was recorded",
+            "Next action, owner, due point, and record-retention route are explicit"
+          ]
+        },
+        {
+          "key": "limitations_notes",
+          "type": "textarea",
+          "label": "Remaining limitations and handoff narrative",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Limitations, assumptions, restrictions, customer message, and next-action context",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "accountable_signoff",
+          "type": "signatures",
+          "label": "Accountable review and handoff",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Prepared date",
+              "units": 0.85
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Qualified or authorized reviewer",
+              "units": 1.25
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Review date",
+              "units": 0.85
+            },
+            {
+              "key": "accepted_by",
+              "label": "Customer, site, or operations handoff",
+              "units": 1.25
+            },
+            {
+              "key": "accepted_date",
+              "label": "Handoff date",
+              "units": 0.85
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not waive unresolved restrictions."
+        }
+      ]
+    }
+  ]
+}

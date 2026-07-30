@@ -1,0 +1,940 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1208__boiler_preventive_maintenance_log_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1208__boiler_preventive_maintenance_log_form.pdf",
+  "slug": "boiler-preventive-maintenance-log-form",
+  "title": "Boiler Preventive Maintenance Service Log",
+  "subtitle": "Record authorized boiler maintenance, condition findings, measured results, corrective work, and service closeout.",
+  "description": "A boiler-specific preventive maintenance record that captures completed work and evidence across fuel, combustion, venting, water, pressure, controls, safety devices, defects, and return to service.",
+  "use_case": "Use for recurring or seasonal boiler service when technicians and facility owners need a defensible record of authorized scope, actual work, test evidence, exceptions, decisions, and accountable handoff.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "service_identity",
+      "title": "Service event, site, and boiler identity",
+      "guidance": "Anchor the maintenance record to one planned event, one asset, and one accountable team.",
+      "blocks": [
+        {
+          "key": "service_reference",
+          "type": "fields",
+          "label": "Service reference and schedule",
+          "fields": [
+            {
+              "key": "work_order",
+              "label": "Work order",
+              "units": 0.9
+            },
+            {
+              "key": "service_date",
+              "label": "Service date",
+              "units": 0.8
+            },
+            {
+              "key": "scheduled_start",
+              "label": "Scheduled start",
+              "units": 1.0
+            },
+            {
+              "key": "actual_start",
+              "label": "Actual start",
+              "units": 0.85
+            },
+            {
+              "key": "service_interval",
+              "label": "Service interval",
+              "units": 1.0
+            },
+            {
+              "key": "service_status",
+              "label": "Service status",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "site_identity",
+          "type": "fields",
+          "label": "Facility and boiler-room location",
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility name",
+              "units": 1.2
+            },
+            {
+              "key": "street_address",
+              "label": "Street address",
+              "units": 1.45
+            },
+            {
+              "key": "building_area",
+              "label": "Building or area",
+              "units": 1.0
+            },
+            {
+              "key": "boiler_room",
+              "label": "Boiler room",
+              "units": 0.85
+            },
+            {
+              "key": "area_served",
+              "label": "Area served",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "asset_identity",
+          "type": "fields",
+          "label": "Boiler and burner identity",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Asset or boiler ID",
+              "units": 1.0
+            },
+            {
+              "key": "manufacturer",
+              "label": "Boiler manufacturer",
+              "units": 1.2
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 0.8
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.0
+            },
+            {
+              "key": "burner_id",
+              "label": "Burner ID",
+              "units": 0.8
+            },
+            {
+              "key": "primary_fuel",
+              "label": "Primary fuel",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "service_team",
+          "type": "fields",
+          "label": "Service team and facility contact",
+          "fields": [
+            {
+              "key": "lead_technician",
+              "label": "Lead technician",
+              "units": 1.2
+            },
+            {
+              "key": "service_company",
+              "label": "Service company",
+              "units": 1.2
+            },
+            {
+              "key": "credential",
+              "label": "Credential or role",
+              "units": 1.2
+            },
+            {
+              "key": "facility_contact",
+              "label": "Facility contact",
+              "units": 1.15
+            },
+            {
+              "key": "contact_phone",
+              "label": "Contact phone",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "authorized_scope",
+          "type": "textarea",
+          "label": "Authorized maintenance scope, exclusions, and service objective",
+          "height": 62,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Authorized maintenance scope, exclusions, and service objective",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "work_controls",
+      "title": "Pre-work authorization, isolation, and limits",
+      "guidance": "Record the safe-state boundary and who approved work before maintenance begins.",
+      "blocks": [
+        {
+          "key": "operating_context",
+          "type": "fields",
+          "label": "Operating condition and work authorization",
+          "fields": [
+            {
+              "key": "arrival_state",
+              "label": "Arrival state",
+              "units": 0.9
+            },
+            {
+              "key": "shutdown_window",
+              "label": "Shutdown window",
+              "units": 1.1
+            },
+            {
+              "key": "approved_by",
+              "label": "Work approved by",
+              "units": 1.1
+            },
+            {
+              "key": "permit_reference",
+              "label": "Permit or policy ref",
+              "units": 1.15
+            },
+            {
+              "key": "service_impact",
+              "label": "Service impact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "hazard_review",
+          "type": "checklist",
+          "label": "Pre-work hazard and requirement review",
+          "items": [
+            "Qualified work scope confirmed",
+            "Fuel and combustion hazards assessed",
+            "Electrical energy sources identified",
+            "Pressure and stored energy assessed",
+            "Hot surfaces and cooldown status assessed",
+            "Water, steam, and condensate hazards assessed",
+            "Chemical treatment exposure assessed",
+            "Ventilation and combustion air checked",
+            "Required PPE selected and available",
+            "Emergency shutdown authority confirmed",
+            "Nearby occupants and processes considered",
+            "Stop-work triggers communicated"
+          ]
+        },
+        {
+          "key": "isolation_record",
+          "type": "fields",
+          "label": "Energy isolation and verification record",
+          "fields": [
+            {
+              "key": "fuel_control",
+              "label": "Fuel source control",
+              "units": 1.15
+            },
+            {
+              "key": "electrical_control",
+              "label": "Electrical control",
+              "units": 1.15
+            },
+            {
+              "key": "water_control",
+              "label": "Water or steam control",
+              "units": 1.2
+            },
+            {
+              "key": "lock_tag",
+              "label": "Lock or tag reference",
+              "units": 1.2
+            },
+            {
+              "key": "safe_state",
+              "label": "Safe state",
+              "units": 0.85
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "maintenance_boundary",
+          "type": "notice",
+          "label": "Qualified maintenance and review boundary",
+          "guidance": "This log records completed maintenance; it does not prescribe boiler shutdown, combustion adjustment, relief-device testing, water treatment, or return-to-service procedures. Use qualified personnel and approved procedures, and confirm applicable code, jurisdictional rules, site policy, manufacturer requirements, and professional review."
+        },
+        {
+          "key": "prework_exception",
+          "type": "textarea",
+          "label": "Pre-work exception, changed authorization, and escalation",
+          "height": 56,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pre-work exception, changed authorization, and escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "fuel_combustion_service",
+      "title": "Fuel, burner, combustion, and vent service",
+      "guidance": "Record actual completed maintenance and qualified measurements without turning the log into instructions.",
+      "blocks": [
+        {
+          "key": "combustion_tasks",
+          "type": "checklist",
+          "label": "Completed fuel and combustion maintenance",
+          "items": [
+            "Burner condition inspected and documented",
+            "Ignition components serviced as authorized",
+            "Flame safeguard condition documented",
+            "Fuel-train exterior condition checked",
+            "Manual shutoff identity confirmed",
+            "Valve and regulator condition documented",
+            "Fuel-pressure indication recorded",
+            "Burner head or diffuser condition recorded",
+            "Combustion-air path checked",
+            "Blower and linkage condition documented",
+            "Venting and breeching condition checked",
+            "Visible soot or condensate condition recorded",
+            "Settings changed only under approved scope",
+            "Evidence linked for abnormal conditions"
+          ]
+        },
+        {
+          "key": "combustion_service_log",
+          "type": "table",
+          "label": "Fuel and combustion work performed",
+          "columns": [
+            {
+              "key": "component",
+              "label": "Component",
+              "units": 1.0
+            },
+            {
+              "key": "condition_before",
+              "label": "Condition before",
+              "units": 1.2
+            },
+            {
+              "key": "work_performed",
+              "label": "Work performed",
+              "units": 1.3
+            },
+            {
+              "key": "condition_after",
+              "label": "Condition after",
+              "units": 1.15
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.8
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "combustion_results",
+          "type": "table",
+          "label": "Qualified combustion and draft results",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter",
+              "units": 1.0
+            },
+            {
+              "key": "before",
+              "label": "Before",
+              "units": 0.75
+            },
+            {
+              "key": "after",
+              "label": "After",
+              "units": 0.75
+            },
+            {
+              "key": "accepted",
+              "label": "Accepted range",
+              "units": 1.1
+            },
+            {
+              "key": "instrument",
+              "label": "Instrument and date",
+              "units": 1.2
+            },
+            {
+              "key": "taken_by",
+              "label": "Taken by",
+              "units": 0.8
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "combustion_variance",
+          "type": "textarea",
+          "label": "Combustion variance, rejected result, and next action",
+          "height": 52,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Combustion variance, rejected result, and next action",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "water_service",
+      "title": "Waterside, feedwater, and treatment",
+      "guidance": "Capture maintenance that affects water level, heat transfer, corrosion control, and discharge.",
+      "blocks": [
+        {
+          "key": "water_tasks",
+          "type": "checklist",
+          "label": "Completed water-system maintenance",
+          "items": [
+            "Feedwater equipment condition documented",
+            "Makeup-water arrangement checked",
+            "Condensate return condition documented",
+            "Visible leaks and overflow paths checked",
+            "Level indication condition documented",
+            "Low-water protection record referenced",
+            "Blowdown equipment condition documented",
+            "Discharge path condition checked",
+            "Treatment equipment condition documented",
+            "Chemical labels and storage checked",
+            "Sample records linked where applicable",
+            "Scale or corrosion condition recorded",
+            "Strainers or accessible traps documented",
+            "Unplanned water loss escalated"
+          ]
+        },
+        {
+          "key": "water_results",
+          "type": "table",
+          "label": "Water-treatment and operating sample results",
+          "columns": [
+            {
+              "key": "sample_point",
+              "label": "Sample point",
+              "units": 1.0
+            },
+            {
+              "key": "parameter",
+              "label": "Parameter",
+              "units": 1.0
+            },
+            {
+              "key": "before",
+              "label": "Before",
+              "units": 0.75
+            },
+            {
+              "key": "after",
+              "label": "After",
+              "units": 0.75
+            },
+            {
+              "key": "target",
+              "label": "Target range",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or source",
+              "units": 1.2
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "treatment_service",
+          "type": "fields",
+          "label": "Treatment service and chemical record",
+          "fields": [
+            {
+              "key": "treatment_provider",
+              "label": "Treatment provider",
+              "units": 1.2
+            },
+            {
+              "key": "service_reference",
+              "label": "Service reference",
+              "units": 1.1
+            },
+            {
+              "key": "product_reference",
+              "label": "Product reference",
+              "units": 1.15
+            },
+            {
+              "key": "lot_reference",
+              "label": "Lot or batch ref",
+              "units": 1.0
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.7
+            },
+            {
+              "key": "disposition",
+              "label": "Container disposition",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "water_variance",
+          "type": "textarea",
+          "label": "Water-side exception, treatment variance, and follow-up",
+          "height": 52,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Water-side exception, treatment variance, and follow-up",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "control_safety_service",
+      "title": "Controls, limits, relief, and safety devices",
+      "guidance": "Preserve device identity, authorized work, test evidence, and any unverified function.",
+      "blocks": [
+        {
+          "key": "control_tasks",
+          "type": "checklist",
+          "label": "Completed control and safety-device maintenance",
+          "items": [
+            "Operating control condition documented",
+            "High-limit control identity confirmed",
+            "Pressure control condition documented",
+            "Temperature control condition documented",
+            "Water-level control condition documented",
+            "Low-water cutoff records referenced",
+            "Flame safeguard status documented",
+            "Interlock and alarm records reviewed",
+            "Pressure and temperature gauges checked",
+            "Relief-device identity and seal recorded",
+            "Remote monitoring status documented",
+            "No unauthorized bypass left in service",
+            "Changed settings recorded and approved",
+            "Unverified safety function escalated"
+          ]
+        },
+        {
+          "key": "safety_device_service",
+          "type": "table",
+          "label": "Safety-device service and test evidence",
+          "columns": [
+            {
+              "key": "device",
+              "label": "Device or tag",
+              "units": 1.05
+            },
+            {
+              "key": "work",
+              "label": "Work or test",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.85
+            },
+            {
+              "key": "criterion",
+              "label": "Acceptance criterion",
+              "units": 1.25
+            },
+            {
+              "key": "performed_by",
+              "label": "Performed by",
+              "units": 1.0
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.8
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "control_configuration",
+          "type": "fields",
+          "label": "Control configuration after service",
+          "fields": [
+            {
+              "key": "operating_setpoint",
+              "label": "Operating setpoint",
+              "units": 1.2
+            },
+            {
+              "key": "high_limit_setting",
+              "label": "High-limit setting",
+              "units": 1.15
+            },
+            {
+              "key": "pressure_setting",
+              "label": "Pressure setting",
+              "units": 1.1
+            },
+            {
+              "key": "reset_reference",
+              "label": "Reset or sequence ref",
+              "units": 1.2
+            },
+            {
+              "key": "alarm_status",
+              "label": "Alarm status",
+              "units": 0.9
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "device_exception",
+          "type": "textarea",
+          "label": "Unverified device, failed result, bypass, and escalation",
+          "height": 52,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unverified device, failed result, bypass, and escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "findings_actions",
+      "title": "Findings, actions, parts, and evidence",
+      "guidance": "Connect materials and decisions to specific defects so open work cannot disappear at closeout.",
+      "blocks": [
+        {
+          "key": "parts_materials",
+          "type": "table",
+          "label": "Parts, materials, and consumables used",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part or material",
+              "units": 1.25
+            },
+            {
+              "key": "part_number",
+              "label": "Part number",
+              "units": 1.0
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.65
+            },
+            {
+              "key": "lot_serial",
+              "label": "Lot or serial",
+              "units": 0.95
+            },
+            {
+              "key": "component",
+              "label": "Component used on",
+              "units": 1.2
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "finding_register",
+          "type": "table",
+          "label": "Finding, risk, and corrective-action register",
+          "columns": [
+            {
+              "key": "reference",
+              "label": "Reference",
+              "units": 0.7
+            },
+            {
+              "key": "finding",
+              "label": "Finding",
+              "units": 1.25
+            },
+            {
+              "key": "risk",
+              "label": "Risk or impact",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Required action",
+              "units": 1.15
+            },
+            {
+              "key": "owner_due",
+              "label": "Owner and due",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "evidence_register",
+          "type": "table",
+          "label": "Service evidence and record index",
+          "columns": [
+            {
+              "key": "evidence_id",
+              "label": "Evidence ID",
+              "units": 0.8
+            },
+            {
+              "key": "record_type",
+              "label": "Photo or record",
+              "units": 1.05
+            },
+            {
+              "key": "subject",
+              "label": "Component or result",
+              "units": 1.25
+            },
+            {
+              "key": "location",
+              "label": "File location",
+              "units": 1.0
+            },
+            {
+              "key": "captured_by",
+              "label": "Captured by",
+              "units": 0.9
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "deferred_work",
+          "type": "textarea",
+          "label": "Deferred work, unavailable part, rejected repair, and escalation",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Deferred work, unavailable part, rejected repair, and escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "maintenance_closeout",
+      "title": "Verification, return to service, and closeout",
+      "guidance": "Separate maintenance completion from qualified return-to-service authorization and facility acceptance.",
+      "blocks": [
+        {
+          "key": "restoration_review",
+          "type": "checklist",
+          "label": "Restoration and return-to-service evidence",
+          "items": [
+            "Tools, parts, and temporary materials removed",
+            "Covers, guards, and access panels restored",
+            "Drains, valves, and connections left authorized",
+            "Fuel-train condition visually rechecked",
+            "Electrical enclosures restored",
+            "Water level and pressure state documented",
+            "Combustion-air and vent paths checked",
+            "Leak, odor, and abnormal-noise check recorded",
+            "Required operational test evidence linked",
+            "Open defects assigned and communicated",
+            "Operating restrictions documented",
+            "Qualified return-to-service approval recorded"
+          ]
+        },
+        {
+          "key": "return_readings",
+          "type": "table",
+          "label": "Return-to-service operating readings",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter",
+              "units": 1.0
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.8
+            },
+            {
+              "key": "criterion",
+              "label": "Acceptance criterion",
+              "units": 1.2
+            },
+            {
+              "key": "conditions",
+              "label": "Operating conditions",
+              "units": 1.2
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.0
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "service_disposition",
+          "type": "fields",
+          "label": "Service disposition and authorization",
+          "fields": [
+            {
+              "key": "service_result",
+              "label": "Service result",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Select result",
+                "Complete",
+                "Complete with restrictions",
+                "Incomplete",
+                "Removed from service"
+              ]
+            },
+            {
+              "key": "return_status",
+              "label": "Return status",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization time",
+              "units": 1.15
+            },
+            {
+              "key": "monitoring_owner",
+              "label": "Monitoring owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_summary",
+          "type": "textarea",
+          "label": "Closeout summary, residual risk, and recurring service change",
+          "height": 56,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Closeout summary, residual risk, and recurring service change",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "facility_handoff",
+          "type": "fields",
+          "label": "Facility handoff and next service",
+          "fields": [
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 1.0
+            },
+            {
+              "key": "handoff_method",
+              "label": "Handoff method",
+              "units": 1.05
+            },
+            {
+              "key": "handoff_time",
+              "label": "Handoff date and time",
+              "units": 1.3
+            },
+            {
+              "key": "next_service_due",
+              "label": "Next service due",
+              "units": 1.1
+            },
+            {
+              "key": "next_service_basis",
+              "label": "Next service basis",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "service_approval",
+          "type": "signatures",
+          "label": "Maintenance completion and acceptance",
+          "fields": [
+            {
+              "key": "lead_technician",
+              "label": "Lead technician or signature",
+              "units": 1.4
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "facility_reviewer",
+              "label": "Facility acceptance",
+              "units": 1.15
+            },
+            {
+              "key": "review_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,979 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1006__general_contractor_material_request_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1006__general_contractor_material_request_form.pdf",
+  "slug": "general-contractor-material-request-form",
+  "title": "General Contractor Material Request and Receiving Control",
+  "subtitle": "Define the field need, confirm specifications and inventory, compare sources, authorize purchasing, coordinate delivery, inspect receipts, and reconcile custody and cost.",
+  "description": "A workflow-complete construction material request covering job and trade routing, line-item requirements, approved-product references, substitution controls, stock checks, quote comparison, budget approval, purchasing and delivery milestones, receiving inspection, shortages or nonconformance, storage and crew issue, returns, invoice reconciliation, and accountable closeout.",
+  "use_case": "Use when field operations, procurement, and project controls need one fillable record that carries a material need from requester through approval, order, receipt, exception resolution, crew custody, and financial closeout.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_identity",
+      "title": "Request identity, job need, and routing",
+      "guidance": "Identify the controlling request, field need, delivery point, and people accountable for action.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Material request reference",
+          "fields": [
+            {
+              "key": "request_number",
+              "label": "Request number",
+              "units": 0.8
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "request_time",
+              "label": "Request time",
+              "units": 0.55
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.75,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Schedule critical",
+                "Expedite",
+                "Emergency",
+                "Hold pending clarification"
+              ]
+            },
+            {
+              "key": "need_by_date",
+              "label": "Need-by date",
+              "units": 0.7
+            },
+            {
+              "key": "request_status",
+              "label": "Request status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Draft",
+                "Submitted",
+                "Under review",
+                "Approved",
+                "Partially approved",
+                "Rejected",
+                "Ordered",
+                "Closed"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "project_identity",
+          "type": "fields",
+          "label": "Project, site, and cost context",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.2
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.7
+            },
+            {
+              "key": "site_address",
+              "label": "Site address",
+              "units": 1.25
+            },
+            {
+              "key": "cost_code",
+              "label": "Cost code",
+              "units": 0.65
+            },
+            {
+              "key": "phase_area",
+              "label": "Phase, building, or area",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "requester_trade",
+          "type": "fields",
+          "label": "Requester, installer, and trade details",
+          "fields": [
+            {
+              "key": "requested_by",
+              "label": "Requested by",
+              "units": 0.9
+            },
+            {
+              "key": "requester_company",
+              "label": "Company",
+              "units": 0.85
+            },
+            {
+              "key": "affected_trade",
+              "label": "Affected trade",
+              "units": 0.85
+            },
+            {
+              "key": "install_foreman",
+              "label": "Installing foreman",
+              "units": 0.95
+            },
+            {
+              "key": "field_contact",
+              "label": "Field contact",
+              "units": 0.85
+            },
+            {
+              "key": "procurement_owner",
+              "label": "Procurement owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "delivery_routing",
+          "type": "fields",
+          "label": "Delivery routing and schedule dependency",
+          "fields": [
+            {
+              "key": "delivery_location",
+              "label": "Exact delivery location",
+              "units": 1.15
+            },
+            {
+              "key": "receiving_contact",
+              "label": "Receiving contact",
+              "units": 0.9
+            },
+            {
+              "key": "installation_start",
+              "label": "Installation start",
+              "units": 0.8
+            },
+            {
+              "key": "schedule_activity",
+              "label": "Schedule activity ID",
+              "units": 0.85
+            },
+            {
+              "key": "distribution",
+              "label": "Request distribution",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "material_requirements",
+      "title": "Material requirements and technical control",
+      "guidance": "Define quantities, approved references, technical constraints, and acceptable substitution boundaries.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Requested material line items",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item and description",
+              "units": 1.4
+            },
+            {
+              "key": "spec_reference",
+              "label": "Spec, drawing, or product",
+              "units": 1.2
+            },
+            {
+              "key": "quantity_unit",
+              "label": "Quantity and unit",
+              "units": 0.85
+            },
+            {
+              "key": "need_by",
+              "label": "Need by",
+              "units": 0.65
+            },
+            {
+              "key": "use_location",
+              "label": "Use location",
+              "units": 0.9
+            },
+            {
+              "key": "substitution",
+              "label": "Substitution limit",
+              "units": 0.85
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "technical_constraints",
+          "type": "fields",
+          "label": "Technical and installation constraints",
+          "fields": [
+            {
+              "key": "manufacturer_basis",
+              "label": "Basis-of-design manufacturer",
+              "units": 1.1
+            },
+            {
+              "key": "model_finish",
+              "label": "Model, size, grade, or finish",
+              "units": 1.2
+            },
+            {
+              "key": "certification",
+              "label": "Certification or listing",
+              "units": 0.95
+            },
+            {
+              "key": "warranty",
+              "label": "Warranty requirement",
+              "units": 0.85
+            },
+            {
+              "key": "storage_limit",
+              "label": "Storage or shelf-life limit",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "requirement_references",
+          "type": "checklist",
+          "label": "Requirement references confirmed",
+          "items": [
+            "Contract drawing",
+            "Specification section",
+            "Approved submittal",
+            "Approved shop drawing",
+            "RFI response",
+            "Approved change",
+            "Finish or room schedule",
+            "Field measurement",
+            "Sample or mockup",
+            "Owner-furnished equipment interface"
+          ]
+        },
+        {
+          "key": "substitution_limits",
+          "type": "textarea",
+          "label": "Performance criteria, matching requirements, prohibited substitutions, and approval evidence required",
+          "fields": [
+            {
+              "key": "substitution_detail",
+              "label": "Material substitution criteria and restrictions"
+            }
+          ],
+          "height": 80
+        }
+      ]
+    },
+    {
+      "key": "source_budget_decision",
+      "title": "Inventory, sourcing, budget, and approval",
+      "guidance": "Check available stock, compare complete landed cost and timing, then document the purchasing decision.",
+      "blocks": [
+        {
+          "key": "inventory_source_check",
+          "type": "checklist",
+          "label": "Inventory and sourcing checks completed",
+          "items": [
+            "On-site stock checked",
+            "Warehouse stock checked",
+            "Surplus from another area checked",
+            "Owner-furnished stock checked",
+            "Approved supplier list reviewed",
+            "Minimum order quantity confirmed",
+            "Current lead time confirmed",
+            "Freight and unloading included"
+          ]
+        },
+        {
+          "key": "quote_comparison",
+          "type": "table",
+          "label": "Supplier quote and source comparison",
+          "columns": [
+            {
+              "key": "supplier_quote",
+              "label": "Supplier and quote",
+              "units": 1.15
+            },
+            {
+              "key": "product",
+              "label": "Product offered",
+              "units": 1.1
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.6
+            },
+            {
+              "key": "landed_cost",
+              "label": "Landed cost",
+              "units": 0.8
+            },
+            {
+              "key": "lead_time",
+              "label": "Lead time",
+              "units": 0.7
+            },
+            {
+              "key": "exceptions",
+              "label": "Exceptions",
+              "units": 1.05
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "cost_summary",
+          "type": "fields",
+          "label": "Estimated commitment and budget position",
+          "fields": [
+            {
+              "key": "material_subtotal",
+              "label": "Material subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "tax",
+              "label": "Tax",
+              "units": 0.55
+            },
+            {
+              "key": "freight",
+              "label": "Freight",
+              "units": 0.6
+            },
+            {
+              "key": "equipment_handling",
+              "label": "Handling or equipment",
+              "units": 0.85
+            },
+            {
+              "key": "total_estimate",
+              "label": "Total estimate",
+              "units": 0.75
+            },
+            {
+              "key": "budget_variance",
+              "label": "Budget variance",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "purchase_decision",
+          "type": "fields",
+          "label": "Procurement review and authorization decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved as requested",
+                "Approved with conditions",
+                "Partially approved",
+                "Revise and resubmit",
+                "Rejected",
+                "Pending design review"
+              ]
+            },
+            {
+              "key": "selected_supplier",
+              "label": "Selected supplier",
+              "units": 0.95
+            },
+            {
+              "key": "approved_amount",
+              "label": "Approved amount",
+              "units": 0.75
+            },
+            {
+              "key": "approved_by",
+              "label": "Approved by",
+              "units": 0.85
+            },
+            {
+              "key": "approval_date",
+              "label": "Approval date",
+              "units": 0.65
+            },
+            {
+              "key": "conditions_reference",
+              "label": "Conditions or reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "substitution_notice",
+          "type": "notice",
+          "label": "Purchasing control",
+          "guidance": "Do not treat supplier availability, price, or a purchase approval as technical acceptance of a substitution. Obtain the required design, owner, and contract approvals before ordering or installing a product that differs from the approved requirement."
+        }
+      ]
+    },
+    {
+      "key": "ordering_delivery",
+      "title": "Order placement and delivery coordination",
+      "guidance": "Convert the approved request into traceable orders and prepare the site to receive each shipment.",
+      "blocks": [
+        {
+          "key": "order_authorization",
+          "type": "fields",
+          "label": "Order authorization",
+          "fields": [
+            {
+              "key": "purchase_order",
+              "label": "Purchase order",
+              "units": 0.8
+            },
+            {
+              "key": "vendor_order",
+              "label": "Vendor order number",
+              "units": 0.85
+            },
+            {
+              "key": "ordered_by",
+              "label": "Ordered by",
+              "units": 0.8
+            },
+            {
+              "key": "order_date",
+              "label": "Order date",
+              "units": 0.65
+            },
+            {
+              "key": "committed_amount",
+              "label": "Committed amount",
+              "units": 0.8
+            },
+            {
+              "key": "terms",
+              "label": "Payment and freight terms",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "delivery_plan",
+          "type": "fields",
+          "label": "Delivery, unloading, and access plan",
+          "fields": [
+            {
+              "key": "delivery_window",
+              "label": "Delivery window",
+              "units": 0.85
+            },
+            {
+              "key": "carrier_contact",
+              "label": "Carrier or driver contact",
+              "units": 1.0
+            },
+            {
+              "key": "gate_route",
+              "label": "Gate and site route",
+              "units": 1.0
+            },
+            {
+              "key": "unloading_method",
+              "label": "Unloading method",
+              "units": 0.9
+            },
+            {
+              "key": "equipment_operator",
+              "label": "Equipment and operator",
+              "units": 1.0
+            },
+            {
+              "key": "staging_location",
+              "label": "Staging location",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "order_tracking",
+          "type": "table",
+          "label": "Order and shipment milestone tracking",
+          "columns": [
+            {
+              "key": "item_order",
+              "label": "Item or order",
+              "units": 1.0
+            },
+            {
+              "key": "release_date",
+              "label": "Release date",
+              "units": 0.7
+            },
+            {
+              "key": "ship_date",
+              "label": "Ship date",
+              "units": 0.65
+            },
+            {
+              "key": "tracking",
+              "label": "Tracking or BOL",
+              "units": 0.95
+            },
+            {
+              "key": "promised_delivery",
+              "label": "Promised delivery",
+              "units": 0.85
+            },
+            {
+              "key": "status_action",
+              "label": "Status and action",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "site_readiness",
+          "type": "checklist",
+          "label": "Site readiness confirmed before shipment",
+          "items": [
+            "Delivery appointment accepted",
+            "Gate access communicated",
+            "Unloading zone reserved",
+            "Required equipment available",
+            "Qualified operator assigned",
+            "Storage protection ready",
+            "Receiving documents available",
+            "Affected trades notified"
+          ]
+        },
+        {
+          "key": "delivery_instructions",
+          "type": "textarea",
+          "label": "Packaging, sequencing, labeling, split-shipment, security, and special-handling instructions",
+          "fields": [
+            {
+              "key": "delivery_instruction_detail",
+              "label": "Special delivery and handling instructions"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "receiving_exceptions",
+      "title": "Receiving inspection and exception disposition",
+      "guidance": "Compare the shipment to the approved order before acceptance, movement, or installation.",
+      "blocks": [
+        {
+          "key": "receipt_reference",
+          "type": "fields",
+          "label": "Receipt and delivery identity",
+          "fields": [
+            {
+              "key": "receipt_number",
+              "label": "Receipt number",
+              "units": 0.75
+            },
+            {
+              "key": "delivery_date",
+              "label": "Delivery date",
+              "units": 0.7
+            },
+            {
+              "key": "arrival_time",
+              "label": "Arrival time",
+              "units": 0.6
+            },
+            {
+              "key": "supplier",
+              "label": "Supplier",
+              "units": 0.9
+            },
+            {
+              "key": "carrier",
+              "label": "Carrier",
+              "units": 0.8
+            },
+            {
+              "key": "packing_slip_bol",
+              "label": "Packing slip or BOL",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "received_items",
+          "type": "table",
+          "label": "Received quantity and condition register",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item",
+              "units": 1.15
+            },
+            {
+              "key": "ordered",
+              "label": "Ordered",
+              "units": 0.65
+            },
+            {
+              "key": "received",
+              "label": "Received",
+              "units": 0.65
+            },
+            {
+              "key": "accepted",
+              "label": "Accepted",
+              "units": 0.65
+            },
+            {
+              "key": "lot_serial",
+              "label": "Lot or serial",
+              "units": 0.95
+            },
+            {
+              "key": "condition_location",
+              "label": "Condition and location",
+              "units": 1.35
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "receiving_checks",
+          "type": "checklist",
+          "label": "Receiving inspection completed",
+          "items": [
+            "Purchase order matched",
+            "Packing slip matched",
+            "Product and manufacturer verified",
+            "Model, size, grade, or finish verified",
+            "Approved submittal matched",
+            "Quantity counted",
+            "Packaging inspected",
+            "Visible damage documented",
+            "Lot or serial numbers recorded",
+            "Certifications received",
+            "Photos captured",
+            "Storage requirements followed"
+          ]
+        },
+        {
+          "key": "exception_register",
+          "type": "table",
+          "label": "Shortage, damage, rejection, or nonconformance register",
+          "columns": [
+            {
+              "key": "item_issue",
+              "label": "Item and issue",
+              "units": 1.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.6
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or evidence",
+              "units": 0.9
+            },
+            {
+              "key": "initial_disposition",
+              "label": "Hold or disposition",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.7
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "exception_decision",
+          "type": "fields",
+          "label": "Exception authorization and vendor response",
+          "fields": [
+            {
+              "key": "overall_receipt",
+              "label": "Overall receipt decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Accepted with exception",
+                "Partially rejected",
+                "Rejected",
+                "Quarantined pending review"
+              ]
+            },
+            {
+              "key": "vendor_contact",
+              "label": "Vendor contact",
+              "units": 0.85
+            },
+            {
+              "key": "claim_rma",
+              "label": "Claim or RMA number",
+              "units": 0.85
+            },
+            {
+              "key": "replacement_date",
+              "label": "Replacement date",
+              "units": 0.75
+            },
+            {
+              "key": "disposition_approved_by",
+              "label": "Disposition approved by",
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.65
+            }
+          ]
+        },
+        {
+          "key": "receipt_control_notice",
+          "type": "notice",
+          "label": "Receipt and installation control",
+          "guidance": "Segregate rejected, damaged, unapproved, or questionable material and identify its status. Delivery or payment approval does not authorize installation when required technical acceptance, testing, certification, or substitution approval remains open."
+        }
+      ]
+    },
+    {
+      "key": "custody_reconciliation",
+      "title": "Custody, field issue, and accountable closeout",
+      "guidance": "Track where accepted material went, what was installed or returned, and whether quantity and cost records agree.",
+      "blocks": [
+        {
+          "key": "storage_custody",
+          "type": "fields",
+          "label": "Storage and custody assignment",
+          "fields": [
+            {
+              "key": "storage_location",
+              "label": "Storage location",
+              "units": 1.0
+            },
+            {
+              "key": "custodian",
+              "label": "Material custodian",
+              "units": 0.9
+            },
+            {
+              "key": "protection_method",
+              "label": "Protection method",
+              "units": 1.0
+            },
+            {
+              "key": "security_control",
+              "label": "Security control",
+              "units": 0.9
+            },
+            {
+              "key": "expiration_review",
+              "label": "Shelf-life review date",
+              "units": 0.85
+            },
+            {
+              "key": "inventory_record",
+              "label": "Inventory record",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "crew_issue_log",
+          "type": "table",
+          "label": "Material issue to trade or installation area",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item",
+              "units": 1.0
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.6
+            },
+            {
+              "key": "issued_to",
+              "label": "Issued to",
+              "units": 0.85
+            },
+            {
+              "key": "use_location",
+              "label": "Use location",
+              "units": 1.0
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.8
+            },
+            {
+              "key": "acknowledgment",
+              "label": "Acknowledgment",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "return_surplus",
+          "type": "table",
+          "label": "Return, transfer, surplus, or waste disposition",
+          "columns": [
+            {
+              "key": "item_quantity",
+              "label": "Item and quantity",
+              "units": 1.2
+            },
+            {
+              "key": "reason",
+              "label": "Reason",
+              "units": 1.0
+            },
+            {
+              "key": "destination",
+              "label": "Destination",
+              "units": 1.0
+            },
+            {
+              "key": "credit_transfer",
+              "label": "Credit or transfer ref.",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by_date",
+              "label": "Authorized by and date",
+              "units": 1.1
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "financial_closeout",
+          "type": "fields",
+          "label": "Quantity and financial reconciliation",
+          "fields": [
+            {
+              "key": "accepted_total",
+              "label": "Accepted quantity total",
+              "units": 0.9
+            },
+            {
+              "key": "issued_total",
+              "label": "Issued quantity total",
+              "units": 0.85
+            },
+            {
+              "key": "returned_total",
+              "label": "Returned or surplus total",
+              "units": 0.95
+            },
+            {
+              "key": "invoice_number",
+              "label": "Invoice number",
+              "units": 0.8
+            },
+            {
+              "key": "final_cost",
+              "label": "Final accepted cost",
+              "units": 0.8
+            },
+            {
+              "key": "variance_reason",
+              "label": "Variance reason or reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "closeout_check",
+          "type": "checklist",
+          "label": "Material request closeout completed",
+          "items": [
+            "All approved items received or canceled",
+            "Shortages and damage resolved",
+            "Required certifications filed",
+            "Material custody transferred",
+            "Returns or credits documented",
+            "Invoice matched to accepted receipt",
+            "Cost commitment updated",
+            "Open exceptions handed off"
+          ]
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Request, receipt, and reconciliation acknowledgment",
+          "fields": [
+            {
+              "key": "requester_signature",
+              "label": "Requester signature",
+              "units": 1.15
+            },
+            {
+              "key": "requester_date",
+              "label": "Date",
+              "units": 0.55
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver signature",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.55
+            },
+            {
+              "key": "closeout_approver",
+              "label": "Closeout approver signature",
+              "units": 1.2
+            },
+            {
+              "key": "closeout_date",
+              "label": "Date",
+              "units": 0.55
+            }
+          ]
+        },
+        {
+          "key": "closeout_notice",
+          "type": "notice",
+          "label": "Closeout condition",
+          "guidance": "Close the request only after accepted quantities, issued quantities, returns, credits, and invoiced cost reconcile or a named owner has accepted each documented variance. Retain open quality, certification, warranty, or substitution issues in the project action record."
+        }
+      ]
+    }
+  ]
+}

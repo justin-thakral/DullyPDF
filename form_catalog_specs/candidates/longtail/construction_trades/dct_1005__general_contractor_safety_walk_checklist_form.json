@@ -1,0 +1,786 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1005__general_contractor_safety_walk_checklist_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1005__general_contractor_safety_walk_checklist_form.pdf",
+  "slug": "general-contractor-safety-walk-checklist-form",
+  "title": "General Contractor Safety Walk and Corrective Action Register",
+  "subtitle": "Plan the inspection, screen active hazards, document immediate controls, assign correction, escalate stop-work conditions, and verify accountable closeout.",
+  "description": "A workflow-complete construction safety walk covering inspection authority, site and shift conditions, high-risk work and permit review, systematic observations, hazard classification, immediate controls, stop-work escalation, corrective-action ownership, reinspection evidence, crew communication, and unresolved-item handoff.",
+  "use_case": "Use when a superintendent, safety lead, competent person, or project manager needs one fillable record that connects a field safety walk to prompt hazard control and documented verification without losing open exceptions.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "inspection_identity",
+      "title": "Inspection identity, authority, and routing",
+      "guidance": "Identify the controlling walk record, location, responsible leaders, and distribution path.",
+      "blocks": [
+        {
+          "key": "walk_reference",
+          "type": "fields",
+          "label": "Safety walk reference",
+          "fields": [
+            {
+              "key": "walk_number",
+              "label": "Safety walk number",
+              "units": 0.8
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.65
+            },
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.55
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.55
+            },
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 0.55,
+              "field_type": "choice",
+              "options": [
+                "Day",
+                "Evening",
+                "Night",
+                "Weekend",
+                "Other"
+              ]
+            },
+            {
+              "key": "report_owner",
+              "label": "Report owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "project_site",
+          "type": "fields",
+          "label": "Project and inspected work area",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.2
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.7
+            },
+            {
+              "key": "site_address",
+              "label": "Site address",
+              "units": 1.3
+            },
+            {
+              "key": "inspection_area",
+              "label": "Building, level, or work zone",
+              "units": 1.1
+            },
+            {
+              "key": "owner_client",
+              "label": "Owner or client",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "inspection_leads",
+          "type": "fields",
+          "label": "Inspection authority and site leadership",
+          "fields": [
+            {
+              "key": "walk_type",
+              "label": "Walk type",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Routine scheduled",
+                "Pre-task",
+                "Focused high-risk work",
+                "Post-incident",
+                "Client or insurer",
+                "Regulatory follow-up",
+                "Corrective reinspection"
+              ]
+            },
+            {
+              "key": "conducted_by",
+              "label": "Conducted by",
+              "units": 0.95
+            },
+            {
+              "key": "competent_person",
+              "label": "Applicable competent person",
+              "units": 1.05
+            },
+            {
+              "key": "site_superintendent",
+              "label": "Site superintendent",
+              "units": 0.95
+            },
+            {
+              "key": "safety_contact",
+              "label": "Safety manager contact",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "walk_participants",
+          "type": "table",
+          "label": "Participants, employers, and areas represented",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Participant",
+              "units": 1.0
+            },
+            {
+              "key": "employer",
+              "label": "Employer",
+              "units": 0.9
+            },
+            {
+              "key": "role",
+              "label": "Role",
+              "units": 0.75
+            },
+            {
+              "key": "area_trade",
+              "label": "Area or trade",
+              "units": 1.0
+            },
+            {
+              "key": "contact",
+              "label": "Contact",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "walk_planning",
+      "title": "Shift conditions and high-risk work screen",
+      "guidance": "Record changing conditions and verify controls or permits before entering active work zones.",
+      "blocks": [
+        {
+          "key": "site_conditions",
+          "type": "fields",
+          "label": "Conditions at the time of the walk",
+          "fields": [
+            {
+              "key": "weather",
+              "label": "Weather",
+              "units": 0.85
+            },
+            {
+              "key": "temperature",
+              "label": "Temperature",
+              "units": 0.65
+            },
+            {
+              "key": "ground_condition",
+              "label": "Ground or floor condition",
+              "units": 1.0
+            },
+            {
+              "key": "visibility",
+              "label": "Visibility or lighting",
+              "units": 0.9
+            },
+            {
+              "key": "site_occupancy",
+              "label": "Site occupancy",
+              "units": 0.85
+            },
+            {
+              "key": "adjacent_operations",
+              "label": "Adjacent operations",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "active_high_risk_work",
+          "type": "checklist",
+          "label": "High-risk work active, planned, or encountered",
+          "items": [
+            "Work at height",
+            "Scaffold use or erection",
+            "Aerial lift operation",
+            "Crane or critical lift",
+            "Rigging or material hoisting",
+            "Excavation or trenching",
+            "Confined-space entry",
+            "Energized electrical work",
+            "Lockout or tagout",
+            "Hot work",
+            "Demolition",
+            "Heavy equipment movement",
+            "Silica or dust-generating work",
+            "Chemical or hazardous-material use"
+          ]
+        },
+        {
+          "key": "permit_document_review",
+          "type": "checklist",
+          "label": "Applicable plans, permits, and pre-task records reviewed",
+          "items": [
+            "Site safety plan",
+            "Daily pre-task plan",
+            "Job hazard analysis",
+            "Fall-protection plan",
+            "Lift plan",
+            "Excavation permit",
+            "Confined-space permit",
+            "Hot-work permit",
+            "Lockout or tagout procedure",
+            "SDS information",
+            "Equipment inspection record",
+            "Operator qualification",
+            "Emergency and rescue plan",
+            "Traffic-control plan"
+          ]
+        },
+        {
+          "key": "shift_brief",
+          "type": "textarea",
+          "label": "Planned work sequence, interfaces, unusual conditions, and priority observation areas",
+          "fields": [
+            {
+              "key": "brief_detail",
+              "label": "Shift safety brief and inspection priorities"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "systematic_observations",
+      "title": "Systematic site inspection",
+      "guidance": "Mark items actually observed as acceptable; enter every deficiency or not-applicable decision in the finding register.",
+      "blocks": [
+        {
+          "key": "ppe_access_housekeeping",
+          "type": "checklist",
+          "label": "Personal protection, access, and housekeeping observed acceptable",
+          "items": [
+            "Required PPE selected and worn",
+            "Visitor controls followed",
+            "Walking surfaces clear",
+            "Stairs and ramps secure",
+            "Floor openings guarded or covered",
+            "Access routes illuminated",
+            "Emergency exits unobstructed",
+            "Materials stacked securely",
+            "Waste removed from work areas",
+            "Cords and hoses routed safely",
+            "Barricades and signs maintained",
+            "Sanitation and drinking water available"
+          ]
+        },
+        {
+          "key": "height_lifting_tools",
+          "type": "checklist",
+          "label": "Elevation work, lifting, and tools observed acceptable",
+          "items": [
+            "Fall protection in use where required",
+            "Anchorage and lifeline appropriate",
+            "Scaffold access and tags current",
+            "Ladders selected and secured",
+            "Aerial-lift controls followed",
+            "Rigging identified and inspected",
+            "Suspended-load zone controlled",
+            "Material hoists guarded",
+            "Hand tools in serviceable condition",
+            "Power-tool guards installed",
+            "Compressed-gas cylinders secured",
+            "Equipment operators authorized"
+          ]
+        },
+        {
+          "key": "energy_fire_equipment",
+          "type": "checklist",
+          "label": "Energy control, fire prevention, and equipment observed acceptable",
+          "items": [
+            "Temporary power protected",
+            "Panels and disconnects accessible",
+            "Ground-fault protection provided",
+            "Lockout or tagout applied",
+            "Hot-work controls active",
+            "Fire watch assigned when required",
+            "Extinguishers accessible and inspected",
+            "Fuel stored and dispensed safely",
+            "Machine guards in place",
+            "Backup alarms or spotters effective",
+            "Equipment inspection complete",
+            "Emergency shutoffs identified"
+          ]
+        },
+        {
+          "key": "ground_environment_public",
+          "type": "checklist",
+          "label": "Ground work, exposure control, and public protection observed acceptable",
+          "items": [
+            "Excavation protective system adequate",
+            "Spoils and loads set back",
+            "Underground utilities identified",
+            "Confined-space controls maintained",
+            "Dust or silica controls effective",
+            "Noise controls and hearing protection used",
+            "Ventilation controls effective",
+            "Chemical containers labeled",
+            "Spill controls available",
+            "Stormwater protections maintained",
+            "Traffic and pedestrian routes separated",
+            "Public perimeter secure"
+          ]
+        },
+        {
+          "key": "observation_coverage",
+          "type": "fields",
+          "label": "Inspection coverage",
+          "fields": [
+            {
+              "key": "zones_walked",
+              "label": "Zones walked",
+              "units": 1.25
+            },
+            {
+              "key": "crews_observed",
+              "label": "Crews observed",
+              "units": 1.0
+            },
+            {
+              "key": "tasks_sampled",
+              "label": "Tasks sampled",
+              "units": 1.1
+            },
+            {
+              "key": "areas_not_accessed",
+              "label": "Areas not accessed",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "findings_control",
+      "title": "Hazard findings and immediate control",
+      "guidance": "Record enough location, risk, ownership, and evidence detail for another person to act and verify.",
+      "blocks": [
+        {
+          "key": "risk_basis",
+          "type": "checklist",
+          "label": "Risk and disposition classifications used",
+          "items": [
+            "Imminent danger",
+            "High risk",
+            "Moderate risk",
+            "Low risk",
+            "Positive observation",
+            "Corrected during walk",
+            "Further review required",
+            "Not applicable with reason"
+          ]
+        },
+        {
+          "key": "hazard_register",
+          "type": "table",
+          "label": "Hazard, observation, and corrective-action register",
+          "columns": [
+            {
+              "key": "finding_location",
+              "label": "ID and location",
+              "units": 1.0
+            },
+            {
+              "key": "observation",
+              "label": "Condition or positive observation",
+              "units": 1.55
+            },
+            {
+              "key": "risk",
+              "label": "Risk",
+              "units": 0.55
+            },
+            {
+              "key": "immediate_control",
+              "label": "Immediate control",
+              "units": 1.15
+            },
+            {
+              "key": "action_owner",
+              "label": "Owner",
+              "units": 0.75
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "finding_evidence",
+          "type": "fields",
+          "label": "Finding evidence and record location",
+          "fields": [
+            {
+              "key": "photo_reference",
+              "label": "Photo reference range",
+              "units": 1.0
+            },
+            {
+              "key": "drawing_document",
+              "label": "Drawing or document reference",
+              "units": 1.15
+            },
+            {
+              "key": "witnesses",
+              "label": "Witnesses",
+              "units": 0.85
+            },
+            {
+              "key": "initial_notifier",
+              "label": "Initial notifier",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence folder or link",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "control_plan",
+          "type": "textarea",
+          "label": "Control plan, sequencing limits, interim protection, and resources required",
+          "fields": [
+            {
+              "key": "control_plan_detail",
+              "label": "Corrective control plan"
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "stop_work_escalation",
+      "title": "Stop-work decision and escalation record",
+      "guidance": "Document authority, affected work, notifications, and restart conditions whenever normal correction is insufficient.",
+      "blocks": [
+        {
+          "key": "stop_work_decision",
+          "type": "fields",
+          "label": "Stop-work or restricted-work decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "No stop-work action",
+                "Work paused for correction",
+                "Area restricted",
+                "Task stopped",
+                "Site-wide stop",
+                "Emergency response activated"
+              ]
+            },
+            {
+              "key": "decision_time",
+              "label": "Decision time",
+              "units": 0.7
+            },
+            {
+              "key": "authority_name",
+              "label": "Authority name",
+              "units": 0.95
+            },
+            {
+              "key": "authority_role",
+              "label": "Authority role",
+              "units": 0.85
+            },
+            {
+              "key": "affected_trade",
+              "label": "Affected trade",
+              "units": 0.85
+            },
+            {
+              "key": "restart_owner",
+              "label": "Restart decision owner",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "affected_work",
+          "type": "textarea",
+          "label": "Hazard basis, affected people and work, boundary controls, and required restart evidence",
+          "fields": [
+            {
+              "key": "affected_work_detail",
+              "label": "Stop-work basis and restart criteria"
+            }
+          ],
+          "height": 160
+        },
+        {
+          "key": "notification_log",
+          "type": "table",
+          "label": "Notification and escalation log",
+          "columns": [
+            {
+              "key": "notified_party",
+              "label": "Party notified",
+              "units": 1.1
+            },
+            {
+              "key": "method",
+              "label": "Method",
+              "units": 0.7
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.85
+            },
+            {
+              "key": "direction",
+              "label": "Direction or response",
+              "units": 1.35
+            },
+            {
+              "key": "followup_owner",
+              "label": "Follow-up owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "escalation_screen",
+          "type": "checklist",
+          "label": "Additional notification or reporting evaluated",
+          "items": [
+            "Site superintendent",
+            "Employer safety representative",
+            "Project manager",
+            "Owner or client representative",
+            "Affected subcontractor",
+            "Emergency services",
+            "Insurer or risk manager",
+            "Regulatory or required reporter",
+            "Incident investigation lead",
+            "Schedule coordination team"
+          ]
+        },
+        {
+          "key": "authority_notice",
+          "type": "notice",
+          "label": "Safety and reporting control",
+          "guidance": "This walk record does not replace required competent-person inspections, permits, emergency actions, incident reports, or regulatory notifications. Stop work and follow the project safety plan whenever a condition presents imminent danger or exceeds the inspector's authority."
+        }
+      ]
+    },
+    {
+      "key": "verification_closeout",
+      "title": "Correction verification and closeout",
+      "guidance": "Verify the control, communicate residual restrictions, and carry every open item to a named owner.",
+      "blocks": [
+        {
+          "key": "correction_verification",
+          "type": "table",
+          "label": "Correction and reinspection verification",
+          "columns": [
+            {
+              "key": "finding_id",
+              "label": "Finding ID",
+              "units": 0.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction completed",
+              "units": 1.4
+            },
+            {
+              "key": "completed_by",
+              "label": "Completed by",
+              "units": 0.85
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence",
+              "units": 0.85
+            },
+            {
+              "key": "verified_by_date",
+              "label": "Verified by and date",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "followup_result",
+          "type": "fields",
+          "label": "Follow-up inspection and release decision",
+          "fields": [
+            {
+              "key": "reinspection_date",
+              "label": "Reinspection date",
+              "units": 0.75
+            },
+            {
+              "key": "reinspection_by",
+              "label": "Reinspected by",
+              "units": 0.85
+            },
+            {
+              "key": "overall_outcome",
+              "label": "Overall outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "All findings verified",
+                "Work released with controls",
+                "Open actions remain",
+                "Further escalation required"
+              ]
+            },
+            {
+              "key": "work_release_time",
+              "label": "Work release time",
+              "units": 0.75
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 0.75
+            },
+            {
+              "key": "closeout_record",
+              "label": "Closeout record location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "crew_communication",
+          "type": "checklist",
+          "label": "Closeout communication completed",
+          "items": [
+            "Affected crew briefed",
+            "Pre-task plan updated",
+            "Permit or procedure revised",
+            "Lessons shared with other trades",
+            "Area signage or barricade updated",
+            "Photos and evidence filed",
+            "Project action log updated",
+            "Responsible employer acknowledged"
+          ]
+        },
+        {
+          "key": "open_item_handoff",
+          "type": "table",
+          "label": "Open exceptions and next-shift handoff",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Open item",
+              "units": 1.35
+            },
+            {
+              "key": "interim_control",
+              "label": "Interim control",
+              "units": 1.25
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.65
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handed off to",
+              "units": 0.95
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "closeout_signatures",
+          "type": "signatures",
+          "label": "Inspection and closeout acknowledgment",
+          "fields": [
+            {
+              "key": "inspector_signature",
+              "label": "Inspector signature",
+              "units": 1.2
+            },
+            {
+              "key": "inspector_signed_date",
+              "label": "Date",
+              "units": 0.55
+            },
+            {
+              "key": "superintendent_signature",
+              "label": "Superintendent signature",
+              "units": 1.2
+            },
+            {
+              "key": "superintendent_signed_date",
+              "label": "Date",
+              "units": 0.55
+            },
+            {
+              "key": "responsible_employer",
+              "label": "Responsible employer acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "acknowledged_date",
+              "label": "Date",
+              "units": 0.55
+            }
+          ]
+        },
+        {
+          "key": "closeout_notice",
+          "type": "notice",
+          "label": "Closeout condition",
+          "guidance": "A signature records review of this safety walk; it does not waive unresolved hazards or transfer a party's safety duties. Keep restrictions active until the authorized verifier documents an acceptable correction or an approved interim control and follow-up owner."
+        }
+      ]
+    }
+  ]
+}

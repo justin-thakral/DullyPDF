@@ -1,0 +1,446 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1007__home_remodel_estimate_request_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1007__home_remodel_estimate_request_form.pdf",
+  "slug": "home-remodel-estimate-request-form",
+  "title": "Home Remodel Estimate Request and Scope Planner",
+  "subtitle": "Capture household priorities, room-by-room scope, selections and allowances, occupied-home constraints, due diligence, estimate assumptions, and an accountable bid decision.",
+  "description": "A workflow-complete home remodel estimate request covering homeowner decision makers, property and occupancy conditions, room-specific work, retained finishes, selections and allowances, owner-furnished items, permits and association constraints, access and protection, site investigation, pricing alternatives, estimate risk, open decisions, and review authorization.",
+  "use_case": "Use before pricing an occupied-home renovation when the homeowner and remodeler need one fillable record that turns goals, room scope, selections, access limits, existing conditions, and budget choices into a comparable and reviewable estimate package.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "household_intake",
+      "title": "Household, property, and estimate intake",
+      "guidance": "Identify the home, decision makers, desired outcome, and constraints that shape the estimate.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Estimate request reference",
+          "fields": [
+            {"key": "request_number", "label": "Request number", "units": 0.75},
+            {"key": "request_date", "label": "Request date", "units": 0.65},
+            {"key": "estimate_due", "label": "Estimate due", "units": 0.65},
+            {"key": "site_visit_date", "label": "Site visit date", "units": 0.75},
+            {"key": "prepared_for", "label": "Prepared for", "units": 0.85},
+            {"key": "estimator", "label": "Assigned estimator", "units": 0.9}
+          ]
+        },
+        {
+          "key": "property_identity",
+          "type": "fields",
+          "label": "Home and property identity",
+          "fields": [
+            {"key": "homeowner_names", "label": "Homeowner names", "units": 1.15},
+            {"key": "property_address", "label": "Property address", "units": 1.35},
+            {"key": "home_type", "label": "Home type", "units": 0.8, "field_type": "choice", "options": ["Detached home", "Townhome", "Condominium", "Co-op", "Multifamily unit", "Other"]},
+            {"key": "year_built", "label": "Approx. year built", "units": 0.65},
+            {"key": "homeowner_contact", "label": "Primary contact", "units": 1.0}
+          ]
+        },
+        {
+          "key": "decision_schedule",
+          "type": "fields",
+          "label": "Decision and schedule context",
+          "fields": [
+            {"key": "decision_makers", "label": "Required decision makers", "units": 1.1},
+            {"key": "design_contact", "label": "Designer or architect", "units": 1.0},
+            {"key": "desired_start", "label": "Desired start", "units": 0.7},
+            {"key": "desired_finish", "label": "Desired finish", "units": 0.7},
+            {"key": "budget_range", "label": "Working budget range", "units": 0.9},
+            {"key": "estimate_format", "label": "Estimate format", "units": 0.8, "field_type": "choice", "options": ["Fixed-price proposal", "Cost-plus budget", "Design-build budget", "Feasibility range", "Trade-specific estimate"]}
+          ]
+        },
+        {
+          "key": "occupancy_screen",
+          "type": "checklist",
+          "label": "Occupied-home conditions disclosed",
+          "items": [
+            "Home occupied during work",
+            "Children in residence",
+            "Pets in residence",
+            "Older adult or mobility needs",
+            "Remote work or school",
+            "Allergy or respiratory sensitivity",
+            "Required quiet hours",
+            "Shared entry or common area",
+            "Limited parking or driveway access",
+            "Neighbor or association restrictions",
+            "Planned travel or move-out period",
+            "Security or alarm procedures"
+          ]
+        },
+        {
+          "key": "project_goals",
+          "type": "textarea",
+          "label": "Household goals, must-have outcomes, priorities, concerns, and definition of a successful remodel",
+          "fields": [
+            {"key": "goal_detail", "label": "Home remodel goals and priorities"}
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "room_scope",
+      "title": "Room-by-room scope and existing home",
+      "guidance": "Define what changes, what remains, and what must match or be protected in each area.",
+      "blocks": [
+        {
+          "key": "room_scope_matrix",
+          "type": "table",
+          "label": "Room and area scope matrix",
+          "columns": [
+            {"key": "room_area", "label": "Room or area", "units": 0.9},
+            {"key": "existing_use", "label": "Existing use or condition", "units": 1.15},
+            {"key": "requested_work", "label": "Requested work", "units": 1.45},
+            {"key": "retain_protect", "label": "Retain or protect", "units": 1.0},
+            {"key": "priority", "label": "Priority", "units": 0.6},
+            {"key": "reference", "label": "Measure or photo ref.", "units": 0.85}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "scope_components",
+          "type": "checklist",
+          "label": "Project components requiring estimate review",
+          "items": [
+            "Demolition and disposal",
+            "Structural alteration",
+            "Framing and drywall",
+            "Electrical and lighting",
+            "Plumbing and fixtures",
+            "Heating or cooling",
+            "Cabinetry or millwork",
+            "Countertops",
+            "Flooring",
+            "Tile and waterproofing",
+            "Doors, windows, or hardware",
+            "Painting and wall finishes",
+            "Appliances or equipment",
+            "Exterior tie-in or repair"
+          ]
+        },
+        {
+          "key": "existing_systems",
+          "type": "fields",
+          "label": "Existing construction and system context",
+          "fields": [
+            {"key": "structure_type", "label": "Structure type", "units": 0.85},
+            {"key": "electrical_service", "label": "Electrical service", "units": 0.9},
+            {"key": "water_sewer", "label": "Water and sewer", "units": 0.85},
+            {"key": "heating_cooling", "label": "Heating and cooling", "units": 0.95},
+            {"key": "known_repairs", "label": "Prior additions or repairs", "units": 1.15}
+          ]
+        },
+        {
+          "key": "scope_limits",
+          "type": "textarea",
+          "label": "Explicit exclusions, homeowner-retained work, items to salvage, matching limits, and work by others",
+          "fields": [
+            {"key": "scope_limit_detail", "label": "Scope limits and retained-item detail"}
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "selections_allowances",
+      "title": "Selections, allowances, and owner-furnished items",
+      "guidance": "Separate chosen products from undecided allowances so pricing and schedule assumptions remain visible.",
+      "blocks": [
+        {
+          "key": "selection_schedule",
+          "type": "table",
+          "label": "Finish, fixture, and product selection schedule",
+          "columns": [
+            {"key": "room_item", "label": "Room and item", "units": 1.1},
+            {"key": "selection", "label": "Selected product or criteria", "units": 1.45},
+            {"key": "status", "label": "Status", "units": 0.65},
+            {"key": "source", "label": "Supplier or source", "units": 0.9},
+            {"key": "decision_due", "label": "Decision due", "units": 0.7},
+            {"key": "reference", "label": "Sample or link", "units": 0.8}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "allowance_schedule",
+          "type": "table",
+          "label": "Allowance and upgrade planning",
+          "columns": [
+            {"key": "category", "label": "Allowance category", "units": 1.1},
+            {"key": "included_amount", "label": "Included amount", "units": 0.85},
+            {"key": "target_selection", "label": "Target selection", "units": 1.35},
+            {"key": "tax_delivery", "label": "Tax or delivery basis", "units": 0.95},
+            {"key": "overage_approval", "label": "Overage approval", "units": 1.0}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "owner_furnished",
+          "type": "checklist",
+          "label": "Owner-furnished responsibilities evaluated",
+          "items": [
+            "Purchase responsibility assigned",
+            "Product compatibility checked",
+            "Delivery date established",
+            "Inspection on arrival assigned",
+            "Storage location available",
+            "Damage and return responsibility agreed",
+            "Installation parts included",
+            "Warranty ownership understood",
+            "Late-delivery effect acknowledged",
+            "Installation labor included or excluded"
+          ]
+        },
+        {
+          "key": "matching_expectations",
+          "type": "textarea",
+          "label": "Color, grain, sheen, batch, profile, age-related variation, and sample-approval expectations",
+          "fields": [
+            {"key": "matching_detail", "label": "Matching and sample expectations"}
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "investigation_access",
+      "title": "Due diligence, access, and home protection",
+      "guidance": "Identify investigation needs and occupied-home logistics before pricing uncertainty becomes a dispute.",
+      "blocks": [
+        {
+          "key": "approval_screen",
+          "type": "checklist",
+          "label": "Potential approvals and investigations screened",
+          "items": [
+            "Building permit",
+            "Electrical permit",
+            "Plumbing permit",
+            "Mechanical permit",
+            "Structural design",
+            "Condominium or association approval",
+            "Historic-district review",
+            "Lead-safe work requirements",
+            "Asbestos or hazardous-material survey",
+            "Utility locate or service review",
+            "Property-line or survey review",
+            "Energy-code requirement",
+            "Insurance notification",
+            "Product engineering or shop drawing"
+          ]
+        },
+        {
+          "key": "site_assessment",
+          "type": "table",
+          "label": "Site assessment, measurement, and open investigation",
+          "columns": [
+            {"key": "area_system", "label": "Area or system", "units": 1.0},
+            {"key": "observation", "label": "Observed condition", "units": 1.35},
+            {"key": "measurement", "label": "Measurement", "units": 0.8},
+            {"key": "concealed_risk", "label": "Concealed risk", "units": 1.0},
+            {"key": "followup", "label": "Follow-up needed", "units": 1.0},
+            {"key": "owner_due", "label": "Owner and due", "units": 0.9}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "access_plan",
+          "type": "fields",
+          "label": "Estimate access and household coordination",
+          "fields": [
+            {"key": "entry_method", "label": "Entry method", "units": 0.85},
+            {"key": "available_hours", "label": "Available hours", "units": 0.9},
+            {"key": "notice_required", "label": "Advance notice", "units": 0.75},
+            {"key": "parking_route", "label": "Parking and access route", "units": 1.05},
+            {"key": "alarm_pet", "label": "Alarm or pet procedure", "units": 1.0},
+            {"key": "site_contact", "label": "On-site contact", "units": 0.85}
+          ]
+        },
+        {
+          "key": "protection_screen",
+          "type": "checklist",
+          "label": "Estimate protection and logistics assumptions",
+          "items": [
+            "Floor and stair protection",
+            "Dust containment",
+            "Negative air or filtration",
+            "Daily cleanup",
+            "Furniture relocation",
+            "Temporary kitchen or bath",
+            "Water shutoff coordination",
+            "Power shutoff coordination",
+            "Secure tool and material storage",
+            "Debris route",
+            "Portable toilet or sanitation",
+            "Neighbor and common-area protection"
+          ]
+        },
+        {
+          "key": "access_protection_notes",
+          "type": "textarea",
+          "label": "Special access, occupied-room sequencing, property protection, utility continuity, and cleanup assumptions",
+          "fields": [
+            {"key": "access_protection_detail", "label": "Access and protection assumptions"}
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "estimate_pricing",
+      "title": "Estimate build-up, alternatives, and risk",
+      "guidance": "Show the pricing basis, separate allowances and alternates, and preserve unresolved estimate risk.",
+      "blocks": [
+        {
+          "key": "pricing_basis",
+          "type": "fields",
+          "label": "Pricing basis",
+          "fields": [
+            {"key": "price_date", "label": "Pricing date", "units": 0.65},
+            {"key": "drawing_issue", "label": "Plan or sketch issue", "units": 0.9},
+            {"key": "labor_basis", "label": "Labor basis", "units": 0.8},
+            {"key": "markup_basis", "label": "Markup basis", "units": 0.8},
+            {"key": "tax_basis", "label": "Tax basis", "units": 0.7},
+            {"key": "price_valid_through", "label": "Valid through", "units": 0.7}
+          ]
+        },
+        {
+          "key": "cost_summary",
+          "type": "table",
+          "label": "Room or trade estimate summary",
+          "columns": [
+            {"key": "room_trade", "label": "Room or trade", "units": 1.15},
+            {"key": "labor", "label": "Labor", "units": 0.75},
+            {"key": "material", "label": "Material", "units": 0.75},
+            {"key": "subcontract", "label": "Subcontract", "units": 0.85},
+            {"key": "allowance", "label": "Allowance", "units": 0.75},
+            {"key": "total", "label": "Total", "units": 0.7}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "alternates",
+          "type": "table",
+          "label": "Add, deduct, and phasing alternatives",
+          "columns": [
+            {"key": "alternate", "label": "Alternate", "units": 1.35},
+            {"key": "scope_effect", "label": "Scope effect", "units": 1.35},
+            {"key": "price_effect", "label": "Price effect", "units": 0.8},
+            {"key": "schedule_effect", "label": "Schedule effect", "units": 0.85},
+            {"key": "decision", "label": "Decision", "units": 0.75}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "estimate_risk",
+          "type": "checklist",
+          "label": "Estimate risks and unknowns reviewed",
+          "items": [
+            "Concealed framing or substrate",
+            "Unknown utility routing",
+            "Existing work not to current standard",
+            "Water or moisture damage",
+            "Hazardous-material result pending",
+            "Long-lead selection",
+            "Matching existing finish",
+            "Unverified field dimension",
+            "Permit correction risk",
+            "Occupied-home productivity effect",
+            "Owner decision deadline",
+            "Market price or availability change"
+          ]
+        },
+        {
+          "key": "estimate_assumptions",
+          "type": "textarea",
+          "label": "Quantity, productivity, concealed-condition, escalation, contingency, and homeowner-responsibility assumptions",
+          "fields": [
+            {"key": "assumption_detail", "label": "Estimate assumptions and qualifications"}
+          ],
+          "height": 74
+        }
+      ]
+    },
+    {
+      "key": "estimate_review",
+      "title": "Estimate review, decision, and handoff",
+      "guidance": "Resolve open choices, record the review outcome, and route the accepted scope to the next step.",
+      "blocks": [
+        {
+          "key": "completeness_review",
+          "type": "checklist",
+          "label": "Estimate package completeness",
+          "items": [
+            "Requested rooms addressed",
+            "Retained items identified",
+            "Selections distinguished from allowances",
+            "Owner-furnished items identified",
+            "Access and protection included",
+            "Permit and design assumptions stated",
+            "Alternates separated",
+            "Schedule basis stated",
+            "Exclusions stated",
+            "Open investigations assigned"
+          ]
+        },
+        {
+          "key": "review_decision",
+          "type": "fields",
+          "label": "Homeowner and estimator review decision",
+          "fields": [
+            {"key": "decision", "label": "Decision", "units": 0.95, "field_type": "choice", "options": ["Proceed to proposal", "Revise estimate", "Proceed to design", "Hold pending selections", "Decline"]},
+            {"key": "review_date", "label": "Review date", "units": 0.65},
+            {"key": "reviewed_amount", "label": "Reviewed amount", "units": 0.8},
+            {"key": "target_contract_date", "label": "Target contract date", "units": 0.8},
+            {"key": "next_step_owner", "label": "Next-step owner", "units": 0.9},
+            {"key": "followup_date", "label": "Follow-up date", "units": 0.7}
+          ]
+        },
+        {
+          "key": "open_decisions",
+          "type": "table",
+          "label": "Open homeowner decisions and estimate follow-up",
+          "columns": [
+            {"key": "decision_item", "label": "Decision or information", "units": 1.45},
+            {"key": "needed_from", "label": "Needed from", "units": 0.9},
+            {"key": "due", "label": "Due", "units": 0.65},
+            {"key": "estimate_effect", "label": "Estimate effect", "units": 1.0},
+            {"key": "resolved_reference", "label": "Resolution reference", "units": 1.0}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "review_signatures",
+          "type": "signatures",
+          "label": "Estimate review acknowledgment",
+          "fields": [
+            {"key": "homeowner_one", "label": "Homeowner signature", "units": 1.15},
+            {"key": "homeowner_one_date", "label": "Date", "units": 0.55},
+            {"key": "homeowner_two", "label": "Second decision maker", "units": 1.1},
+            {"key": "homeowner_two_date", "label": "Date", "units": 0.55},
+            {"key": "estimator_signature", "label": "Estimator signature", "units": 1.1},
+            {"key": "estimator_date", "label": "Date", "units": 0.55}
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Agreed revisions, design or selection tasks, next meeting, and proposal handoff notes",
+          "fields": [
+            {"key": "handoff_detail", "label": "Estimate review and handoff notes"}
+          ],
+          "height": 54
+        },
+        {
+          "key": "estimate_notice",
+          "type": "notice",
+          "label": "Estimate use notice",
+          "guidance": "This planning record documents the information and assumptions used to prepare an estimate. Scope, price, schedule, product acceptance, and authorization to start work remain controlled by the issued proposal, executed agreement, approved selections, and written changes."
+        }
+      ]
+    }
+  ]
+}

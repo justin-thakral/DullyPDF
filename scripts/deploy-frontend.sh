@@ -6,6 +6,7 @@ ALLOW_NON_PROD="${DULLYPDF_ALLOW_NON_PROD:-}"
 MODE="prod"
 OVERRIDE_FILE="${ENV_FILE:-}"
 ENV_FILE="frontend/.env.local"
+FIREBASE_HOSTING_DEPLOY_RESULT_PATH="${FIREBASE_HOSTING_DEPLOY_RESULT_PATH:-}"
 CRITICAL_WEBP_ASSETS=(
   "/DullyPDF_logo_social_full_bleed.webp"
   "/demo/mobile-raw-pdf.webp"
@@ -284,7 +285,27 @@ for asset_spec in "${CRITICAL_DEMO_ASSETS[@]}"; do
   require_file "frontend/dist${asset_path}"
 done
 
-firebase deploy --only hosting --project "$PROJECT_ID"
+if [[ -n "${FIREBASE_HOSTING_DEPLOY_RESULT_PATH}" ]]; then
+  mkdir -p "$(dirname "${FIREBASE_HOSTING_DEPLOY_RESULT_PATH}")"
+  firebase --json deploy --only hosting --project "$PROJECT_ID" \
+    > "${FIREBASE_HOSTING_DEPLOY_RESULT_PATH}"
+  python3 - "${FIREBASE_HOSTING_DEPLOY_RESULT_PATH}" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+payload = json.loads(path.read_text(encoding="utf-8"))
+hosting = (payload.get("result") or {}).get("hosting")
+if payload.get("status") != "success" or not hosting:
+    raise SystemExit("Firebase JSON deploy result did not contain a successful Hosting version")
+if isinstance(hosting, list) and len(hosting) != 1:
+    raise SystemExit("Firebase deploy returned more than one Hosting version")
+print(f"Firebase Hosting deploy result captured at {path}")
+PY
+else
+  firebase deploy --only hosting --project "$PROJECT_ID"
+fi
 
 LIVE_BASE_URL="https://${PROJECT_ID}.web.app"
 for asset_path in "${CRITICAL_WEBP_ASSETS[@]}"; do

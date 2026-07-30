@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1617__summer_camp_incident_report_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1617__summer_camp_incident_report_form.pdf",
+  "slug": "summer-camp-incident-report-form",
+  "title": "Summer Camp Incident Report and Immediate Response",
+  "subtitle": "Capture the event, immediate care, participant status, custody decisions, notifications, evidence, required escalation, corrective action, and accountable closure while details are fresh.",
+  "description": "A summer camp incident record covering camp and participant identity, factual event classification, immediate safety and care, witness and evidence preservation, guardian notification, authorized custody handoff, safeguarding and external-report routing, first-level review, corrective action, family follow-up, and closure.",
+  "use_case": "Use when camp staff need one authoritative fillable record from the first report of a camper injury, illness, behavior event, missing-person concern, medication event, safeguarding concern, property event, or near miss through qualified review and documented closeout.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Camp, participant, and incident identity",
+      "guidance": "Open one record for the correct participant, program session, place, and reporting chain before details are separated across other logs.",
+      "blocks": [
+        {
+          "key": "camp_reference",
+          "type": "fields",
+          "label": "Camp and report reference",
+          "fields": [
+            {"key": "camp_name", "label": "Camp or organization", "units": 1.35},
+            {"key": "site", "label": "Site or property", "units": 1.05},
+            {"key": "program_session", "label": "Program or session", "units": 1.1},
+            {"key": "report_number", "label": "Report number", "units": 0.85},
+            {"key": "prepared_by", "label": "Prepared by", "units": 0.95},
+            {"key": "record_opened", "label": "Record opened date and time", "units": 1.1}
+          ]
+        },
+        {
+          "key": "participant_reference",
+          "type": "fields",
+          "label": "Participant and guardian reference",
+          "fields": [
+            {"key": "participant_name", "label": "Participant or camper", "units": 1.3},
+            {"key": "preferred_name", "label": "Preferred name", "units": 0.9},
+            {"key": "age_group", "label": "Age, group, or cabin", "units": 1.05},
+            {"key": "guardian_name", "label": "Parent or guardian", "units": 1.2},
+            {"key": "primary_phone", "label": "Primary phone", "units": 0.9},
+            {"key": "alternate_contact", "label": "Alternate contact reference", "units": 1.1}
+          ]
+        },
+        {
+          "key": "event_reference",
+          "type": "fields",
+          "label": "Incident time, place, activity, and supervision",
+          "fields": [
+            {"key": "incident_date", "label": "Incident date", "units": 0.8},
+            {"key": "incident_time", "label": "Incident time", "units": 0.75},
+            {"key": "exact_location", "label": "Exact location", "units": 1.2},
+            {"key": "activity", "label": "Activity underway", "units": 1.2},
+            {"key": "supervising_staff", "label": "Supervising staff", "units": 1.05},
+            {"key": "staff_camper_count", "label": "Staff and camper count", "units": 1.0}
+          ]
+        },
+        {
+          "key": "initial_routing",
+          "type": "fields",
+          "label": "Initial priority and record routing",
+          "fields": [
+            {"key": "priority", "label": "Initial priority", "units": 1.05, "field_type": "choice", "options": ["Select", "Emergency protocol", "Urgent clinical review", "Urgent safeguarding route", "Prompt director review", "Routine incident review"]},
+            {"key": "incident_lead", "label": "Incident lead", "units": 1.0},
+            {"key": "camp_director", "label": "Director notified", "units": 1.0},
+            {"key": "linked_health_record", "label": "Health or medication record reference", "units": 1.3},
+            {"key": "linked_incident", "label": "Related incident reference", "units": 1.1}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "event_immediate_response",
+      "title": "Event classification and immediate response",
+      "guidance": "Record observed facts and exact response times. Emergency action takes priority over completing this form.",
+      "blocks": [
+        {
+          "key": "incident_type",
+          "type": "checklist",
+          "label": "Incident type - select all that apply",
+          "items": [
+            "Injury",
+            "Illness or symptom",
+            "Allergic reaction",
+            "Medication issue",
+            "Behavior or conflict",
+            "Missing, wandering, or elopement concern",
+            "Safeguarding concern",
+            "Water activity",
+            "Transportation",
+            "Field trip or off-site activity",
+            "Equipment or facility condition",
+            "Environmental or weather condition",
+            "Property damage",
+            "Near miss",
+            "Emergency service response",
+            "Other incident documented"
+          ]
+        },
+        {
+          "key": "immediate_actions",
+          "type": "checklist",
+          "label": "Immediate response and safety action",
+          "items": [
+            "Area secured",
+            "Participant moved from hazard",
+            "First aid provided",
+            "Medication administered per current plan",
+            "Nurse, medic, or qualified health staff assessed",
+            "EMS or emergency services called",
+            "Participant transported",
+            "Activity stopped or modified",
+            "Other campers accounted for",
+            "Equipment removed from use",
+            "Evidence preserved",
+            "Guardian notification started",
+            "Safeguarding route activated",
+            "No immediate intervention required"
+          ]
+        },
+        {
+          "key": "initial_observations",
+          "type": "textarea",
+          "label": "Initial observed injury, symptom, behavior, body area, participant condition, and immediate safety concern",
+          "fields": [
+            {"key": "observation_detail", "label": "Initial observations", "multiline": true}
+          ],
+          "height": 62,
+          "guidance": "Describe observable facts and the participant's own words when relevant; do not infer a diagnosis or motive."
+        },
+        {
+          "key": "response_status",
+          "type": "fields",
+          "label": "Immediate care and disposition timing",
+          "fields": [
+            {"key": "care_started", "label": "Care started time", "units": 0.8},
+            {"key": "care_provider", "label": "Care provided by", "units": 1.0},
+            {"key": "qualification", "label": "Role or qualification", "units": 1.0},
+            {"key": "participant_response", "label": "Observed response", "units": 1.1},
+            {"key": "initial_disposition", "label": "Initial disposition", "units": 1.15, "field_type": "choice", "options": ["Select", "Returned to activity", "Removed from activity", "Monitored on site", "Released to guardian", "Transported for care", "Emergency custody transfer", "Pending"]},
+            {"key": "disposition_time", "label": "Disposition time", "units": 0.8}
+          ]
+        },
+        {
+          "key": "emergency_boundary",
+          "type": "notice",
+          "label": "Emergency, medical, and safeguarding boundary",
+          "guidance": "This record does not replace emergency procedures, a medication or health record, clinical documentation, safeguarding protocols, mandated-reporting duties, or notifications required by applicable law and camp policy. Call emergency services and escalate suspected abuse, neglect, missing-person, serious-injury, or other urgent concerns immediately."
+        }
+      ]
+    },
+    {
+      "key": "factual_account_evidence",
+      "title": "Factual account, witnesses, and evidence",
+      "guidance": "Separate direct observations, participant statements, witness information, and retained records from assumptions or later conclusions.",
+      "blocks": [
+        {
+          "key": "factual_sequence",
+          "type": "textarea",
+          "label": "Factual sequence: what happened, what was observed, who was present, and the participant's words when relevant",
+          "fields": [
+            {"key": "sequence_detail", "label": "Factual incident sequence", "multiline": true}
+          ],
+          "height": 84
+        },
+        {
+          "key": "event_context",
+          "type": "fields",
+          "label": "Activity and environmental context",
+          "fields": [
+            {"key": "weather", "label": "Weather", "units": 0.8},
+            {"key": "surface", "label": "Surface or terrain", "units": 0.9},
+            {"key": "environment", "label": "Environmental condition", "units": 1.1},
+            {"key": "equipment", "label": "Equipment involved", "units": 1.1},
+            {"key": "asset_id", "label": "Equipment or asset ID", "units": 0.9},
+            {"key": "procedure_reference", "label": "Activity or procedure reference", "units": 1.2}
+          ]
+        },
+        {
+          "key": "witness_log",
+          "type": "table",
+          "label": "Witness and statement log",
+          "columns": [
+            {"key": "witness", "label": "Witness name or identifier", "units": 1.25},
+            {"key": "role", "label": "Role or group", "units": 0.9},
+            {"key": "contact", "label": "Contact, if appropriate", "units": 1.1},
+            {"key": "statement_time", "label": "Statement date and time", "units": 1.0},
+            {"key": "statement_reference", "label": "Statement or record reference", "units": 1.35}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "evidence_log",
+          "type": "table",
+          "label": "Evidence and related-record register",
+          "columns": [
+            {"key": "evidence_id", "label": "Evidence reference", "units": 0.9},
+            {"key": "item", "label": "Photo, record, item, or data", "units": 1.25},
+            {"key": "source", "label": "Source", "units": 0.85},
+            {"key": "preserved_by", "label": "Preserved by and time", "units": 1.05},
+            {"key": "storage", "label": "Secure storage location", "units": 1.15},
+            {"key": "status", "label": "Status or transfer", "units": 0.9}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "participant_account",
+          "type": "textarea",
+          "label": "Participant account, communication support used, exact words needing preservation, and any limit on obtaining an account",
+          "fields": [
+            {"key": "participant_account_detail", "label": "Participant account and support", "multiline": true}
+          ],
+          "height": 56,
+          "guidance": "Use age-appropriate, trauma-informed practice and do not conduct repeated or leading questioning when a safeguarding or official investigation route applies."
+        }
+      ]
+    },
+    {
+      "key": "care_notification_handoff",
+      "title": "Care, notification, and authorized custody handoff",
+      "guidance": "Preserve the action sequence, who was reached, directions received, and the exact time and authority for each custody transfer.",
+      "blocks": [
+        {
+          "key": "care_action_log",
+          "type": "table",
+          "label": "First aid, monitoring, transport, and care action log",
+          "columns": [
+            {"key": "time", "label": "Time", "units": 0.65},
+            {"key": "action", "label": "Action or care provided", "units": 1.4},
+            {"key": "provider", "label": "Provider and role", "units": 1.0},
+            {"key": "participant_response", "label": "Observed response", "units": 1.15},
+            {"key": "direction", "label": "Direction received", "units": 1.15},
+            {"key": "record_reference", "label": "Related record", "units": 0.9}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "notification_log",
+          "type": "table",
+          "label": "Guardian, leadership, emergency, and agency notification log",
+          "columns": [
+            {"key": "person_agency", "label": "Person or agency", "units": 1.2},
+            {"key": "method", "label": "Method", "units": 0.7},
+            {"key": "attempt_time", "label": "Attempt time", "units": 0.8},
+            {"key": "reached_time", "label": "Reached time", "units": 0.8},
+            {"key": "staff_member", "label": "Staff member", "units": 0.9},
+            {"key": "message_direction", "label": "Message or direction", "units": 1.45}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "guardian_communication",
+          "type": "textarea",
+          "label": "Information shared with guardian, questions, instructions, follow-up expectation, and any unsuccessful contact or communication support",
+          "fields": [
+            {"key": "guardian_communication_detail", "label": "Guardian communication detail", "multiline": true}
+          ],
+          "height": 58
+        },
+        {
+          "key": "custody_handoff",
+          "type": "fields",
+          "label": "Participant custody or care handoff",
+          "fields": [
+            {"key": "released_to", "label": "Released or transferred to", "units": 1.2},
+            {"key": "relationship_role", "label": "Relationship or role", "units": 1.0},
+            {"key": "handoff_date_time", "label": "Handoff date and time", "units": 1.0},
+            {"key": "authorization_verified", "label": "Identity and authority verified by", "units": 1.25},
+            {"key": "destination", "label": "Destination, if transported", "units": 1.05},
+            {"key": "accepting_person", "label": "Person accepting custody or care", "units": 1.2}
+          ]
+        },
+        {
+          "key": "handoff_signatures",
+          "type": "signatures",
+          "label": "Custody handoff acknowledgment",
+          "fields": [
+            {"key": "releasing_staff", "label": "Releasing staff signature", "units": 1.2},
+            {"key": "receiving_person", "label": "Receiving person acknowledgment", "units": 1.35},
+            {"key": "handoff_time", "label": "Date and time", "units": 0.85},
+            {"key": "witness", "label": "Second staff or witness", "units": 1.1}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "specialized_reporting",
+      "title": "Safeguarding, external reporting, and restricted handling",
+      "guidance": "Route high-risk matters promptly and preserve only the operational facts needed for the authorized process.",
+      "blocks": [
+        {
+          "key": "specialized_routes",
+          "type": "checklist",
+          "label": "Specialized route or additional record opened",
+          "items": [
+            "Emergency services record",
+            "Camp health or first-aid record",
+            "Medication administration record",
+            "Safeguarding lead review",
+            "Mandated-reporting route",
+            "Missing-person procedure",
+            "Water-safety review",
+            "Transportation incident record",
+            "Insurance notification",
+            "Facility or equipment isolation",
+            "Regulator or licensing notification review",
+            "No specialized route required"
+          ]
+        },
+        {
+          "key": "external_report",
+          "type": "fields",
+          "label": "External report or qualified-review reference",
+          "fields": [
+            {"key": "agency_reviewer", "label": "Agency or qualified reviewer", "units": 1.2},
+            {"key": "report_reference", "label": "Report or case reference", "units": 1.1},
+            {"key": "reported_date_time", "label": "Reported date and time", "units": 1.0},
+            {"key": "reported_by", "label": "Reported by", "units": 0.9},
+            {"key": "direction_received", "label": "Direction received", "units": 1.25},
+            {"key": "restricted_record", "label": "Restricted record location", "units": 1.1}
+          ]
+        },
+        {
+          "key": "specialized_boundary",
+          "type": "notice",
+          "label": "Qualified review and confidentiality boundary",
+          "guidance": "Follow current applicable emergency, medical, childcare, safeguarding, mandated-reporting, licensing, privacy, and record-retention requirements. Do not delay a required report for internal approval, promise confidentiality, investigate beyond assigned authority, or include unnecessary medical or protected details in this operational record."
+        }
+      ]
+    },
+    {
+      "key": "review_corrective_action",
+      "title": "First-level review, contributing factors, and corrective action",
+      "guidance": "Review process and conditions without assigning blame before facts and qualified findings are available.",
+      "blocks": [
+        {
+          "key": "contributing_factors",
+          "type": "checklist",
+          "label": "Potential contributing factors for review",
+          "items": [
+            "Procedure unclear",
+            "Procedure not followed",
+            "Training or orientation gap",
+            "Supervision level or positioning",
+            "Attendance or head-count control",
+            "Equipment condition",
+            "Facility or environmental condition",
+            "Weather or surface condition",
+            "Transportation factor",
+            "Participant-specific support factor",
+            "Information unavailable or conflicting",
+            "No factor identified at this stage"
+          ]
+        },
+        {
+          "key": "review_findings",
+          "type": "textarea",
+          "label": "Review findings, evidence basis, conflicting information, applicable policy, qualified input, and rationale",
+          "fields": [
+            {"key": "review_finding_detail", "label": "First-level review findings", "multiline": true}
+          ],
+          "height": 76
+        },
+        {
+          "key": "corrective_tracker",
+          "type": "table",
+          "label": "Corrective and follow-up action tracker",
+          "columns": [
+            {"key": "action", "label": "Action or follow-up", "units": 1.45},
+            {"key": "owner", "label": "Owner", "units": 0.85},
+            {"key": "due_date", "label": "Due date", "units": 0.8},
+            {"key": "status", "label": "Status", "units": 0.8},
+            {"key": "escalation", "label": "Escalation if overdue", "units": 1.05},
+            {"key": "completion_evidence", "label": "Completion evidence", "units": 1.25}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "family_followup",
+          "type": "textarea",
+          "label": "Family follow-up, participant status, return or accommodation direction, questions, limitations, and next communication",
+          "fields": [
+            {"key": "family_followup_detail", "label": "Family and participant follow-up", "multiline": true}
+          ],
+          "height": 58
+        },
+        {
+          "key": "review_authority",
+          "type": "fields",
+          "label": "Review ownership and authority",
+          "fields": [
+            {"key": "review_lead", "label": "Review lead", "units": 1.0},
+            {"key": "clinical_reviewer", "label": "Clinical or health reviewer, if applicable", "units": 1.3},
+            {"key": "safeguarding_reviewer", "label": "Safeguarding reviewer, if applicable", "units": 1.3},
+            {"key": "director_decision", "label": "Director decision date", "units": 1.0},
+            {"key": "next_review_due", "label": "Next review due", "units": 0.9}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "closure",
+      "title": "Participant follow-up and accountable closure",
+      "guidance": "Close only after participant status, guardian communication, required reports, assigned actions, record handoff, and unresolved limitations are visible.",
+      "blocks": [
+        {
+          "key": "closure_status",
+          "type": "fields",
+          "label": "Incident and participant status at closeout",
+          "fields": [
+            {"key": "incident_status", "label": "Incident record status", "units": 1.1, "field_type": "choice", "options": ["Select", "Closed", "Closed with monitoring", "Transferred to specialized process", "Pending external information", "Open corrective action", "Reopened"]},
+            {"key": "participant_status", "label": "Participant status", "units": 1.15},
+            {"key": "guardian_followup", "label": "Final guardian contact date and time", "units": 1.2},
+            {"key": "return_direction", "label": "Return or activity direction reference", "units": 1.25},
+            {"key": "records_location", "label": "Final record location", "units": 1.0},
+            {"key": "retention_route", "label": "Retention or restricted-access route", "units": 1.2}
+          ]
+        },
+        {
+          "key": "post_incident_followup",
+          "type": "table",
+          "label": "Participant, guardian, and program follow-up log",
+          "columns": [
+            {"key": "date_time", "label": "Date and time", "units": 0.9},
+            {"key": "contact_check", "label": "Contact or status check", "units": 1.35},
+            {"key": "participant_status", "label": "Participant status or response", "units": 1.35},
+            {"key": "direction_action", "label": "Direction or action", "units": 1.25},
+            {"key": "owner_reference", "label": "Owner and record reference", "units": 1.15}
+          ],
+          "rows": 4
+        },
+        {
+          "key": "unresolved_register",
+          "type": "table",
+          "label": "Remaining limitation, open action, or transferred follow-up",
+          "columns": [
+            {"key": "item", "label": "Unresolved item", "units": 1.4},
+            {"key": "owner", "label": "Owner or receiving process", "units": 1.15},
+            {"key": "due_point", "label": "Due date or trigger", "units": 1.0},
+            {"key": "escalation", "label": "Escalation path", "units": 1.05},
+            {"key": "status", "label": "Status or disposition", "units": 1.0}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "closure_checks",
+          "type": "checklist",
+          "label": "Closeout verification",
+          "items": [
+            "Immediate care and disposition documented",
+            "Guardian notification documented",
+            "Custody or care handoff documented",
+            "Required internal records linked",
+            "External reporting decision documented",
+            "Evidence secured and access limited",
+            "Corrective actions assigned",
+            "Participant follow-up documented",
+            "Open items transferred to an owner",
+            "Applicable review completed"
+          ]
+        },
+        {
+          "key": "closure_summary",
+          "type": "textarea",
+          "label": "Final outcome, remaining uncertainty, transferred work, family handoff, and reason the incident record can close",
+          "fields": [
+            {"key": "closure_summary_detail", "label": "Incident closure summary", "multiline": true}
+          ],
+          "height": 58
+        },
+        {
+          "key": "closure_signatures",
+          "type": "signatures",
+          "label": "Incident review and closure approval",
+          "fields": [
+            {"key": "prepared_signature", "label": "Prepared by signature", "units": 1.15},
+            {"key": "shift_lead_signature", "label": "Shift lead review", "units": 1.1},
+            {"key": "director_signature", "label": "Camp director review", "units": 1.15},
+            {"key": "qualified_signature", "label": "Qualified reviewer, if applicable", "units": 1.2},
+            {"key": "closure_date_time", "label": "Closure date and time", "units": 0.95}
+          ]
+        }
+      ]
+    }
+  ]
+}

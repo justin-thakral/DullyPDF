@@ -1,0 +1,524 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfs_1129__locksmith_job_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfs_1129__locksmith_job_work_order_form.pdf",
+  "slug": "locksmith-job-work-order-form",
+  "title": "Locksmith Job Work Order and Key Control",
+  "subtitle": "Verify access authority, define the exact opening and credential scope, authorize price limits, control site access, record installed hardware and issued keys, test security and egress, and complete a secure customer handoff.",
+  "description": "A workflow-complete locksmith work order covering controlled job identity, customer and property routing, minimum necessary authority verification, requested lock and access-control scope, opening-by-opening requirements, estimates and authorization limits, technician arrival and alarm coordination, completed work and materials, key and credential issuance, old-hardware disposition, functional and egress tests, unresolved security concerns, invoice details, warranty information, and customer acceptance.",
+  "use_case": "Use when a dispatcher, locksmith technician, authorized property or vehicle representative, and customer need one fillable record connecting verified access authority and approved security scope to work performed, controlled credential custody, testing, invoice delivery, and accountable release.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "customer_job_reference",
+      "title": "Customer, property, and controlled job reference",
+      "guidance": "Use one work order number for the request, property, authorized contact, technician routing, keys, credentials, and completion records.",
+      "blocks": [
+        {
+          "key": "work_order_reference",
+          "type": "fields",
+          "label": "Locksmith work order reference",
+          "fields": [
+            {"key": "locksmith_company", "label": "Locksmith company or location", "units": 1.25},
+            {"key": "work_order_number", "label": "Work order number", "units": 0.85},
+            {"key": "request_received", "label": "Request received date and time", "units": 1.0},
+            {"key": "dispatcher_estimator", "label": "Dispatcher or estimator", "units": 0.95},
+            {"key": "priority", "label": "Priority", "units": 0.7, "field_type": "choice", "options": ["Scheduled", "Priority", "Emergency", "After-hours", "Hold for authority"]},
+            {"key": "job_status", "label": "Job status", "units": 0.85, "field_type": "choice", "options": ["Intake", "Assigned", "On site", "Authorized", "In progress", "Completed", "Hold"]}
+          ]
+        },
+        {
+          "key": "customer_contact",
+          "type": "fields",
+          "label": "Customer and authorized contact",
+          "fields": [
+            {"key": "customer_organization", "label": "Customer or organization", "units": 1.2},
+            {"key": "authorized_contact", "label": "Authorized contact", "units": 1.0},
+            {"key": "phone", "label": "Phone", "units": 0.8},
+            {"key": "email", "label": "Email", "units": 1.1},
+            {"key": "account_reference", "label": "Account, PO, or case", "units": 1.0}
+          ]
+        },
+        {
+          "key": "service_billing",
+          "type": "fields",
+          "label": "Service and billing locations",
+          "fields": [
+            {"key": "service_address", "label": "Service address or unit", "units": 1.35},
+            {"key": "property_type", "label": "Property or asset type", "units": 0.95},
+            {"key": "billing_address", "label": "Billing address", "units": 1.25},
+            {"key": "on_site_contact", "label": "On-site contact", "units": 0.95},
+            {"key": "access_window", "label": "Authorized access window", "units": 1.0}
+          ]
+        },
+        {
+          "key": "job_request_summary",
+          "type": "textarea",
+          "label": "Customer request, affected opening or asset, urgency, people impacted, recent security event, and dispatch notes",
+          "fields": [
+            {"key": "request_summary_detail", "label": "Job request and security context"}
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "authority_security_controls",
+      "title": "Authority to access and security-record controls",
+      "guidance": "Stop work when ownership, occupancy, management, agency, or other authorization is unclear and record only the minimum verification details needed.",
+      "blocks": [
+        {
+          "key": "authority_presented",
+          "type": "checklist",
+          "label": "Authority presented",
+          "items": [
+            "Owner",
+            "Tenant or occupant",
+            "Property manager",
+            "Employer or facilities representative",
+            "Vehicle owner",
+            "Law enforcement",
+            "Court or eviction process",
+            "Other written authority",
+            "Authorized account contact confirmed",
+            "Authority unavailable or disputed"
+          ]
+        },
+        {
+          "key": "authority_verification",
+          "type": "fields",
+          "label": "Minimum necessary authority verification",
+          "fields": [
+            {"key": "verified_by", "label": "Identity or authority verified by", "units": 1.1},
+            {"key": "document_last4", "label": "Document type and last 4 only", "units": 1.1},
+            {"key": "authority_reference", "label": "Lease, deed, PO, case, or account ref.", "units": 1.25},
+            {"key": "verified_date_time", "label": "Verified date and time", "units": 0.95},
+            {"key": "authorization_contact", "label": "Authorization contact", "units": 1.0},
+            {"key": "verification_status", "label": "Verification status", "units": 0.9, "field_type": "choice", "options": ["Verified", "Verified with condition", "Pending", "Disputed", "Work refused"]}
+          ]
+        },
+        {
+          "key": "authority_exception",
+          "type": "table",
+          "label": "Authority conflict, restriction, and escalation register",
+          "columns": [
+            {"key": "condition", "label": "Conflict or restriction", "units": 1.35},
+            {"key": "immediate_action", "label": "Immediate action", "units": 1.1},
+            {"key": "escalated_to", "label": "Escalated to", "units": 0.95},
+            {"key": "decision", "label": "Decision or hold", "units": 1.0},
+            {"key": "reference", "label": "Evidence or reference", "units": 1.1}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "security_record_notice",
+          "type": "notice",
+          "label": "Sensitive information control",
+          "guidance": "Record only the minimum verification detail needed. Do not place identity-document copies, access codes, alarm credentials, full key-bitting data, or other reusable security secrets in general notes. Use the organization's approved restricted system when such information is genuinely required."
+        }
+      ]
+    },
+    {
+      "key": "requested_security_scope",
+      "title": "Requested work and opening-by-opening security scope",
+      "guidance": "Identify each affected door, lock, safe, vehicle, credential, or access device so unapproved security expansion remains visible.",
+      "blocks": [
+        {
+          "key": "requested_work",
+          "type": "checklist",
+          "label": "Requested locksmith service",
+          "items": [
+            "Lockout or entry",
+            "Rekey",
+            "Lock repair",
+            "Lock replacement",
+            "Key duplication",
+            "Master-key change",
+            "Safe service",
+            "Automotive key",
+            "Access-control device",
+            "Door or closer hardware",
+            "Emergency board-up",
+            "Security survey",
+            "Broken-key extraction",
+            "Latch or strike adjustment"
+          ]
+        },
+        {
+          "key": "opening_scope",
+          "type": "table",
+          "label": "Opening, lock, or credential scope",
+          "columns": [
+            {"key": "asset_location", "label": "Door, asset, or location", "units": 1.2},
+            {"key": "hardware_keyway", "label": "Hardware or keyway", "units": 1.05},
+            {"key": "existing_condition", "label": "Existing condition", "units": 1.2},
+            {"key": "requested_action", "label": "Requested action", "units": 1.15},
+            {"key": "quantity", "label": "Quantity", "units": 0.6},
+            {"key": "authorization_ref", "label": "Authorization ref.", "units": 0.9}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "scope_constraints",
+          "type": "checklist",
+          "label": "Security and property constraints identified",
+          "items": [
+            "Occupied area",
+            "Common or shared opening",
+            "Fire-rated or egress opening",
+            "Master-key system",
+            "Restricted keyway",
+            "Alarmed opening",
+            "Access-control integration",
+            "Historic or specialty hardware",
+            "Property protection required",
+            "After-hours access",
+            "Existing damage present",
+            "Other trades or vendor coordination"
+          ]
+        },
+        {
+          "key": "scope_notes",
+          "type": "textarea",
+          "label": "Opening function, key hierarchy, customer outcome, hardware compatibility, finish, code or egress concern, exclusions, and scope assumptions",
+          "fields": [
+            {"key": "scope_note_detail", "label": "Requested security scope and constraints"}
+          ],
+          "height": 74
+        }
+      ]
+    },
+    {
+      "key": "estimate_authorization",
+      "title": "Estimate, scope decision, and customer authorization",
+      "guidance": "Separate the estimate from the authorized not-to-exceed limit and document any declined, deferred, or added security work.",
+      "blocks": [
+        {
+          "key": "estimate_values",
+          "type": "fields",
+          "label": "Estimate and approval limit",
+          "fields": [
+            {"key": "labor_estimate", "label": "Labor estimate", "units": 0.8},
+            {"key": "parts_estimate", "label": "Parts estimate", "units": 0.8},
+            {"key": "service_travel", "label": "Service or travel", "units": 0.8},
+            {"key": "tax", "label": "Tax", "units": 0.55},
+            {"key": "not_to_exceed", "label": "Not-to-exceed total", "units": 0.95},
+            {"key": "approval_method", "label": "Approval method or ID", "units": 1.0}
+          ]
+        },
+        {
+          "key": "scope_decisions",
+          "type": "table",
+          "label": "Requested option, estimate, and customer decision",
+          "columns": [
+            {"key": "opening_service", "label": "Opening or service", "units": 1.25},
+            {"key": "option", "label": "Proposed option", "units": 1.15},
+            {"key": "estimate", "label": "Estimate", "units": 0.7},
+            {"key": "decision", "label": "Approve, defer, or decline", "units": 1.05},
+            {"key": "decision_ref", "label": "Decision or reason ref.", "units": 1.2}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "authorization_status",
+          "type": "fields",
+          "label": "Customer authorization and work routing",
+          "fields": [
+            {"key": "authorization_status", "label": "Authorization status", "units": 0.95, "field_type": "choice", "options": ["Approved", "Approved with limit", "Partial approval", "Awaiting approval", "Declined", "Stop work"]},
+            {"key": "authorized_scope_ref", "label": "Authorized scope reference", "units": 1.05},
+            {"key": "authorized_by", "label": "Authorized by", "units": 0.85},
+            {"key": "authorized_date_time", "label": "Authorized date and time", "units": 0.95},
+            {"key": "assigned_technician", "label": "Assigned technician", "units": 0.95},
+            {"key": "promised_completion", "label": "Promised completion", "units": 0.9}
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Customer work authorization",
+          "fields": [
+            {"key": "customer_signature", "label": "Customer authorization", "units": 1.3},
+            {"key": "customer_date_time", "label": "Date and time", "units": 0.75},
+            {"key": "estimator_signature", "label": "Dispatcher or estimator", "units": 1.2},
+            {"key": "estimator_date_time", "label": "Date and time", "units": 0.75}
+          ]
+        },
+        {
+          "key": "scope_control_notice",
+          "type": "notice",
+          "label": "Authorization boundary",
+          "guidance": "Do not expand the number of openings, alter a master-key hierarchy, issue additional credentials, bypass an access system, or replace security hardware beyond the documented approval. Pause affected work when site conditions, cost, authority, or requested function changes."
+        }
+      ]
+    },
+    {
+      "key": "arrival_site_controls",
+      "title": "Technician arrival, authority reconfirmation, and site controls",
+      "guidance": "Reconfirm the authorized party when site conditions or contacts differ from dispatch and protect occupants, property, alarms, access systems, and egress.",
+      "blocks": [
+        {
+          "key": "arrival_reference",
+          "type": "fields",
+          "label": "Technician arrival and on-site authority",
+          "fields": [
+            {"key": "technician_license", "label": "Technician or license ID", "units": 1.0},
+            {"key": "arrival_date_time", "label": "Arrival date and time", "units": 0.95},
+            {"key": "on_site_authorized_contact", "label": "On-site authorized contact", "units": 1.1},
+            {"key": "authority_reconfirmed_by", "label": "Authority reconfirmed by", "units": 1.05},
+            {"key": "work_start", "label": "Work start", "units": 0.75},
+            {"key": "site_photo_ref", "label": "Site photo reference", "units": 0.9}
+          ]
+        },
+        {
+          "key": "site_controls",
+          "type": "checklist",
+          "label": "Site and security controls",
+          "items": [
+            "Work area secured",
+            "Occupants notified",
+            "Alarm coordination complete",
+            "Access-system bypass authorized",
+            "Fire egress protected",
+            "Property and finishes protected",
+            "Photos authorized",
+            "No unapproved scope change",
+            "Keys and credentials controlled",
+            "Door remains securable during work",
+            "Other affected users notified",
+            "Emergency contact available"
+          ]
+        },
+        {
+          "key": "site_variance",
+          "type": "table",
+          "label": "Site condition, authority change, and immediate response",
+          "columns": [
+            {"key": "condition", "label": "Condition or variance", "units": 1.35},
+            {"key": "security_effect", "label": "Security or egress effect", "units": 1.1},
+            {"key": "immediate_action", "label": "Immediate action", "units": 1.1},
+            {"key": "approval_owner", "label": "Approval or owner", "units": 0.95},
+            {"key": "resolution", "label": "Resolution or hold", "units": 1.1}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "site_control_notes",
+          "type": "textarea",
+          "label": "Alarm instructions, access-system coordination, occupant routing, property protection, temporary security, and after-hours handoff plan",
+          "fields": [
+            {"key": "site_control_detail", "label": "On-site security and access-control plan"}
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "work_parts_labor",
+      "title": "Completed work, installed hardware, parts, and labor",
+      "guidance": "Record what was actually completed at each opening while keeping reusable bitting, programming, and access-code details in the approved secure system.",
+      "blocks": [
+        {
+          "key": "completed_work",
+          "type": "table",
+          "label": "Opening-by-opening completed work and materials",
+          "columns": [
+            {"key": "opening_asset", "label": "Opening or asset", "units": 1.1},
+            {"key": "work_performed", "label": "Work performed", "units": 1.3},
+            {"key": "part_sku", "label": "Part, keyway, or SKU", "units": 1.0},
+            {"key": "quantity", "label": "Qty.", "units": 0.55},
+            {"key": "labor", "label": "Labor", "units": 0.65},
+            {"key": "amount", "label": "Amount", "units": 0.7}
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_completion",
+          "type": "fields",
+          "label": "Work completion and record references",
+          "fields": [
+            {"key": "work_complete", "label": "Work completed date and time", "units": 1.05},
+            {"key": "secure_record_ref", "label": "Restricted security-record ref.", "units": 1.1},
+            {"key": "manufacturer_reference", "label": "Manufacturer or part reference", "units": 1.05},
+            {"key": "warranty_reference", "label": "Warranty reference", "units": 0.95},
+            {"key": "work_status", "label": "Work status", "units": 0.9, "field_type": "choice", "options": ["Complete", "Complete with open item", "Partial", "Temporary security", "Unable to complete"]},
+            {"key": "completion_photo_ref", "label": "Completion photo reference", "units": 1.05}
+          ]
+        },
+        {
+          "key": "work_exception",
+          "type": "textarea",
+          "label": "Concealed damage, incompatible hardware, unavailable part, changed opening condition, temporary repair, or other difference from authorized scope",
+          "fields": [
+            {"key": "work_exception_detail", "label": "Completed-work exception and disposition"}
+          ],
+          "height": 66
+        },
+        {
+          "key": "secure_data_notice",
+          "type": "notice",
+          "label": "Restricted security-data routing",
+          "guidance": "Use only non-sensitive identifiers in this work order. Store bitting, programming credentials, access codes, master-key hierarchy data, and other reusable secrets in the organization's approved restricted record, linked here only by a safe reference."
+        }
+      ]
+    },
+    {
+      "key": "credential_hardware_control",
+      "title": "Key, credential, and old-hardware custody",
+      "guidance": "Account for every issued or returned key and credential, document non-sensitive identifiers, and preserve the authorized disposition of removed hardware.",
+      "blocks": [
+        {
+          "key": "credential_issuance",
+          "type": "table",
+          "label": "Key and credential issuance or return",
+          "columns": [
+            {"key": "safe_identifier", "label": "Non-sensitive identifier", "units": 1.1},
+            {"key": "credential_type", "label": "Key or credential type", "units": 1.05},
+            {"key": "quantity", "label": "Qty.", "units": 0.55},
+            {"key": "issued_returned_to", "label": "Issued or returned to", "units": 1.1},
+            {"key": "date_time", "label": "Date and time", "units": 0.85},
+            {"key": "initials", "label": "Initials", "units": 0.65}
+          ],
+          "rows": 5
+        },
+        {
+          "key": "old_hardware",
+          "type": "table",
+          "label": "Removed key, cylinder, lock, and old-hardware disposition",
+          "columns": [
+            {"key": "item", "label": "Removed item", "units": 1.2},
+            {"key": "quantity", "label": "Qty.", "units": 0.6},
+            {"key": "disposition", "label": "Return, destroy, or retain", "units": 1.15},
+            {"key": "released_to", "label": "Released to or location", "units": 1.15},
+            {"key": "verified_by", "label": "Verified by and date", "units": 1.1}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "custody_checks",
+          "type": "checklist",
+          "label": "Credential and hardware custody confirmed",
+          "items": [
+            "Issued quantity matches authorization",
+            "Recipient authority confirmed",
+            "Non-sensitive identifiers used",
+            "Duplicate keys accounted for",
+            "Temporary credentials identified",
+            "Old keys collected when required",
+            "Removed cylinders or locks accounted for",
+            "Restricted record reference filed",
+            "Customer custody acknowledgment obtained",
+            "Unresolved credential issue assigned"
+          ]
+        },
+        {
+          "key": "custody_exception",
+          "type": "table",
+          "label": "Missing key, disputed recipient, unreturned credential, or hardware exception",
+          "columns": [
+            {"key": "exception", "label": "Exception", "units": 1.3},
+            {"key": "immediate_control", "label": "Immediate security control", "units": 1.25},
+            {"key": "owner", "label": "Owner", "units": 0.75},
+            {"key": "due", "label": "Due", "units": 0.65},
+            {"key": "final_disposition", "label": "Disposition or open status", "units": 1.25}
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "testing_customer_closeout",
+      "title": "Testing, invoice, customer acceptance, and closeout",
+      "guidance": "Test security and egress functions, explain remaining limitations, reconcile the invoice, and document the authorized customer handoff.",
+      "blocks": [
+        {
+          "key": "testing_checks",
+          "type": "checklist",
+          "label": "Functional and security closeout checks",
+          "items": [
+            "All issued keys tested",
+            "Interior egress tested",
+            "Latch and bolt aligned",
+            "Door closes and secures",
+            "Alarm restored",
+            "Access control restored",
+            "Temporary bypass removed",
+            "Work area cleared",
+            "Property protection removed",
+            "Old hardware handled as directed",
+            "Customer operating test completed",
+            "Outstanding limitation communicated"
+          ]
+        },
+        {
+          "key": "test_results",
+          "type": "table",
+          "label": "Opening, credential, and system test record",
+          "columns": [
+            {"key": "opening_system", "label": "Opening or system", "units": 1.2},
+            {"key": "test", "label": "Test performed", "units": 1.05},
+            {"key": "result", "label": "Result", "units": 0.75},
+            {"key": "tested_by", "label": "Tested by", "units": 0.8},
+            {"key": "customer_witness", "label": "Customer witness", "units": 1.0},
+            {"key": "exception_ref", "label": "Exception or evidence", "units": 1.1}
+          ],
+          "rows": 3
+        },
+        {
+          "key": "invoice_values",
+          "type": "fields",
+          "label": "Invoice, payment, warranty, and completion",
+          "fields": [
+            {"key": "invoice_number", "label": "Invoice number", "units": 0.8},
+            {"key": "final_total", "label": "Final total", "units": 0.7},
+            {"key": "amount_paid", "label": "Amount paid", "units": 0.75},
+            {"key": "balance", "label": "Balance", "units": 0.65},
+            {"key": "warranty_return_ref", "label": "Warranty or return reference", "units": 1.05},
+            {"key": "completed_date_time", "label": "Completed date and time", "units": 0.95}
+          ]
+        },
+        {
+          "key": "handoff_notes",
+          "type": "textarea",
+          "label": "Operating instructions, outstanding security concern, recommended follow-up, restricted-key policy, warranty terms, and customer handoff",
+          "fields": [
+            {"key": "handoff_note_detail", "label": "Customer instructions and remaining security considerations"}
+          ],
+          "height": 68
+        },
+        {
+          "key": "open_security_items",
+          "type": "table",
+          "label": "Open security, hardware, credential, or follow-up register",
+          "columns": [
+            {"key": "open_item", "label": "Open item", "units": 1.25},
+            {"key": "interim_security", "label": "Interim security condition", "units": 1.25},
+            {"key": "owner", "label": "Owner", "units": 0.75},
+            {"key": "due", "label": "Due", "units": 0.65},
+            {"key": "customer_handoff", "label": "Customer handoff or ref.", "units": 1.25}
+          ],
+          "rows": 2
+        },
+        {
+          "key": "completion_signatures",
+          "type": "signatures",
+          "label": "Service completion and release acknowledgment",
+          "fields": [
+            {"key": "customer_acceptance", "label": "Customer completion acceptance", "units": 1.35},
+            {"key": "customer_date_time", "label": "Date and time", "units": 0.75},
+            {"key": "technician_signature", "label": "Technician signature", "units": 1.15},
+            {"key": "technician_date_time", "label": "Date and time", "units": 0.75},
+            {"key": "released_to", "label": "Released to", "units": 0.9},
+            {"key": "released_date_time", "label": "Release date and time", "units": 0.85}
+          ]
+        },
+        {
+          "key": "closeout_notice",
+          "type": "notice",
+          "label": "Secure closeout condition",
+          "guidance": "Close the work order only after authority, authorized scope, work performed, key and credential custody, removed hardware, functional and egress testing, invoice, operating instructions, and unresolved security items reconcile or have a named owner and documented customer handoff."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,701 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1210__boiler_vendor_sign_in_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1210__boiler_vendor_sign_in_form.pdf",
+  "slug": "boiler-vendor-sign-in-form",
+  "title": "Boiler Vendor Access and Service Sign-In Record",
+  "subtitle": "Control vendor access to boiler work and preserve personnel, scope, safety, activity, evidence, and exit records.",
+  "description": "A boiler-specific vendor sign-in and service-control record for documenting authorized personnel, credentials, work boundaries, boiler hazards, readings, materials, exceptions, handoff, and departure.",
+  "use_case": "Use when an outside vendor enters a boiler room or performs boiler-related inspection, maintenance, treatment, testing, repair, or support that requires accountable access and service closeout.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "visit_identity",
+      "title": "Visit, site, and boiler identity",
+      "guidance": "Tie the access event to a facility sponsor, service purpose, and affected boiler.",
+      "blocks": [
+        {
+          "key": "visit_reference",
+          "type": "fields",
+          "label": "Visit reference and schedule",
+          "fields": [
+            {
+              "key": "visit_number",
+              "label": "Visit number",
+              "units": 0.9
+            },
+            {
+              "key": "visit_date",
+              "label": "Visit date",
+              "units": 0.75
+            },
+            {
+              "key": "scheduled_arrival",
+              "label": "Scheduled arrival",
+              "units": 1.05
+            },
+            {
+              "key": "actual_arrival",
+              "label": "Actual arrival",
+              "units": 0.95
+            },
+            {
+              "key": "work_order",
+              "label": "Work order",
+              "units": 0.9
+            },
+            {
+              "key": "service_call",
+              "label": "Service-call ref",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "facility_reference",
+          "type": "fields",
+          "label": "Facility and sponsor",
+          "fields": [
+            {
+              "key": "facility_name",
+              "label": "Facility name",
+              "units": 1.2
+            },
+            {
+              "key": "street_address",
+              "label": "Street address",
+              "units": 1.45
+            },
+            {
+              "key": "boiler_room",
+              "label": "Boiler room",
+              "units": 0.9
+            },
+            {
+              "key": "facility_sponsor",
+              "label": "Facility sponsor",
+              "units": 1.2
+            },
+            {
+              "key": "sponsor_phone",
+              "label": "Sponsor phone",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "asset_reference",
+          "type": "fields",
+          "label": "Affected boiler and service area",
+          "fields": [
+            {
+              "key": "asset_id",
+              "label": "Asset or boiler ID",
+              "units": 1.05
+            },
+            {
+              "key": "boiler_make_model",
+              "label": "Boiler make and model",
+              "units": 1.4
+            },
+            {
+              "key": "primary_fuel",
+              "label": "Primary fuel",
+              "units": 0.95
+            },
+            {
+              "key": "area_served",
+              "label": "Area served",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "visit_purpose",
+          "type": "textarea",
+          "label": "Requested service purpose and expected deliverable",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested service purpose and expected deliverable",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "vendor_personnel",
+      "title": "Vendor personnel, credentials, and contacts",
+      "guidance": "Maintain a complete roster of everyone entering the controlled boiler work area.",
+      "blocks": [
+        {
+          "key": "personnel_roster",
+          "type": "table",
+          "label": "Vendor personnel sign-in roster",
+          "columns": [
+            {
+              "key": "name",
+              "label": "Name",
+              "units": 1.1
+            },
+            {
+              "key": "company",
+              "label": "Company",
+              "units": 1.05
+            },
+            {
+              "key": "role",
+              "label": "Role",
+              "units": 0.85
+            },
+            {
+              "key": "credential",
+              "label": "Credential or badge",
+              "units": 1.2
+            },
+            {
+              "key": "time_in",
+              "label": "Time in",
+              "units": 0.7
+            },
+            {
+              "key": "time_out",
+              "label": "Time out",
+              "units": 0.7
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "entry_requirements",
+          "type": "checklist",
+          "label": "Entry credentials and site requirements",
+          "items": [
+            "Identity verified by facility sponsor",
+            "Scope and work order reviewed",
+            "Required trade qualification confirmed",
+            "Insurance or vendor status confirmed",
+            "Site orientation current",
+            "Boiler-room access rules reviewed",
+            "Emergency and evacuation contacts known",
+            "Required PPE available",
+            "Escort requirement established",
+            "Photography and data rules reviewed"
+          ]
+        },
+        {
+          "key": "vendor_contacts",
+          "type": "fields",
+          "label": "Vendor supervision and emergency contacts",
+          "fields": [
+            {
+              "key": "vendor_supervisor",
+              "label": "Vendor supervisor",
+              "units": 1.2
+            },
+            {
+              "key": "supervisor_phone",
+              "label": "Supervisor phone",
+              "units": 1.05
+            },
+            {
+              "key": "dispatch_contact",
+              "label": "Dispatch contact",
+              "units": 1.1
+            },
+            {
+              "key": "emergency_contact",
+              "label": "Emergency contact",
+              "units": 1.15
+            },
+            {
+              "key": "facility_emergency",
+              "label": "Facility emergency ref",
+              "units": 1.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "access_scope",
+      "title": "Access authorization and service boundaries",
+      "guidance": "Document what the vendor may access, change, test, photograph, or remove.",
+      "blocks": [
+        {
+          "key": "access_authorization",
+          "type": "fields",
+          "label": "Access authorization and control",
+          "fields": [
+            {
+              "key": "authorized_by",
+              "label": "Access authorized by",
+              "units": 1.25
+            },
+            {
+              "key": "authorized_start",
+              "label": "Authorized start",
+              "units": 1.05
+            },
+            {
+              "key": "authorized_end",
+              "label": "Authorized end",
+              "units": 1.0
+            },
+            {
+              "key": "escort_name",
+              "label": "Escort name",
+              "units": 0.95
+            },
+            {
+              "key": "key_badge",
+              "label": "Key or badge",
+              "units": 0.85
+            },
+            {
+              "key": "permit_reference",
+              "label": "Permit or policy ref",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "authorized_activities",
+          "type": "checklist",
+          "label": "Authorized activity types",
+          "items": [
+            "Visual inspection",
+            "Preventive maintenance",
+            "Diagnostic testing",
+            "Water-treatment service",
+            "Combustion testing",
+            "Approved repair",
+            "Parts delivery or removal",
+            "Control-system support",
+            "Evidence photography",
+            "Other activity documented below"
+          ]
+        },
+        {
+          "key": "authorized_scope",
+          "type": "textarea",
+          "label": "Authorized work scope, prohibited actions, and deliverables",
+          "height": 70,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Authorized work scope, prohibited actions, and deliverables",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "vendor_boundary",
+          "type": "notice",
+          "label": "Qualified-person and applicable-requirements notice",
+          "guidance": "Sign-in does not authorize boiler operation, isolation, setting changes, pressure-system work, fuel-train work, combustion adjustment, or return to service. Those actions require separate approval, qualified personnel, approved procedures, and review of applicable code, jurisdictional rules, site policy, and manufacturer requirements."
+        }
+      ]
+    },
+    {
+      "key": "vendor_safety",
+      "title": "Boiler hazards, isolation, and work control",
+      "guidance": "Confirm the vendor understands site controls and document any required safe-state verification.",
+      "blocks": [
+        {
+          "key": "hazard_acknowledgement",
+          "type": "checklist",
+          "label": "Boiler-area hazards and controls reviewed",
+          "items": [
+            "Fuel and combustion hazards reviewed",
+            "Electrical sources reviewed",
+            "Pressure and stored energy reviewed",
+            "Hot surfaces and burn exposure reviewed",
+            "Steam, water, and condensate hazards reviewed",
+            "Chemical treatment exposure reviewed",
+            "Combustion air and ventilation reviewed",
+            "Confined-space status reviewed if applicable",
+            "Access, egress, and housekeeping reviewed",
+            "Required PPE and tools confirmed",
+            "Nearby occupants and processes considered",
+            "Emergency shutdown authority identified",
+            "Stop-work triggers communicated",
+            "Incident reporting method confirmed"
+          ]
+        },
+        {
+          "key": "energy_control",
+          "type": "fields",
+          "label": "Energy-control and safe-state record",
+          "fields": [
+            {
+              "key": "fuel_control",
+              "label": "Fuel source control",
+              "units": 1.15
+            },
+            {
+              "key": "electrical_control",
+              "label": "Electrical control",
+              "units": 1.15
+            },
+            {
+              "key": "water_steam_control",
+              "label": "Water or steam control",
+              "units": 1.25
+            },
+            {
+              "key": "lock_tag",
+              "label": "Lock or tag reference",
+              "units": 1.2
+            },
+            {
+              "key": "safe_state",
+              "label": "Safe state",
+              "units": 0.85
+            },
+            {
+              "key": "verified_by",
+              "label": "Verified by",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "site_protections",
+          "type": "checklist",
+          "label": "Work-area and process protections installed",
+          "items": [
+            "Controlled work boundary established",
+            "Unauthorized access prevented",
+            "Combustion-air openings protected",
+            "Drains and discharge paths protected",
+            "Nearby controls protected from damage",
+            "Removed parts and fasteners controlled",
+            "Chemical containers labeled and controlled",
+            "Hot-work controls applied if separately approved",
+            "Spill and fire response resources known",
+            "Service impact communicated"
+          ]
+        },
+        {
+          "key": "safety_exception",
+          "type": "textarea",
+          "label": "Safety exception, changed condition, and stop-work escalation",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Safety exception, changed condition, and stop-work escalation",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "vendor_activity",
+      "title": "Service activity, readings, and materials",
+      "guidance": "Preserve a traceable account of what the vendor did, observed, introduced, and reported.",
+      "blocks": [
+        {
+          "key": "activity_log",
+          "type": "table",
+          "label": "Chronological vendor service activity log",
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.95
+            },
+            {
+              "key": "person",
+              "label": "Person",
+              "units": 0.85
+            },
+            {
+              "key": "component",
+              "label": "Component or area",
+              "units": 1.15
+            },
+            {
+              "key": "activity",
+              "label": "Activity performed",
+              "units": 1.3
+            },
+            {
+              "key": "result",
+              "label": "Result or finding",
+              "units": 1.15
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence ID",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "vendor_readings",
+          "type": "table",
+          "label": "Vendor reading and test record",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter or test",
+              "units": 1.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.8
+            },
+            {
+              "key": "criterion",
+              "label": "Expected or criterion",
+              "units": 1.25
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.55
+            },
+            {
+              "key": "instrument",
+              "label": "Instrument and date",
+              "units": 1.2
+            },
+            {
+              "key": "taken_by",
+              "label": "Taken by",
+              "units": 0.8
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "materials_log",
+          "type": "table",
+          "label": "Parts, chemicals, tools, and removed material",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item or material",
+              "units": 1.2
+            },
+            {
+              "key": "part_lot",
+              "label": "Part or lot ref",
+              "units": 1.0
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.65
+            },
+            {
+              "key": "brought_removed",
+              "label": "Brought or removed",
+              "units": 1.15
+            },
+            {
+              "key": "disposition",
+              "label": "Disposition",
+              "units": 1.0
+            },
+            {
+              "key": "handled_by",
+              "label": "Handled by",
+              "units": 0.9
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "event_review",
+          "type": "checklist",
+          "label": "Service event and evidence review",
+          "items": [
+            "Unexpected condition reported to sponsor",
+            "Scope change approved before work continued",
+            "Setting change separately authorized",
+            "Safety-device concern escalated",
+            "Fuel or combustion concern escalated",
+            "Pressure or water concern escalated",
+            "Photo or document evidence indexed",
+            "Removed parts disposition recorded",
+            "Open repair need assigned",
+            "Incident or near miss reported when applicable"
+          ]
+        },
+        {
+          "key": "service_event",
+          "type": "textarea",
+          "label": "Incident, damage, delayed work, or disputed direction",
+          "height": 60,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Incident, damage, delayed work, or disputed direction",
+              "multiline": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "vendor_closeout",
+      "title": "Exit, restoration, and facility handoff",
+      "guidance": "Close access only after the area, asset status, evidence, and open actions are reconciled.",
+      "blocks": [
+        {
+          "key": "exit_review",
+          "type": "checklist",
+          "label": "Vendor exit and restoration review",
+          "items": [
+            "All vendor personnel signed out",
+            "Keys, badges, and access devices returned",
+            "Tools and temporary equipment removed",
+            "Parts and removed material reconciled",
+            "Chemical containers closed and removed",
+            "Covers, guards, and panels restored",
+            "Fuel and electrical condition documented",
+            "Water and pressure state documented",
+            "Combustion-air and vent paths unobstructed",
+            "Work area clean and access restored",
+            "Service evidence delivered or referenced",
+            "Operating restrictions communicated",
+            "Open actions assigned to owners",
+            "Facility sponsor completed final walkdown"
+          ]
+        },
+        {
+          "key": "asset_disposition",
+          "type": "fields",
+          "label": "Asset status and return-to-service authority",
+          "fields": [
+            {
+              "key": "asset_status",
+              "label": "Asset status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select status",
+                "No status change",
+                "Normal service",
+                "Restricted service",
+                "Removed from service"
+              ]
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization time",
+              "units": 1.15
+            },
+            {
+              "key": "restriction",
+              "label": "Restriction or limit",
+              "units": 1.2
+            },
+            {
+              "key": "monitoring_owner",
+              "label": "Monitoring owner",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action, owner, and due-date register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Open action",
+              "units": 1.35
+            },
+            {
+              "key": "reason",
+              "label": "Reason or risk",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.85
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.8
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.75
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Service outcome, unresolved issue, and handoff summary",
+          "height": 58,
+          "fields": [
+            {
+              "key": "details",
+              "label": "Service outcome, unresolved issue, and handoff summary",
+              "multiline": true
+            }
+          ]
+        },
+        {
+          "key": "visit_approval",
+          "type": "signatures",
+          "label": "Vendor departure and facility acceptance",
+          "fields": [
+            {
+              "key": "vendor_lead",
+              "label": "Vendor lead or signature",
+              "units": 1.3
+            },
+            {
+              "key": "facility_sponsor",
+              "label": "Facility sponsor",
+              "units": 1.1
+            },
+            {
+              "key": "qualified_reviewer",
+              "label": "Qualified reviewer",
+              "units": 1.1
+            },
+            {
+              "key": "closeout_time",
+              "label": "Date and time",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

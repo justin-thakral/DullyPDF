@@ -1,0 +1,816 @@
+{
+  "schema_version": 1,
+  "catalog_id": "property_management/dpm_1300__apartment_maintenance_request_form",
+  "source_section": "property_management",
+  "source_filename": "dpm_1300__apartment_maintenance_request_form.pdf",
+  "slug": "apartment-maintenance-request-form",
+  "title": "Apartment Maintenance Request and Resolution Record",
+  "subtitle": "Route a resident-reported issue from safety triage and access planning through inspection, authorization, repair, verification, communication, and accountable closeout.",
+  "description": "A workflow-complete apartment maintenance record for resident intake, hazard screening, entry coordination, observed conditions, work assignment, repair authorization, completion testing, resident updates, and unresolved-item ownership.",
+  "use_case": "Use when property staff need one fillable record to receive an apartment repair request, distinguish urgent safety routing from routine service, coordinate lawful access, document evidence and work, and close the loop with the resident.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_identity",
+      "title": "Request, resident, and unit identity",
+      "guidance": "Open one traceable record and confirm how updates should be delivered.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Maintenance request reference",
+          "fields": [
+            {
+              "key": "request_number",
+              "label": "Request or work order number",
+              "units": 1.0
+            },
+            {
+              "key": "received_date",
+              "label": "Date received",
+              "units": 0.65
+            },
+            {
+              "key": "received_time",
+              "label": "Time received",
+              "units": 0.55
+            },
+            {
+              "key": "received_by",
+              "label": "Received by",
+              "units": 0.85
+            },
+            {
+              "key": "intake_channel",
+              "label": "Intake channel",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Resident portal",
+                "Phone",
+                "Email",
+                "In person",
+                "Staff observed",
+                "Other"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "property_unit",
+          "type": "fields",
+          "label": "Property and unit",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Property name",
+              "units": 1.1
+            },
+            {
+              "key": "property_address",
+              "label": "Property address",
+              "units": 1.5
+            },
+            {
+              "key": "building",
+              "label": "Building",
+              "units": 0.55
+            },
+            {
+              "key": "unit",
+              "label": "Unit",
+              "units": 0.5
+            },
+            {
+              "key": "lease_reference",
+              "label": "Lease or account reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "resident_contact",
+          "type": "fields",
+          "label": "Resident and contact",
+          "fields": [
+            {
+              "key": "resident_name",
+              "label": "Resident or reporting person",
+              "units": 1.25
+            },
+            {
+              "key": "phone",
+              "label": "Phone",
+              "units": 0.8
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.2
+            },
+            {
+              "key": "preferred_contact",
+              "label": "Preferred update method",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Phone",
+                "Text",
+                "Email",
+                "Portal",
+                "Other"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "issue_summary",
+          "type": "textarea",
+          "label": "Resident-reported issue, location, symptoms, timing, and requested outcome",
+          "fields": [
+            {
+              "key": "issue_detail",
+              "label": "Resident-reported maintenance issue"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "triage_access",
+      "title": "Safety triage, access, and resident needs",
+      "guidance": "Escalate immediate hazards and plan entry without collecting protected-trait details.",
+      "blocks": [
+        {
+          "key": "hazard_screen",
+          "type": "checklist",
+          "label": "Reported condition - select all that apply",
+          "items": [
+            "Active water release",
+            "Smoke, sparks, or burning odor",
+            "Gas or fuel odor",
+            "Loss of required heat or cooling",
+            "Loss of water or sanitation",
+            "Electrical outage or exposed wiring",
+            "Door or window cannot secure",
+            "Ceiling or structural concern",
+            "Pest activity",
+            "Appliance not operating",
+            "Noise or vibration",
+            "No immediate hazard reported"
+          ],
+          "guidance": "Use the property's emergency protocol for immediate danger; this form does not replace emergency services."
+        },
+        {
+          "key": "triage_result",
+          "type": "fields",
+          "label": "Triage and service impact",
+          "fields": [
+            {
+              "key": "priority",
+              "label": "Routing priority",
+              "units": 0.85,
+              "field_type": "choice",
+              "options": [
+                "Emergency protocol",
+                "Urgent",
+                "Priority",
+                "Routine",
+                "Needs assessment"
+              ]
+            },
+            {
+              "key": "affected_area",
+              "label": "Room or affected area",
+              "units": 1.0
+            },
+            {
+              "key": "service_impact",
+              "label": "Service or use affected",
+              "units": 1.1
+            },
+            {
+              "key": "triaged_by",
+              "label": "Triaged by",
+              "units": 0.85
+            },
+            {
+              "key": "triage_date_time",
+              "label": "Triage date and time",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "immediate_actions",
+          "type": "textarea",
+          "label": "Immediate protective actions, instructions given, escalation contacts, and temporary measures",
+          "fields": [
+            {
+              "key": "immediate_action_detail",
+              "label": "Immediate protective and escalation actions"
+            }
+          ],
+          "height": 52
+        },
+        {
+          "key": "entry_plan",
+          "type": "fields",
+          "label": "Entry and appointment preference",
+          "fields": [
+            {
+              "key": "entry_status",
+              "label": "Entry arrangement",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Resident will be present",
+                "Permission documented",
+                "Schedule before entry",
+                "Manager coordination needed",
+                "Not yet confirmed"
+              ]
+            },
+            {
+              "key": "preferred_date",
+              "label": "Preferred service date",
+              "units": 0.8
+            },
+            {
+              "key": "preferred_window",
+              "label": "Preferred time window",
+              "units": 0.8
+            },
+            {
+              "key": "entry_contact",
+              "label": "Entry coordination contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "access_needs",
+          "type": "checklist",
+          "label": "Operational access or communication needs",
+          "items": [
+            "Advance arrival call requested",
+            "Communication assistance requested",
+            "Mobility or access coordination requested",
+            "Resident requests support person present",
+            "Pet or animal coordination needed",
+            "Parking, gate, or key access needed",
+            "No additional need reported",
+            "Separate accommodation workflow opened"
+          ],
+          "guidance": "Follow applicable entry and notice requirements. Record only the operational adjustment requested; do not collect diagnosis or protected-trait details on this maintenance record."
+        }
+      ]
+    },
+    {
+      "key": "observations_evidence",
+      "title": "Condition history, observations, and evidence",
+      "guidance": "Keep reported facts, staff observations, and attachments traceable.",
+      "blocks": [
+        {
+          "key": "condition_timeline",
+          "type": "fields",
+          "label": "Condition timeline",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "frequency",
+              "label": "Frequency or pattern",
+              "units": 0.85
+            },
+            {
+              "key": "last_normal",
+              "label": "Last known normal condition",
+              "units": 1.0
+            },
+            {
+              "key": "recent_change",
+              "label": "Recent change or event",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "affected_items",
+          "type": "table",
+          "label": "Affected locations, fixtures, or systems",
+          "columns": [
+            {
+              "key": "location",
+              "label": "Room or location",
+              "units": 0.9
+            },
+            {
+              "key": "item",
+              "label": "Fixture or system",
+              "units": 1.0
+            },
+            {
+              "key": "reported_condition",
+              "label": "Reported condition",
+              "units": 1.35
+            },
+            {
+              "key": "staff_observation",
+              "label": "Staff observation",
+              "units": 1.35
+            },
+            {
+              "key": "impact",
+              "label": "Impact or status",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "evidence_log",
+          "type": "table",
+          "label": "Photos, video, readings, and supporting records",
+          "columns": [
+            {
+              "key": "reference",
+              "label": "Attachment reference",
+              "units": 0.95
+            },
+            {
+              "key": "captured_by",
+              "label": "Provided or captured by",
+              "units": 1.0
+            },
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 0.85
+            },
+            {
+              "key": "description",
+              "label": "What the evidence shows",
+              "units": 1.65
+            },
+            {
+              "key": "stored_location",
+              "label": "Stored location",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "prior_history",
+          "type": "textarea",
+          "label": "Prior requests, earlier repairs, warranties, recurring conditions, and resident troubleshooting",
+          "fields": [
+            {
+              "key": "prior_history_detail",
+              "label": "Prior maintenance and troubleshooting history"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "routing_dispatch",
+      "title": "Assignment, dispatch, and communication",
+      "guidance": "Assign ownership, scope the visit, and document resident notice.",
+      "blocks": [
+        {
+          "key": "assignment",
+          "type": "fields",
+          "label": "Work assignment",
+          "fields": [
+            {
+              "key": "assigned_team",
+              "label": "Assigned staff or vendor",
+              "units": 1.2
+            },
+            {
+              "key": "dispatcher",
+              "label": "Dispatcher or coordinator",
+              "units": 1.0
+            },
+            {
+              "key": "scheduled_date",
+              "label": "Scheduled date",
+              "units": 0.7
+            },
+            {
+              "key": "arrival_window",
+              "label": "Arrival window",
+              "units": 0.75
+            },
+            {
+              "key": "target_response",
+              "label": "Target response time",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "trade_scope",
+          "type": "checklist",
+          "label": "Trade, resource, or coordination needed",
+          "items": [
+            "General maintenance",
+            "Plumbing",
+            "Electrical",
+            "Heating or cooling",
+            "Appliance",
+            "Lock or access control",
+            "Pest service",
+            "Restoration or cleanup",
+            "Licensed specialist",
+            "Second technician",
+            "Replacement part",
+            "Property approval"
+          ]
+        },
+        {
+          "key": "dispatch_notes",
+          "type": "textarea",
+          "label": "Work scope, site instructions, known hazards, parts or tools, and access sequence",
+          "fields": [
+            {
+              "key": "dispatch_detail",
+              "label": "Dispatch scope and site instructions"
+            }
+          ],
+          "height": 55
+        },
+        {
+          "key": "resident_notice",
+          "type": "fields",
+          "label": "Resident notice and update",
+          "fields": [
+            {
+              "key": "notice_method",
+              "label": "Notice or update method",
+              "units": 0.95
+            },
+            {
+              "key": "notice_date_time",
+              "label": "Sent date and time",
+              "units": 0.85
+            },
+            {
+              "key": "notice_by",
+              "label": "Sent by",
+              "units": 0.75
+            },
+            {
+              "key": "resident_response",
+              "label": "Resident response or confirmation",
+              "units": 1.35
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_authorization",
+      "title": "Onsite findings and work authorization",
+      "guidance": "Separate observed condition, proposed work, approval, and exceptions.",
+      "blocks": [
+        {
+          "key": "arrival_record",
+          "type": "fields",
+          "label": "Arrival and access record",
+          "fields": [
+            {
+              "key": "arrival_date",
+              "label": "Arrival date",
+              "units": 0.65
+            },
+            {
+              "key": "arrival_time",
+              "label": "Arrival time",
+              "units": 0.55
+            },
+            {
+              "key": "entered_by",
+              "label": "Staff or vendor entering",
+              "units": 1.0
+            },
+            {
+              "key": "entry_basis",
+              "label": "Entry basis confirmed",
+              "units": 1.0
+            },
+            {
+              "key": "present_person",
+              "label": "Person present, if any",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "inspection_checks",
+          "type": "checklist",
+          "label": "Inspection and diagnostic checks completed",
+          "items": [
+            "Visual condition documented",
+            "Affected fixture tested",
+            "Utility supply checked",
+            "Adjacent area checked",
+            "Moisture or leak path checked",
+            "Electrical protection checked",
+            "Controls and settings checked",
+            "Equipment identity recorded",
+            "Measurements or readings taken",
+            "Photos captured",
+            "Resident account reviewed",
+            "Specialist referral considered"
+          ]
+        },
+        {
+          "key": "findings",
+          "type": "table",
+          "label": "Inspection readings and findings",
+          "columns": [
+            {
+              "key": "check",
+              "label": "Check or location",
+              "units": 1.05
+            },
+            {
+              "key": "expected",
+              "label": "Expected condition",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed condition or reading",
+              "units": 1.45
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.95
+            },
+            {
+              "key": "next_step",
+              "label": "Next step",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "recommended_work",
+          "type": "textarea",
+          "label": "Observed cause, uncertainty, proposed repair, temporary control, and work not included",
+          "fields": [
+            {
+              "key": "recommendation_detail",
+              "label": "Findings and proposed maintenance work"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "approval",
+          "type": "fields",
+          "label": "Scope and cost authorization",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Authorization decision",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limit",
+                "Temporary work only",
+                "Specialist review",
+                "Pending",
+                "Declined"
+              ]
+            },
+            {
+              "key": "approved_limit",
+              "label": "Cost or scope limit",
+              "units": 0.85
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.9
+            },
+            {
+              "key": "authorization_date_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "purchase_order",
+              "label": "Purchase order or approval ref",
+              "units": 1.05
+            }
+          ]
+        },
+        {
+          "key": "exception_plan",
+          "type": "textarea",
+          "label": "Access failure, unavailable part, expanded scope, resident concern, delay, or escalation plan",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception, delay, and escalation plan"
+            }
+          ],
+          "height": 42
+        }
+      ]
+    },
+    {
+      "key": "completion_closeout",
+      "title": "Completion, verification, and closeout",
+      "guidance": "Record work performed, verify results, and assign every remaining action.",
+      "blocks": [
+        {
+          "key": "completed_work",
+          "type": "textarea",
+          "label": "Work performed, temporary measures, settings changed, and deviation from authorized scope",
+          "fields": [
+            {
+              "key": "completed_work_detail",
+              "label": "Completed maintenance work and deviations"
+            }
+          ],
+          "height": 55
+        },
+        {
+          "key": "materials_labor",
+          "type": "table",
+          "label": "Materials, labor, and external service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Material or task",
+              "units": 1.25
+            },
+            {
+              "key": "reference",
+              "label": "Part or service ref",
+              "units": 0.9
+            },
+            {
+              "key": "quantity_hours",
+              "label": "Qty or hours",
+              "units": 0.7
+            },
+            {
+              "key": "provider",
+              "label": "Staff or vendor",
+              "units": 1.0
+            },
+            {
+              "key": "cost",
+              "label": "Cost",
+              "units": 0.65
+            },
+            {
+              "key": "status",
+              "label": "Used, ordered, or returned",
+              "units": 1.05
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "verification",
+          "type": "checklist",
+          "label": "Completion and functional verification",
+          "items": [
+            "Repair area left safe",
+            "Utilities restored",
+            "Leak or moisture check passed",
+            "Equipment completed test cycle",
+            "Controls and settings verified",
+            "Related area rechecked",
+            "Debris and materials removed",
+            "Photos or readings retained",
+            "Resident shown result",
+            "Care or use instructions provided",
+            "No remaining concern observed",
+            "Follow-up item documented"
+          ]
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Closeout status and resident communication",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request status",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Completed",
+                "Temporary repair",
+                "Return visit scheduled",
+                "Awaiting part",
+                "Referred",
+                "Unable to access",
+                "Resident declined"
+              ]
+            },
+            {
+              "key": "completed_date_time",
+              "label": "Completed date and time",
+              "units": 0.9
+            },
+            {
+              "key": "resident_updated",
+              "label": "Resident update date and method",
+              "units": 1.2
+            },
+            {
+              "key": "closed_by",
+              "label": "Closed by",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "remaining_actions",
+          "type": "table",
+          "label": "Remaining actions and accountable ownership",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.7
+            },
+            {
+              "key": "owner",
+              "label": "Responsible owner",
+              "units": 1.0
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.75
+            },
+            {
+              "key": "resident_update",
+              "label": "Resident update due",
+              "units": 0.9
+            },
+            {
+              "key": "completion_ref",
+              "label": "Completion reference",
+              "units": 1.05
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "workflow_notice",
+          "type": "notice",
+          "label": "Operational notice",
+          "guidance": "Document observations and actions without making legal conclusions. Follow applicable emergency, entry, habitability, fair housing, privacy, and licensed-trade requirements, and route accommodation requests through the property's established process."
+        },
+        {
+          "key": "signoff",
+          "type": "signatures",
+          "label": "Completion acknowledgment",
+          "fields": [
+            {
+              "key": "technician",
+              "label": "Staff or vendor name",
+              "units": 1.1
+            },
+            {
+              "key": "resident",
+              "label": "Resident acknowledgment, if available",
+              "units": 1.25
+            },
+            {
+              "key": "manager_review",
+              "label": "Manager review",
+              "units": 0.95
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.65
+            }
+          ],
+          "guidance": "Acknowledgment confirms receipt or review of the record and does not waive rights or resolve disputed facts."
+        }
+      ]
+    }
+  ]
+}

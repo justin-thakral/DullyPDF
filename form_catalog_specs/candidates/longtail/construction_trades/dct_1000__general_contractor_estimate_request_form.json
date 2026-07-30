@@ -1,0 +1,728 @@
+{
+  "schema_version": 1,
+  "catalog_id": "construction_trades/dct_1000__general_contractor_estimate_request_form",
+  "source_section": "construction_trades",
+  "source_filename": "dct_1000__general_contractor_estimate_request_form.pdf",
+  "slug": "general-contractor-estimate-request-form",
+  "title": "General Contractor Estimate Request and Bid Review",
+  "subtitle": "Qualify the opportunity, define the bid package, collect takeoffs and quotes, price risk, review the estimate, and document submission ownership.",
+  "description": "A workflow-complete general contractor estimate request covering bid routing, project requirements, scope boundaries, quantity takeoffs, subcontractor pricing, cost build-up, risk review, approval, and submission closeout.",
+  "use_case": "Use when a contractor needs one accountable fillable record to turn an invitation or customer request into a reviewed estimate with traceable assumptions, exclusions, pricing evidence, and a clear bid decision.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "request_routing",
+      "title": "Estimate request and bid routing",
+      "guidance": "Establish ownership, deadlines, and the controlling bid reference.",
+      "blocks": [
+        {
+          "key": "bid_reference",
+          "type": "fields",
+          "label": "Bid reference and ownership",
+          "fields": [
+            {
+              "key": "estimate_request_number",
+              "label": "Estimate request number",
+              "units": 0.85
+            },
+            {
+              "key": "invitation_reference",
+              "label": "Invitation or opportunity reference",
+              "units": 1.05
+            },
+            {
+              "key": "received_date",
+              "label": "Date received",
+              "units": 0.65
+            },
+            {
+              "key": "bid_due",
+              "label": "Bid due date and time",
+              "units": 0.8
+            },
+            {
+              "key": "assigned_estimator",
+              "label": "Assigned estimator",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "customer_project",
+          "type": "fields",
+          "label": "Customer and project",
+          "fields": [
+            {
+              "key": "customer_owner",
+              "label": "Customer or project owner",
+              "units": 1.15
+            },
+            {
+              "key": "contact_name",
+              "label": "Bid contact",
+              "units": 0.85
+            },
+            {
+              "key": "phone",
+              "label": "Phone",
+              "units": 0.7
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.15
+            },
+            {
+              "key": "delivery_method",
+              "label": "Submission method",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "site_identity",
+          "type": "fields",
+          "label": "Project and site identity",
+          "fields": [
+            {
+              "key": "project_name",
+              "label": "Project name",
+              "units": 1.2
+            },
+            {
+              "key": "project_number",
+              "label": "Project number",
+              "units": 0.75
+            },
+            {
+              "key": "site_address",
+              "label": "Site address",
+              "units": 1.45
+            },
+            {
+              "key": "project_type",
+              "label": "Project type",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "bid_status",
+          "type": "fields",
+          "label": "Initial qualification",
+          "fields": [
+            {
+              "key": "relationship",
+              "label": "Customer relationship",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Existing customer",
+                "Referral",
+                "Invited bidder",
+                "Open opportunity"
+              ]
+            },
+            {
+              "key": "procurement_stage",
+              "label": "Procurement stage",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Budget",
+                "Concept",
+                "Competitive bid",
+                "Negotiated",
+                "Final pricing"
+              ]
+            },
+            {
+              "key": "estimated_start",
+              "label": "Expected start",
+              "units": 0.7
+            },
+            {
+              "key": "expected_duration",
+              "label": "Expected duration",
+              "units": 0.75
+            },
+            {
+              "key": "bid_manager",
+              "label": "Bid manager or reviewer",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "routing_requirements",
+          "type": "checklist",
+          "label": "Bid routing requirements",
+          "items": [
+            "Site visit required",
+            "Pre-bid meeting required",
+            "Questions due before bid",
+            "Subcontractor outreach required",
+            "Bonding review required",
+            "Insurance review required",
+            "Executive approval required",
+            "Bid form or portal required"
+          ]
+        },
+        {
+          "key": "request_summary",
+          "type": "textarea",
+          "label": "Customer request, project objective, bid instructions, and success criteria",
+          "fields": [
+            {
+              "key": "request_detail",
+              "label": "Estimate request summary and bid instructions"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "documents_scope",
+      "title": "Bid documents and scope boundaries",
+      "guidance": "Identify the controlling documents and define what is being priced.",
+      "blocks": [
+        {
+          "key": "documents_received",
+          "type": "checklist",
+          "label": "Documents and information received",
+          "items": [
+            "Drawings",
+            "Specifications",
+            "Scope narrative",
+            "Bid form",
+            "Project schedule",
+            "Geotechnical report",
+            "Existing conditions report",
+            "Addenda",
+            "Insurance requirements",
+            "Bond requirements",
+            "Wage requirements",
+            "Site logistics plan"
+          ]
+        },
+        {
+          "key": "document_control",
+          "type": "fields",
+          "label": "Controlling document set",
+          "fields": [
+            {
+              "key": "drawing_date",
+              "label": "Drawing issue and date",
+              "units": 1.0
+            },
+            {
+              "key": "specification_date",
+              "label": "Specification issue and date",
+              "units": 1.0
+            },
+            {
+              "key": "latest_addendum",
+              "label": "Latest addendum number",
+              "units": 0.75
+            },
+            {
+              "key": "addendum_received",
+              "label": "Addendum received date",
+              "units": 0.75
+            },
+            {
+              "key": "document_location",
+              "label": "Document folder or link",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "scope_packages",
+          "type": "table",
+          "label": "Scope packages and pricing ownership",
+          "columns": [
+            {
+              "key": "division_scope",
+              "label": "Division or scope",
+              "units": 1.2
+            },
+            {
+              "key": "pricing_owner",
+              "label": "Pricing owner",
+              "units": 0.8
+            },
+            {
+              "key": "self_sub",
+              "label": "Self or subcontract",
+              "units": 0.7
+            },
+            {
+              "key": "document_reference",
+              "label": "Document reference",
+              "units": 0.85
+            },
+            {
+              "key": "quote_due",
+              "label": "Quote due",
+              "units": 0.6
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.65
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "scope_narrative",
+          "type": "textarea",
+          "label": "Base scope, limits of work, interfaces, access, temporary work, and owner-furnished items",
+          "fields": [
+            {
+              "key": "base_scope_detail",
+              "label": "Base scope and boundary detail"
+            }
+          ],
+          "height": 66
+        },
+        {
+          "key": "alternates_allowances",
+          "type": "textarea",
+          "label": "Alternates, allowances, unit prices, owner options, and requested breakouts",
+          "fields": [
+            {
+              "key": "alternate_detail",
+              "label": "Alternates, allowances, and breakout requirements"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "takeoff_pricing",
+      "title": "Takeoff, quotes, and cost build-up",
+      "guidance": "Preserve the evidence behind quantities and pricing.",
+      "blocks": [
+        {
+          "key": "takeoff_lines",
+          "type": "table",
+          "label": "Major quantity takeoff",
+          "columns": [
+            {
+              "key": "scope_item",
+              "label": "Scope item",
+              "units": 1.25
+            },
+            {
+              "key": "drawing_reference",
+              "label": "Drawing or spec",
+              "units": 0.85
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.6
+            },
+            {
+              "key": "unit",
+              "label": "Unit",
+              "units": 0.45
+            },
+            {
+              "key": "waste_factor",
+              "label": "Waste factor",
+              "units": 0.55
+            },
+            {
+              "key": "basis_note",
+              "label": "Basis or note",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "quote_log",
+          "type": "table",
+          "label": "Subcontractor and supplier quote log",
+          "columns": [
+            {
+              "key": "trade_vendor",
+              "label": "Trade or vendor",
+              "units": 1.1
+            },
+            {
+              "key": "contact",
+              "label": "Contact",
+              "units": 0.8
+            },
+            {
+              "key": "quote_amount",
+              "label": "Quote amount",
+              "units": 0.7
+            },
+            {
+              "key": "scope_complete",
+              "label": "Scope complete",
+              "units": 0.7
+            },
+            {
+              "key": "exclusions",
+              "label": "Key exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "selected",
+              "label": "Selected or carried",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "cost_summary",
+          "type": "table",
+          "label": "Estimate cost summary",
+          "columns": [
+            {
+              "key": "cost_code",
+              "label": "Cost code",
+              "units": 0.65
+            },
+            {
+              "key": "scope",
+              "label": "Scope",
+              "units": 1.25
+            },
+            {
+              "key": "labor",
+              "label": "Labor",
+              "units": 0.65
+            },
+            {
+              "key": "material",
+              "label": "Material",
+              "units": 0.65
+            },
+            {
+              "key": "equipment_sub",
+              "label": "Equipment or sub",
+              "units": 0.8
+            },
+            {
+              "key": "total",
+              "label": "Total",
+              "units": 0.65
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "estimate_totals",
+          "type": "fields",
+          "label": "Estimate totals and commercial factors",
+          "fields": [
+            {
+              "key": "direct_cost",
+              "label": "Direct cost",
+              "units": 0.7
+            },
+            {
+              "key": "general_conditions",
+              "label": "General conditions",
+              "units": 0.8
+            },
+            {
+              "key": "overhead_profit",
+              "label": "Overhead and profit",
+              "units": 0.8
+            },
+            {
+              "key": "contingency",
+              "label": "Contingency",
+              "units": 0.7
+            },
+            {
+              "key": "bond_tax",
+              "label": "Bond, tax, and fees",
+              "units": 0.75
+            },
+            {
+              "key": "bid_total",
+              "label": "Bid total",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "risk_clarification",
+      "title": "Risk, assumptions, and clarifications",
+      "guidance": "Make uncertainty visible before the estimate is approved.",
+      "blocks": [
+        {
+          "key": "risk_screen",
+          "type": "checklist",
+          "label": "Estimate risk review",
+          "items": [
+            "Incomplete design",
+            "Unverified existing conditions",
+            "Long-lead material",
+            "Limited site access",
+            "Occupied work area",
+            "Aggressive schedule",
+            "Labor availability concern",
+            "Permit or utility dependency",
+            "Price escalation exposure",
+            "Ambiguous scope interface",
+            "Unpriced owner requirement",
+            "Special insurance or bond term"
+          ]
+        },
+        {
+          "key": "assumptions",
+          "type": "textarea",
+          "label": "Pricing assumptions, construction means, schedule assumptions, and information relied upon",
+          "fields": [
+            {
+              "key": "assumption_detail",
+              "label": "Estimate assumptions"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "exclusions",
+          "type": "textarea",
+          "label": "Explicit exclusions, customer responsibilities, unresolved questions, and proposed clarifications",
+          "fields": [
+            {
+              "key": "exclusion_detail",
+              "label": "Exclusions and clarifications"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "open_questions",
+          "type": "table",
+          "label": "Open question and escalation log",
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question or risk",
+              "units": 1.45
+            },
+            {
+              "key": "sent_to",
+              "label": "Sent to",
+              "units": 0.75
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 0.6
+            },
+            {
+              "key": "response",
+              "label": "Response or basis",
+              "units": 1.25
+            },
+            {
+              "key": "estimate_effect",
+              "label": "Estimate effect",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "key": "review_decision",
+      "title": "Estimate review and bid decision",
+      "guidance": "Document the review result and conditions before submission.",
+      "blocks": [
+        {
+          "key": "completeness_review",
+          "type": "checklist",
+          "label": "Estimate completeness review",
+          "items": [
+            "Latest documents used",
+            "Addenda acknowledged",
+            "Scope gaps reviewed",
+            "Quotes leveled",
+            "Labor rates verified",
+            "Schedule cost included",
+            "Risk contingency reviewed",
+            "Exclusions written clearly",
+            "Bond and insurance included",
+            "Bid form completed",
+            "Arithmetic checked",
+            "Independent review completed"
+          ]
+        },
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Bid decision",
+          "fields": [
+            {
+              "key": "decision_status",
+              "label": "Decision",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Proceed",
+                "Proceed with conditions",
+                "Revise and review",
+                "No bid"
+              ]
+            },
+            {
+              "key": "approved_bid_total",
+              "label": "Approved bid total",
+              "units": 0.8
+            },
+            {
+              "key": "minimum_margin",
+              "label": "Approved margin or fee",
+              "units": 0.8
+            },
+            {
+              "key": "valid_through",
+              "label": "Price valid through",
+              "units": 0.7
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 0.9
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.65
+            }
+          ]
+        },
+        {
+          "key": "review_conditions",
+          "type": "textarea",
+          "label": "Required revisions, approval conditions, negotiation limits, or no-bid rationale",
+          "fields": [
+            {
+              "key": "condition_detail",
+              "label": "Review conditions and rationale"
+            }
+          ],
+          "height": 52
+        },
+        {
+          "key": "review_signoff",
+          "type": "signatures",
+          "label": "Estimate approval",
+          "fields": [
+            {
+              "key": "estimator",
+              "label": "Estimator name or signature",
+              "units": 1.1
+            },
+            {
+              "key": "operations_reviewer",
+              "label": "Operations reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "executive_approver",
+              "label": "Authorized approver",
+              "units": 1.0
+            },
+            {
+              "key": "approval_date",
+              "label": "Approval date",
+              "units": 0.65
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "submission_closeout",
+      "title": "Submission and estimating closeout",
+      "guidance": "Confirm delivery, preserve the final package, and assign follow-up.",
+      "blocks": [
+        {
+          "key": "submission_record",
+          "type": "fields",
+          "label": "Bid submission record",
+          "fields": [
+            {
+              "key": "submitted_date",
+              "label": "Submitted date",
+              "units": 0.6
+            },
+            {
+              "key": "submitted_time",
+              "label": "Submitted time",
+              "units": 0.55
+            },
+            {
+              "key": "submitted_by",
+              "label": "Submitted by",
+              "units": 0.85
+            },
+            {
+              "key": "submission_channel",
+              "label": "Portal, email, or delivery",
+              "units": 1.0
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "package_check",
+          "type": "checklist",
+          "label": "Final package and handoff",
+          "items": [
+            "Signed bid form retained",
+            "Proposal retained",
+            "Addenda acknowledged",
+            "Bid bond included",
+            "Required attachments included",
+            "Submission confirmation retained",
+            "Estimate backup archived",
+            "Follow-up owner assigned"
+          ]
+        },
+        {
+          "key": "post_bid",
+          "type": "textarea",
+          "label": "Customer follow-up date, negotiation owner, bid result, lessons learned, and estimate handoff if awarded",
+          "fields": [
+            {
+              "key": "post_bid_detail",
+              "label": "Post-bid follow-up and handoff"
+            }
+          ],
+          "height": 54
+        },
+        {
+          "key": "estimate_notice",
+          "type": "notice",
+          "label": "Estimate use notice",
+          "guidance": "This internal estimate record documents pricing assumptions and approvals. The issued proposal, executed contract, incorporated documents, and applicable licensing requirements control the parties' obligations."
+        }
+      ]
+    }
+  ]
+}

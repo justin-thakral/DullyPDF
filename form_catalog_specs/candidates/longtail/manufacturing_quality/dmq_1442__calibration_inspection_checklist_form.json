@@ -1,0 +1,577 @@
+{
+  "schema_version": 1,
+  "catalog_id": "manufacturing_quality/dmq_1442__calibration_inspection_checklist_form",
+  "source_section": "manufacturing_quality",
+  "source_filename": "dmq_1442__calibration_inspection_checklist_form.pdf",
+  "slug": "calibration-inspection-checklist-form",
+  "title": "Calibration Inspection Checklist Form",
+  "subtitle": "Route the measurement equipment calibration and status control, verify readiness, record requirement-level results, contain exceptions, authorize status, and preserve accountable closeout.",
+  "description": "An operational calibration inspection checklist form for controlling a measuring instrument, standard, or gage from assignment through evidence-based inspection, exception containment, disposition, handoff, and final verification.",
+  "use_case": "Use when a calibration technician or coordinator must inspect a measuring instrument, standard, or gage against the calibration procedure, equipment specification, and reference-standard chain and provide a traceable basis to return, restrict, remove, repair, or retire the measurement asset.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "inspection_assignment",
+      "title": "Calibration inspection assignment",
+      "guidance": "Identify the exact item, reference set, inspection owner, and routing deadline.",
+      "blocks": [
+        {
+          "key": "record_identity",
+          "type": "fields",
+          "label": "Record identity and routing",
+          "fields": [
+            {
+              "key": "calibration_record",
+              "label": "Calibration record number",
+              "units": 0.9
+            },
+            {
+              "key": "service_date",
+              "label": "Calibration or check date",
+              "units": 0.75
+            },
+            {
+              "key": "asset_id",
+              "label": "Asset or gage ID",
+              "units": 0.75
+            },
+            {
+              "key": "equipment_type",
+              "label": "Equipment type",
+              "units": 0.9
+            },
+            {
+              "key": "manufacturer_model",
+              "label": "Manufacturer and model",
+              "units": 1.1
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Measuring Instrument, Standard, Or Gage identity",
+          "fields": [
+            {
+              "key": "range_resolution",
+              "label": "Range and resolution",
+              "units": 0.95
+            },
+            {
+              "key": "asset_location",
+              "label": "Assigned location",
+              "units": 0.85
+            },
+            {
+              "key": "asset_owner",
+              "label": "Asset owner",
+              "units": 0.8
+            },
+            {
+              "key": "last_calibration",
+              "label": "Previous calibration date",
+              "units": 0.75
+            },
+            {
+              "key": "due_date",
+              "label": "Calibration due date",
+              "units": 0.7
+            },
+            {
+              "key": "procedure_revision",
+              "label": "Procedure and revision",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "inspection_routing",
+          "type": "fields",
+          "label": "Inspection ownership and timing",
+          "fields": [
+            {
+              "key": "assigned_inspector",
+              "label": "Assigned inspector",
+              "units": 0.9
+            },
+            {
+              "key": "requesting_area",
+              "label": "Requesting area",
+              "units": 0.8
+            },
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 0.55,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Expedite",
+                "Hold"
+              ]
+            },
+            {
+              "key": "inspection_due",
+              "label": "Inspection due",
+              "units": 0.7
+            },
+            {
+              "key": "review_owner",
+              "label": "Review owner",
+              "units": 0.85
+            },
+            {
+              "key": "related_record",
+              "label": "Related record",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "inspection_scope",
+          "type": "textarea",
+          "label": "Inspection scope, reason, boundaries, and required outcome",
+          "fields": [
+            {
+              "key": "scope_detail",
+              "label": "Inspection scope and decision required"
+            }
+          ],
+          "height": 46
+        }
+      ]
+    },
+    {
+      "key": "basis_and_readiness",
+      "title": "Acceptance basis and inspection readiness",
+      "guidance": "Confirm the current calibration procedure, equipment specification, and reference-standard chain and the evidence needed to inspect.",
+      "blocks": [
+        {
+          "key": "document_control",
+          "type": "fields",
+          "label": "Controlled reference set",
+          "fields": [
+            {
+              "key": "primary_reference",
+              "label": "Controlling inspection references",
+              "units": 1.4
+            },
+            {
+              "key": "reference_revision",
+              "label": "Reference revision",
+              "units": 0.65
+            },
+            {
+              "key": "acceptance_plan",
+              "label": "Acceptance or sampling plan",
+              "units": 1.05
+            },
+            {
+              "key": "plan_revision",
+              "label": "Plan revision",
+              "units": 0.6
+            },
+            {
+              "key": "evidence_folder",
+              "label": "Evidence folder or link",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "readiness_checkpoints",
+          "type": "checklist",
+          "label": "Pre-inspection readiness checkpoints",
+          "items": [
+            "Asset ID, manufacturer, model, serial, range, and resolution agree with the register",
+            "Calibration procedure and acceptance limits match the equipment and intended use",
+            "Reference standards are identified, in status, and suitable for the measurement range",
+            "Environmental conditions meet the procedure or are recorded for qualified review",
+            "As-found condition and readings are preserved before adjustment",
+            "Each test point records reference value, indication, error, and acceptance status",
+            "Adjustment or repair is identified separately from calibration results",
+            "As-left results meet the approved return-to-service criteria"
+          ]
+        },
+        {
+          "key": "evidence_available",
+          "type": "checklist",
+          "label": "Available evidence package",
+          "items": [
+            "Asset register identity and intended-use record",
+            "Current calibration procedure and acceptance limits",
+            "Reference-standard IDs, certificates, due status, and chain records",
+            "Environmental condition readings and stabilization evidence",
+            "As-found and as-left test-point results",
+            "Adjustment, repair, limitation, or damage record",
+            "Out-of-tolerance impact review and affected-measurement search",
+            "Certificate, status label, register update, and return authorization"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_execution",
+      "title": "Calibration inspection execution",
+      "guidance": "Record actual observations and results against identifiable requirements.",
+      "blocks": [
+        {
+          "key": "measurement_results",
+          "type": "table",
+          "label": "Calibration test points and measurement results",
+          "columns": [
+            {
+              "key": "function_range",
+              "label": "Function / range",
+              "units": 0.85
+            },
+            {
+              "key": "reference_value",
+              "label": "Reference value",
+              "units": 0.85
+            },
+            {
+              "key": "as_found",
+              "label": "As found",
+              "units": 0.75
+            },
+            {
+              "key": "error_tolerance",
+              "label": "Error / tolerance",
+              "units": 0.95
+            },
+            {
+              "key": "as_left",
+              "label": "As left",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Pass / fail",
+              "units": 0.6
+            }
+          ],
+          "rows": 8,
+          "guidance": "Record actual values where the requirement is variable; do not use pass-only entries when evidence is available."
+        },
+        {
+          "key": "execution_controls",
+          "type": "checklist",
+          "label": "Execution and traceability controls",
+          "items": [
+            "As-found condition and readings are preserved before adjustment",
+            "Each test point records reference value, indication, error, and acceptance status",
+            "Adjustment or repair is identified separately from calibration results",
+            "As-left results meet the approved return-to-service criteria",
+            "Out-of-tolerance findings trigger impact review for prior measurement results",
+            "Traceability claims identify the documented calibration chain and associated records",
+            "Status label, due date, restrictions, and asset register are updated consistently",
+            "Certificate, data, uncertainty information, and review are retrievable"
+          ]
+        },
+        {
+          "key": "observation_summary",
+          "type": "textarea",
+          "label": "Inspection observations, evidence references, sample rationale, and limitations",
+          "fields": [
+            {
+              "key": "observation_detail",
+              "label": "Observed condition and evidence summary"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "findings_containment",
+      "title": "Findings, containment, and escalation",
+      "guidance": "Make every exception visible with immediate control, ownership, and a disposition route.",
+      "blocks": [
+        {
+          "key": "exception_types",
+          "type": "checklist",
+          "label": "Calibration exceptions requiring action",
+          "items": [
+            "Asset identity, range, resolution, or intended use is uncertain",
+            "Procedure, acceptance limit, or reference standard is unsuitable",
+            "Reference-standard calibration or traceability record is expired or missing",
+            "Environmental condition is outside procedure limits",
+            "As-found result is outside tolerance or asset is damaged",
+            "Adjustment obscures the original as-found condition",
+            "Prior measurement impact cannot be bounded or affected product may have shipped",
+            "As-left result fails, restriction is unclear, or register and label disagree"
+          ],
+          "guidance": "Select every applicable exception and preserve the original observation."
+        },
+        {
+          "key": "exception_log",
+          "type": "table",
+          "label": "Exception, containment, ownership, and disposition log",
+          "columns": [
+            {
+              "key": "exception_evidence",
+              "label": "Exception / evidence",
+              "units": 1.2
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due_point",
+              "label": "Due date / point",
+              "units": 0.7
+            },
+            {
+              "key": "escalation",
+              "label": "Escalation / record",
+              "units": 0.85
+            },
+            {
+              "key": "disposition",
+              "label": "Final disposition",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "exception_narrative",
+          "type": "textarea",
+          "label": "Exception facts, affected scope, containment boundary, and unresolved risk",
+          "fields": [
+            {
+              "key": "exception_detail",
+              "label": "Exception narrative and affected-scope rationale"
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "inspection_decision",
+      "title": "Inspection decision and authorization",
+      "guidance": "Document the evidence-based decision to return, restrict, remove, repair, or retire the measurement asset.",
+      "blocks": [
+        {
+          "key": "record_boundary",
+          "type": "notice",
+          "label": "Decision boundary",
+          "guidance": "This template records inspection evidence and routing. Use qualified personnel and the applicable calibration procedure, equipment specification, and reference-standard chain for technical acceptance, safety, customer, or regulatory decisions."
+        },
+        {
+          "key": "decision_status",
+          "type": "fields",
+          "label": "Inspection status and disposition",
+          "fields": [
+            {
+              "key": "inspection_status",
+              "label": "Inspection status",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Accepted",
+                "Accepted with limits",
+                "On hold",
+                "Rejected",
+                "Incomplete"
+              ]
+            },
+            {
+              "key": "accepted_quantity",
+              "label": "Accepted quantity",
+              "units": 0.7
+            },
+            {
+              "key": "held_quantity",
+              "label": "Held quantity",
+              "units": 0.65
+            },
+            {
+              "key": "rejected_quantity",
+              "label": "Rejected quantity",
+              "units": 0.7
+            },
+            {
+              "key": "authorization_ref",
+              "label": "Authorization or disposition ref.",
+              "units": 1.1
+            },
+            {
+              "key": "status_location",
+              "label": "Released or held location",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "decision_rationale",
+          "type": "textarea",
+          "label": "Acceptance rationale, conditions, rejected evidence, and scope of authorization",
+          "fields": [
+            {
+              "key": "decision_detail",
+              "label": "Decision basis and authorization limits"
+            }
+          ],
+          "height": 52
+        },
+        {
+          "key": "inspection_approval",
+          "type": "signatures",
+          "label": "Inspection review and disposition",
+          "fields": [
+            {
+              "key": "inspector_signoff",
+              "label": "Calibration Technician Or Coordinator / date",
+              "units": 1.0
+            },
+            {
+              "key": "quality_review",
+              "label": "Metrology Or Quality Review Owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "status_receiver",
+              "label": "Status receiver / date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "inspection_closeout",
+      "title": "Follow-up, handoff, and inspection closeout",
+      "guidance": "Close only when open work, evidence ownership, limitations, and receiving handoff are explicit.",
+      "blocks": [
+        {
+          "key": "open_action_register",
+          "type": "table",
+          "label": "Open action and accountable handoff register",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Remaining action",
+              "units": 1.25
+            },
+            {
+              "key": "reason",
+              "label": "Reason / evidence",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.65
+            },
+            {
+              "key": "due",
+              "label": "Due",
+              "units": 0.55
+            },
+            {
+              "key": "handoff_to",
+              "label": "Handoff to",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 0.55
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Inspection outcome and routing",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Final outcome",
+              "units": 0.9,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with limits",
+                "On hold",
+                "Rejected",
+                "Reopened"
+              ]
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective or release date",
+              "units": 0.75
+            },
+            {
+              "key": "remaining_limits",
+              "label": "Remaining limitation reference",
+              "units": 1.1
+            },
+            {
+              "key": "next_review",
+              "label": "Next review or follow-up",
+              "units": 0.85
+            },
+            {
+              "key": "record_location",
+              "label": "Evidence package location",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "handoff_summary",
+          "type": "textarea",
+          "label": "Final decision basis, residual limitations, next action, and receiving handoff",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Outcome rationale and accountable handoff summary"
+            }
+          ],
+          "height": 56
+        },
+        {
+          "key": "accountable_closeout",
+          "type": "signatures",
+          "label": "Accountable review and closeout",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by / date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Metrology Or Quality Review Owner / date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Receiving owner or approver / date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Signatures acknowledge the recorded decision and handoff; they do not replace required technical or regulatory approval."
+        }
+      ]
+    }
+  ]
+}

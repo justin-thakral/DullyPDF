@@ -1,0 +1,950 @@
+{
+  "schema_version": 1,
+  "catalog_id": "facilities_maintenance/dfm_1202__hvac_rooftop_unit_repair_request_form",
+  "source_section": "facilities_maintenance",
+  "source_filename": "dfm_1202__hvac_rooftop_unit_repair_request_form.pdf",
+  "slug": "hvac-rooftop-unit-repair-request-form",
+  "title": "HVAC Rooftop Unit Repair Request and Resolution Record",
+  "subtitle": "Route an RTU failure from the original complaint through safety triage, evidence, dispatch, repair authorization, diagnosis, completed work, verification, and requester handoff.",
+  "description": "A complete HVAC rooftop unit repair request workflow for identifying the affected asset and business impact, preserving symptoms and alarms, controlling immediate hazards, preparing vendor access, authorizing scope and cost, and documenting final repair results.",
+  "use_case": "Use when occupants, property staff, or monitoring systems identify an RTU problem and facilities personnel need one accountable record for priority, dispatch, approval, technician findings, exceptions, return-to-service, and closure.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "request_routing",
+      "title": "Request source, routing, and service impact",
+      "guidance": "Capture the original report before troubleshooting changes the symptoms.",
+      "blocks": [
+        {
+          "key": "request_reference",
+          "type": "fields",
+          "label": "Repair request reference",
+          "fields": [
+            {
+              "key": "request_number",
+              "label": "Repair request number",
+              "units": 0.9
+            },
+            {
+              "key": "reported_date",
+              "label": "Reported date",
+              "units": 0.65
+            },
+            {
+              "key": "reported_time",
+              "label": "Reported time",
+              "units": 0.55
+            },
+            {
+              "key": "intake_by",
+              "label": "Request received by",
+              "units": 0.9
+            },
+            {
+              "key": "priority",
+              "label": "Initial priority",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Routine",
+                "Priority",
+                "Urgent service impact",
+                "Emergency safety concern"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "requester_contact",
+          "type": "fields",
+          "label": "Requester and communication",
+          "fields": [
+            {
+              "key": "requester_name",
+              "label": "Requester name",
+              "units": 0.95
+            },
+            {
+              "key": "department_tenant",
+              "label": "Department or tenant",
+              "units": 1.0
+            },
+            {
+              "key": "phone",
+              "label": "Phone",
+              "units": 0.75
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.05
+            },
+            {
+              "key": "update_preference",
+              "label": "Update method",
+              "units": 0.8,
+              "field_type": "choice",
+              "options": [
+                "Phone",
+                "Text",
+                "Email",
+                "Work-order portal",
+                "Site contact"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "business_impact",
+          "type": "fields",
+          "label": "Service and occupancy impact",
+          "fields": [
+            {
+              "key": "affected_area",
+              "label": "Affected area or zone",
+              "units": 1.1
+            },
+            {
+              "key": "occupancy_use",
+              "label": "Occupancy or process use",
+              "units": 1.0
+            },
+            {
+              "key": "people_affected",
+              "label": "People affected",
+              "units": 0.8
+            },
+            {
+              "key": "required_restoration",
+              "label": "Required restoration time",
+              "units": 0.9
+            },
+            {
+              "key": "alternate_conditioning",
+              "label": "Temporary conditioning available",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "reported_issue",
+          "type": "textarea",
+          "label": "Original complaint, observed sequence, timing, operating conditions, and requested outcome",
+          "fields": [
+            {
+              "key": "reported_issue_detail",
+              "label": "Original complaint and requested outcome"
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "asset_symptoms",
+      "title": "RTU identity, symptoms, alarms, and evidence",
+      "guidance": "Identify the correct asset and preserve observable facts instead of assumptions.",
+      "blocks": [
+        {
+          "key": "property_asset",
+          "type": "fields",
+          "label": "Property and rooftop asset",
+          "fields": [
+            {
+              "key": "property_name",
+              "label": "Property or facility",
+              "units": 1.15
+            },
+            {
+              "key": "address",
+              "label": "Address",
+              "units": 1.25
+            },
+            {
+              "key": "roof_location",
+              "label": "Roof area or grid",
+              "units": 0.8
+            },
+            {
+              "key": "asset_id",
+              "label": "Asset or RTU ID",
+              "units": 0.75
+            },
+            {
+              "key": "served_area",
+              "label": "Area served",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "equipment_identity",
+          "type": "fields",
+          "label": "Equipment identity",
+          "fields": [
+            {
+              "key": "manufacturer",
+              "label": "Manufacturer",
+              "units": 0.85
+            },
+            {
+              "key": "model",
+              "label": "Model",
+              "units": 1.0
+            },
+            {
+              "key": "serial_number",
+              "label": "Serial number",
+              "units": 1.0
+            },
+            {
+              "key": "system_type",
+              "label": "System type",
+              "units": 0.95
+            },
+            {
+              "key": "warranty_status",
+              "label": "Warranty or contract status",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "symptom_checklist",
+          "type": "checklist",
+          "label": "Reported or remotely observed symptoms",
+          "items": [
+            "Unit will not start",
+            "Unit cycles or locks out",
+            "No cooling",
+            "No heating",
+            "Insufficient airflow",
+            "Temperature not maintained",
+            "Humidity or indoor-air concern",
+            "Abnormal noise or vibration",
+            "Burning odor or smoke",
+            "Water or condensate leak",
+            "Oil or possible refrigerant evidence",
+            "Breaker or fuse operation",
+            "BAS communication loss",
+            "Economizer or damper problem",
+            "Visible cabinet or storm damage",
+            "Other symptom documented"
+          ]
+        },
+        {
+          "key": "alarm_conditions",
+          "type": "fields",
+          "label": "Alarm and symptom timing",
+          "fields": [
+            {
+              "key": "first_observed",
+              "label": "First observed date and time",
+              "units": 1.0
+            },
+            {
+              "key": "last_normal_operation",
+              "label": "Last normal operation",
+              "units": 0.95
+            },
+            {
+              "key": "alarm_code",
+              "label": "Alarm or fault code",
+              "units": 0.8
+            },
+            {
+              "key": "control_command",
+              "label": "Command or setpoint",
+              "units": 0.75
+            },
+            {
+              "key": "outdoor_condition",
+              "label": "Outdoor condition",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "evidence_available",
+          "type": "checklist",
+          "label": "Evidence retained or available",
+          "items": [
+            "Overall RTU photo",
+            "Nameplate photo",
+            "Alarm screenshot",
+            "BAS trend",
+            "Leak or damage photo",
+            "Video or audio",
+            "Prior work order",
+            "Tenant temperature log"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "immediate_control",
+      "title": "Immediate safety, containment, and escalation",
+      "guidance": "Protect people, property, and evidence before dispatch decisions are made.",
+      "blocks": [
+        {
+          "key": "hazard_screen",
+          "type": "checklist",
+          "label": "Potential hazards screened",
+          "items": [
+            "Smoke or fire",
+            "Electrical arcing or exposed parts",
+            "Burning odor or overheated wiring",
+            "Possible refrigerant release",
+            "Gas odor or combustion concern",
+            "Water entering occupied space",
+            "Loose panel or falling-object hazard",
+            "Unsafe roof access or weather",
+            "Indoor temperature risk to people or product",
+            "No immediate hazard identified"
+          ]
+        },
+        {
+          "key": "immediate_actions",
+          "type": "checklist",
+          "label": "Immediate actions taken",
+          "items": [
+            "Emergency services contacted",
+            "Facility emergency procedure activated",
+            "Unit stopped by control",
+            "Disconnect opened",
+            "Lockout or tagout applied by authorized person",
+            "Area below unit restricted",
+            "Water contained or protected",
+            "Temporary heating or cooling arranged",
+            "Occupants or tenant notified",
+            "Evidence preserved",
+            "No action required before dispatch",
+            "Action deferred to qualified technician"
+          ]
+        },
+        {
+          "key": "control_record",
+          "type": "fields",
+          "label": "Containment and escalation record",
+          "fields": [
+            {
+              "key": "unit_status",
+              "label": "Current unit status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Operating",
+                "Operating with restriction",
+                "Stopped by control",
+                "Disconnected",
+                "Locked and tagged",
+                "Unknown"
+              ]
+            },
+            {
+              "key": "action_by",
+              "label": "Immediate action by",
+              "units": 0.9
+            },
+            {
+              "key": "action_date_time",
+              "label": "Action date and time",
+              "units": 0.85
+            },
+            {
+              "key": "escalated_to",
+              "label": "Escalated to",
+              "units": 0.9
+            },
+            {
+              "key": "incident_reference",
+              "label": "Incident or emergency reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "control_notes",
+          "type": "textarea",
+          "label": "Hazard details, temporary operating limit, containment, people notified, and unmet emergency need",
+          "fields": [
+            {
+              "key": "control_notes_detail",
+              "label": "Immediate control and escalation detail"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "emergency_notice",
+          "type": "notice",
+          "label": "Emergency routing",
+          "guidance": "Do not use this request form as a substitute for emergency response, site evacuation, fire reporting, electrical safe-work procedures, refrigerant-release response, or any required incident notification."
+        }
+      ]
+    },
+    {
+      "key": "triage_dispatch",
+      "title": "Service history, remote triage, and dispatch",
+      "guidance": "Give the assigned technician the history, access, and authority needed for a productive visit.",
+      "blocks": [
+        {
+          "key": "history",
+          "type": "fields",
+          "label": "Recent service history",
+          "fields": [
+            {
+              "key": "last_pm_date",
+              "label": "Last PM date",
+              "units": 0.65
+            },
+            {
+              "key": "last_repair_date",
+              "label": "Last repair date",
+              "units": 0.7
+            },
+            {
+              "key": "open_work_order",
+              "label": "Open or related work order",
+              "units": 0.9
+            },
+            {
+              "key": "repeat_failure",
+              "label": "Repeat failure or callback",
+              "units": 0.9
+            },
+            {
+              "key": "service_provider",
+              "label": "Contracted service provider",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "remote_triage",
+          "type": "textarea",
+          "label": "Remote checks performed, observations, instructions given, result, and person authorizing any reset",
+          "fields": [
+            {
+              "key": "remote_triage_detail",
+              "label": "Remote triage record"
+            }
+          ],
+          "height": 54
+        },
+        {
+          "key": "access_readiness",
+          "type": "checklist",
+          "label": "Dispatch and access requirements confirmed",
+          "items": [
+            "Roof access authorized",
+            "Hatch, ladder, gate, or key arranged",
+            "Fall-protection requirement communicated",
+            "Site escort arranged",
+            "Tenant or served-area contact available",
+            "Disconnect and lockout location known",
+            "BAS access arranged",
+            "Parking or loading instructions provided",
+            "After-hours access arranged",
+            "Restricted process or occupancy communicated",
+            "Two-person response required",
+            "Specialty license or certification required"
+          ]
+        },
+        {
+          "key": "assignment",
+          "type": "fields",
+          "label": "Assignment and response commitment",
+          "fields": [
+            {
+              "key": "assigned_company",
+              "label": "Assigned company or department",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_technician",
+              "label": "Assigned technician",
+              "units": 0.95
+            },
+            {
+              "key": "dispatch_date_time",
+              "label": "Dispatch date and time",
+              "units": 0.85
+            },
+            {
+              "key": "arrival_commitment",
+              "label": "Arrival commitment",
+              "units": 0.8
+            },
+            {
+              "key": "dispatch_contact",
+              "label": "Dispatch contact",
+              "units": 0.8
+            }
+          ]
+        },
+        {
+          "key": "anticipated_resources",
+          "type": "checklist",
+          "label": "Anticipated resources or coordination",
+          "items": [
+            "Electrical diagnostic tools",
+            "Refrigeration diagnostic tools",
+            "BAS or controls specialist",
+            "Combustion technician",
+            "Lift or material-handling support",
+            "Second technician",
+            "Common filters, belts, fuses, or capacitors",
+            "Manufacturer technical support"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization",
+      "title": "Scope, cost authority, and repair decision",
+      "guidance": "Record financial and operational limits before work expands beyond diagnosis.",
+      "blocks": [
+        {
+          "key": "authority_limits",
+          "type": "fields",
+          "label": "Service authority",
+          "fields": [
+            {
+              "key": "diagnostic_authority",
+              "label": "Diagnostic authority",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Diagnosis only",
+                "Diagnosis and minor repair",
+                "Proceed within NTE",
+                "Warranty diagnosis",
+                "Approval required onsite"
+              ]
+            },
+            {
+              "key": "not_to_exceed",
+              "label": "Not-to-exceed amount",
+              "units": 0.85
+            },
+            {
+              "key": "purchase_order",
+              "label": "PO or cost center",
+              "units": 0.9
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 0.9
+            },
+            {
+              "key": "authorization_date_time",
+              "label": "Authorization date and time",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "estimate_lines",
+          "type": "table",
+          "label": "Proposed parts, labor, rentals, and specialty work",
+          "columns": [
+            {
+              "key": "scope_item",
+              "label": "Scope or item",
+              "units": 1.3
+            },
+            {
+              "key": "part_task_id",
+              "label": "Part or task ID",
+              "units": 0.85
+            },
+            {
+              "key": "quantity_hours",
+              "label": "Qty or hours",
+              "units": 0.6
+            },
+            {
+              "key": "estimated_cost",
+              "label": "Estimated cost",
+              "units": 0.75
+            },
+            {
+              "key": "lead_time",
+              "label": "Lead time",
+              "units": 0.65
+            },
+            {
+              "key": "approval_status",
+              "label": "Approval status",
+              "units": 0.95
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Repair decision",
+          "fields": [
+            {
+              "key": "repair_decision",
+              "label": "Decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approved",
+                "Approved with condition",
+                "Temporary repair only",
+                "Parts order approved",
+                "Deferred",
+                "Declined",
+                "Replacement review"
+              ]
+            },
+            {
+              "key": "approval_condition",
+              "label": "Approval limit or condition",
+              "units": 1.25
+            },
+            {
+              "key": "decision_by",
+              "label": "Decision by",
+              "units": 0.9
+            },
+            {
+              "key": "decision_date_time",
+              "label": "Decision date and time",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "decision_notes",
+          "type": "textarea",
+          "label": "Rejected option, operational tradeoff, temporary plan, stakeholder commitment, and next approval needed",
+          "fields": [
+            {
+              "key": "decision_notes_detail",
+              "label": "Repair decision and condition detail"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "repair_execution",
+      "title": "Technician findings, repair, and exceptions",
+      "guidance": "Separate verified findings from work performed and unresolved uncertainty.",
+      "blocks": [
+        {
+          "key": "arrival_record",
+          "type": "fields",
+          "label": "Technician arrival and condition",
+          "fields": [
+            {
+              "key": "arrival_date",
+              "label": "Arrival date",
+              "units": 0.6
+            },
+            {
+              "key": "arrival_time",
+              "label": "Arrival time",
+              "units": 0.55
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.9
+            },
+            {
+              "key": "unit_condition",
+              "label": "Unit condition on arrival",
+              "units": 1.2
+            },
+            {
+              "key": "isolation_record",
+              "label": "Isolation or LOTO reference",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "diagnostic_readings",
+          "type": "table",
+          "label": "Diagnostic readings and evidence",
+          "columns": [
+            {
+              "key": "test_point",
+              "label": "Test point or component",
+              "units": 1.15
+            },
+            {
+              "key": "expected",
+              "label": "Expected or nameplate",
+              "units": 0.85
+            },
+            {
+              "key": "observed",
+              "label": "Observed",
+              "units": 0.75
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.45
+            },
+            {
+              "key": "finding",
+              "label": "Finding or result",
+              "units": 1.1
+            },
+            {
+              "key": "evidence",
+              "label": "Instrument or photo ID",
+              "units": 0.9
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "diagnosis",
+          "type": "textarea",
+          "label": "Verified failure, probable cause, contributing condition, uncertainty, and recommended corrective action",
+          "fields": [
+            {
+              "key": "diagnosis_detail",
+              "label": "Verified diagnosis and recommended action"
+            }
+          ],
+          "height": 62
+        },
+        {
+          "key": "work_performed",
+          "type": "textarea",
+          "label": "Repair performed, parts, settings, regulated work, and scope change",
+          "fields": [
+            {
+              "key": "work_performed_detail",
+              "label": "Completed repair and scope deviation"
+            }
+          ],
+          "height": 58
+        },
+        {
+          "key": "parts_used",
+          "type": "table",
+          "label": "Parts and materials installed or removed",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part or material",
+              "units": 1.2
+            },
+            {
+              "key": "part_number",
+              "label": "Part number",
+              "units": 0.9
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 0.55
+            },
+            {
+              "key": "disposition",
+              "label": "Installed or removed",
+              "units": 0.9
+            },
+            {
+              "key": "warranty",
+              "label": "Warranty",
+              "units": 0.65
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or receipt",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "repair_exception",
+          "type": "textarea",
+          "label": "Unresolved defect, authority limit, unsafe condition, and escalation",
+          "fields": [
+            {
+              "key": "repair_exception_detail",
+              "label": "Repair exception and escalation detail"
+            }
+          ],
+          "height": 50
+        }
+      ]
+    },
+    {
+      "key": "verification_closeout",
+      "title": "Return-to-service verification and closeout",
+      "guidance": "Close only after operation, restoration, communication, and remaining ownership are clear.",
+      "blocks": [
+        {
+          "key": "verification_checklist",
+          "type": "checklist",
+          "label": "Post-repair verification completed",
+          "items": [
+            "Panels, guards, and covers restored",
+            "Electrical connections and disconnect restored",
+            "Locks and tags cleared or transferred",
+            "Controls respond to command",
+            "Cooling operation verified",
+            "Heating operation verified when applicable",
+            "Fan and airflow condition verified",
+            "Drainage verified",
+            "No abnormal noise or vibration",
+            "No active leak evidence",
+            "BAS status and alarms reviewed",
+            "Served-area condition checked"
+          ]
+        },
+        {
+          "key": "final_readings",
+          "type": "table",
+          "label": "Final operating readings",
+          "columns": [
+            {
+              "key": "parameter",
+              "label": "Parameter or point",
+              "units": 1.2
+            },
+            {
+              "key": "final_value",
+              "label": "Final value",
+              "units": 0.75
+            },
+            {
+              "key": "target",
+              "label": "Target or range",
+              "units": 0.8
+            },
+            {
+              "key": "units",
+              "label": "Units",
+              "units": 0.45
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 0.75
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence or instrument",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "closeout_status",
+          "type": "fields",
+          "label": "Request outcome",
+          "fields": [
+            {
+              "key": "request_status",
+              "label": "Request status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Resolved",
+                "Temporary repair",
+                "Monitoring required",
+                "Parts on order",
+                "Return visit required",
+                "Referred",
+                "Replacement review",
+                "Requester declined"
+              ]
+            },
+            {
+              "key": "completion_date_time",
+              "label": "Completion date and time",
+              "units": 0.95
+            },
+            {
+              "key": "next_action_owner",
+              "label": "Next action owner",
+              "units": 0.9
+            },
+            {
+              "key": "next_action_due",
+              "label": "Next action due",
+              "units": 0.75
+            },
+            {
+              "key": "final_cost",
+              "label": "Final or committed cost",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "handoff",
+          "type": "textarea",
+          "label": "Requester update, restrictions, warranty, parts, and next commitment",
+          "fields": [
+            {
+              "key": "handoff_detail",
+              "label": "Requester handoff and remaining commitment"
+            }
+          ],
+          "height": 52
+        },
+        {
+          "key": "restoration",
+          "type": "checklist",
+          "label": "Site and record restoration confirmed",
+          "items": [
+            "Roof work area cleared",
+            "Access hatch, ladder, gate, keys, and badge secured",
+            "Removed parts and waste handled",
+            "Photos and service report uploaded",
+            "Requester or site contact notified",
+            "Open hazard communicated",
+            "Follow-up work order created",
+            "Repair request linked to asset history"
+          ]
+        },
+        {
+          "key": "signoff",
+          "type": "signatures",
+          "label": "Repair completion acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician name or signature",
+              "units": 1.2
+            },
+            {
+              "key": "facility_reviewer",
+              "label": "Facility reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "requester_acknowledgment",
+              "label": "Requester or site contact",
+              "units": 1.0
+            },
+            {
+              "key": "signed_date",
+              "label": "Date",
+              "units": 0.55
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
