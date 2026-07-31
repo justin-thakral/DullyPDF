@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1809__fitness_class_waiver_sign_in_log",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1809__fitness_class_waiver_sign_in_log.pdf",
+  "slug": "fitness-class-waiver-sign-in-log",
+  "title": "Fitness Class Waiver Sign-In Log",
+  "subtitle": "Capture class format, instructor, equipment, and exertion condition; confirm participant choice and session completion.",
+  "description": "Fitness Class Waiver records class format, instructor, equipment, exertion condition, participant choice, and session completion. Fitness Class Waiver evidence stays linked.",
+  "use_case": "Use this fitness class waiver attendance and custody reconciliation when staff must document class format and instructor. Reconcile equipment, exertion condition, participant choice, and session completion before the fitness class waiver handoff. Use the class description, instructor credential reference, equipment list, disclosed exertion conditions, modification menu, participant questions, and attendance result. This acknowledgment concerns an instructor-led exercise session with cardio or resistance intensity, repetitions, studio equipment, modification choices, rest, and class completion. Ask the assigned fitness class waiver reviewer to confirm class format against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Fitness Class Waiver details",
+      "guidance": "Name class format, instructor, equipment, exertion and environment conditions, modification options, participant questions, session choice, and completion. Record the fitness class waiver decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Fitness Class Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "class_format",
+              "label": "Class format",
+              "units": 1.1
+            },
+            {
+              "key": "instructor",
+              "label": "Instructor",
+              "units": 1.2
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Fitness Class Waiver task details",
+          "fields": [
+            {
+              "key": "exertion_condition",
+              "label": "Exertion condition",
+              "units": 1.15
+            },
+            {
+              "key": "participant_choice",
+              "label": "Participant choice",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Participate",
+                "Participate with limit",
+                "Do not participate",
+                "Pending"
+              ]
+            },
+            {
+              "key": "session_completion",
+              "label": "Session completion",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance_rows",
+      "title": "Fitness Class Waiver participant identity and waiver-status review",
+      "guidance": "Match each participant to the named activity, current waiver version, signer or guardian status, and participation limit.",
+      "blocks": [
+        {
+          "key": "sign_in_rows",
+          "type": "table",
+          "label": "Fitness Class Waiver participant rows",
+          "columns": [
+            {
+              "key": "participant",
+              "label": "Participant",
+              "units": 1.2
+            },
+            {
+              "key": "check_in_and_identity",
+              "label": "Check-in and identity",
+              "units": 1.1
+            },
+            {
+              "key": "waiver_version_and_signer",
+              "label": "Waiver version and signer",
+              "units": 1.25
+            },
+            {
+              "key": "choice_limit_or_check_out",
+              "label": "Choice, limit, or check-out",
+              "units": 1.0
+            },
+            {
+              "key": "exception_and_owner",
+              "label": "Exception and owner",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "roster_boundary",
+          "type": "notice",
+          "label": "Fitness Class Waiver roster boundary",
+          "guidance": "Check-in does not replace a completed waiver choice. Route any missing signer, outdated version, participation limit, or unanswered question before participation."
+        }
+      ]
+    },
+    {
+      "key": "attendance_close",
+      "title": "Fitness Class Waiver decision and participant reconciliation",
+      "guidance": "Reconcile participant count, waiver status, and every open question before close.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Fitness Class Waiver closing counts",
+          "fields": [
+            {
+              "key": "expected_participants",
+              "label": "Expected participants",
+              "units": 1.15
+            },
+            {
+              "key": "participants_checked_in",
+              "label": "Participants checked in",
+              "units": 1.0
+            },
+            {
+              "key": "waiver_records_verified",
+              "label": "Waiver records verified",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_participant_or_waiver_and_owner",
+              "label": "Unresolved participant or waiver and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "attendance_receipt",
+          "type": "signatures",
+          "label": "Fitness Class Waiver log receipt",
+          "fields": [
+            {
+              "key": "event_coordinator_or_roster_custodian_and_date",
+              "label": "Event coordinator or roster custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Do not close an unreconciled entry without a named owner."
+        }
+      ]
+    }
+  ]
+}

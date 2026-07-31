@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2643__therapy_intake_checklist",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2643__therapy_intake_checklist.pdf",
+  "slug": "therapy-intake-checklist",
+  "title": "Therapy Intake Checklist",
+  "subtitle": "Capture presenting concern, patient goal, referral, and accessibility; confirm clinician review and care handoff.",
+  "description": "Therapy Intake records presenting concern, patient goal, referral, accessibility, clinician review, and care handoff. Therapy Intake evidence stays linked.",
+  "use_case": "Use this therapy intake stage-gated verification when staff must document presenting concern and patient goal. Reconcile referral, accessibility, clinician review, and care handoff before the therapy intake handoff. Use the patient narrative, referral documents, accessibility request, urgent-concern routing, clinician questions, modality preference, scheduling handoff, and receipt confirmation. This intake preserves the person's presenting narrative, counseling goals, referral context, communication access, urgent routing, clinician questions, modality preference, and first-session handoff. Keep self-described stressors, strengths, supports, prior service context, language preference, sensory or mobility access, immediate resource needs, screening provenance, and intake disposition visible. Ask the assigned therapy intake reviewer to confirm presenting concern against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "patient_and_request",
+      "title": "Patient, request, and access needs",
+      "guidance": "Capture the patient's request in their words and the route to a clinician.",
+      "blocks": [
+        {
+          "key": "patient_details",
+          "type": "fields",
+          "label": "Patient and contact",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "preferred_phone_or_email",
+              "label": "Preferred phone or email",
+              "units": 1.25
+            },
+            {
+              "key": "preferred_communication_method",
+              "label": "Preferred communication method",
+              "units": 1.1
+            },
+            {
+              "key": "emergency_contact_name_and_phone",
+              "label": "Emergency contact name and phone",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "intake_request",
+          "type": "fields",
+          "label": "Referral, goals, and scheduling",
+          "fields": [
+            {
+              "key": "presenting_concern_in_patient_words",
+              "label": "Presenting concern in patient words",
+              "units": 1.15
+            },
+            {
+              "key": "patient_goal_for_therapy",
+              "label": "Patient goal for therapy",
+              "units": 1.0
+            },
+            {
+              "key": "referral_source",
+              "label": "Referral source",
+              "units": 1.25
+            },
+            {
+              "key": "language_or_accessibility_need",
+              "label": "Language or accessibility need",
+              "units": 1.1
+            },
+            {
+              "key": "preferred_modality_and_schedule",
+              "label": "Preferred modality and schedule",
+              "units": 1.2
+            },
+            {
+              "key": "assigned_intake_coordinator",
+              "label": "Assigned intake coordinator",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "readiness_checks",
+      "title": "Intake readiness checks",
+      "guidance": "Check only items completed or routed before the first appointment.",
+      "blocks": [
+        {
+          "key": "intake_readiness",
+          "type": "checklist",
+          "label": "Administrative and care-handoff readiness",
+          "items": [
+            "Identity and preferred contact are confirmed",
+            "Patient's presenting concern and goal are preserved",
+            "Privacy notice and communication preference are addressed",
+            "Required consent or representative authority is routed",
+            "Emergency contact and urgent-concern route are available",
+            "Language, mobility, sensory, or technology needs are routed",
+            "Referral records received are indexed for clinician review",
+            "Insurance or payment question is routed without a promise",
+            "Clinician, modality, and first appointment are identified",
+            "Patient received location, connection, or arrival instructions"
+          ]
+        },
+        {
+          "key": "patient_questions",
+          "type": "textarea",
+          "label": "Patient questions and immediate resource needs",
+          "fields": [
+            {
+              "key": "questions_strengths_supports_access_needs_or_urgent_routing",
+              "label": "Questions, strengths, supports, access needs, or urgent routing"
+            }
+          ],
+          "height": 42
+        }
+      ]
+    },
+    {
+      "key": "appointment_handoff",
+      "title": "First appointment and clinician handoff",
+      "guidance": "Leave a clear appointment, open item, and receiving clinician route.",
+      "blocks": [
+        {
+          "key": "handoff_details",
+          "type": "fields",
+          "label": "Appointment and handoff",
+          "fields": [
+            {
+              "key": "first_appointment_date_and_time",
+              "label": "First appointment date and time",
+              "units": 1.15
+            },
+            {
+              "key": "clinician_review_care_handoff",
+              "label": "Clinician review/care handoff",
+              "units": 1.0
+            },
+            {
+              "key": "office_video_or_phone_route",
+              "label": "Office, video, or phone route",
+              "units": 1.25
+            },
+            {
+              "key": "open_intake_item",
+              "label": "Open intake item",
+              "units": 1.1
+            },
+            {
+              "key": "open_item_owner_and_due_date",
+              "label": "Open-item owner and due date",
+              "units": 1.2
+            },
+            {
+              "key": "patient_confirmation_sent_date",
+              "label": "Patient confirmation sent date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "intake_receipt",
+          "type": "signatures",
+          "label": "Intake receipt",
+          "fields": [
+            {
+              "key": "intake_coordinator_and_date",
+              "label": "Intake coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms administrative readiness, not clinical assessment."
+        },
+        {
+          "key": "clinical_boundary",
+          "type": "notice",
+          "label": "Clinical boundary",
+          "guidance": "This checklist coordinates intake and does not diagnose, assess clinical risk beyond protocol, or replace clinician review."
+        }
+      ]
+    }
+  ]
+}

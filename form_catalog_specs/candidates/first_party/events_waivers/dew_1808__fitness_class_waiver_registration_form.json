@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1808__fitness_class_waiver_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1808__fitness_class_waiver_registration_form.pdf",
+  "slug": "fitness-class-waiver-registration-form",
+  "title": "Fitness Class Waiver Registration Form",
+  "subtitle": "Capture class format, instructor, equipment, and exertion condition; confirm participant choice and session completion.",
+  "description": "Fitness Class Waiver records class format, instructor, equipment, exertion condition, participant choice, and session completion. Fitness Class Waiver evidence stays linked.",
+  "use_case": "Use this fitness class waiver registration and placement when staff must document class format and instructor. Reconcile equipment, exertion condition, participant choice, and session completion before the fitness class waiver handoff. Use the class description, instructor credential reference, equipment list, disclosed exertion conditions, modification menu, participant questions, and attendance result. This acknowledgment concerns an instructor-led exercise session with cardio or resistance intensity, repetitions, studio equipment, modification choices, rest, and class completion. Ask the assigned fitness class waiver reviewer to confirm class format against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "participant_and_activity",
+      "title": "Fitness Class Waiver participant contact and activity details",
+      "guidance": "Name class format, instructor, equipment, exertion and environment conditions, modification options, participant questions, session choice, and completion.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Fitness Class Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "class_format",
+              "label": "Class format",
+              "units": 1.2
+            },
+            {
+              "key": "instructor",
+              "label": "Instructor",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Fitness Class Waiver task details",
+          "fields": [
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.15
+            },
+            {
+              "key": "exertion_condition",
+              "label": "Exertion condition",
+              "units": 1.0
+            },
+            {
+              "key": "participant_choice",
+              "label": "Participant choice",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Participate",
+                "Participate with limit",
+                "Do not participate",
+                "Pending"
+              ]
+            },
+            {
+              "key": "session_completion",
+              "label": "Session completion",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "disclosures_and_registration",
+      "title": "Fitness Class Waiver disclosure review and registration readiness",
+      "guidance": "Keep the registration decision separate from the disclosed conditions, questions, and available alternatives.",
+      "blocks": [
+        {
+          "key": "disclosure_readiness",
+          "type": "checklist",
+          "label": "Fitness Class Waiver disclosure checks",
+          "items": [
+            "Class format is named for this registration",
+            "Instructor is stated and current",
+            "Equipment is explained or verified",
+            "Exertion condition and related limits are disclosed",
+            "Participant choice is recorded separately",
+            "Session completion is confirmed or routed",
+            "Questions and a practical alternative are offered",
+            "Organizer safety duties and non-waivable rights remain in force"
+          ]
+        },
+        {
+          "key": "registration_and_choice",
+          "type": "fields",
+          "label": "Fitness Class Waiver registration and choice",
+          "fields": [
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "activity_or_session",
+              "label": "Activity or session",
+              "units": 1.0
+            },
+            {
+              "key": "participation_choice",
+              "label": "Participation choice",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Participate",
+                "Participate with limit",
+                "Do not participate",
+                "Pending"
+              ]
+            },
+            {
+              "key": "modification_or_alternative",
+              "label": "Modification or alternative",
+              "units": 1.1
+            },
+            {
+              "key": "waiver_version_or_date",
+              "label": "Waiver version or date",
+              "units": 1.2
+            },
+            {
+              "key": "fee_or_roster_reference",
+              "label": "Fee or roster reference",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "confirmation_and_receipt",
+      "title": "Fitness Class Waiver decision, limits, and receipt",
+      "guidance": "Do not complete registration while a material question remains open.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Fitness Class Waiver registration confirmation",
+          "fields": [
+            {
+              "key": "confirmed_activity_team_trip_or_session",
+              "label": "Confirmed activity, team, trip, or session",
+              "units": 1.15
+            },
+            {
+              "key": "registration_confirmation_number",
+              "label": "Registration confirmation number",
+              "units": 1.0
+            },
+            {
+              "key": "question_or_participation_limit",
+              "label": "Question or participation limit",
+              "units": 1.25
+            },
+            {
+              "key": "check_in_or_start_instructions_sent_date",
+              "label": "Check-in or start instructions sent date",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_coordinator",
+              "label": "Responsible coordinator",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Fitness Class Waiver acknowledgment and receipt",
+          "fields": [
+            {
+              "key": "participant_or_guardian_acknowledgment_and_date",
+              "label": "Participant or guardian acknowledgment and date",
+              "units": 1.15
+            },
+            {
+              "key": "registration_staff_receipt_and_date",
+              "label": "Registration staff receipt and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Acknowledgment records the named conditions and voluntary choice; it does not remove organizer safety duties or non-waivable rights."
+        }
+      ]
+    }
+  ]
+}

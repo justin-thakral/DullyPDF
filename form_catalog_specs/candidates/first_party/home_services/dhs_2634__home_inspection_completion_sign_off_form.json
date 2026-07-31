@@ -1,0 +1,359 @@
+{
+  "catalog_id": "home_services/dhs_2634__home_inspection_completion_sign_off_form",
+  "description": "For home inspection, this completion sign-off form records finding classification, clarification questions, safety urgency, further-evaluation needs, and decision responsibility. Its supporting evidence includes report excerpts, location photos, available repair records, specialist response, estimates, and verification documents.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Home opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Home site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Home contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Home account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Home due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this home inspection record to its evidence.",
+          "key": "record_routing",
+          "label": "Home Inspection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Inspection report",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Property systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Client priorities",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Seller response",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture inspection report, property systems, client priorities, seller response, specialist referrals, and transaction milestones for this home inspection.",
+          "key": "core_identity",
+          "label": "Home Inspection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify inspection report, property systems, client priorities, seller response, specialist referrals, and transaction milestones for this home inspection record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Home when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Home measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Home evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Home result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For home inspection, record report excerpts, location photos, available repair records, specialist response, estimates, and verification documents.",
+          "key": "evidence_register",
+          "label": "Home Inspection Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Report excerpts",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Location photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Available repair records",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Specialist response",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Estimates",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every home inspection evidence source.",
+          "key": "evidence_sources",
+          "label": "Home Inspection Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary home inspection evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Home Inspection Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not treat the worksheet as engineering, code, legal, or repair certification; route specialist issues for review. Route unresolved home inspection work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Home Inspection Applicable Review Boundary",
+          "type": "notice"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select completion sign-off form disposition",
+                "Accept complete",
+                "Accept with exceptions",
+                "Correction required",
+                "Reject completion"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Home decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Home service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Home authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Home review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate home inspection disposition.",
+          "key": "disposition",
+          "label": "Home Inspection Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Inspection Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the home inspection decision to evidence.",
+          "height": 43,
+          "key": "decision_basis",
+          "label": "Home Inspection Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Home open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Home owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Home acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer home inspection items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Home Inspection Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Home crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Home service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Home Inspection Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Compare home inspection findings with home inspection open items and decide the home inspection customer handoff.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding and Acceptance Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Home completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Client decision log",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Referral status",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Unresolved-risk acknowledgment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the home inspection outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Home Inspection Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Inspection Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For home inspection, document client decision log, referral status, unresolved-risk acknowledgment, document package, and transaction handoff; identify each home inspection reservation and home inspection follow-up trigger, then record the home inspection instruction recipient.",
+          "height": 40,
+          "key": "acceptance_reservations",
+          "label": "Home Inspection Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Home technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Home customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Home Inspection Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the home inspection record with client decision log, referral status, unresolved-risk acknowledgment, document package, and transaction handoff.",
+      "key": "closeout_4",
+      "title": "Next-Service Handoff"
+    }
+  ],
+  "slug": "dhs-2634-home-inspection-completion-sign-off-form",
+  "source_filename": "dhs_2634__home_inspection_completion_sign_off_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Home Inspection Completion Sign-Off Form: home inspection finding review record using inspection report, finding classification, and report excerpts.",
+  "title": "Home Inspection Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during home inspection finding review record when the home inspection record must identify inspection report, property systems, client priorities, seller response, specialist referrals, and transaction milestones. Complete the applicable handoff for client decision log, referral status, unresolved-risk acknowledgment, document package, and transaction handoff."
+}

@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_161__athletic_tryout_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dey_161__athletic_tryout_checklist.pdf",
+  "slug": "athletic-tryout-checklist",
+  "title": "Athletic Tryout Checklist",
+  "subtitle": "Capture team level, evaluation station, equipment, and exertion limit; confirm roster decision and coach handoff.",
+  "description": "Athletic Tryout records team level, evaluation station, equipment, exertion limit, roster decision, and coach handoff. Athletic Tryout evidence stays linked.",
+  "use_case": "Use this athletic tryout stage-gated verification when staff must document team level and evaluation station. Reconcile equipment, exertion limit, roster decision, and coach handoff before the athletic tryout handoff. Use the evaluation rubric, station score sheets, equipment issue record, activity restriction notice, coach roster, selection rationale, and result message. Ask the assigned athletic tryout reviewer to confirm team level against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Athletic Tryout starting details review",
+      "guidance": "Capture the sport level, evaluation stations, issued equipment, exertion restriction, scorer evidence, roster decision, and coach communication.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Athletic Tryout people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_team",
+              "label": "Grade or team",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "team_level",
+              "label": "Team level",
+              "units": 1.1
+            },
+            {
+              "key": "evaluation_station",
+              "label": "Evaluation station",
+              "units": 1.2
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Athletic Tryout task details",
+          "fields": [
+            {
+              "key": "exertion_limit",
+              "label": "Exertion limit",
+              "units": 1.15
+            },
+            {
+              "key": "roster_decision",
+              "label": "Roster decision",
+              "units": 1.0
+            },
+            {
+              "key": "coach_handoff",
+              "label": "Coach handoff",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Athletic Tryout exception review: checks and corrections",
+      "guidance": "Check current athletic tryout facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Athletic Tryout required checks",
+          "items": [
+            "Team level is identified for this record",
+            "Evaluation station matches the current request or source",
+            "Equipment is ready for point-of-use staff",
+            "Exertion limit limits or questions are resolved",
+            "Roster decision is communicated to the responsible person",
+            "Coach handoff is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Athletic Tryout failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Athletic Tryout readiness",
+      "guidance": "Hold athletic tryout readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Athletic Tryout checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Athletic Tryout reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Athletic Tryout receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

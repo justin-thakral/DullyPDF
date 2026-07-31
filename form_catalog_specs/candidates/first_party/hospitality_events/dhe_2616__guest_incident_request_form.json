@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2616__guest_incident_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2616__guest_incident_request_form.pdf",
+  "slug": "dhe-2616-guest-incident-request-form",
+  "title": "Guest Incident Request Form",
+  "subtitle": "Capture guest account, scene condition, witness, and immediate response; confirm evidence custody and follow-up.",
+  "description": "Guest Incident records guest account, scene condition, witness, immediate response, evidence custody, and follow-up. Guest Incident evidence stays linked.",
+  "use_case": "Use this guest incident request intake when staff must document guest account and scene condition. Reconcile witness, immediate response, evidence custody, and follow-up before the guest incident handoff. Use the guest statement, witness contacts, scene photographs, camera-footage custody reference, first-response log, security report, property action, claim route, and follow-up call. Ask the assigned guest incident reviewer to confirm guest account against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Guest Incident requester details review",
+      "guidance": "Preserve guest account and exact time, scene condition, witnesses, immediate care or security response, photographs, evidence custody, property action, and follow-up contact.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Guest Incident people and reference",
+          "fields": [
+            {
+              "key": "guest_full_name",
+              "label": "Guest full name",
+              "units": 1.15
+            },
+            {
+              "key": "guest_contact",
+              "label": "Guest contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_service_area",
+              "label": "Property, venue, or service area",
+              "units": 1.25
+            },
+            {
+              "key": "event_or_service_date",
+              "label": "Event or service date",
+              "units": 1.1
+            },
+            {
+              "key": "guest_account",
+              "label": "Guest account",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Guest Incident task details",
+          "fields": [
+            {
+              "key": "scene_condition",
+              "label": "Scene condition",
+              "units": 1.15
+            },
+            {
+              "key": "witness",
+              "label": "Witness",
+              "units": 1.0
+            },
+            {
+              "key": "immediate_response",
+              "label": "Immediate response",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_custody",
+              "label": "Evidence custody",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Guest Incident exception review and request scope",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Guest Incident requested items",
+          "columns": [
+            {
+              "key": "requested_guest_account",
+              "label": "Requested guest account",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_scene_condition",
+              "label": "Need or scene condition",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_immediate_response",
+              "label": "Constraint or immediate response",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Guest Incident request checks",
+          "items": [
+            "Guest account is identified for this record",
+            "Scene condition matches the current request or source",
+            "Witness is ready for point-of-use staff",
+            "Immediate response limits or questions are resolved",
+            "Evidence custody is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Guest Incident response",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Guest Incident request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Guest Incident request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

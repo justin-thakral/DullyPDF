@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1273__appliance_repair_technician_sign_off_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1273__appliance_repair_technician_sign_off_form.pdf",
+  "slug": "appliance-repair-technician-sign-off-form",
+  "title": "Appliance Repair Technician Sign-Off Form",
+  "subtitle": "Facility Appliance Repair: verifies results and open follow-up.",
+  "description": "Appliance Repair Technician Sign-Off Form covers commercial or shared appliance, connected utility, control, enclosure, and served operation. The facility appliance service coordinator records Facility Appliance Repair performed work, tests, limits, and acceptance. Appliance Repair Technician Sign-Off Form keeps Facility Appliance Repair exceptions visible until the facility appliance service coordinator handoff.",
+  "use_case": "Use Appliance Repair Technician Sign-Off Form at shared kitchen, laundry, break area, utility point, and equipment position. Document commercial or shared appliance, connected utility, control, enclosure, and served operation identity before Facility Appliance Repair begins. Compare commercial or shared appliance, connected utility, control, enclosure, and served operation findings with stated Facility Appliance Repair criteria; route unresolved Facility Appliance Repair issues to qualified appliance service supervisor. For Appliance Repair Technician Sign-Off Form, confirm requirements for Facility Appliance Repair. Ask qualified appliance service supervisor to review Facility Appliance Repair conditions beyond the facility appliance service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Provider, customer, and service record",
+      "guidance": "For Facility Appliance Repair, identify responsible parties, shared kitchen, laundry, break area, utility point, and equipment position, and the linked commercial or shared appliance, connected utility, control, enclosure, and served operation source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Completion record ID",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Facility Appliance Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Work order and department",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "identity_2",
+              "label": "Asset tag, make, model, serial, and appliance type",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Reported symptom, error code, duty cycle, and user impact",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Performed scope and verification results",
+      "guidance": "Capture Facility Appliance Repair facts for commercial or shared appliance, connected utility, control, enclosure, and served operation; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Completion verification lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Performed task or delivered item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 0.9
+            },
+            {
+              "key": "result",
+              "label": "Verified result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.85
+            },
+            {
+              "key": "follow_up",
+              "label": "Limitation or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Facility Appliance Repair completion checks",
+          "items": [
+            "Power, gas, water, drain, vent, and connection condition",
+            "Door, latch, seal, interlock, and enclosure condition",
+            "Motor, pump, fan, heater, sensor, and control behavior",
+            "Leak, drainage, airflow, temperature, and cycle result",
+            "Anchorage, leveling, clearance, and adjacent property condition",
+            "Full representative operating cycle after repair"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Completion limitation, status, and follow-up",
+      "guidance": "Resolve open Facility Appliance Repair conditions; have facility appliance service coordinator assign the next Facility Appliance Repair owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Limitations, open work, and retained evidence",
+          "items": [
+            "Gas, electrical, refrigerant, water, or combustion hazard",
+            "Failed interlock or protective device",
+            "Part compatibility or recall concern",
+            "Safe full-cycle test cannot be completed",
+            "Asset label and fault-code image",
+            "Pre-work and repaired-condition photographs",
+            "Part and configuration trace",
+            "Utility restoration and operating-cycle result"
+          ],
+          "guidance": "Pause Facility Appliance Repair when a utility hazard, protective-device failure, incompatible part, or unsafe operating result remains. Retain the available Facility Appliance Repair proof and route unresolved commercial or shared appliance, connected utility, control, enclosure, and served operation scope to facility appliance service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Acceptance status and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completion status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Accepted",
+                "Accepted with listed limitation",
+                "Follow-up required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Facility Appliance Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Site contact or service reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

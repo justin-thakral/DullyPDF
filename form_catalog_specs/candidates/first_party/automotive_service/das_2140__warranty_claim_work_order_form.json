@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2140__warranty_claim_work_order_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2140__warranty_claim_work_order_form.pdf",
+  "slug": "warranty-claim-work-order-form",
+  "title": "Warranty Claim Work Order Form",
+  "subtitle": "Automotive Warranty Claim: connects authorized scope to results.",
+  "description": "Warranty Claim Work Order Form covers vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file. The warranty claim coordinator records Automotive Warranty Claim authorized tasks, materials, results, and changes. Warranty Claim Work Order Form keeps Automotive Warranty Claim exceptions visible until the warranty claim coordinator handoff.",
+  "use_case": "Use Warranty Claim Work Order Form at service facility, diagnostic bay, records system, and retained-parts area. Document vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file identity before Automotive Warranty Claim begins. Compare vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file findings with stated Automotive Warranty Claim criteria; route unresolved Automotive Warranty Claim issues to authorized warranty reviewer. For Warranty Claim Work Order Form, confirm requirements for Automotive Warranty Claim. Ask authorized warranty reviewer to review Automotive Warranty Claim conditions beyond the warranty claim coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Vehicle repair-order details",
+      "guidance": "Bind Automotive Warranty Claim to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Customer, fleet, insurer, or payer",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shop, bay, roadside, or site",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Warranty Claim Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Automotive Warranty Claim identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Claim, repair order, customer, and contract",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, mileage, in-service date, and coverage reference",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Component, part, serial, prior repair, and failure code",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Automotive Warranty Claim identifier printed on vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file or its linked source record."
+        },
+        {
+          "key": "vehicle_work_context",
+          "type": "fields",
+          "label": "Vehicle work context",
+          "fields": [
+            {
+              "key": "odometer_in",
+              "label": "Odometer or operating hours in",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Vehicle findings and repair evidence",
+      "guidance": "Record authorized Automotive Warranty Claim activity; separate proposed, declined, deferred, or new Automotive Warranty Claim scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Automotive Warranty Claim labor or diagnostic step",
+              "units": 1.25
+            },
+            {
+              "key": "component",
+              "label": "System, component, or position",
+              "units": 1.0
+            },
+            {
+              "key": "part",
+              "label": "Part, fluid, material, or sublet",
+              "units": 1.1
+            },
+            {
+              "key": "qty",
+              "label": "Qty / hours",
+              "units": 0.65
+            },
+            {
+              "key": "result",
+              "label": "Performed result or note",
+              "units": 1.1
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Automotive Warranty Claim work and verification points",
+          "items": [
+            "Reported symptom and failure chronology",
+            "Coverage term and eligibility facts",
+            "Diagnostic result and causal basis",
+            "Maintenance, modification, misuse, and prior-repair evidence",
+            "Repair estimate, part disposition, and authorization",
+            "Approval, denial, additional-information, and appeal route"
+          ],
+          "guidance": "Use each Automotive Warranty Claim check to prompt documented vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file execution; enter its actual Automotive Warranty Claim result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Automotive Warranty Claim parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Repair exception and added-work limits",
+      "guidance": "Stop Automotive Warranty Claim at any scope or cost limit; honor warranty claim coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when eligibility, diagnosis, evidence, part retention, repair authority, or coverage decision remains unresolved. Protect vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file; document the Automotive Warranty Claim notification and await authorized warranty reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Identity or eligibility incomplete",
+            "Failure cause unsupported",
+            "Required evidence or retained part missing",
+            "Repair begins before coverage authorization"
+          ],
+          "guidance": "For Automotive Warranty Claim, identify affected vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file scope; ask warranty claim coordinator to document the Automotive Warranty Claim immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Added work, revised diagnosis, cost change, and customer response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Added work, revised diagnosis, cost change, and customer response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Vehicle release decision and completion",
+      "guidance": "Reconcile Automotive Warranty Claim to authorization; state warranty claim coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Contract and eligibility record",
+            "Diagnostic and failure evidence",
+            "Maintenance and repair history",
+            "Authorized coverage decision and communication"
+          ],
+          "guidance": "Attach or link proof for vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file; mark only Automotive Warranty Claim evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

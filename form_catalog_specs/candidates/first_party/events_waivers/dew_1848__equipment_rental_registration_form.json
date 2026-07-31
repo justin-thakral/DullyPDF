@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1848__equipment_rental_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1848__equipment_rental_registration_form.pdf",
+  "slug": "equipment-rental-registration-form",
+  "title": "Equipment Rental Registration Form",
+  "subtitle": "Capture asset number, component count, approved use, and condition photo; confirm custody and return.",
+  "description": "Equipment Rental records asset number, component count, approved use, condition photo, custody, and return. Equipment Rental evidence stays linked.",
+  "use_case": "Use this equipment rental registration and placement when staff must document asset number and component count. Reconcile approved use, condition photo, custody, and return before the equipment rental handoff. Use the rental agreement reference, asset inventory, accessory checklist, condition photos, pickup receipt, custody transfer, damage ticket, return timestamp, and deposit disposition. This rental follows a portable asset by inventory class, serial identifier, accessory kit, pickup inspection, borrower custody, deposit disposition, damage charge, and physical return. Ask the assigned equipment rental reviewer to confirm asset number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Equipment Rental registrant details",
+      "guidance": "List asset and component count, approved use, pickup condition photographs, custodian, deposit reference, damage route, return time, and final condition.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Equipment Rental people and reference",
+          "fields": [
+            {
+              "key": "renter_or_responsible_party",
+              "label": "Renter or responsible party",
+              "units": 1.15
+            },
+            {
+              "key": "renter_phone",
+              "label": "Renter phone",
+              "units": 1.0
+            },
+            {
+              "key": "renter_email",
+              "label": "Renter email",
+              "units": 1.25
+            },
+            {
+              "key": "rental_item_or_room",
+              "label": "Rental item or room",
+              "units": 1.1
+            },
+            {
+              "key": "asset_number",
+              "label": "Asset number",
+              "units": 1.2
+            },
+            {
+              "key": "component_count",
+              "label": "Component count",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Equipment Rental task details",
+          "fields": [
+            {
+              "key": "approved_use",
+              "label": "Approved use",
+              "units": 1.15
+            },
+            {
+              "key": "condition_photo",
+              "label": "Condition photo",
+              "units": 1.0
+            },
+            {
+              "key": "custody",
+              "label": "Custody",
+              "units": 1.25
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_choices",
+      "title": "Equipment Rental decision: requested options and readiness",
+      "guidance": "Record requested options, prerequisites, availability, and conditions without assuming an outcome.",
+      "blocks": [
+        {
+          "key": "registration_options",
+          "type": "table",
+          "label": "Equipment Rental requested options",
+          "columns": [
+            {
+              "key": "requested_option_or_scope",
+              "label": "Requested option or scope",
+              "units": 1.2
+            },
+            {
+              "key": "availability_or_prerequisite",
+              "label": "Availability or prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.25
+            },
+            {
+              "key": "condition_support_or_owner",
+              "label": "Condition, support, or owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "start_readiness",
+          "type": "checklist",
+          "label": "Equipment Rental registration readiness",
+          "items": [
+            "Asset number is identified for this record",
+            "Component count matches the current request or source",
+            "Approved use is ready for point-of-use staff",
+            "Condition photo limits or questions are resolved",
+            "Custody is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_result",
+      "title": "Equipment Rental exception review: confirmation and next steps",
+      "guidance": "Confirm the accepted scope, reference, open condition, and instructions.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Equipment Rental registration result",
+          "fields": [
+            {
+              "key": "registration_outcome",
+              "label": "Registration outcome",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_item_and_rental_window",
+              "label": "Confirmed item and rental window",
+              "units": 1.0
+            },
+            {
+              "key": "pickup_or_custody_reference",
+              "label": "Pickup or custody reference",
+              "units": 1.25
+            },
+            {
+              "key": "open_condition_and_owner",
+              "label": "Open condition and owner",
+              "units": 1.1
+            },
+            {
+              "key": "pickup_instructions_sent",
+              "label": "Pickup instructions sent",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Equipment Rental registration receipt",
+          "fields": [
+            {
+              "key": "registration_coordinator_and_date",
+              "label": "Registration coordinator and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the recorded registration result and open condition."
+        }
+      ]
+    }
+  ]
+}

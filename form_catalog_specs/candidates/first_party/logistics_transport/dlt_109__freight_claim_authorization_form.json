@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_109__freight_claim_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_109__freight_claim_authorization_form.pdf",
+  "slug": "freight-claim-authorization-form",
+  "title": "Freight Claim Authorization Form",
+  "subtitle": "Freight Claim Intake: bounds the decision, conditions, and expiry.",
+  "description": "Freight Claim Authorization Form binds claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation to a named transport decision, commercial or operating limit, effective time, and the claimant / settlement authority's confirmation. The freight claims coordinator records the requested Freight Claim Intake action and keeps any variance outside the granted authority.",
+  "use_case": "Use Freight Claim Authorization Form at origin, transit custody points, destination, inspection location, and evidence repository. Reconcile applicable Freight Claim Intake requirements with the load, carrier, rate, claim, equipment, document, or inventory boundary that applies. Capture the claimant / settlement authority's approval, counteroffer, hold, or decline, then reauthorize any change to claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "authorization_request",
+      "title": "Carrier and shipment identity",
+      "guidance": "Identify the Freight Claim Intake request, named decision maker, contact, effective time, and subject.",
+      "blocks": [
+        {
+          "key": "authorization_header",
+          "type": "fields",
+          "label": "Request and decision-maker details",
+          "fields": [
+            {
+              "key": "authorization_number",
+              "label": "Claim, shipment, or evidence ID",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "requesting_party",
+              "label": "Claimant / liable party",
+              "units": 1.15
+            },
+            {
+              "key": "decision_maker",
+              "label": "Claimant / settlement authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_contact",
+              "label": "Decision-maker contact",
+              "units": 1.05
+            },
+            {
+              "key": "requested_effective_time",
+              "label": "Requested effective time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Freight Claim Intake identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Claim, bill, shipment, order, and invoice",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Claimant, carrier, shipper, and consignee",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, lot, serial, package, quantity, and amount",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Freight Claim Intake identifier printed on claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Requested authorization and task details",
+      "guidance": "List each Freight Claim Intake action with its quantity, amount, route, custody, or time limit.",
+      "blocks": [
+        {
+          "key": "authorization_basis",
+          "type": "checklist",
+          "label": "Freight Claim Intake authorization checks",
+          "items": [
+            "Loss, damage, delay, or expense allegation",
+            "Delivery notation and discovery timing",
+            "Affected quantity and amount calculation",
+            "Packaging, handling, and custody evidence",
+            "Mitigation, salvage, repair, and retained goods",
+            "Notice, document completeness, and investigation owner"
+          ],
+          "guidance": "Confirm the Freight Claim Intake facts supporting each listed action."
+        },
+        {
+          "key": "authorized_actions",
+          "type": "table",
+          "label": "Requested and authorized actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Claim, recovery, or mitigation action",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Affected goods, route, or event",
+              "units": 1.1
+            },
+            {
+              "key": "amount",
+              "label": "Amount, quantity, or value",
+              "units": 0.95
+            },
+            {
+              "key": "condition",
+              "label": "Evidence or settlement condition",
+              "units": 1.05
+            },
+            {
+              "key": "expiry",
+              "label": "Effective time or expiry",
+              "units": 0.85
+            },
+            {
+              "key": "initials",
+              "label": "Authority initials",
+              "units": 0.7
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "fields",
+          "label": "Authorization boundary",
+          "fields": [
+            {
+              "key": "primary_limit",
+              "label": "Maximum claim / settlement amount",
+              "units": 1.1
+            },
+            {
+              "key": "secondary_limit",
+              "label": "Affected quantity / value",
+              "units": 1.1
+            },
+            {
+              "key": "effective_time",
+              "label": "Effective date and time",
+              "units": 0.95
+            },
+            {
+              "key": "expiry_reference",
+              "label": "Claim / approval reference",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_conditions",
+      "title": "Authorization exception and restrictions",
+      "guidance": "Stop Freight Claim Intake at the stated boundary and obtain renewed consent for a material variance.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without renewed authorization",
+          "guidance": "Stop normal processing when claim identity, determinable amount, evidence preservation, notice, or authorized investigation remains unresolved. Protect claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation; record the Freight Claim Intake notification and obtain renewed authorization from claimant / settlement authority before continuing."
+        },
+        {
+          "key": "authorization_stops",
+          "type": "checklist",
+          "label": "Conditions requiring a hold or renewed authorization",
+          "items": [
+            "Claimant or shipment identity incomplete",
+            "Amount lacks traceable support",
+            "Evidence or goods not preserved",
+            "Intake treated as liability or payment decision"
+          ],
+          "guidance": "Identify the affected claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation scope, preserve the stated limit, and contact claimant / settlement authority before continuing."
+        },
+        {
+          "key": "authorization_variance_instructions",
+          "type": "fields",
+          "label": "Variance and contact instructions",
+          "fields": [
+            {
+              "key": "variance_instruction",
+              "label": "Variance instruction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contact decision maker before any variance",
+                "Proceed only within stated limits",
+                "Hold and request new authorization",
+                "No substitution or route change"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Decision-maker contact / method",
+              "units": 1.15
+            },
+            {
+              "key": "revocation_trigger",
+              "label": "Revocation or hold trigger",
+              "units": 1.0
+            },
+            {
+              "key": "variance_reference",
+              "label": "New-authorization reference",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "conditions_and_limits",
+          "type": "textarea",
+          "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_decision",
+      "title": "Transport authorization decision",
+      "guidance": "Record the Freight Claim Intake consent, final limit, effective time, confirmation, and signatures.",
+      "blocks": [
+        {
+          "key": "authorization_evidence",
+          "type": "checklist",
+          "label": "Evidence reviewed with the decision maker",
+          "items": [
+            "Bill, invoice, packing, and delivery documents",
+            "Damage and packaging images",
+            "Amount worksheet and mitigation receipts",
+            "Notice, inspection, and custody chronology"
+          ],
+          "guidance": "Attach or link proof for claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation; mark only Freight Claim Intake evidence present in that record."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Claim or recovery authorization outcome",
+          "fields": [
+            {
+              "key": "authorization_result",
+              "label": "Claim or recovery authorization",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Listed action authorized",
+                "Settlement or mitigation within limit",
+                "Additional evidence required",
+                "Held pending review",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_limit",
+              "label": "Authorized amount / recovery limit",
+              "units": 1.15
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation / PO / message reference",
+              "units": 1.05
+            },
+            {
+              "key": "verification_owner",
+              "label": "Verification / release owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Decision-maker consent and operator acknowledgment",
+          "fields": [
+            {
+              "key": "decision_maker_signature",
+              "label": "Authorizing authority: Claimant / settlement authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_maker_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "operator_signature",
+              "label": "Claims / operations representative",
+              "units": 1.15
+            },
+            {
+              "key": "operator_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

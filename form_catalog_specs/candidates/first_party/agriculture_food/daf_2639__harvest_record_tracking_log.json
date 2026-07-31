@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2639__harvest_record_tracking_log",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2639__harvest_record_tracking_log.pdf",
+  "slug": "harvest-record-tracking-log",
+  "title": "Harvest Record Tracking Log",
+  "subtitle": "Harvest Record: preserves changes and next triggers.",
+  "description": "Harvest Record Tracking Log covers crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff. The harvest operations owner records Harvest Record events, owners, exceptions, and next triggers. Harvest Record Tracking Log keeps Harvest Record exceptions visible until the harvest operations owner handoff.",
+  "use_case": "Use Harvest Record Tracking Log at field, block, harvest zone, loading point, and receiving or cooling location. Document crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff identity before Harvest Record begins. Compare crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff findings with stated Harvest Record criteria; route unresolved Harvest Record issues to farm production reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Harvest Record, identify responsible parties, field, block, harvest zone, loading point, and receiving or cooling location, and the linked crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Harvest Record identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Farm, field, block, crop, and variety",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Harvest date, crew, supervisor, and lot",
+              "units": 2.1666666666666665
+            },
+            {
+              "key": "identity_3",
+              "label": "Container, trailer, load, quantity, and destination",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status events and next-control history",
+      "guidance": "Capture Harvest Record facts for crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Harvest Record tracked controls",
+          "items": [
+            "Harvest start, stop, and weather",
+            "Crop maturity and visible condition",
+            "Crew, tool, container, and hygiene readiness",
+            "Quantity by container or load",
+            "Field lot and label assignment",
+            "Transport, cooling, receiving, rejection, and loss"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Keep the Harvest Record chronology intact through handoff. State the unresolved exception, the owner selected by Harvest Operations Owner, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Lot identity incomplete",
+            "Crop condition or contamination concern",
+            "Quantity or container count mismatch",
+            "Cooling or receiving handoff delayed",
+            "Field and lot assignment",
+            "Container or load count",
+            "Condition and exception photographs",
+            "Receiving, cooling, and quantity reconciliation"
+          ],
+          "guidance": "Pause Harvest Record when lot identity, crop condition, quantity, cooling, or receiving custody remains unresolved. Retain the available Harvest Record proof and route unresolved crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff scope to harvest operations owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Harvest Operations Owner",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Farm Production Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

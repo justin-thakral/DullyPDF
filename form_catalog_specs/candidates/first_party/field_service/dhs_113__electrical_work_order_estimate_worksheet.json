@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_113__electrical_work_order_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_113__electrical_work_order_estimate_worksheet.pdf",
+  "slug": "electrical-work-order-estimate-worksheet",
+  "title": "Electrical Work Order Estimate Worksheet",
+  "subtitle": "Residential Electrical Work: prices observed scope, options, and exclusions.",
+  "description": "Electrical Work Order Estimate Worksheet covers branch circuit, panel position, device, conductor, load, and affected area. The electrical service coordinator records Residential Electrical Work observed scope, costs, options, and terms. Electrical Work Order Estimate Worksheet keeps Residential Electrical Work exceptions visible until the electrical service coordinator handoff.",
+  "use_case": "Use Electrical Work Order Estimate Worksheet at residence, panel, circuit, room, device, and equipment connection. Document branch circuit, panel position, device, conductor, load, and affected area identity before Residential Electrical Work begins. Compare branch circuit, panel position, device, conductor, load, and affected area findings with stated Residential Electrical Work criteria; route unresolved Residential Electrical Work issues to qualified electrical reviewer. For Electrical Work Order Estimate Worksheet, confirm requirements for Residential Electrical Work. Ask qualified electrical reviewer to review Residential Electrical Work conditions beyond the electrical service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "estimate_context",
+      "title": "Property estimate review and customer identity",
+      "guidance": "Identify the customer, asset or property, estimator, and basis date before pricing the work.",
+      "blocks": [
+        {
+          "key": "estimate_header",
+          "type": "fields",
+          "label": "Estimate header",
+          "fields": [
+            {
+              "key": "estimate_number",
+              "label": "Electrical job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "estimate_date",
+              "label": "Estimate date",
+              "units": 0.65
+            },
+            {
+              "key": "valid_until",
+              "label": "Valid until",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Electrical customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Electrical address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "estimator",
+              "label": "Electrical Service Coordinator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Electrical Work identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Panel, circuit, device, and load identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Reported trip, outage, heat, damage, or performance history",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Electrical Work identifier printed on branch circuit, panel position, device, conductor, load, and affected area or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "estimate_scope",
+      "title": "Pricing options and customer decision inputs",
+      "guidance": "Price the observable work and options. Keep concealed conditions and unconfirmed quantities out of fixed scope.",
+      "blocks": [
+        {
+          "key": "scope_observations",
+          "type": "checklist",
+          "label": "Residential Electrical Work scope observations",
+          "items": [
+            "De-energization and absence-of-voltage control within scope",
+            "Panel, breaker, conductor, termination, and enclosure condition",
+            "Device, receptacle, switch, fixture, and grounding observation",
+            "Load, rating, labeling, and overcurrent-protection match",
+            "Heat, odor, arcing, moisture, and physical-damage signs",
+            "Post-work energization and functional test"
+          ],
+          "guidance": "Mark what was observed or supplied as estimate input; explain anything material that could not be inspected."
+        },
+        {
+          "key": "price_lines",
+          "type": "table",
+          "label": "Scope, quantities, options, and pricing",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Task, area, or option",
+              "units": 1.25
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity, size, or hours",
+              "units": 0.9
+            },
+            {
+              "key": "rate",
+              "label": "Rate or unit price",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Material or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "total",
+              "label": "Line total",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Included, option, or excluded",
+              "units": 0.95
+            }
+          ],
+          "rows": 9
+        },
+        {
+          "key": "estimate_totals",
+          "type": "fields",
+          "label": "Estimate totals",
+          "fields": [
+            {
+              "key": "subtotal",
+              "label": "Subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "taxes",
+              "label": "Taxes",
+              "units": 0.7
+            },
+            {
+              "key": "fees",
+              "label": "Fees or disposal",
+              "units": 0.8
+            },
+            {
+              "key": "allowances",
+              "label": "Allowances",
+              "units": 0.8
+            },
+            {
+              "key": "discounts",
+              "label": "Discount or credit",
+              "units": 0.8
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "estimate_terms",
+      "title": "Estimate exception and change conditions",
+      "guidance": "State what could change the price, timing, method, or scope before the customer or responsible party decides.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when energization, grounding, overcurrent, conductor, panel, or authorization concern remains. Protect branch circuit, panel position, device, conductor, load, and affected area; document the Residential Electrical Work notification and await qualified electrical reviewer direction."
+        },
+        {
+          "key": "estimate_uncertainty",
+          "type": "checklist",
+          "label": "Conditions that may require a revised estimate or specialist review",
+          "items": [
+            "Energized work not specifically controlled",
+            "Service or panel condition outside authorization",
+            "Heat, arcing, damaged conductor, or moisture concern",
+            "Required permit or qualified authority unavailable"
+          ],
+          "guidance": "For Residential Electrical Work, identify affected branch circuit, panel position, device, conductor, load, and affected area scope; ask electrical service coordinator to document the Residential Electrical Work immediate control before continuing."
+        },
+        {
+          "key": "assumptions_exclusions",
+          "type": "textarea",
+          "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "estimate_decision",
+      "title": "Estimate decision and selected service scope",
+      "guidance": "Record the selected option and spending limit. Approval of an estimate authorizes only the stated scope and terms.",
+      "blocks": [
+        {
+          "key": "estimate_support",
+          "type": "checklist",
+          "label": "Estimate support retained",
+          "items": [
+            "Panel and circuit identification",
+            "Authorized meter or test readings",
+            "Repair material and labeling record",
+            "Energization and functional-test evidence"
+          ],
+          "guidance": "Attach or link proof for branch circuit, panel position, device, conductor, load, and affected area; mark only Residential Electrical Work evidence present in that record."
+        },
+        {
+          "key": "estimate_status",
+          "type": "fields",
+          "label": "Decision and selected scope",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Estimate decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved",
+                "Approved with selected options",
+                "Revision requested",
+                "Declined",
+                "Expired"
+              ]
+            },
+            {
+              "key": "selected_scope",
+              "label": "Selected option, scope, or limit",
+              "units": 1.2
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "follow_up",
+              "label": "Scheduling or revision next step",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Residential Electrical Work selected scope, exclusions, and scheduling notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Residential Electrical Work selected scope, exclusions, and scheduling notes",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Explain the selected Residential Electrical Work option, retained exclusion, pricing assumption, and scheduling dependency."
+        },
+        {
+          "key": "estimate_signatures",
+          "type": "signatures",
+          "label": "Estimate preparation and decision",
+          "fields": [
+            {
+              "key": "estimator_signature",
+              "label": "Estimator",
+              "units": 1.1
+            },
+            {
+              "key": "estimator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer or authorized decision maker",
+              "units": 1.25
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

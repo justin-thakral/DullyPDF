@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2619__livestock_treatment_tracking_log",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2619__livestock_treatment_tracking_log.pdf",
+  "slug": "livestock-treatment-tracking-log",
+  "title": "Livestock Treatment Tracking Log",
+  "subtitle": "Livestock Treatment: preserves changes and next triggers.",
+  "description": "Livestock Treatment Tracking Log covers animal or group, condition, product, dose, route, withdrawal interval, response, and disposition. The livestock care record owner records Livestock Treatment events, owners, exceptions, and next triggers. Livestock Treatment Tracking Log keeps Livestock Treatment exceptions visible until the livestock care record owner handoff.",
+  "use_case": "Use Livestock Treatment Tracking Log at pen, pasture, barn, treatment area, and product storage location. Document animal or group, condition, product, dose, route, withdrawal interval, response, and disposition identity before Livestock Treatment begins. Compare animal or group, condition, product, dose, route, withdrawal interval, response, and disposition findings with stated Livestock Treatment criteria; route unresolved Livestock Treatment issues to veterinary or otherwise qualified treatment reviewer. For Livestock Treatment Tracking Log, confirm requirements for Livestock Treatment. Ask veterinary or otherwise qualified treatment reviewer to review Livestock Treatment conditions beyond the livestock care record owner's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For Livestock Treatment, identify responsible parties, pen, pasture, barn, treatment area, and product storage location, and the linked animal or group, condition, product, dose, route, withdrawal interval, response, and disposition source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Livestock Treatment identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Animal, group, tag, species, and production class",
+              "units": 2.6
+            },
+            {
+              "key": "identity_2",
+              "label": "Condition, observation, and treatment authorization",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Product, lot, expiration, and protocol reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status events and next-control history",
+      "guidance": "Capture Livestock Treatment facts for animal or group, condition, product, dose, route, withdrawal interval, response, and disposition; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Livestock Treatment tracked controls",
+          "items": [
+            "Baseline signs and condition",
+            "Dose calculation and administration route",
+            "Administrator and treatment time",
+            "Storage and product integrity",
+            "Response and adverse observation",
+            "Withdrawal, segregation, follow-up, and disposition"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Reconcile the latest Livestock Treatment event before closeout. Livestock Care Record Owner identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Animal identity uncertain",
+            "Dose or product authorization unclear",
+            "Adverse response or worsening condition",
+            "Withdrawal or disposition cannot be established",
+            "Animal and group identity record",
+            "Product label, lot, and inventory trace",
+            "Dose and administration record",
+            "Withdrawal, follow-up, and qualified review"
+          ],
+          "guidance": "Pause Livestock Treatment when animal identity, treatment authority, dose, adverse response, withdrawal, or qualified disposition remains unresolved. Retain the available Livestock Treatment proof and route unresolved animal or group, condition, product, dose, route, withdrawal interval, response, and disposition scope to livestock care record owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Livestock Care Record Owner",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Veterinary Or Otherwise Qualified Treatment Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

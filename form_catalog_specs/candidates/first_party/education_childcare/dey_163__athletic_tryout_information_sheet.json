@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_163__athletic_tryout_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_163__athletic_tryout_information_sheet.pdf",
+  "slug": "athletic-tryout-information-sheet",
+  "title": "Athletic Tryout Information Sheet",
+  "subtitle": "Capture team level, evaluation station, equipment, and exertion limit; confirm roster decision and coach handoff.",
+  "description": "Athletic Tryout records team level, evaluation station, equipment, exertion limit, roster decision, and coach handoff. Athletic Tryout evidence stays linked.",
+  "use_case": "Use this athletic tryout controlled information handoff when staff must document team level and evaluation station. Reconcile equipment, exertion limit, roster decision, and coach handoff before the athletic tryout handoff. Use the evaluation rubric, station score sheets, equipment issue record, activity restriction notice, coach roster, selection rationale, and result message. Ask the assigned athletic tryout reviewer to confirm team level against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Athletic Tryout audience details",
+      "guidance": "Capture the sport level, evaluation stations, issued equipment, exertion restriction, scorer evidence, roster decision, and coach communication.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Athletic Tryout people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_team",
+              "label": "Grade or team",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "team_level",
+              "label": "Team level",
+              "units": 1.1
+            },
+            {
+              "key": "evaluation_station",
+              "label": "Evaluation station",
+              "units": 1.2
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Athletic Tryout task details",
+          "fields": [
+            {
+              "key": "exertion_limit",
+              "label": "Exertion limit",
+              "units": 1.15
+            },
+            {
+              "key": "roster_decision",
+              "label": "Roster decision",
+              "units": 1.0
+            },
+            {
+              "key": "coach_handoff",
+              "label": "Coach handoff",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Athletic Tryout current instructions",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Athletic Tryout instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Athletic Tryout questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Athletic Tryout decision and update route",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Athletic Tryout effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Athletic Tryout update boundary",
+          "guidance": "Replace outdated athletic tryout instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

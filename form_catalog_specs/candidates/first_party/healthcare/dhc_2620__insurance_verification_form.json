@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2620__insurance_verification_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2620__insurance_verification_form.pdf",
+  "slug": "insurance-verification-form",
+  "title": "Insurance Verification Form",
+  "subtitle": "Capture coverage source, member reference, service date, and network status; confirm benefit response and patient notice.",
+  "description": "Insurance Verification records coverage source, member reference, service date, network status, benefit response, and patient notice. Insurance Verification evidence stays linked.",
+  "use_case": "Use this insurance verification operational record when staff must document coverage source and member reference. Reconcile service date, network status, benefit response, and patient notice before the insurance verification handoff. Use the payer response, portal screenshot or call reference, representative name, benefit summary, network response, authorization indicator, patient estimate route, and notice receipt. This administrative record centers payer eligibility, plan dates, network response, benefit limitation, deductible or cost-share source, authorization indicator, representative reference, and patient notice. Ask the assigned insurance verification reviewer to confirm coverage source against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Insurance Verification starting details",
+      "guidance": "Record payer and plan source, member reference, service date, network response, benefit limitation, authorization indicator, call reference, and patient notice.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Insurance Verification people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.1
+            },
+            {
+              "key": "coverage_source",
+              "label": "Coverage source",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Insurance Verification task details",
+          "fields": [
+            {
+              "key": "member_reference",
+              "label": "Member reference",
+              "units": 1.15
+            },
+            {
+              "key": "service_date",
+              "label": "Service date",
+              "units": 1.0
+            },
+            {
+              "key": "network_status",
+              "label": "Network status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "benefit_response",
+              "label": "Benefit response",
+              "units": 1.1
+            },
+            {
+              "key": "patient_notice",
+              "label": "Patient notice",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Insurance Verification activity",
+      "guidance": "Record each meaningful insurance verification event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Insurance Verification activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "coverage_source",
+              "label": "Coverage source",
+              "units": 1.1
+            },
+            {
+              "key": "service_date",
+              "label": "Service date",
+              "units": 1.25
+            },
+            {
+              "key": "benefit_response",
+              "label": "Benefit response",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Insurance Verification change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Insurance Verification exception review and completion",
+      "guidance": "Leave the current insurance verification result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Insurance Verification final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Insurance Verification completion receipt",
+          "fields": [
+            {
+              "key": "responsible_care_or_administrative_staff_and_date",
+              "label": "Responsible care or administrative staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded insurance verification task status."
+        }
+      ]
+    }
+  ]
+}

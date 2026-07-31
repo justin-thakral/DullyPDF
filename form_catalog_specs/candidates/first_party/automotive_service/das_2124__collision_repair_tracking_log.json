@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2124__collision_repair_tracking_log",
+  "source_section": "automotive_service",
+  "source_filename": "das_2124__collision_repair_tracking_log.pdf",
+  "slug": "collision-repair-tracking-log",
+  "title": "Collision Repair Tracking Log",
+  "subtitle": "Collision Repair: preserves changes and next triggers.",
+  "description": "Collision Repair Tracking Log covers damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need. The collision repair coordinator records Collision Repair events, owners, exceptions, and next triggers. Collision Repair Tracking Log keeps Collision Repair exceptions visible until the collision repair coordinator handoff.",
+  "use_case": "Use Collision Repair Tracking Log at intake area, body bay, frame or measurement area, refinish area, and delivery point. Document damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need identity before Collision Repair begins. Compare damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need findings with stated Collision Repair criteria; route unresolved Collision Repair issues to qualified collision and structural repair reviewer. For Collision Repair Tracking Log, confirm requirements for Collision Repair. Ask qualified collision and structural repair reviewer to review Collision Repair conditions beyond the collision repair coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For Collision Repair, identify responsible parties, intake area, body bay, frame or measurement area, refinish area, and delivery point, and the linked damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Collision Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Repair order, owner, insurer, and claim",
+              "units": 2.1666666666666665
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, and impact location",
+              "units": 2.2222222222222223
+            },
+            {
+              "key": "identity_3",
+              "label": "Estimate, supplement, part, procedure, and calibration references",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Tracking review and variance evidence",
+      "guidance": "Capture Collision Repair facts for damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Collision Repair tracked controls",
+          "items": [
+            "Visible and hidden-damage mapping",
+            "Body, structural, suspension, restraint, and glass concern",
+            "Measurement and repair-method basis",
+            "Part type, fit, corrosion protection, and refinish process",
+            "Scan, calibration, alignment, and system verification",
+            "Quality, appearance, function, and final safety review"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Reconcile the latest Collision Repair event before closeout. Collision Repair Coordinator identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Hidden damage changes approved scope",
+            "Structural or restraint procedure unavailable",
+            "Calibration or measurement fails",
+            "Vehicle released before safety-related verification",
+            "Intake and disassembly photographs",
+            "Measurement and repair-procedure record",
+            "Part, weld, refinish, and corrosion-protection trace",
+            "Scan, calibration, alignment, and final inspection evidence"
+          ],
+          "guidance": "Pause Collision Repair when structural, restraint, repair-method, calibration, alignment, or final safety verification remains unresolved. Retain the available Collision Repair proof and route unresolved damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need scope to collision repair coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Collision Repair Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Collision And Structural Repair Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

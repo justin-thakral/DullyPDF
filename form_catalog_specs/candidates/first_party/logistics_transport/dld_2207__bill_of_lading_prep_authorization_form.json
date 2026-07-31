@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2207__bill_of_lading_prep_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2207__bill_of_lading_prep_authorization_form.pdf",
+  "slug": "bill-of-lading-prep-authorization-form",
+  "title": "Bill of Lading Prep Authorization Form",
+  "subtitle": "Bill Of Lading Preparation: bounds the decision, conditions, and expiry.",
+  "description": "Bill of Lading Prep Authorization Form controls transport shipment, commodity lines, package count, weight, classification, and instructions by tying each Bill Of Lading Preparation custody, document, or movement decision to the shipper / document issuer, a stated boundary, and an expiry. The shipping documentation coordinator preserves conditions, exceptions, confirmation, and both sides of the handoff.",
+  "use_case": "Use Bill of Lading Prep Authorization Form at shipping office, origin dock, carrier handoff, and destination route. Check applicable Bill Of Lading Preparation requirements, list the affected quantity, value, document, route, or custody action, and state its limit. Record whether the shipper / document issuer approves, conditions, holds, or declines the request; obtain renewed consent before changing transport shipment, commodity lines, package count, weight, classification, and instructions scope.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "authorization_request",
+      "title": "Shipment and party details",
+      "guidance": "Identify the Bill Of Lading Preparation request, named decision maker, contact, effective time, and subject.",
+      "blocks": [
+        {
+          "key": "authorization_header",
+          "type": "fields",
+          "label": "Request and decision-maker details",
+          "fields": [
+            {
+              "key": "authorization_number",
+              "label": "BOL preparation record ID",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "requesting_party",
+              "label": "Shipment parties / order owner",
+              "units": 1.15
+            },
+            {
+              "key": "decision_maker",
+              "label": "Shipper / document issuer",
+              "units": 1.2
+            },
+            {
+              "key": "decision_contact",
+              "label": "Decision-maker contact",
+              "units": 1.05
+            },
+            {
+              "key": "requested_effective_time",
+              "label": "Requested effective time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Bill Of Lading Preparation identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Shipper, consignee, and billing references",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Load, order, booking, and carrier identifiers",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Commodity, package, weight, class, and special-instruction references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Bill Of Lading Preparation identifier printed on transport shipment, commodity lines, package count, weight, classification, and instructions or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Custody findings and authorization evidence",
+      "guidance": "List each Bill Of Lading Preparation action with its quantity, amount, route, custody, or time limit.",
+      "blocks": [
+        {
+          "key": "authorization_basis",
+          "type": "checklist",
+          "label": "Bill Of Lading Preparation authorization checks",
+          "items": [
+            "Party names and addresses",
+            "Commodity description and quantity",
+            "Weight and package reconciliation",
+            "Carrier, equipment, and routing data",
+            "Hazard or special-handling determination by qualified party",
+            "Document copies and tender timing"
+          ],
+          "guidance": "Confirm the Bill Of Lading Preparation facts supporting each listed action."
+        },
+        {
+          "key": "authorized_actions",
+          "type": "table",
+          "label": "Requested and authorized actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Issue, accept, correct, replace, or void",
+              "units": 1.25
+            },
+            {
+              "key": "subject",
+              "label": "Document, shipment, or party",
+              "units": 1.15
+            },
+            {
+              "key": "change",
+              "label": "Authorized correction or term",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Quantity, signature, or term limit",
+              "units": 1.0
+            },
+            {
+              "key": "expiry",
+              "label": "Effective time or expiry",
+              "units": 0.85
+            },
+            {
+              "key": "initials",
+              "label": "Authority initials",
+              "units": 0.7
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "fields",
+          "label": "Authorization boundary",
+          "fields": [
+            {
+              "key": "primary_limit",
+              "label": "Document / version limit",
+              "units": 1.1
+            },
+            {
+              "key": "secondary_limit",
+              "label": "Quantity / term limit",
+              "units": 1.1
+            },
+            {
+              "key": "effective_time",
+              "label": "Effective date and time",
+              "units": 0.95
+            },
+            {
+              "key": "expiry_reference",
+              "label": "Expiry / superseded record",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_conditions",
+      "title": "Authorization exception and retained limits",
+      "guidance": "Stop Bill Of Lading Preparation at the stated boundary and obtain renewed consent for a material variance.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without renewed authorization",
+          "guidance": "Stop normal processing when shipment identity, commodity, weight, instruction, or required qualified documentation review remains unresolved. Protect transport shipment, commodity lines, package count, weight, classification, and instructions; record the Bill Of Lading Preparation notification and obtain renewed authorization from shipper / document issuer before continuing."
+        },
+        {
+          "key": "authorization_stops",
+          "type": "checklist",
+          "label": "Conditions requiring a hold or renewed authorization",
+          "items": [
+            "Party or address inconsistency",
+            "Quantity or weight cannot be reconciled",
+            "Classification or special handling lacks qualified basis",
+            "Document issued with unapproved alteration"
+          ],
+          "guidance": "Identify the affected transport shipment, commodity lines, package count, weight, classification, and instructions scope, preserve the stated limit, and contact shipper / document issuer before continuing."
+        },
+        {
+          "key": "authorization_variance_instructions",
+          "type": "fields",
+          "label": "Variance and contact instructions",
+          "fields": [
+            {
+              "key": "variance_instruction",
+              "label": "Variance instruction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contact decision maker before any variance",
+                "Proceed only within stated limits",
+                "Hold and request new authorization",
+                "No substitution or route change"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Decision-maker contact / method",
+              "units": 1.15
+            },
+            {
+              "key": "revocation_trigger",
+              "label": "Revocation or hold trigger",
+              "units": 1.0
+            },
+            {
+              "key": "variance_reference",
+              "label": "New-authorization reference",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "conditions_and_limits",
+          "type": "textarea",
+          "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_decision",
+      "title": "Distribution authorization decision",
+      "guidance": "Record the Bill Of Lading Preparation consent, final limit, effective time, confirmation, and signatures.",
+      "blocks": [
+        {
+          "key": "authorization_evidence",
+          "type": "checklist",
+          "label": "Evidence reviewed with the decision maker",
+          "items": [
+            "Source order and packing record",
+            "Weight or scale evidence",
+            "Approved instruction and classification source",
+            "Issued-document and handoff trace"
+          ],
+          "guidance": "Attach or link proof for transport shipment, commodity lines, package count, weight, classification, and instructions; mark only Bill Of Lading Preparation evidence present in that record."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Document authorization outcome",
+          "fields": [
+            {
+              "key": "authorization_result",
+              "label": "Document authorization",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Issue or accept as listed",
+                "Issue or accept with listed corrections",
+                "Replace or void prior document",
+                "Hold pending correction",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_limit",
+              "label": "Authorized document / term limit",
+              "units": 1.15
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation / PO / message reference",
+              "units": 1.05
+            },
+            {
+              "key": "verification_owner",
+              "label": "Verification / release owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Decision-maker consent and operator acknowledgment",
+          "fields": [
+            {
+              "key": "decision_maker_signature",
+              "label": "Authorizing authority: Shipper / document issuer",
+              "units": 1.2
+            },
+            {
+              "key": "decision_maker_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "operator_signature",
+              "label": "Document preparer / carrier",
+              "units": 1.15
+            },
+            {
+              "key": "operator_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

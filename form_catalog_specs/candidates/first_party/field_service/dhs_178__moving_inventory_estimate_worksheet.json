@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_178__moving_inventory_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_178__moving_inventory_estimate_worksheet.pdf",
+  "slug": "moving-inventory-estimate-worksheet",
+  "title": "Moving Inventory Estimate Worksheet",
+  "subtitle": "Household Moving Inventory: prices observed scope, options, and exclusions.",
+  "description": "Moving Inventory Estimate Worksheet covers inventory item, carton, room, handling instruction, custody event, and destination placement. The move coordinator records Household Moving Inventory observed scope, costs, options, and terms. Moving Inventory Estimate Worksheet keeps Household Moving Inventory exceptions visible until the move coordinator handoff.",
+  "use_case": "Use Moving Inventory Estimate Worksheet at origin residence, vehicle, storage point, destination, and room placement. Document inventory item, carton, room, handling instruction, custody event, and destination placement identity before Household Moving Inventory begins. Compare inventory item, carton, room, handling instruction, custody event, and destination placement findings with stated Household Moving Inventory criteria; route unresolved Household Moving Inventory issues to moving operations reviewer. For Moving Inventory Estimate Worksheet, confirm requirements for Household Moving Inventory. Ask moving operations reviewer to review Household Moving Inventory conditions beyond the move coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Pricing evidence and service location",
+      "guidance": "For Household Moving Inventory, identify responsible parties, origin residence, vehicle, storage point, destination, and room placement, and the linked inventory item, carton, room, handling instruction, custody event, and destination placement source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Estimate ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Estimate date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Customer / party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Household Moving Inventory identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, move, and estimate number",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Origin, destination, dates, and access window",
+              "units": 2.5
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, carton, tag, room, and declared special-handling identity",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Pricing basis, allowances, and exclusions",
+      "guidance": "Capture Household Moving Inventory facts for inventory item, carton, room, handling instruction, custody event, and destination placement; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Estimate and option lines",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Task, item, or option",
+              "units": 1.15
+            },
+            {
+              "key": "basis",
+              "label": "Quantity or condition basis",
+              "units": 1.05
+            },
+            {
+              "key": "labor",
+              "label": "Labor or time",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Part, material, or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "amount",
+              "label": "Amount or option status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Household Moving Inventory estimate checks",
+          "items": [
+            "Item count, description, and origin room",
+            "Pre-move condition and existing damage",
+            "Fragile, high-value, disassembled, or restricted handling",
+            "Carton, seal, tag, load position, and custody transfer",
+            "Delivery count, placement, assembly, and condition",
+            "Shortage, damage, refusal, or unlocated item"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Pricing evidence and next customer action",
+      "guidance": "Resolve open Household Moving Inventory conditions; have move coordinator assign the next Household Moving Inventory owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Pricing assumptions, exclusions, and retained evidence",
+          "items": [
+            "Unlisted hazardous or prohibited item",
+            "Access or weight requires different equipment",
+            "Inventory count or custody gap",
+            "Damage or shortage requires preservation and escalation",
+            "Tagged inventory and carton record",
+            "Condition photographs for noted items",
+            "Load and custody checkpoint evidence",
+            "Delivery exception and customer reconciliation"
+          ],
+          "guidance": "Pause Household Moving Inventory when a prohibited-item, access, equipment, custody, shortage, or damage exception remains unassigned. Retain the available Household Moving Inventory proof and route unresolved inventory item, carton, room, handling instruction, custody event, and destination placement scope to move coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Estimate status and next customer action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Estimate review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for customer review",
+                "Accepted as written",
+                "Accepted with listed option",
+                "Revision required",
+                "Declined"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Estimator and customer review",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Move Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

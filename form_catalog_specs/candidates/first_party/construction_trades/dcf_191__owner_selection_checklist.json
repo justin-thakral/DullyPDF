@@ -1,0 +1,280 @@
+{
+  "catalog_id": "construction_trades/dcf_191__owner_selection_checklist",
+  "description": "For owner selection, this checklist records available options, performance criteria, finish attributes, lead time, cost delta, maintenance, and alternates. Its supporting evidence includes sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Selection opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Selection site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Selection contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Selection superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Selection due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this owner selection record to its evidence.",
+          "key": "record_routing",
+          "label": "Owner Selection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Selection category",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Rooms or systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Allowance",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Vendor",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities for this owner selection.",
+          "key": "core_identity",
+          "label": "Owner Selection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities for this owner selection record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Available options",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Performance criteria",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Finish attributes",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Lead time",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Cost delta",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For owner selection, record available options, performance criteria, finish attributes, lead time, cost delta, maintenance, and alternates.",
+          "key": "task_inputs",
+          "label": "Owner Selection Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the owner selection condition before marking.",
+          "items": [
+            "Verify available options",
+            "Verify performance criteria",
+            "Verify finish attributes",
+            "Verify lead time",
+            "Verify cost delta",
+            "Verify maintenance",
+            "Verify alternates"
+          ],
+          "key": "task_checks",
+          "label": "Owner Selection Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Selection checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Selection review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Selection qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Selection check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each owner selection result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Owner Selection Checkpoint Result",
+          "type": "fields"
+        }
+      ],
+      "guidance": "For owner selection, capture available options, performance criteria, finish attributes, lead time, cost delta, maintenance, and alternates.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Selection when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Selection measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Selection evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Selection result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For owner selection, record sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+          "key": "evidence_register",
+          "label": "Owner Selection Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Sample approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Product data",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Pricing",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Mockup photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Designer recommendation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every owner selection evidence source.",
+          "key": "evidence_sources",
+          "label": "Owner Selection Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked owner selection items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Owner Selection Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Owner Selection Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State owner selection limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Owner Selection Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support owner selection findings with sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+      "key": "observation_3",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "owner-selection-checklist",
+  "source_filename": "dcf_191__owner_selection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Owner Selection Checklist: owner finish or product selection control using selection category, available options, and sample approval.",
+  "title": "Owner Selection Checklist",
+  "use_case": "Use the checklist during owner finish or product selection control when the owner selection record must identify selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities. Complete the applicable handoff for signed selection, budget and schedule update, procurement release, substitution rule, and field distribution."
+}

@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1468__device_checkout_request_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1468__device_checkout_request_form.pdf",
+  "slug": "device-checkout-request-form",
+  "title": "Device Checkout Request Form",
+  "subtitle": "Capture asset tag, charger, protective case, and software access; confirm existing damage and return condition.",
+  "description": "Device Checkout records asset tag, charger, protective case, software access, existing damage, and return condition. Device Checkout evidence stays linked.",
+  "use_case": "Use this device checkout request intake when staff must document asset tag and charger. Reconcile protective case, software access, existing damage, and return condition before the device checkout handoff. Use the inventory record, barcode or serial scan, accessory count, condition images, acceptable-use receipt, repair ticket, return scan, and damage disposition. Ask the assigned device checkout reviewer to confirm asset tag against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Device Checkout contact and reference",
+      "guidance": "Match asset tag and serial number to charger and case; photograph existing damage, record software access, custody transfer, repair route, and return condition.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Device Checkout people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "asset_tag",
+              "label": "Asset tag",
+              "units": 1.2
+            },
+            {
+              "key": "charger",
+              "label": "Charger",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Device Checkout task details",
+          "fields": [
+            {
+              "key": "protective_case",
+              "label": "Protective case",
+              "units": 1.15
+            },
+            {
+              "key": "software_access",
+              "label": "Software access",
+              "units": 1.0
+            },
+            {
+              "key": "existing_damage",
+              "label": "Existing damage",
+              "units": 1.25
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Device Checkout request scope review",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Device Checkout requested items",
+          "columns": [
+            {
+              "key": "requested_asset_tag",
+              "label": "Requested asset tag",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_charger",
+              "label": "Need or charger",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_software_access",
+              "label": "Constraint or software access",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Device Checkout request checks",
+          "items": [
+            "Asset tag is identified for this record",
+            "Charger matches the current request or source",
+            "Protective case is ready for point-of-use staff",
+            "Software access limits or questions are resolved",
+            "Existing damage is communicated to the responsible person",
+            "Return condition is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Device Checkout exception review and response",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Device Checkout request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Device Checkout request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,379 @@
+{
+  "catalog_id": "home_services/dhs_2649__home_security_install_completion_sign_off_form",
+  "description": "For home security install, this completion sign-off form records device placement, privacy preferences, power and connectivity, communication path, permits, testing, and user training. Its supporting evidence includes device serials, zone map, signal tests, camera views, network results, alarm events, and monitoring confirmation.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Install opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Install site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Install contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Install account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Install due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this home security install record to its evidence.",
+          "key": "record_routing",
+          "label": "Home Security Install Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Premises",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Panel",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Sensors",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Cameras",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture account, premises, zones, panel, sensors, cameras, network, monitoring plan, users, and emergency contacts for this home security install.",
+          "key": "core_identity",
+          "label": "Home Security Install Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify account, premises, zones, panel, sensors, cameras, network, monitoring plan, users, and emergency contacts for this home security install record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Install when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Install measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Install evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Install result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For home security install, record device serials, zone map, signal tests, camera views, network results, alarm events, and monitoring confirmation.",
+          "key": "evidence_register",
+          "label": "Home Security Install Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Device serials",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Zone map",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Signal tests",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Camera views",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Network results",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Alarm events",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every home security install evidence source.",
+          "key": "evidence_sources",
+          "label": "Home Security Install Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary home security install evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Home Security Install Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not activate with unapproved surveillance areas, failed life-safety devices, exposed wiring, or incomplete monitoring data. Route unresolved home security install work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Home Security Install Applicable Review Boundary",
+          "type": "notice"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select completion sign-off form disposition",
+                "Accept complete",
+                "Accept with exceptions",
+                "Correction required",
+                "Reject completion"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Install decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Install service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Install authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Install review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate home security install disposition.",
+          "key": "disposition",
+          "label": "Home Security Install Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Security Install Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the home security install decision to evidence.",
+          "height": 46,
+          "key": "decision_basis",
+          "label": "Home Security Install Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Install open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Install owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Install acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer home security install items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Home Security Install Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Install crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Install service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Home Security Install Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Compare home security install findings with home security install open items and decide the home security install customer handoff.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding and Acceptance Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Install completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Zone verification",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Monitoring activation",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "User credential handoff",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Training acknowledgment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the home security install outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Home Security Install Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Security Install Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For home security install, document zone verification, monitoring activation, user credential handoff, training acknowledgment, privacy settings, and support plan; identify each home security install reservation and home security install follow-up trigger, then record the home security install instruction recipient.",
+          "height": 40,
+          "key": "acceptance_reservations",
+          "label": "Home Security Install Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Install technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Install customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Home Security Install Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the home security install record with zone verification, monitoring activation, user credential handoff, training acknowledgment, privacy settings, and support plan.",
+      "key": "closeout_4",
+      "title": "Next-Service Handoff"
+    }
+  ],
+  "slug": "home-security-install-completion-sign-off-form",
+  "source_filename": "dhs_2649__home_security_install_completion_sign_off_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Home Security Install Completion Sign-Off Form: home security system installation and activation using account, device placement, and device serials.",
+  "title": "Home Security Install Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during home security system installation and activation when the home security install record must identify account, premises, zones, panel, sensors, cameras, network, monitoring plan, users, and emergency contacts. Complete the applicable handoff for zone verification, monitoring activation, user credential handoff, training acknowledgment, privacy settings, and support plan."
+}

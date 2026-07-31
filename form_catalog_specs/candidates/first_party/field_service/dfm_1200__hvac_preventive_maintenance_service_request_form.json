@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1200__hvac_preventive_maintenance_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1200__hvac_preventive_maintenance_service_request_form.pdf",
+  "slug": "hvac-preventive-maintenance-service-request-form",
+  "title": "HVAC Preventive Maintenance Service Request Form",
+  "subtitle": "Facility HVAC Preventive Maintenance: defines need, constraints, and assignment.",
+  "description": "HVAC Preventive Maintenance Service Request Form covers air handler, condenser, controls, distribution, and served zone. The facility maintenance coordinator records Facility HVAC Preventive Maintenance need, timing, access, and assignment. HVAC Preventive Maintenance Service Request Form keeps Facility HVAC Preventive Maintenance exceptions visible until the facility maintenance coordinator handoff.",
+  "use_case": "Use HVAC Preventive Maintenance Service Request Form at equipment room, roof, mechanical area, and occupied zone. Document air handler, condenser, controls, distribution, and served zone identity before Facility HVAC Preventive Maintenance begins. Compare air handler, condenser, controls, distribution, and served zone findings with stated Facility HVAC Preventive Maintenance criteria; route unresolved Facility HVAC Preventive Maintenance issues to qualified HVAC service supervisor. For HVAC Preventive Maintenance Service Request Form, confirm requirements for Facility HVAC Preventive Maintenance. Ask qualified HVAC service supervisor to review Facility HVAC Preventive Maintenance conditions beyond the facility maintenance coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requested-service contact and source record",
+      "guidance": "For Facility HVAC Preventive Maintenance, identify responsible parties, equipment room, roof, mechanical area, and occupied zone, and the linked air handler, condenser, controls, distribution, and served zone source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Facility HVAC Preventive Maintenance identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility and work-order number",
+              "units": 1.6666666666666667
+            },
+            {
+              "key": "identity_2",
+              "label": "Equipment tag, model, serial, and served area",
+              "units": 2.5
+            },
+            {
+              "key": "identity_3",
+              "label": "Maintenance interval and manufacturer plan",
+              "units": 2.3333333333333335
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested scope and practical constraints",
+      "guidance": "Capture Facility HVAC Preventive Maintenance facts for air handler, condenser, controls, distribution, and served zone; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Facility HVAC Preventive Maintenance intake confirmations",
+          "items": [
+            "Requested or already documented: filter condition and differential indication",
+            "Requested or already documented: belt, bearing, fan, and motor condition",
+            "Requested or already documented: supply and return temperature or airflow result",
+            "Requested or already documented: coil, drain pan, trap, and condensate condition",
+            "Requested or already documented: refrigerant-circuit visual condition and leak concern",
+            "Requested or already documented: thermostat, sensor, alarm, and sequence response"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Facility HVAC Preventive Maintenance request questions; have facility maintenance coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Unsafe electrical or rotating exposure",
+            "Refrigerant or combustion concern outside authorization",
+            "Blocked drainage or active water damage",
+            "Required capacity, alarm, or sequence not restored",
+            "Prior or requester-supplied: nameplate and asset-tag photograph",
+            "Prior or requester-supplied: before-and-after readings tied to instruments",
+            "Prior or requester-supplied: replaced-part and consumable record",
+            "Prior or requester-supplied: operating-test result by served zone"
+          ],
+          "guidance": "Do not assign or authorize the Facility HVAC Preventive Maintenance request when energy isolation, refrigerant concern, combustion concern, or failed operating safeguard remains unresolved. Retain information supplied with the request and route unresolved constraints to facility maintenance coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Facility Maintenance Coordinator",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

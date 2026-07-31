@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1260__copier_service_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1260__copier_service_service_request_form.pdf",
+  "slug": "copier-service-service-request-form",
+  "title": "Copier Service Request Form",
+  "subtitle": "Copier And Multifunction-Device Service: defines need, constraints, and assignment.",
+  "description": "Copier Service Request Form covers copier, feeder, print engine, finishing unit, network interface, and supply system. The office equipment coordinator records Copier And Multifunction-Device Service need, timing, access, and assignment. Copier Service Request Form keeps Copier And Multifunction-Device Service exceptions visible until the office equipment coordinator handoff.",
+  "use_case": "Use Copier Service Request Form at device location, supply area, network point, and affected workgroup. Document copier, feeder, print engine, finishing unit, network interface, and supply system identity before Copier And Multifunction-Device Service begins. Compare copier, feeder, print engine, finishing unit, network interface, and supply system findings with stated Copier And Multifunction-Device Service criteria; route unresolved Copier And Multifunction-Device Service issues to qualified office-equipment service reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requester, location, and subject details",
+      "guidance": "For Copier And Multifunction-Device Service, identify responsible parties, device location, supply area, network point, and affected workgroup, and the linked copier, feeder, print engine, finishing unit, network interface, and supply system source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Copier And Multifunction-Device Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Service ticket and site",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "Asset tag, make, model, serial, and meter count",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Fault code, tray, paper, media, and finishing configuration",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Intake checks and assignment readiness",
+      "guidance": "Capture Copier And Multifunction-Device Service facts for copier, feeder, print engine, finishing unit, network interface, and supply system; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Copier And Multifunction-Device Service intake confirmations",
+          "items": [
+            "Requested or already documented: print, copy, scan, feed, duplex, and finish result",
+            "Requested or already documented: jam location, roller, feeder, tray, and paper-path condition",
+            "Requested or already documented: image quality, registration, density, and defect pattern",
+            "Requested or already documented: supply, waste container, and consumable status",
+            "Requested or already documented: network, address-book, authentication, and scan destination behavior",
+            "Requested or already documented: safety label, cover, interlock, power, and heat-area condition"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Copier And Multifunction-Device Service request questions; have office equipment coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Credential or address-book privacy concern",
+            "Heat, odor, smoke, electrical, or damaged-cord concern",
+            "Firmware or network change lacks authorization",
+            "Required function cannot be restored or isolated",
+            "Prior or requester-supplied: meter and fault-history record",
+            "Prior or requester-supplied: sample output showing before-and-after result",
+            "Prior or requester-supplied: part, firmware, and configuration record",
+            "Prior or requester-supplied: user acceptance for required functions"
+          ],
+          "guidance": "Do not assign or authorize the Copier And Multifunction-Device Service request when an electrical, heat, privacy, authorization, or failed-function concern remains. Retain information supplied with the request and route unresolved constraints to office equipment coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Office Equipment Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

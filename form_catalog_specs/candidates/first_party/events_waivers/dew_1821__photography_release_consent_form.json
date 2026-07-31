@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1821__photography_release_consent_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1821__photography_release_consent_form.pdf",
+  "slug": "photography-release-consent-form",
+  "title": "Photography Release Consent Form",
+  "subtitle": "Capture image or audio, capture setting, name use, and publication channel; confirm duration and withdrawal.",
+  "description": "Photography Release records image or audio, capture setting, name use, publication channel, duration, and withdrawal. Photography Release evidence stays linked.",
+  "use_case": "Use this photography release scoped consent when staff must document image or audio and capture setting. Reconcile name use, publication channel, duration, and withdrawal before the photography release handoff. Use the production brief, capture list, subject match, permitted-use matrix, channel inventory, editing and attribution instruction, publication record, and withdrawal log. Ask the assigned photography release reviewer to confirm image or audio against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Photography Release participant details",
+      "guidance": "Itemize image, video, audio, name and quotation use; bound capture setting, publication channel, audience, editing, duration, storage, and withdrawal. Record the photography release decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Photography Release people and reference",
+          "fields": [
+            {
+              "key": "person_shown_or_recorded",
+              "label": "Person shown or recorded",
+              "units": 1.15
+            },
+            {
+              "key": "person_contact",
+              "label": "Person contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.1
+            },
+            {
+              "key": "contact_for_release_questions",
+              "label": "Contact for release questions",
+              "units": 1.2
+            },
+            {
+              "key": "guardian_name_and_authority",
+              "label": "Guardian name and authority",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Photography Release task details",
+          "fields": [
+            {
+              "key": "image_or_audio",
+              "label": "Image or audio",
+              "units": 1.15
+            },
+            {
+              "key": "capture_setting",
+              "label": "Capture setting",
+              "units": 1.0
+            },
+            {
+              "key": "name_use",
+              "label": "Name use",
+              "units": 1.25
+            },
+            {
+              "key": "publication_channel",
+              "label": "Publication channel",
+              "units": 1.1
+            },
+            {
+              "key": "duration",
+              "label": "Duration",
+              "units": 1.2
+            },
+            {
+              "key": "withdrawal",
+              "label": "Withdrawal",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_choices",
+      "title": "Photography Release decision and voluntary choices",
+      "guidance": "Present each choice independently; do not preselect an answer.",
+      "blocks": [
+        {
+          "key": "itemized_consent",
+          "type": "fields",
+          "label": "Photography Release itemized consent",
+          "fields": [
+            {
+              "key": "image_or_audio",
+              "label": "Image or audio",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "capture_setting",
+              "label": "Capture setting",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "name_use",
+              "label": "Name use",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "publication_channel",
+              "label": "Publication channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "duration",
+              "label": "Duration",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "withdrawal",
+              "label": "Withdrawal",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consent_checks",
+          "type": "checklist",
+          "label": "Photography Release informed-choice checks",
+          "items": [
+            "Purpose and practical conditions are explained",
+            "Questions and access needs are addressed",
+            "Declining one choice does not decide another",
+            "Withdrawal route and practical limits are explained"
+          ]
+        },
+        {
+          "key": "consent_conditions",
+          "type": "fields",
+          "label": "Photography Release conditions and withdrawal",
+          "fields": [
+            {
+              "key": "choice_explained_by",
+              "label": "Choice explained by",
+              "units": 1.15
+            },
+            {
+              "key": "question_or_accessibility_need",
+              "label": "Question or accessibility need",
+              "units": 1.0
+            },
+            {
+              "key": "special_condition_or_exclusion",
+              "label": "Special condition or exclusion",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal_contact",
+              "label": "Withdrawal contact",
+              "units": 1.1
+            },
+            {
+              "key": "consent_copy_provided_date",
+              "label": "Consent copy provided date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_signoff",
+      "title": "Photography Release contact and reference",
+      "guidance": "Record the voluntary decision and responsible staff recipient.",
+      "blocks": [
+        {
+          "key": "consent_note",
+          "type": "textarea",
+          "label": "Photography Release question or limit",
+          "fields": [
+            {
+              "key": "question_explanation_declined_scope_or_participation_limit",
+              "label": "Question, explanation, declined scope, or participation limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "consent_signatures",
+          "type": "signatures",
+          "label": "Photography Release signatures",
+          "fields": [
+            {
+              "key": "person_giving_consent_and_date",
+              "label": "Person giving consent and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The signature applies only to choices recorded above."
+        }
+      ]
+    }
+  ]
+}

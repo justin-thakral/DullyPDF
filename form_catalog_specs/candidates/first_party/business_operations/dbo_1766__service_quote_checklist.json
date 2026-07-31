@@ -1,0 +1,306 @@
+{
+  "catalog_id": "business_operations/dbo_1766__service_quote_checklist",
+  "description": "For service quote, this checklist records deliverables, exclusions, responsibilities, service levels, implementation, recurring fees, pass-through costs, and options. Its supporting evidence includes discovery notes, cost model, rate card, supplier inputs, exception approvals, scope attachment, and version comparison.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Quote opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Quote site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Quote contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Quote process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Quote due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this service quote record to its evidence.",
+          "key": "record_routing",
+          "label": "Service Quote Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Prospect",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Service package",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Locations",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Volumes",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Delivery window",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Assumptions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture prospect, service package, locations, volumes, delivery window, assumptions, pricing inputs, and quote validity for this service quote.",
+          "key": "core_identity",
+          "label": "Service Quote Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify prospect, service package, locations, volumes, delivery window, assumptions, pricing inputs, and quote validity for this service quote record.",
+      "key": "identity_1",
+      "title": "Process Checkpoint and Owner"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Deliverables",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Responsibilities",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Service levels",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Implementation",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Recurring fees",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For service quote, record deliverables, exclusions, responsibilities, service levels, implementation, recurring fees, pass-through costs, and options.",
+          "key": "task_inputs",
+          "label": "Service Quote Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the service quote condition before marking.",
+          "items": [
+            "Verify deliverables",
+            "Verify exclusions",
+            "Verify responsibilities",
+            "Verify service levels",
+            "Verify implementation",
+            "Verify recurring fees",
+            "Verify pass-through costs"
+          ],
+          "key": "task_checks",
+          "label": "Service Quote Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Quote checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Quote review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Quote qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Quote check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each service quote result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Service Quote Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Hold quotes with unsupported margin, unapproved terms, privacy or security commitments, or delivery promises beyond capacity. Route unresolved service quote work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Service Quote Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For service quote, capture deliverables, exclusions, responsibilities, service levels, implementation, recurring fees, pass-through costs, and options.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Quote when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Quote measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Quote evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Quote result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For service quote, record discovery notes, cost model, rate card, supplier inputs, exception approvals, scope attachment, and version comparison.",
+          "key": "evidence_register",
+          "label": "Service Quote Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Discovery notes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Cost model",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Rate card",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Supplier inputs",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Exception approvals",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Scope attachment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every service quote evidence source.",
+          "key": "evidence_sources",
+          "label": "Service Quote Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked service quote items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Service Quote Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Service Quote Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State service quote limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Service Quote Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support service quote findings with discovery notes, cost model, rate card, supplier inputs, exception approvals, scope attachment, and version comparison.",
+      "key": "observation_3",
+      "title": "Checklist Finding Record"
+    }
+  ],
+  "slug": "service-quote-checklist",
+  "source_filename": "dbo_1766__service_quote_checklist.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Service Quote Checklist: business service quote development and approval using prospect, deliverables, and discovery notes.",
+  "title": "Service Quote Checklist",
+  "use_case": "Use the checklist during business service quote development and approval when the service quote record must identify prospect, service package, locations, volumes, delivery window, assumptions, pricing inputs, and quote validity. Complete the applicable handoff for approved quote version, customer delivery, acceptance status, expiry follow-up, CRM update, and contract handoff."
+}

@@ -1,0 +1,353 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2142__warranty_claim_authorization_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2142__warranty_claim_authorization_form.pdf",
+  "slug": "warranty-claim-authorization-form",
+  "title": "Warranty Claim Authorization Form",
+  "subtitle": "Automotive Warranty Claim: bounds the decision, conditions, and expiry.",
+  "description": "Warranty Claim Authorization Form turns vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file into a customer-facing Automotive Warranty Claim consent record. The warranty claim coordinator itemizes diagnostics or services, labor, parts or materials, fees, tax, estimated total, maximum cap, and the customer / warranty payer's signed decision. Work not listed or priced remains on hold.",
+  "use_case": "Use Warranty Claim Authorization Form at service facility, diagnostic bay, records system, and retained-parts area. Verify applicable Automotive Warranty Claim requirements; distinguish diagnostic or inspection authority from listed work, price each operation, and record the customer / warranty payer's exact approval, conditions, or decline. Follow the selected contact-before-additional-work instruction whenever vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file scope or cost changes.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "authorization_request",
+      "title": "Vehicle, customer, and authorization identity",
+      "guidance": "Identify the Automotive Warranty Claim customer or payer, contact method, vehicle, and service advisor.",
+      "blocks": [
+        {
+          "key": "authorization_header",
+          "type": "fields",
+          "label": "Customer and authorization details",
+          "fields": [
+            {
+              "key": "authorization_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "authorizing_party",
+              "label": "Customer / warranty payer",
+              "units": 1.15
+            },
+            {
+              "key": "authorizing_contact",
+              "label": "Authorizing contact / phone",
+              "units": 1.1
+            },
+            {
+              "key": "service_advisor",
+              "label": "Service advisor / coordinator",
+              "units": 1.05
+            },
+            {
+              "key": "contact_preference",
+              "label": "Preferred contact method",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Phone call",
+                "Text message",
+                "Email",
+                "Fleet or payer portal"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Automotive Warranty Claim identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Claim, repair order, customer, and contract",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, mileage, in-service date, and coverage reference",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Component, part, serial, prior repair, and failure code",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Automotive Warranty Claim identifier printed on vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Repair findings and authorization evidence",
+      "guidance": "Price each Automotive Warranty Claim operation and keep unlisted work outside this authorization.",
+      "blocks": [
+        {
+          "key": "authorization_basis",
+          "type": "checklist",
+          "label": "Automotive Warranty Claim decision checks",
+          "items": [
+            "Reported symptom and failure chronology",
+            "Coverage term and eligibility facts",
+            "Diagnostic result and causal basis",
+            "Maintenance, modification, misuse, and prior-repair evidence",
+            "Repair estimate, part disposition, and authorization",
+            "Approval, denial, additional-information, and appeal route"
+          ],
+          "guidance": "Confirm the Automotive Warranty Claim findings supporting each listed operation."
+        },
+        {
+          "key": "authorized_actions",
+          "type": "table",
+          "label": "Requested diagnostics, services, and repairs",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Diagnostic or proposed repair operation",
+              "units": 1.35
+            },
+            {
+              "key": "detail",
+              "label": "Part, material, or service detail",
+              "units": 1.15
+            },
+            {
+              "key": "labor",
+              "label": "Labor",
+              "units": 0.65
+            },
+            {
+              "key": "parts",
+              "label": "Parts / materials",
+              "units": 0.75
+            },
+            {
+              "key": "fees",
+              "label": "Fees / tax",
+              "units": 0.7
+            },
+            {
+              "key": "line_total",
+              "label": "Line estimate",
+              "units": 0.8
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "authorization_totals",
+          "type": "fields",
+          "label": "Estimate and authorization totals",
+          "fields": [
+            {
+              "key": "labor_total",
+              "label": "Labor subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "parts_total",
+              "label": "Parts / materials",
+              "units": 0.85
+            },
+            {
+              "key": "fees_total",
+              "label": "Fees / sublet",
+              "units": 0.75
+            },
+            {
+              "key": "tax_total",
+              "label": "Tax",
+              "units": 0.65
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.85
+            },
+            {
+              "key": "maximum_amount",
+              "label": "Maximum authorized amount",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_conditions",
+      "title": "Authorization exception and limits",
+      "guidance": "Stop Automotive Warranty Claim work at the stated cap or when scope changes require customer or payer contact.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without renewed authorization",
+          "guidance": "Stop normal processing when eligibility, diagnosis, evidence, part retention, repair authority, or coverage decision remains unresolved. Protect vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file; record the Automotive Warranty Claim notification and obtain renewed authorization from customer / warranty payer before continuing."
+        },
+        {
+          "key": "authorization_stops",
+          "type": "checklist",
+          "label": "Conditions requiring a hold or renewed customer authorization",
+          "items": [
+            "Identity or eligibility incomplete",
+            "Failure cause unsupported",
+            "Required evidence or retained part missing",
+            "Repair begins before coverage authorization"
+          ],
+          "guidance": "Identify the affected vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file scope, preserve the stated limit, and contact customer / warranty payer before continuing."
+        },
+        {
+          "key": "additional_work_instructions",
+          "type": "fields",
+          "label": "Additional-work instructions",
+          "fields": [
+            {
+              "key": "additional_work",
+              "label": "Additional-work instruction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contact me before any additional work",
+                "Proceed only within the maximum cap",
+                "No additional work authorized",
+                "Fleet, insurer, or payer approval required"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Contact method / number",
+              "units": 1.05
+            },
+            {
+              "key": "parts_disposition",
+              "label": "Replaced-parts disposition",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Return available replaced parts",
+                "Dispose or recycle as permitted",
+                "Retain for warranty or payer",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "authorization_expiry",
+              "label": "Authorization expiry",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "conditions_and_limits",
+          "type": "textarea",
+          "label": "Customer conditions, exclusions, declined work, and revocation instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer conditions, exclusions, declined work, and revocation instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_decision",
+      "title": "Customer authorization decision",
+      "guidance": "Record the exact Automotive Warranty Claim consent, amount cap, confirmation, and customer or payer signature.",
+      "blocks": [
+        {
+          "key": "authorization_evidence",
+          "type": "checklist",
+          "label": "Estimate and findings reviewed with the customer",
+          "items": [
+            "Contract and eligibility record",
+            "Diagnostic and failure evidence",
+            "Maintenance and repair history",
+            "Authorized coverage decision and communication"
+          ],
+          "guidance": "Attach or link proof for vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file; mark only Automotive Warranty Claim evidence present in that record."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Customer authorization outcome",
+          "fields": [
+            {
+              "key": "authorization_scope",
+              "label": "Automotive Warranty Claim authorization",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Diagnostics only up to stated cap",
+                "Listed services and parts",
+                "Diagnostics and listed services",
+                "Estimate or inspection only; no work",
+                "Declined"
+              ]
+            },
+            {
+              "key": "acknowledged_total",
+              "label": "Estimated total acknowledged",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_cap",
+              "label": "Maximum authorized amount",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation / PO / payer reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Customer or payer consent and service acknowledgment",
+          "fields": [
+            {
+              "key": "customer_signature",
+              "label": "Customer / warranty payer",
+              "units": 1.2
+            },
+            {
+              "key": "customer_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "advisor_signature",
+              "label": "Service advisor / witness",
+              "units": 1.05
+            },
+            {
+              "key": "advisor_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

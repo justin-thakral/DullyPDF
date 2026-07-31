@@ -1,0 +1,283 @@
+{
+  "catalog_id": "construction_trades/dcf_110__jobsite_safety_request_form",
+  "description": "For jobsite safety, this request form records task hazards, competent-person controls, PPE, access protection, emergency contacts, and weather limits. Its supporting evidence includes pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Safety opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Safety site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Safety contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Safety superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Safety due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this jobsite safety record to its evidence.",
+          "key": "record_routing",
+          "label": "Jobsite Safety Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Work zone",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Crew",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Task sequence",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Tools",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Mobile equipment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces for this jobsite safety.",
+          "key": "core_identity",
+          "label": "Jobsite Safety Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces for this jobsite safety record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Task hazards",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Competent-person controls",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "PPE",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Access protection",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For jobsite safety, record task hazards, competent-person controls, PPE, access protection, emergency contacts, and weather limits.",
+          "key": "task_inputs",
+          "label": "Jobsite Safety Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Jobsite Safety Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State jobsite safety outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Jobsite Safety Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Safety work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Safety owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate jobsite safety items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Jobsite Safety Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Stop work for uncontrolled energy, fall exposure, excavation instability, missing protection, or imminent danger. Route unresolved jobsite safety work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Jobsite Safety Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For jobsite safety, capture task hazards, competent-person controls, PPE, access protection, emergency contacts, and weather limits.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Safety decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Safety approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Safety schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate jobsite safety disposition.",
+          "key": "disposition",
+          "label": "Jobsite Safety Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Jobsite Safety Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the jobsite safety decision to evidence.",
+          "height": 112,
+          "key": "decision_basis",
+          "label": "Jobsite Safety Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Competent-person release",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Corrective-action closure",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Crew acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Next-review trigger",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For jobsite safety, record competent-person release, corrective-action closure, crew acknowledgment, and next-review trigger.",
+          "key": "request_handoff",
+          "label": "Jobsite Safety Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Safety requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Safety coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Jobsite Safety Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the jobsite safety next step from pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+      "key": "decision_3",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "jobsite-safety-request-form",
+  "source_filename": "dcf_110__jobsite_safety_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Jobsite Safety Request Form: jobsite hazard assessment and control verification using work zone, task hazards, and pre-task briefing record.",
+  "title": "Jobsite Safety Request Form",
+  "use_case": "Use the request form during jobsite hazard assessment and control verification when the jobsite safety record must identify work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces. Complete the applicable handoff for competent-person release, corrective-action closure, crew acknowledgment, and next-review trigger."
+}

@@ -1,0 +1,363 @@
+{
+  "catalog_id": "home_services/dhs_2639__window_cleaning_completion_sign_off_form",
+  "description": "For window cleaning, this completion sign-off form records scheduled interior and exterior work, recurring exclusions, stain treatment, ladder limits, crew, and approved add-ons. Its supporting evidence includes pane completion counts, condition changes, screen tracking, weather, access exceptions, photos, and quality recheck.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Cleaning opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Cleaning site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Cleaning contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Cleaning account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Cleaning due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this window cleaning record to its evidence.",
+          "key": "record_routing",
+          "label": "Window Cleaning Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Property account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Pane inventory",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Service cycle",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Access methods",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Known defects",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture property account, pane inventory, service cycle, access methods, known defects, screen locations, and customer preferences for this window cleaning.",
+          "key": "core_identity",
+          "label": "Window Cleaning Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify property account, pane inventory, service cycle, access methods, known defects, screen locations, and customer preferences for this window cleaning record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Cleaning when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Cleaning measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Cleaning evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Cleaning result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For window cleaning, record pane completion counts, condition changes, screen tracking, weather, access exceptions, photos, and quality recheck.",
+          "key": "evidence_register",
+          "label": "Window Cleaning Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Pane completion counts",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Condition changes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Screen tracking",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Weather",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Access exceptions",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every window cleaning evidence source.",
+          "key": "evidence_sources",
+          "label": "Window Cleaning Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary window cleaning evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Window Cleaning Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select completion sign-off form disposition",
+                "Accept complete",
+                "Accept with exceptions",
+                "Correction required",
+                "Reject completion"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Cleaning decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Cleaning service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Cleaning authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Cleaning review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate window cleaning disposition.",
+          "key": "disposition",
+          "label": "Window Cleaning Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Window Cleaning Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the window cleaning decision to evidence.",
+          "height": 43,
+          "key": "decision_basis",
+          "label": "Window Cleaning Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Cleaning open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Cleaning owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Cleaning acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer window cleaning items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Window Cleaning Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Cleaning crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Cleaning service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Window Cleaning Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Compare window cleaning findings with window cleaning open items and decide the window cleaning customer handoff.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding and Acceptance Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Cleaning completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Inventory update",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Missed-pane recovery",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Secure-access confirmation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the window cleaning outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Window Cleaning Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Window Cleaning Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For window cleaning, document inventory update, missed-pane recovery, secure-access confirmation, customer quality check, and next-cycle planning; identify each window cleaning reservation and window cleaning follow-up trigger, then record the window cleaning instruction recipient.",
+          "height": 40,
+          "key": "acceptance_reservations",
+          "label": "Window Cleaning Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Cleaning technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Cleaning customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Window Cleaning Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the window cleaning record with inventory update, missed-pane recovery, secure-access confirmation, customer quality check, and next-cycle planning.",
+      "key": "closeout_4",
+      "title": "Next-Service Handoff"
+    }
+  ],
+  "slug": "dhs-2639-window-cleaning-completion-sign-off-form",
+  "source_filename": "dhs_2639__window_cleaning_completion_sign_off_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Window Cleaning Completion Sign-Off Form: window cleaning account service record using property account, scheduled interior, and pane completion counts.",
+  "title": "Window Cleaning Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during window cleaning account service record when the window cleaning record must identify property account, pane inventory, service cycle, access methods, known defects, screen locations, and customer preferences. Complete the applicable handoff for inventory update, missed-pane recovery, secure-access confirmation, customer quality check, and next-cycle planning."
+}

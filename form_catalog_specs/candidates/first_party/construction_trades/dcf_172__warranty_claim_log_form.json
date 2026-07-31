@@ -1,0 +1,245 @@
+{
+  "catalog_id": "construction_trades/dcf_172__warranty_claim_log_form",
+  "description": "For warranty claim, this log form records reported symptom, occurrence pattern, operating conditions, urgency, access, coverage question, and requested remedy. Its supporting evidence includes customer report, dated photos, startup record, maintenance history, diagnostic readings, and installer notes.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Claim opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Claim site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Claim contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Claim superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Claim due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this warranty claim record to its evidence.",
+          "key": "record_routing",
+          "label": "Warranty Claim Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Installed asset",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Serial or model",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Installer",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Completion date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture installed asset, serial or model, location, installer, completion date, warranty terms, and prior service for this warranty claim.",
+          "key": "core_identity",
+          "label": "Warranty Claim Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify installed asset, serial or model, location, installer, completion date, warranty terms, and prior service for this warranty claim record.",
+      "key": "identity_1",
+      "title": "Log Coverage and Custodian"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Claim when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Claim measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Claim evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Claim result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For warranty claim, record customer report, dated photos, startup record, maintenance history, diagnostic readings, and installer notes.",
+          "key": "evidence_register",
+          "label": "Warranty Claim Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Customer report",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Dated photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Startup record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Maintenance history",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Diagnostic readings",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every warranty claim evidence source.",
+          "key": "evidence_sources",
+          "label": "Warranty Claim Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Claim dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Claim owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Claim escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep warranty claim items open through verification.",
+          "key": "open_item_register",
+          "label": "Warranty Claim Open Items and Next Actions",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Claim reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved warranty claim entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Warranty Claim Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Warranty Claim Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For warranty claim, explain coverage decision, repair record, parts disposition, customer verification, recurrence monitoring, and warranty history; transfer each warranty claim open entry to the warranty claim successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Warranty Claim Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Escalate active leakage, electrical hazard, structural movement, unsafe operation, or disputed coverage before repair. Route unresolved warranty claim work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Warranty Claim Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support warranty claim findings with customer report, dated photos, startup record, maintenance history, diagnostic readings, and installer notes.",
+      "key": "observation_2",
+      "title": "Dated Events and Supporting Facts"
+    }
+  ],
+  "slug": "warranty-claim-log-form",
+  "source_filename": "dcf_172__warranty_claim_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Warranty Claim Log Form: construction warranty claim intake and disposition using installed asset, reported symptom, and customer report.",
+  "title": "Warranty Claim Log Form",
+  "use_case": "Use the log form during construction warranty claim intake and disposition when the warranty claim record must identify installed asset, serial or model, location, installer, completion date, warranty terms, and prior service. Complete the applicable handoff for coverage decision, repair record, parts disposition, customer verification, recurrence monitoring, and warranty history."
+}

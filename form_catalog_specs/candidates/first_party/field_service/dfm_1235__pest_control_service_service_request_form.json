@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1235__pest_control_service_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1235__pest_control_service_service_request_form.pdf",
+  "slug": "pest-control-service-service-request-form",
+  "title": "Pest Control Service Request Form",
+  "subtitle": "Commercial Pest-Control Service: defines need, constraints, and assignment.",
+  "description": "Pest Control Service Request Form covers monitored pest activity, device network, treatment area, and contributing condition. The site pest-management coordinator records Commercial Pest-Control Service need, timing, access, and assignment. Pest Control Service Request Form keeps Commercial Pest-Control Service exceptions visible until the site pest-management coordinator handoff.",
+  "use_case": "Use Pest Control Service Request Form at food, storage, waste, exterior, utility, and occupied monitoring zones. Document monitored pest activity, device network, treatment area, and contributing condition identity before Commercial Pest-Control Service begins. Compare monitored pest activity, device network, treatment area, and contributing condition findings with stated Commercial Pest-Control Service criteria; route unresolved Commercial Pest-Control Service issues to licensed or otherwise qualified pest-control reviewer. For Pest Control Service Request Form, confirm requirements for Commercial Pest-Control Service. Ask licensed or otherwise qualified pest-control reviewer to review Commercial Pest-Control Service conditions beyond the site pest-management coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requested-service contact and source record",
+      "guidance": "For Commercial Pest-Control Service, identify responsible parties, food, storage, waste, exterior, utility, and occupied monitoring zones, and the linked monitored pest activity, device network, treatment area, and contributing condition source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Commercial Pest-Control Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Site and service agreement",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Target pest and confirmed evidence",
+              "units": 1.8888888888888888
+            },
+            {
+              "key": "identity_3",
+              "label": "Device map, device numbers, and prior trend reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Intake checks and assignment readiness",
+      "guidance": "Capture Commercial Pest-Control Service facts for monitored pest activity, device network, treatment area, and contributing condition; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Commercial Pest-Control Service intake confirmations",
+          "items": [
+            "Requested or already documented: activity type, count, direction, and freshness",
+            "Requested or already documented: device condition, placement, and service result",
+            "Requested or already documented: entry point, moisture, food, waste, and harborage condition",
+            "Requested or already documented: sanitation and structural corrective-action status",
+            "Requested or already documented: treatment material, location, amount, and restriction",
+            "Requested or already documented: trend compared with prior service thresholds"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Supplied evidence and assignment outcome",
+      "guidance": "Resolve open Commercial Pest-Control Service request questions; have site pest-management coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Non-target exposure or accessible treatment",
+            "Activity requiring different identification or method",
+            "Food-contact or occupied-area restriction not controlled",
+            "Structural or sanitation cause remains unassigned",
+            "Prior or requester-supplied: annotated device and activity map",
+            "Prior or requester-supplied: photographs of evidence and contributing conditions",
+            "Prior or requester-supplied: material and service record",
+            "Prior or requester-supplied: corrective-action and trend history"
+          ],
+          "guidance": "Do not assign or authorize the Commercial Pest-Control Service request when treatment exposure, target identification, occupied-area restriction, or required corrective action is unresolved. Retain information supplied with the request and route unresolved constraints to site pest-management coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Site Pest-Management Coordinator",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

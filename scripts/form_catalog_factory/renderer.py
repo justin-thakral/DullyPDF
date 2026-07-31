@@ -16,9 +16,33 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 
 from .models import BlockSpec, FieldSpec, FormSpec
+from .themes import DEFAULT_THEME_ID, FormTheme, get_theme
 
 
 PAGE_WIDTH, PAGE_HEIGHT = letter
+CHOICE_PROMPT = "Select"
+NEUTRAL_CHOICE_PROMPT_TARGETS = frozenset(
+    {
+        "an option",
+        "category",
+        "condition",
+        "configuration",
+        "decision",
+        "disposition",
+        "level",
+        "lifecycle status",
+        "one",
+        "option",
+        "priority",
+        "result",
+        "state",
+        "status",
+        "system",
+        "type",
+    }
+)
+MAX_KEEP_TOGETHER_SECTION_HEIGHT = 320
+MIN_SUBSTANTIVE_PAGE_CONTENT_HEIGHT = 180
 
 
 def _slugify(value: str) -> str:
@@ -28,9 +52,16 @@ def _slugify(value: str) -> str:
 class FormRenderer:
     """Render one validated form spec with deterministic pagination and widgets."""
 
-    def __init__(self, pdf_canvas: canvas.Canvas, spec: FormSpec):
+    def __init__(
+        self,
+        pdf_canvas: canvas.Canvas,
+        spec: FormSpec,
+        *,
+        theme: FormTheme | str = DEFAULT_THEME_ID,
+    ):
         self.canvas = pdf_canvas
         self.spec = spec
+        self.theme = get_theme(theme) if isinstance(theme, str) else theme
         self.margin_x = 0.56 * inch
         self.top_y = PAGE_HEIGHT - 0.52 * inch
         self.bottom_y = 0.58 * inch
@@ -40,12 +71,12 @@ class FormRenderer:
         self.current_section_title = ""
         self.current_section_guidance = ""
         self.y = self.top_y
+        self.content_top_y = self.top_y
         self.field_names: set[str] = set()
         self.styles = self._styles()
         self.new_page()
 
-    @staticmethod
-    def _styles() -> dict[str, ParagraphStyle]:
+    def _styles(self) -> dict[str, ParagraphStyle]:
         base = getSampleStyleSheet()
         return {
             "title": ParagraphStyle(
@@ -54,7 +85,7 @@ class FormRenderer:
                 fontName="Helvetica-Bold",
                 fontSize=16,
                 leading=18,
-                textColor=colors.HexColor("#0F172A"),
+                textColor=colors.HexColor(self.theme.title_text),
             ),
             "subtitle": ParagraphStyle(
                 "FactorySubtitle",
@@ -62,7 +93,7 @@ class FormRenderer:
                 fontName="Helvetica",
                 fontSize=8.2,
                 leading=10.2,
-                textColor=colors.HexColor("#334155"),
+                textColor=colors.HexColor(self.theme.body_text),
             ),
             "body": ParagraphStyle(
                 "FactoryBody",
@@ -70,7 +101,7 @@ class FormRenderer:
                 fontName="Helvetica",
                 fontSize=7.6,
                 leading=9.4,
-                textColor=colors.HexColor("#334155"),
+                textColor=colors.HexColor(self.theme.body_text),
             ),
             "small": ParagraphStyle(
                 "FactorySmall",
@@ -78,7 +109,7 @@ class FormRenderer:
                 fontName="Helvetica",
                 fontSize=6.7,
                 leading=8,
-                textColor=colors.HexColor("#64748B"),
+                textColor=colors.HexColor(self.theme.muted_text),
             ),
             "checklist": ParagraphStyle(
                 "FactoryChecklist",
@@ -86,7 +117,7 @@ class FormRenderer:
                 fontName="Helvetica",
                 fontSize=7.1,
                 leading=8.2,
-                textColor=colors.HexColor("#334155"),
+                textColor=colors.HexColor(self.theme.body_text),
             ),
         }
 
@@ -175,6 +206,39 @@ class FormRenderer:
                 break
         return tail_start, tail_height
 
+    def _start_balanced_section(self, blocks: tuple[BlockSpec, ...]) -> None:
+        """Move a complete section to a fresh page when that avoids a sparse tail."""
+
+        section_height = 34 + sum(
+            self._block_required_height(block) for block in blocks
+        )
+        if section_height > MAX_KEEP_TOGETHER_SECTION_HEIGHT:
+            return
+        page_floor = self.bottom_y + 0.2 * inch
+        available_height = self.y - page_floor
+        used_height = self.content_top_y - self.y
+        if (
+            section_height > available_height
+            and used_height >= MIN_SUBSTANTIVE_PAGE_CONTENT_HEIGHT
+        ):
+            self.new_page()
+
+    @staticmethod
+    def _rendered_choice_options(field: FieldSpec) -> tuple[str, ...]:
+        """Return one canonical prompt without dropping substantive outcomes."""
+
+        def is_neutral_prompt(value: str) -> bool:
+            normalized = " ".join(re.findall(r"[a-z0-9]+", value.casefold()))
+            words = normalized.split(maxsplit=1)
+            if not words or words[0] not in {"choose", "select"}:
+                return False
+            return len(words) == 1 or words[1] in NEUTRAL_CHOICE_PROMPT_TARGETS
+
+        authored = tuple(
+            option for option in field.options if not is_neutral_prompt(option)
+        )
+        return (CHOICE_PROMPT, *authored)
+
     def _draw_fitted_line(
         self,
         text: str,
@@ -194,6 +258,11 @@ class FormRenderer:
             size = max(minimum_size, size - 0.2)
         rendered = normalized
         if stringWidth(rendered, font_name, size) > width:
+            if self.theme.theme_id != DEFAULT_THEME_ID:
+                raise ValueError(
+                    "customer-visible line does not fit the available width at "
+                    f"the minimum font size: {normalized!r}"
+                )
             words = normalized.split()
             kept: list[str] = []
             for word in words:
@@ -216,7 +285,7 @@ class FormRenderer:
         return name
 
     def _footer(self) -> None:
-        self.canvas.setStrokeColor(colors.HexColor("#CBD5E1"))
+        self.canvas.setStrokeColor(colors.HexColor(self.theme.grid_line))
         self.canvas.line(
             self.margin_x,
             self.bottom_y + 0.13 * inch,
@@ -224,8 +293,16 @@ class FormRenderer:
             self.bottom_y + 0.13 * inch,
         )
         footer = (
-            "DullyPDF original fillable template. Confirm applicable legal, safety, "
-            "privacy, insurance, tax, and retention requirements before use."
+            (
+                "DullyPDF original fillable template. Confirm applicable legal, "
+                "safety, privacy, insurance, tax, and retention requirements "
+                "before use."
+            )
+            if self.theme.theme_id == DEFAULT_THEME_ID
+            else (
+                "DullyPDF original fillable template. Adapt this form to your "
+                "organization's policies, roles, and recordkeeping needs."
+            )
         )
         self._paragraph(
             footer,
@@ -234,7 +311,7 @@ class FormRenderer:
             self.bottom_y + 0.06 * inch,
             self.content_width - 0.5 * inch,
         )
-        self.canvas.setFillColor(colors.HexColor("#64748B"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.muted_text))
         self.canvas.setFont("Helvetica", 6.8)
         self.canvas.drawRightString(
             PAGE_WIDTH - self.margin_x,
@@ -255,12 +332,12 @@ class FormRenderer:
         title_style = ParagraphStyle(
             "FactoryHeaderTitle",
             parent=self.styles["title"],
-            textColor=colors.white,
+            textColor=colors.HexColor(self.theme.header_text),
         )
         subtitle_style = ParagraphStyle(
             "FactoryHeaderSubtitle",
             parent=self.styles["subtitle"],
-            textColor=colors.HexColor("#E2E8F0"),
+            textColor=colors.HexColor(self.theme.header_subtitle),
         )
         title_width = self.content_width - 1.48 * inch
         title_paragraph = Paragraph(escape(title), title_style)
@@ -275,7 +352,7 @@ class FormRenderer:
             title_height + subtitle_height + 0.36 * inch,
         )
         header_bottom = PAGE_HEIGHT - header_height
-        self.canvas.setFillColor(colors.HexColor("#102A43"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.header_background))
         self.canvas.rect(0, header_bottom, PAGE_WIDTH, header_height, stroke=0, fill=1)
         title_paragraph.drawOn(
             self.canvas,
@@ -287,14 +364,19 @@ class FormRenderer:
             self.margin_x,
             PAGE_HEIGHT - 0.25 * inch - title_height - subtitle_height - 5,
         )
-        self.canvas.setFillColor(colors.white)
+        self.canvas.setFillColor(colors.HexColor(self.theme.header_text))
         self.canvas.setFont("Helvetica-Bold", 6.8)
+        header_label = (
+            self.spec.catalog_id[-22:]
+            if self.theme.theme_id == DEFAULT_THEME_ID
+            else "DullyPDF Fillable Form"
+        )
         self.canvas.drawRightString(
             PAGE_WIDTH - self.margin_x,
             PAGE_HEIGHT - 0.27 * inch,
-            self.spec.catalog_id[-22:],
+            header_label,
         )
-        self.canvas.setStrokeColor(colors.HexColor("#F97316"))
+        self.canvas.setStrokeColor(colors.HexColor(self.theme.accent))
         self.canvas.setLineWidth(2.2)
         self.canvas.line(
             0,
@@ -303,6 +385,7 @@ class FormRenderer:
             header_bottom,
         )
         self.y = header_bottom - 0.23 * inch
+        self.content_top_y = self.y
 
     def ensure_space(self, height: float, *, repeat_section: bool = True) -> None:
         if self.y - height < self.bottom_y + 0.2 * inch:
@@ -336,7 +419,7 @@ class FormRenderer:
         number: int,
     ) -> None:
         heading_height = 24
-        self.canvas.setFillColor(colors.HexColor("#E6F1F8"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.section_background))
         self.canvas.roundRect(
             self.margin_x,
             self.y - heading_height,
@@ -347,7 +430,7 @@ class FormRenderer:
             fill=1,
         )
         number_width = 35
-        self.canvas.setFillColor(colors.HexColor("#1683C4"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.section_badge))
         self.canvas.roundRect(
             self.margin_x,
             self.y - heading_height,
@@ -357,14 +440,14 @@ class FormRenderer:
             stroke=0,
             fill=1,
         )
-        self.canvas.setFillColor(colors.white)
+        self.canvas.setFillColor(colors.HexColor(self.theme.header_text))
         self.canvas.setFont("Helvetica-Bold", 8.2)
         self.canvas.drawCentredString(
             self.margin_x + number_width / 2,
             self.y - 15.5,
             f"{number:02d}",
         )
-        self.canvas.setFillColor(colors.HexColor("#102A43"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.section_text))
         guidance_width = self.content_width * 0.39 if guidance else 0
         title_x = self.margin_x + number_width + 10
         title_width = self.content_width - number_width - 20 - guidance_width
@@ -403,7 +486,7 @@ class FormRenderer:
         width: float,
         height: float,
     ) -> None:
-        self.canvas.setFillColor(colors.HexColor("#1F2937"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.label_text))
         self._draw_fitted_line(
             field.label,
             x=x,
@@ -415,19 +498,20 @@ class FormRenderer:
         )
         name = self._field_name(semantic_path)
         if field.field_type == "choice":
+            options = self._rendered_choice_options(field)
             self.canvas.acroForm.choice(
                 name=name,
                 tooltip=field.label,
-                value=field.options[0],
-                options=list(field.options),
+                value=options[0],
+                options=list(options),
                 x=x,
                 y=self.y - height - 4,
                 width=width,
                 height=height,
                 borderStyle="solid",
-                borderColor=colors.HexColor("#94A3B8"),
-                fillColor=colors.HexColor("#F8FAFC"),
-                textColor=colors.black,
+                borderColor=colors.HexColor(self.theme.field_border),
+                fillColor=colors.HexColor(self.theme.field_background),
+                textColor=colors.HexColor(self.theme.field_text),
                 fontName="Helvetica",
                 fontSize=7.5,
                 fieldFlags="combo",
@@ -442,9 +526,9 @@ class FormRenderer:
             width=width,
             height=height,
             borderStyle="solid",
-            borderColor=colors.HexColor("#94A3B8"),
-            fillColor=colors.HexColor("#F8FAFC"),
-            textColor=colors.black,
+            borderColor=colors.HexColor(self.theme.field_border),
+            fillColor=colors.HexColor(self.theme.field_background),
+            textColor=colors.HexColor(self.theme.field_text),
             fontName="Helvetica",
             fontSize=7.8,
             **kwargs,
@@ -454,7 +538,7 @@ class FormRenderer:
         height = 20
         self.ensure_space(self._block_required_height(block))
         if block.label:
-            self.canvas.setFillColor(colors.HexColor("#102A43"))
+            self.canvas.setFillColor(colors.HexColor(self.theme.section_text))
             self._draw_fitted_line(
                 block.label,
                 x=self.margin_x,
@@ -493,7 +577,7 @@ class FormRenderer:
     def render_textarea(self, section_key: str, block: BlockSpec) -> None:
         field = block.fields[0]
         self.ensure_space(self._block_required_height(block))
-        self.canvas.setFillColor(colors.HexColor("#102A43"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.section_text))
         self._draw_fitted_line(
             block.label,
             x=self.margin_x,
@@ -511,9 +595,9 @@ class FormRenderer:
             width=self.content_width,
             height=block.height,
             borderStyle="solid",
-            borderColor=colors.HexColor("#94A3B8"),
-            fillColor=colors.HexColor("#F8FAFC"),
-            textColor=colors.black,
+            borderColor=colors.HexColor(self.theme.field_border),
+            fillColor=colors.HexColor(self.theme.field_background),
+            textColor=colors.HexColor(self.theme.field_text),
             fontName="Helvetica",
             fontSize=7.8,
             fieldFlags="multiline",
@@ -540,7 +624,7 @@ class FormRenderer:
             paragraphs.append((paragraph, height))
         row_heights = self._checklist_row_heights(block)
         self.ensure_space(self._block_required_height(block))
-        self.canvas.setFillColor(colors.HexColor("#102A43"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.section_text))
         self._draw_fitted_line(
             block.label,
             x=self.margin_x,
@@ -566,9 +650,9 @@ class FormRenderer:
                 y=y,
                 size=9,
                 borderWidth=0.7,
-                borderColor=colors.HexColor("#64748B"),
+                borderColor=colors.HexColor(self.theme.checkbox_border),
                 fillColor=colors.white,
-                textColor=colors.black,
+                textColor=colors.HexColor(self.theme.field_text),
                 buttonStyle="check",
             )
             paragraph, paragraph_height = paragraphs[index]
@@ -592,7 +676,7 @@ class FormRenderer:
         header_height = 20
         row_height = 17
         self.ensure_space(self._block_required_height(block))
-        self.canvas.setFillColor(colors.HexColor("#102A43"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.section_text))
         self._draw_fitted_line(
             block.label,
             x=self.margin_x,
@@ -609,7 +693,7 @@ class FormRenderer:
         for width in widths[:-1]:
             x_positions.append(x_positions[-1] + width)
         table_top = self.y
-        self.canvas.setFillColor(colors.HexColor("#102A43"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.table_header))
         self.canvas.rect(
             self.margin_x,
             table_top - header_height,
@@ -618,7 +702,7 @@ class FormRenderer:
             stroke=0,
             fill=1,
         )
-        self.canvas.setStrokeColor(colors.HexColor("#CBD5E1"))
+        self.canvas.setStrokeColor(colors.HexColor(self.theme.grid_line))
         self.canvas.setLineWidth(0.6)
         self.canvas.rect(
             self.margin_x,
@@ -640,7 +724,7 @@ class FormRenderer:
             header_style = ParagraphStyle(
                 "FactoryTableHeader",
                 parent=self.styles["small"],
-                textColor=colors.white,
+                textColor=colors.HexColor(self.theme.table_header_text),
                 fontName="Helvetica-Bold",
             )
             header_paragraph = Paragraph(escape(column.label), header_style)
@@ -680,7 +764,7 @@ class FormRenderer:
                     height=row_height - 4,
                     borderWidth=0,
                     fillColor=colors.white,
-                    textColor=colors.black,
+                    textColor=colors.HexColor(self.theme.field_text),
                     fontName="Helvetica",
                     fontSize=6.8,
                 )
@@ -700,7 +784,7 @@ class FormRenderer:
         _, text_height = para.wrap(self.content_width - 16, PAGE_HEIGHT)
         required = text_height + 19
         self.ensure_space(self._block_required_height(block))
-        self.canvas.setFillColor(colors.HexColor("#FEF3C7"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.notice_background))
         self.canvas.roundRect(
             self.margin_x,
             self.y - required + 2,
@@ -710,7 +794,7 @@ class FormRenderer:
             stroke=0,
             fill=1,
         )
-        self.canvas.setFillColor(colors.HexColor("#92400E"))
+        self.canvas.setFillColor(colors.HexColor(self.theme.notice_text))
         self._draw_fitted_line(
             block.label,
             x=self.margin_x + 8,
@@ -745,6 +829,7 @@ class FormRenderer:
 
     def render(self) -> None:
         for index, section in enumerate(self.spec.sections):
+            self._start_balanced_section(section.blocks)
             is_final_section = index == len(self.spec.sections) - 1
             tail_start, tail_height = (
                 self._closeout_tail(section.blocks)
@@ -772,7 +857,12 @@ class FormRenderer:
         self.canvas.save()
 
 
-def render_form(spec: FormSpec, output_path: str | Path) -> Path:
+def render_form(
+    spec: FormSpec,
+    output_path: str | Path,
+    *,
+    theme_id: str = DEFAULT_THEME_ID,
+) -> Path:
     """Render one form to a deterministic compressed PDF."""
 
     destination = Path(output_path)
@@ -783,5 +873,5 @@ def render_form(spec: FormSpec, output_path: str | Path) -> Path:
         invariant=1,
         pageCompression=1,
     )
-    FormRenderer(pdf_canvas, spec).render()
+    FormRenderer(pdf_canvas, spec, theme=theme_id).render()
     return destination

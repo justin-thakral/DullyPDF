@@ -26,8 +26,10 @@ artifact in place.
 
 ## Required workflow depth
 
-Each retained form must capture the real operational lifecycle rather than a
-topic inserted into a generic shell. Specifications should include:
+Each retained form must capture its real operational task rather than a topic
+inserted into a generic shell. Specifications normally need identity and
+routing plus the task's direct inputs. Add only the lifecycle stages that the
+task actually uses:
 
 - identity and routing information;
 - workflow-specific observations, evidence, or line items;
@@ -35,8 +37,13 @@ topic inserted into a generic shell. Specifications should include:
 - exception and escalation paths;
 - completion, handoff, and accountable closeout.
 
-Field count and page count are not goals by themselves. They should follow the
-workflow and remain usable when rendered.
+The last four are conditional, not a universal template. Field count and page
+count are not goals by themselves. Inherently focused tasks are limited to two
+rendered pages, with one additional page for Tier-C review needs. Standard and
+complex profiles have broader fail-safe ceilings, while authoring review still
+requires the shortest form that fully performs the task. Content QA caps
+sections and controls for those profiles and rejects repeated semantic
+workflow skeletons.
 
 ## Local commands
 
@@ -64,6 +71,10 @@ python3 -m scripts.form_catalog_factory qa-spec \
 ```
 
 This gate checks workflow depth, fillable-control depth, intent-specific
-language, lifecycle coverage, risk-review prompts, and exact or near-duplicate
+language, lifecycle coverage, risk-review prompts, customer-visible internal
+codes or authoring copy, task-proportional size, excessive full-structure or
+semantic-skeleton reuse, generic or repeated section guidance, repeated long
+metadata or instructional phrases, control labels reused across most of a
+batch, lowercase or repeated-word discrete UI copy, and exact or near-duplicate
 content. It complements PDF QA; neither gate substitutes for the independent
-review stage recorded in the ledger.
+semantic and visual review stages recorded in the ledger.

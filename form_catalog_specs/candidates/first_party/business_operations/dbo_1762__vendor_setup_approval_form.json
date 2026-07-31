@@ -1,0 +1,349 @@
+{
+  "catalog_id": "business_operations/dbo_1762__vendor_setup_approval_form",
+  "description": "For vendor setup, this approval form records business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification. Its supporting evidence includes tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Setup opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Setup site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Setup contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Setup process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Setup due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this vendor setup record to its evidence.",
+          "key": "record_routing",
+          "label": "Vendor Setup Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Vendor legal name",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Tax",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Banking data",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Ownership",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Contacts",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Goods or services",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status for this vendor setup.",
+          "key": "core_identity",
+          "label": "Vendor Setup Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status for this vendor setup record.",
+      "key": "identity_1",
+      "title": "Proposal and Authority Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Business need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Sourcing decision",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Contract status",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Payment terms",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Insurance",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For vendor setup, record business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification.",
+          "key": "task_inputs",
+          "label": "Vendor Setup Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Setup decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Setup supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Setup review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified vendor setup facts from judgment.",
+          "key": "review_criteria",
+          "label": "Vendor Setup Review Criteria and Support",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Resolve each failed vendor setup approval check.",
+          "items": [
+            "Decision statement is singular and unambiguous",
+            "Approver authority and any conflict are checked",
+            "Cost, schedule, quality, safety, and compliance effects are addressed",
+            "Alternatives and recommendation are documented",
+            "Conditions and effective period can be monitored",
+            "Implementation owner acknowledges the disposition"
+          ],
+          "key": "decision_readiness",
+          "label": "Vendor Setup Decision Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not activate or pay vendors with unverified bank changes, missing screening, expired insurance, conflicts, or exceeded authority. Route unresolved vendor setup work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Vendor Setup Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For vendor setup, capture business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification.",
+      "key": "task_2",
+      "title": "Required Inputs and Review Criteria"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Setup when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Setup measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Setup evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Setup result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For vendor setup, record tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+          "key": "evidence_register",
+          "label": "Vendor Setup Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Tax form",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Bank verification",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Insurance certificate",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Screening results",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Contract",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every vendor setup evidence source.",
+          "key": "evidence_sources",
+          "label": "Vendor Setup Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support vendor setup findings with tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+      "key": "observation_3",
+      "title": "Supporting Record Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select approval form disposition",
+                "Approve",
+                "Approve with conditions",
+                "Revise and resubmit",
+                "Reject"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Setup decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Setup approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Setup authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Setup review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate vendor setup disposition.",
+          "key": "disposition",
+          "label": "Vendor Setup Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Vendor Setup Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the vendor setup decision to evidence.",
+          "height": 48,
+          "key": "decision_basis",
+          "label": "Vendor Setup Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Setup request owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Setup process reviewer and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Setup delegated approver and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Vendor Setup Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the vendor setup next step from tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+      "key": "decision_4",
+      "title": "Approval Decision and Conditions"
+    }
+  ],
+  "slug": "vendor-setup-approval-form",
+  "source_filename": "dbo_1762__vendor_setup_approval_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Vendor Setup Approval Form: vendor due diligence and system setup using vendor legal name, business need, and tax form.",
+  "title": "Vendor Setup Approval Form",
+  "use_case": "Use the approval form during vendor due diligence and system setup when the vendor setup record must identify vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status. Complete the applicable handoff for approved vendor ID, controls applied, payment method, renewal dates, document retention, and requester notification."
+}

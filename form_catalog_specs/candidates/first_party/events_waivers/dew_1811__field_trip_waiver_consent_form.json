@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1811__field_trip_waiver_consent_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1811__field_trip_waiver_consent_form.pdf",
+  "slug": "field-trip-waiver-consent-form",
+  "title": "Field Trip Waiver Consent Form",
+  "subtitle": "Capture trip destination, transport, activity condition, and supervision; confirm guardian choice and return.",
+  "description": "Field Trip Waiver records trip destination, transport, activity condition, supervision, guardian choice, and return. Field Trip Waiver evidence stays linked.",
+  "use_case": "Use this field trip waiver scoped consent when staff must document trip destination and transport. Reconcile activity condition, supervision, guardian choice, and return before the field trip waiver handoff. Use the itinerary, transportation plan, disclosed activity conditions, supervision roster, accessible alternative, participant questions, guardian choice, and return headcount. This acknowledgment concerns an excursion with bus or walking travel, off-site terrain, destination activities, chaperone supervision, group movement, and school return. Ask the assigned field trip waiver reviewer to confirm trip destination against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Field Trip Waiver contact and reference",
+      "guidance": "Disclose destination, transport conditions, walking or activity demands, supervision, available alternative, guardian choice, emergency route, and return. Record the field trip waiver decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Field Trip Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "trip_destination",
+              "label": "Trip destination",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Field Trip Waiver task details",
+          "fields": [
+            {
+              "key": "transport",
+              "label": "Transport",
+              "units": 1.15
+            },
+            {
+              "key": "activity_condition",
+              "label": "Activity condition",
+              "units": 1.0
+            },
+            {
+              "key": "supervision",
+              "label": "Supervision",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_choice",
+              "label": "Guardian choice",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Approve",
+                "Approve with limit",
+                "Do not approve",
+                "Pending"
+              ]
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_choices",
+      "title": "Field Trip Waiver voluntary choices review",
+      "guidance": "Present each choice independently; do not preselect an answer.",
+      "blocks": [
+        {
+          "key": "itemized_consent",
+          "type": "fields",
+          "label": "Field Trip Waiver itemized consent",
+          "fields": [
+            {
+              "key": "trip_destination",
+              "label": "Trip destination",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "transport",
+              "label": "Transport",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "activity_condition",
+              "label": "Activity condition",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "supervision",
+              "label": "Supervision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "guardian_choice",
+              "label": "Guardian choice",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consent_checks",
+          "type": "checklist",
+          "label": "Field Trip Waiver informed-choice checks",
+          "items": [
+            "Purpose and practical conditions are explained",
+            "Questions and access needs are addressed",
+            "Declining one choice does not decide another",
+            "Withdrawal route and practical limits are explained"
+          ]
+        },
+        {
+          "key": "consent_conditions",
+          "type": "fields",
+          "label": "Field Trip Waiver conditions and withdrawal",
+          "fields": [
+            {
+              "key": "choice_explained_by",
+              "label": "Choice explained by",
+              "units": 1.15
+            },
+            {
+              "key": "question_or_accessibility_need",
+              "label": "Question or accessibility need",
+              "units": 1.0
+            },
+            {
+              "key": "special_condition_or_exclusion",
+              "label": "Special condition or exclusion",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal_contact",
+              "label": "Withdrawal contact",
+              "units": 1.1
+            },
+            {
+              "key": "consent_copy_provided_date",
+              "label": "Consent copy provided date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_signoff",
+      "title": "Field Trip Waiver decision and signer receipt",
+      "guidance": "Record the voluntary decision and responsible staff recipient.",
+      "blocks": [
+        {
+          "key": "consent_note",
+          "type": "textarea",
+          "label": "Field Trip Waiver question or limit",
+          "fields": [
+            {
+              "key": "question_explanation_declined_scope_or_participation_limit",
+              "label": "Question, explanation, declined scope, or participation limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "consent_signatures",
+          "type": "signatures",
+          "label": "Field Trip Waiver signatures",
+          "fields": [
+            {
+              "key": "person_giving_consent_and_date",
+              "label": "Person giving consent and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The signature applies only to choices recorded above."
+        }
+      ]
+    }
+  ]
+}

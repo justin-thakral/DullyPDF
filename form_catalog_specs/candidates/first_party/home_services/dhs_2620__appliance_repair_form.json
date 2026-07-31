@@ -1,0 +1,385 @@
+{
+  "catalog_id": "home_services/dhs_2620__appliance_repair_form",
+  "description": "For appliance repair, this service record records diagnostic sequence, service-manual checks, parts, labor, customer authorization, food or property protection, and testing. Its supporting evidence includes fault codes, voltage or pressure readings, component condition, part numbers, photos, and post-repair cycle result.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Appliance opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Appliance site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Appliance contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Appliance account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Appliance due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this appliance repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Appliance Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Appliance type",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Make",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Model",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Serial",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Age",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Symptom",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture appliance type, make, model, serial, age, symptom, location, utilities, warranty, and prior repair for this appliance repair.",
+          "key": "core_identity",
+          "label": "Appliance Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify appliance type, make, model, serial, age, symptom, location, utilities, warranty, and prior repair for this appliance repair record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Diagnostic sequence",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Service-manual checks",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Labor",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Customer authorization",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For appliance repair, record diagnostic sequence, service-manual checks, parts, labor, customer authorization, food or property protection, and testing.",
+          "key": "task_inputs",
+          "label": "Appliance Repair Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Appliance work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized appliance repair work from additions.",
+          "key": "assigned_work",
+          "label": "Appliance Repair Assigned Work and Acceptance Criteria",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Appliance arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Appliance access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Appliance added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Appliance inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop appliance repair work at recorded limits.",
+          "key": "work_window",
+          "label": "Appliance Repair Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Stop for gas leak, damaged supply, fire evidence, refrigerant issue beyond qualification, or unsafe continued operation. Route unresolved appliance repair work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Appliance Repair Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For appliance repair, capture diagnostic sequence, service-manual checks, parts, labor, customer authorization, food or property protection, and testing.",
+      "key": "task_2",
+      "title": "Scheduled Service and Limits"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Appliance when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Appliance measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Appliance evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Appliance result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For appliance repair, record fault codes, voltage or pressure readings, component condition, part numbers, photos, and post-repair cycle result.",
+          "key": "evidence_register",
+          "label": "Appliance Repair Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Fault codes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Voltage or pressure readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Component condition",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Part numbers",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every appliance repair evidence source.",
+          "key": "evidence_sources",
+          "label": "Appliance Repair Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary appliance repair evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Appliance Repair Evidence Completeness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Support appliance repair findings with fault codes, voltage or pressure readings, component condition, part numbers, photos, and post-repair cycle result.",
+      "key": "observation_3",
+      "title": "Service Findings and Results"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Appliance completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Repair outcome",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Replaced-part disposition",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Operational test",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Customer guidance",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the appliance repair outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Appliance Repair Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Appliance open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Appliance owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Appliance acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer appliance repair items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Appliance Repair Remaining Work and Handoff",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Appliance technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Appliance customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Appliance Repair Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the appliance repair record with repair outcome, replaced-part disposition, operational test, customer guidance, warranty, and recurrence follow-up.",
+      "key": "closeout_4",
+      "title": "Property Handoff"
+    }
+  ],
+  "slug": "dhs-2620-appliance-repair-form",
+  "source_filename": "dhs_2620__appliance_repair_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Appliance Repair Service Record: appliance repair diagnosis and service record using appliance type, diagnostic sequence, and fault codes.",
+  "title": "Appliance Repair Form",
+  "use_case": "Use the service record during appliance repair diagnosis and service record when the appliance repair record must identify appliance type, make, model, serial, age, symptom, location, utilities, warranty, and prior repair. Complete the applicable handoff for repair outcome, replaced-part disposition, operational test, customer guidance, warranty, and recurrence follow-up."
+}

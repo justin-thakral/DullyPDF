@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2139__detail_service_tracking_log",
+  "source_section": "automotive_service",
+  "source_filename": "das_2139__detail_service_tracking_log.pdf",
+  "slug": "detail-service-tracking-log",
+  "title": "Detail Service Tracking Log",
+  "subtitle": "Vehicle Detailing Service: preserves changes and next triggers.",
+  "description": "Detail Service Tracking Log covers vehicle exterior, interior, finish, material, contamination, selected package, and protected feature. The detail service advisor records Vehicle Detailing Service events, owners, exceptions, and next triggers. Detail Service Tracking Log keeps Vehicle Detailing Service exceptions visible until the detail service advisor handoff.",
+  "use_case": "Use Detail Service Tracking Log at detail bay, wash area, interior work zone, drying area, and delivery point. Document vehicle exterior, interior, finish, material, contamination, selected package, and protected feature identity before Vehicle Detailing Service begins. Compare vehicle exterior, interior, finish, material, contamination, selected package, and protected feature findings with stated Vehicle Detailing Service criteria; route unresolved Vehicle Detailing Service issues to vehicle appearance quality reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For Vehicle Detailing Service, identify responsible parties, detail bay, wash area, interior work zone, drying area, and delivery point, and the linked vehicle exterior, interior, finish, material, contamination, selected package, and protected feature source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Vehicle Detailing Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Work order and customer",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN or vehicle, plate, color, and mileage",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Selected package, add-on, material, and customer concern",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status events and next-control history",
+      "guidance": "Capture Vehicle Detailing Service facts for vehicle exterior, interior, finish, material, contamination, selected package, and protected feature; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Vehicle Detailing Service tracked controls",
+          "items": [
+            "Paint, trim, glass, wheel, and exterior baseline",
+            "Seat, carpet, headliner, console, and interior baseline",
+            "Scratch, chip, stain, odor, damage, and sensitive material",
+            "Product compatibility and test area",
+            "Wash, decontamination, correction, protection, and interior step",
+            "Final lighting inspection and customer walkthrough"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Reconcile the latest Vehicle Detailing Service event before closeout. Detail Service Advisor identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Material or coating compatibility uncertain",
+            "Damage could worsen with requested process",
+            "Biohazard or unknown contamination",
+            "Expected correction exceeds approved package",
+            "Intake condition photographs",
+            "Product and test-area record",
+            "Completed-service checklist",
+            "Remaining defect and final walkthrough"
+          ],
+          "guidance": "Pause Vehicle Detailing Service when compatibility, damage, contamination, scope expectation, or final quality concern remains unresolved. Retain the available Vehicle Detailing Service proof and route unresolved vehicle exterior, interior, finish, material, contamination, selected package, and protected feature scope to detail service advisor."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Detail Service Advisor",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Vehicle Appearance Quality Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

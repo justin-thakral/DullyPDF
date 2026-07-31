@@ -1,0 +1,188 @@
+{
+  "catalog_id": "business_operations/dbo_1798__policy_acknowledgment_request_form",
+  "description": "For policy acknowledgment, this request form records required reading, training dependency, questions, disclosure or consent boundaries, acknowledgment deadline, and exceptions. Its supporting evidence includes delivery record, training completion, employee questions, accessible-format request, acknowledgment, and manager follow-up.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "policy_id",
+              "label": "Policy identifier",
+              "units": 1.0
+            },
+            {
+              "key": "version",
+              "label": "Version and effective date",
+              "units": 1.0
+            },
+            {
+              "key": "delivery",
+              "label": "Delivery channel",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the exact policy copy assigned for distribution.",
+          "key": "policy_reference",
+          "label": "Policy Assignment Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "recipient",
+              "label": "Employee or audience",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Department or location",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Language or accessible format",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the intended recipient and a usable delivery format.",
+          "key": "policy_recipient",
+          "label": "Recipient and Access Needs",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the requester and relevant policy version.",
+      "key": "identity_1",
+      "title": "Policy Support Request Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "request_type",
+              "label": "Request type",
+              "options": [
+                "Select request type",
+                "Policy copy",
+                "Accessible format",
+                "Required training",
+                "Clarification",
+                "Record correction"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "requested_version",
+              "label": "Requested policy version",
+              "units": 1.0
+            },
+            {
+              "key": "question",
+              "label": "Question or correction",
+              "units": 1.0
+            },
+            {
+              "key": "format",
+              "label": "Language or format",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Needed date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Request the narrow copy, training, format, or clarification needed.",
+          "key": "support_request",
+          "label": "Requested Policy Support",
+          "type": "fields"
+        },
+        {
+          "guidance": "Use this record only to document delivery, reading, questions, training, and receipt. Route rights, consent, conflict, or policy interpretation questions for qualified review.",
+          "key": "acknowledgment_boundary",
+          "label": "Acknowledgment Is Not Consent or Waiver",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Capture the needed copy, format, training, clarification, or correction.",
+      "key": "task_2",
+      "title": "Requested Copy, Training, or Access"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "status",
+              "label": "Request status",
+              "options": [
+                "Select request status",
+                "Fulfilled",
+                "Training scheduled",
+                "Clarification routed",
+                "Correction pending",
+                "Qualified review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "response_owner",
+              "label": "Response owner",
+              "units": 1.0
+            },
+            {
+              "key": "response_due",
+              "label": "Response due date",
+              "units": 1.0
+            },
+            {
+              "key": "delivery_record",
+              "label": "Delivery or training record",
+              "units": 1.0
+            },
+            {
+              "key": "exception_route",
+              "label": "Exception reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link the response to the delivered copy or named follow-up owner.",
+          "key": "request_routing",
+          "label": "Request Routing and Response",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Policy requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "responder",
+              "label": "Responder, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "request_acknowledgment",
+          "label": "Request and Response Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Route the response to a named owner and retrievable record.",
+      "key": "decision_3",
+      "title": "Response Routing and Acknowledgment"
+    }
+  ],
+  "slug": "policy-acknowledgment-request-form",
+  "source_filename": "dbo_1798__policy_acknowledgment_request_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Policy Acknowledgment Request Form: workplace policy distribution and acknowledgment using policy identifier, required reading, and delivery record.",
+  "title": "Policy Acknowledgment Request Form",
+  "use_case": "Use the request form during workplace policy distribution and acknowledgment when the policy acknowledgment record must identify policy identifier, version, effective date, audience, employee identity, location, language, and delivery channel. Complete the applicable handoff for acknowledgment timestamp, exception routing, overdue follow-up, version retention, training linkage, and HR record handoff."
+}

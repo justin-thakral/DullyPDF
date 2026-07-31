@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1261__copier_service_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1261__copier_service_work_order_form.pdf",
+  "slug": "copier-service-work-order-form",
+  "title": "Copier Service Work Order Form",
+  "subtitle": "Copier And Multifunction-Device Service: connects authorized scope to results.",
+  "description": "Copier Service Work Order Form covers copier, feeder, print engine, finishing unit, network interface, and supply system. The office equipment coordinator records Copier And Multifunction-Device Service authorized tasks, materials, results, and changes. Copier Service Work Order Form keeps Copier And Multifunction-Device Service exceptions visible until the office equipment coordinator handoff.",
+  "use_case": "Use Copier Service Work Order Form at device location, supply area, network point, and affected workgroup. Document copier, feeder, print engine, finishing unit, network interface, and supply system identity before Copier And Multifunction-Device Service begins. Compare copier, feeder, print engine, finishing unit, network interface, and supply system findings with stated Copier And Multifunction-Device Service criteria; route unresolved Copier And Multifunction-Device Service issues to qualified office-equipment service reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Work-order reference and subject identity",
+      "guidance": "For Copier And Multifunction-Device Service, identify responsible parties, device location, supply area, network point, and affected workgroup, and the linked copier, feeder, print engine, finishing unit, network interface, and supply system source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Record date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "scope_limit",
+              "label": "Scope / amount limit",
+              "units": 1.1111111111111112
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Copier And Multifunction-Device Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Service ticket and site",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "Asset tag, make, model, serial, and meter count",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Fault code, tray, paper, media, and finishing configuration",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Authorized scope-change decision and tracking",
+      "guidance": "Capture Copier And Multifunction-Device Service facts for copier, feeder, print engine, finishing unit, network interface, and supply system; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Copier And Multifunction-Device Service authorized-work checks",
+          "items": [
+            "Print, copy, scan, feed, duplex, and finish result",
+            "Jam location, roller, feeder, tray, and paper-path condition",
+            "Image quality, registration, density, and defect pattern",
+            "Supply, waste container, and consumable status",
+            "Network, address-book, authentication, and scan destination behavior",
+            "Safety label, cover, interlock, power, and heat-area condition"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Authorized work lines",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Authorized task or service",
+              "units": 1.25
+            },
+            {
+              "key": "resources",
+              "label": "Part, material, or resource",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Work performed and result",
+              "units": 1.15
+            },
+            {
+              "key": "status",
+              "label": "Change, status, or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Work evidence and customer acknowledgment",
+      "guidance": "Resolve open Copier And Multifunction-Device Service conditions; have office equipment coordinator assign the next Copier And Multifunction-Device Service owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scope changes, holds, and retained evidence",
+          "items": [
+            "Credential or address-book privacy concern",
+            "Heat, odor, smoke, electrical, or damaged-cord concern",
+            "Firmware or network change lacks authorization",
+            "Required function cannot be restored or isolated",
+            "Meter and fault-history record",
+            "Sample output showing before-and-after result",
+            "Part, firmware, and configuration record",
+            "User acceptance for required functions"
+          ],
+          "guidance": "Pause Copier And Multifunction-Device Service when an electrical, heat, privacy, authorization, or failed-function concern remains. Retain the available Copier And Multifunction-Device Service proof and route unresolved copier, feeder, print engine, finishing unit, network interface, and supply system scope to office equipment coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Completion status and open work",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work-order status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed within authorization",
+                "Completed with listed change",
+                "Follow-up work required",
+                "Held for approval",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer work acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Office Equipment Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Site contact or service reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

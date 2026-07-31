@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_159__home_inspection_completion_report",
+  "source_section": "field_service",
+  "source_filename": "dhs_159__home_inspection_completion_report.pdf",
+  "slug": "home-inspection-completion-report",
+  "title": "Home Inspection Completion Report",
+  "subtitle": "Home Condition Inspection: verifies results and open follow-up.",
+  "description": "Home Inspection Completion Report covers visible building system, component, room, exterior area, and reported concern. The home inspection coordinator records Home Condition Inspection performed work, tests, limits, and acceptance. Home Inspection Completion Report keeps Home Condition Inspection exceptions visible until the home inspection coordinator handoff.",
+  "use_case": "Use Home Inspection Completion Report at residence exterior, interior, accessible attic, visible foundation, and installed systems. Document visible building system, component, room, exterior area, and reported concern identity before Home Condition Inspection begins. Compare visible building system, component, room, exterior area, and reported concern findings with stated Home Condition Inspection criteria; route unresolved Home Condition Inspection issues to qualified home-condition reviewer. For Home Inspection Completion Report, confirm requirements for Home Condition Inspection. Ask qualified home-condition reviewer to review Home Condition Inspection conditions beyond the home inspection coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Completed-scope context and subject identity",
+      "guidance": "For Home Condition Inspection, identify responsible parties, residence exterior, interior, accessible attic, visible foundation, and installed systems, and the linked visible building system, component, room, exterior area, and reported concern source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Completion record ID",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Home Condition Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Client, property, and inspection number",
+              "units": 2.1666666666666665
+            },
+            {
+              "key": "identity_2",
+              "label": "Occupancy, weather, utilities, and access status",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "System age or identifier when visible",
+              "units": 2.0555555555555554
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Delivered result and verification evidence",
+      "guidance": "Capture Home Condition Inspection facts for visible building system, component, room, exterior area, and reported concern; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Completion verification lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Performed task or delivered item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 0.9
+            },
+            {
+              "key": "result",
+              "label": "Verified result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.85
+            },
+            {
+              "key": "follow_up",
+              "label": "Limitation or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Home Condition Inspection completion checks",
+          "items": [
+            "Site drainage, exterior, roof, and visible structure",
+            "Interior rooms, windows, doors, stairs, and finishes",
+            "Electrical, plumbing, heating, cooling, and installed equipment",
+            "Attic, insulation, ventilation, and moisture indication",
+            "Visible foundation, crawlspace, basement, and drainage",
+            "Limitations, inaccessible areas, and specialist referral triggers"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Remaining work, evidence, and next owner",
+      "guidance": "Resolve open Home Condition Inspection conditions; have home inspection coordinator assign the next Home Condition Inspection owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Limitations, open work, and retained evidence",
+          "items": [
+            "Unsafe or inaccessible area",
+            "Active electrical, fuel, structural, or water hazard",
+            "Concealed condition cannot be characterized",
+            "Specialist evaluation or immediate protection needed",
+            "Representative and defect-location photographs",
+            "System or component identification",
+            "Operating observation and measurement where appropriate",
+            "Limitation and referral record"
+          ],
+          "guidance": "Pause Home Condition Inspection when a safety hazard, access limitation, active damage, or required specialist escalation remains uncommunicated. Retain the available Home Condition Inspection proof and route unresolved visible building system, component, room, exterior area, and reported concern scope to home inspection coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Acceptance status and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completion status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Accepted",
+                "Accepted with listed limitation",
+                "Follow-up required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Home Inspection Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1850__tournament_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1850__tournament_registration_form.pdf",
+  "slug": "tournament-registration-form",
+  "title": "Tournament Registration Form",
+  "subtitle": "Capture division, team or entrant, bracket, and credential; confirm venue assignment and result acceptance.",
+  "description": "Tournament records division, team or entrant, bracket, credential, venue assignment, and result acceptance. Tournament evidence stays linked.",
+  "use_case": "Use this tournament registration and placement when staff must document division and team or entrant. Reconcile bracket, credential, venue assignment, and result acceptance before the tournament handoff. Use the division rules, entrant roster, bracket version, credential list, venue assignment, official scorecard, protest record, standings update, and award receipt. This record manages active competition through entrants, officials, court or field rotation, scorecards, standings, protests, advancement, awards, and result acceptance. Ask the assigned tournament reviewer to confirm division against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Tournament registrant details",
+      "guidance": "Connect entrant or team to division, bracket, venue court or field, credentials, schedule, official result, protest route, and award acceptance.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Tournament people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "division",
+              "label": "Division",
+              "units": 1.2
+            },
+            {
+              "key": "team_or_entrant",
+              "label": "Team or entrant",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Tournament task details",
+          "fields": [
+            {
+              "key": "bracket",
+              "label": "Bracket",
+              "units": 1.15
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.0
+            },
+            {
+              "key": "venue_assignment",
+              "label": "Venue assignment",
+              "units": 1.25
+            },
+            {
+              "key": "result_acceptance",
+              "label": "Result acceptance",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_choices",
+      "title": "Tournament requested options and readiness",
+      "guidance": "Record requested options, prerequisites, availability, and conditions without assuming an outcome.",
+      "blocks": [
+        {
+          "key": "registration_options",
+          "type": "table",
+          "label": "Tournament requested options",
+          "columns": [
+            {
+              "key": "requested_option_or_scope",
+              "label": "Requested option or scope",
+              "units": 1.2
+            },
+            {
+              "key": "availability_or_prerequisite",
+              "label": "Availability or prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.25
+            },
+            {
+              "key": "condition_support_or_owner",
+              "label": "Condition, support, or owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "start_readiness",
+          "type": "checklist",
+          "label": "Tournament registration readiness",
+          "items": [
+            "Division is identified for this record",
+            "Team or entrant matches the current request or source",
+            "Bracket is ready for point-of-use staff",
+            "Credential limits or questions are resolved",
+            "Venue assignment is communicated to the responsible person",
+            "Result acceptance is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_result",
+      "title": "Tournament exception review: confirmation and next steps",
+      "guidance": "Confirm the accepted scope, reference, open condition, and instructions.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Tournament registration result",
+          "fields": [
+            {
+              "key": "registration_outcome",
+              "label": "Registration outcome",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_division_and_entrant",
+              "label": "Confirmed division and entrant",
+              "units": 1.0
+            },
+            {
+              "key": "schedule_or_credential_reference",
+              "label": "Schedule or credential reference",
+              "units": 1.25
+            },
+            {
+              "key": "open_condition_and_owner",
+              "label": "Open condition and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Tournament registration receipt",
+          "fields": [
+            {
+              "key": "registration_coordinator_and_date",
+              "label": "Registration coordinator and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the recorded registration result and open condition."
+        }
+      ]
+    }
+  ]
+}

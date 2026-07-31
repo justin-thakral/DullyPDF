@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1418__childcare_incident_request_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1418__childcare_incident_request_form.pdf",
+  "slug": "childcare-incident-request-form",
+  "title": "Childcare Incident Request Form",
+  "subtitle": "Capture room headcount, care transition, observed condition, and immediate comfort; confirm guardian notice and center review.",
+  "description": "Childcare Incident records room headcount, care transition, observed condition, immediate comfort, guardian notice, and center review. Childcare Incident evidence stays linked.",
+  "use_case": "Use this childcare incident request intake when staff must document room headcount and care transition. Reconcile observed condition, immediate comfort, guardian notice, and center review before the childcare incident handoff. Use the room attendance sheet, staffing ratio record, care-transition timestamp, objective observation, first-aid supply record, guardian call log, and director review. Ask the assigned childcare incident reviewer to confirm room headcount against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Childcare Incident requester details",
+      "guidance": "Reconcile room headcount and care transitions; document observed condition, comfort provided, guardian notice, staff response, and center-level review.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Childcare Incident people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "reporting_person_and_role",
+              "label": "Reporting person and role",
+              "units": 1.0
+            },
+            {
+              "key": "date_and_time_first_reported",
+              "label": "Date and time first reported",
+              "units": 1.25
+            },
+            {
+              "key": "school_or_program_location",
+              "label": "School or program location",
+              "units": 1.1
+            },
+            {
+              "key": "room_headcount",
+              "label": "Room headcount",
+              "units": 1.2
+            },
+            {
+              "key": "care_transition",
+              "label": "Care transition",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Childcare Incident task details",
+          "fields": [
+            {
+              "key": "observed_condition",
+              "label": "Observed condition",
+              "units": 1.15
+            },
+            {
+              "key": "immediate_comfort",
+              "label": "Immediate comfort",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_notice",
+              "label": "Guardian notice",
+              "units": 1.25
+            },
+            {
+              "key": "center_review",
+              "label": "Center review",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Childcare Incident request scope",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Childcare Incident requested items",
+          "columns": [
+            {
+              "key": "requested_room_headcount",
+              "label": "Requested room headcount",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_care_transition",
+              "label": "Need or care transition",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_immediate_comfort",
+              "label": "Constraint or immediate comfort",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Childcare Incident request checks",
+          "items": [
+            "Room headcount is identified for this record",
+            "Care transition matches the current request or source",
+            "Observed condition is ready for point-of-use staff",
+            "Immediate comfort limits or questions are resolved",
+            "Guardian notice is communicated to the responsible person",
+            "Center review is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Childcare Incident response and handoff",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Childcare Incident request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Childcare Incident request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

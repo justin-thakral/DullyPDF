@@ -1,0 +1,336 @@
+{
+  "catalog_id": "business_operations/dbo_1800__project_change_request_intake_form",
+  "description": "For project change request, this intake form records requested change, rationale, alternatives, benefits, cost, schedule, risk, dependencies, rollback, and communication. Its supporting evidence includes impact analysis, estimate, architecture or process review, stakeholder comments, decision record, and revised plan.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Change opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Change site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Change contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Change process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Change due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this project change request record to its evidence.",
+          "key": "record_routing",
+          "label": "Project Change Request Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Project",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Sponsor",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Baseline scope",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Deliverables",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Milestone",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Budget",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture project, sponsor, baseline scope, deliverables, milestone, budget, resources, systems, and affected stakeholders for this project change request.",
+          "key": "core_identity",
+          "label": "Project Change Request Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify project, sponsor, baseline scope, deliverables, milestone, budget, resources, systems, and affected stakeholders for this project change request record.",
+      "key": "identity_1",
+      "title": "Intake Contact and Ownership"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Requested change",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Rationale",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Alternatives",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Benefits",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Cost",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Schedule",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For project change request, record requested change, rationale, alternatives, benefits, cost, schedule, risk, dependencies, rollback, and communication.",
+          "key": "task_inputs",
+          "label": "Project Change Request Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Project Change Request Desired Outcome and Service Fit",
+              "multiline": true
+            }
+          ],
+          "guidance": "State project change request outcomes, dependencies, timing, and sensitive-data limits.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Project Change Request Desired Outcome and Service Fit",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Route each unresolved project change request qualification item.",
+          "items": [
+            "Identity, authority, and primary contacts are verified",
+            "Desired outcome and service fit are understood",
+            "Sensitive information is limited to a stated purpose",
+            "Conflicts, dependencies, and risk screens are complete",
+            "Commitments remain within policy and capacity",
+            "Intake disposition and retention path are explicit"
+          ],
+          "key": "qualification_readiness",
+          "label": "Project Change Request Qualification Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not implement before required sponsor, budget, security, privacy, legal, or change-control approval. Route unresolved project change request work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Project Change Request Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For project change request, capture requested change, rationale, alternatives, benefits, cost, schedule, risk, dependencies, rollback, and communication.",
+      "key": "task_2",
+      "title": "Qualification Inputs"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not implement before required sponsor, budget, security, privacy, legal, or change-control approval. Do not release affected project change request work.",
+          "key": "stop_boundary",
+          "label": "Project Change Request Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Change exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Change correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Change escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close project change request exceptions with verification.",
+          "key": "exception_register",
+          "label": "Project Change Request Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Change notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Change notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Change interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Change review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Change release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep project change request controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Project Change Request Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Do not implement before required sponsor, budget, security, privacy, legal, or change-control approval. Control and route each project change request exception.",
+      "key": "exception_3",
+      "title": "Intake Risk and Referrals"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select intake form disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Qualified review",
+                "Hold",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Change decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Change approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Change schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate project change request disposition.",
+          "key": "disposition",
+          "label": "Project Change Request Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Project Change Request Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the project change request decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Project Change Request Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Change requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Change process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Project Change Request Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the project change request next step from impact analysis, estimate, architecture or process review, stakeholder comments, decision record, and revised plan.",
+      "key": "decision_4",
+      "title": "Intake Decision"
+    }
+  ],
+  "slug": "project-change-request-intake-form",
+  "source_filename": "dbo_1800__project_change_request_intake_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Project Change Request Intake Form: business project change evaluation and governance using project, requested change, and impact analysis.",
+  "title": "Project Change Request Intake Form",
+  "use_case": "Use the intake form during business project change evaluation and governance when the project change request record must identify project, sponsor, baseline scope, deliverables, milestone, budget, resources, systems, and affected stakeholders. Complete the applicable handoff for decision and conditions, baseline update, implementation owner, communication, benefit tracking, and rejected-request record."
+}

@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1817__volunteer_event_checklist",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1817__volunteer_event_checklist.pdf",
+  "slug": "volunteer-event-checklist",
+  "title": "Volunteer Event Checklist",
+  "subtitle": "Capture service role, shift, site lead, and task boundary; confirm equipment and hours confirmation.",
+  "description": "Volunteer Event records service role, shift, site lead, task boundary, equipment, and hours confirmation. Volunteer Event evidence stays linked.",
+  "use_case": "Use this volunteer event stage-gated verification when staff must document service role and shift. Reconcile site lead, task boundary, equipment, and hours confirmation before the volunteer event handoff. Use the role description, shift roster, site-lead brief, safety equipment issue, task completion sheet, break record, hours verification, and departure log. This record assigns a service contributor to a nonprofit or community shift with a task brief, site supervisor, tools, protective equipment, break coverage, verified hours, and service exit. Ask the assigned volunteer event reviewer to confirm service role against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Volunteer Event starting details",
+      "guidance": "Assign service role, shift, site lead, task boundary, tool or protective equipment, breaks, accessibility route, completed hours, and departure.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Volunteer Event people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "service_role",
+              "label": "Service role",
+              "units": 1.1
+            },
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 1.2
+            },
+            {
+              "key": "site_lead",
+              "label": "Site lead",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Volunteer Event task details",
+          "fields": [
+            {
+              "key": "task_boundary",
+              "label": "Task boundary",
+              "units": 1.15
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "hours_confirmation",
+              "label": "Hours confirmation",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Volunteer Event checks and corrections",
+      "guidance": "Check current volunteer event facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Volunteer Event required checks",
+          "items": [
+            "Service role is identified for this record",
+            "Shift matches the current request or source",
+            "Site lead is ready for point-of-use staff",
+            "Task boundary limits or questions are resolved",
+            "Equipment is communicated to the responsible person",
+            "Hours confirmation is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Volunteer Event failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Volunteer Event decision and readiness",
+      "guidance": "Hold volunteer event readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Volunteer Event checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Volunteer Event reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Volunteer Event receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

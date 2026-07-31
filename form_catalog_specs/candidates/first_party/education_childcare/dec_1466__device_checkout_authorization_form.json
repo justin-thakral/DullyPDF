@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1466__device_checkout_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1466__device_checkout_authorization_form.pdf",
+  "slug": "device-checkout-authorization-form",
+  "title": "Device Checkout Authorization Form",
+  "subtitle": "Capture asset tag, charger, protective case, and software access; confirm existing damage and return condition.",
+  "description": "Device Checkout records asset tag, charger, protective case, software access, existing damage, and return condition. Device Checkout evidence stays linked.",
+  "use_case": "Use this device checkout authorization decision when staff must document asset tag and charger. Reconcile protective case, software access, existing damage, and return condition before the device checkout handoff. Use the inventory record, barcode or serial scan, accessory count, condition images, acceptable-use receipt, repair ticket, return scan, and damage disposition. Ask the assigned device checkout reviewer to confirm asset tag against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Device Checkout signer details review",
+      "guidance": "Match asset tag and serial number to charger and case; photograph existing damage, record software access, custody transfer, repair route, and return condition.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Device Checkout people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "asset_tag",
+              "label": "Asset tag",
+              "units": 1.2
+            },
+            {
+              "key": "charger",
+              "label": "Charger",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Device Checkout task details",
+          "fields": [
+            {
+              "key": "protective_case",
+              "label": "Protective case",
+              "units": 1.15
+            },
+            {
+              "key": "software_access",
+              "label": "Software access",
+              "units": 1.0
+            },
+            {
+              "key": "existing_damage",
+              "label": "Existing damage",
+              "units": 1.25
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Device Checkout scope choices review",
+      "guidance": "Decide each device checkout scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Device Checkout itemized scope",
+          "fields": [
+            {
+              "key": "asset_tag",
+              "label": "Asset tag",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "charger",
+              "label": "Charger",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "protective_case",
+              "label": "Protective case",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "software_access",
+              "label": "Software access",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "existing_damage",
+              "label": "Existing damage",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Device Checkout authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Device Checkout effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Device Checkout signer receipt and handoff",
+      "guidance": "Only recorded device checkout choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Device Checkout limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Device Checkout signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Device Checkout signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Device Checkout authorization boundary",
+          "guidance": "Named device checkout reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2645__lab_order_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2645__lab_order_form.pdf",
+  "slug": "lab-order-form",
+  "title": "Lab Order Form",
+  "subtitle": "Capture test order, specimen requirement, priority, and collection site; confirm result recipient and critical route.",
+  "description": "Lab records test order, specimen requirement, priority, collection site, result recipient, and critical route. Lab evidence stays linked.",
+  "use_case": "Use this lab authorized order and fulfillment when staff must document test order and specimen requirement. Reconcile priority, collection site, result recipient, and critical route before the lab handoff. Use the authenticated order, patient-label match, specimen guide, preparation instruction, collection record, chain-of-custody event, result routing, and critical-call receipt. Ask the assigned lab reviewer to confirm test order against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Lab order details",
+      "guidance": "Match authenticated test order to patient, specimen type, preparation, priority, collection site, label custody, result recipient, and critical-result route. Keep any urgent lab issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Lab people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "ordering_or_referring_professional",
+              "label": "Ordering or referring professional",
+              "units": 1.1
+            },
+            {
+              "key": "test_order",
+              "label": "Test order",
+              "units": 1.2
+            },
+            {
+              "key": "specimen_requirement",
+              "label": "Specimen requirement",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Lab task details",
+          "fields": [
+            {
+              "key": "priority",
+              "label": "Priority",
+              "units": 1.15
+            },
+            {
+              "key": "collection_site",
+              "label": "Collection site",
+              "units": 1.0
+            },
+            {
+              "key": "result_recipient",
+              "label": "Result recipient",
+              "units": 1.25
+            },
+            {
+              "key": "critical_route",
+              "label": "Critical route",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "order_lines",
+      "title": "Lab line items",
+      "guidance": "Record exact quantities, timing, restrictions, and substitutions.",
+      "blocks": [
+        {
+          "key": "ordered_items",
+          "type": "table",
+          "label": "Lab items and requirements",
+          "columns": [
+            {
+              "key": "test_order",
+              "label": "Test order",
+              "units": 1.2
+            },
+            {
+              "key": "quantity_or_timing",
+              "label": "Quantity or timing",
+              "units": 1.1
+            },
+            {
+              "key": "requirement_or_priority",
+              "label": "Requirement or priority",
+              "units": 1.25
+            },
+            {
+              "key": "substitution_rule",
+              "label": "Substitution rule",
+              "units": 1.0
+            },
+            {
+              "key": "line_status",
+              "label": "Line status",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "order_instructions",
+          "type": "textarea",
+          "label": "Lab production or service instructions",
+          "fields": [
+            {
+              "key": "delivery_setup_result_recipient_or_other_line_instruction",
+              "label": "Delivery, setup, result recipient, or other line instruction"
+            }
+          ],
+          "height": 42
+        }
+      ]
+    },
+    {
+      "key": "fulfillment",
+      "title": "Lab decision and delivery",
+      "guidance": "Record the receiving person, variance, and final acceptance.",
+      "blocks": [
+        {
+          "key": "fulfillment_details",
+          "type": "fields",
+          "label": "Lab fulfillment",
+          "fields": [
+            {
+              "key": "planned_delivery_or_service_time",
+              "label": "Planned delivery or service time",
+              "units": 1.15
+            },
+            {
+              "key": "actual_delivery_or_service_time",
+              "label": "Actual delivery or service time",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_person",
+              "label": "Receiving person",
+              "units": 1.25
+            },
+            {
+              "key": "variance_and_correction",
+              "label": "Variance and correction",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "order_receipt",
+          "type": "signatures",
+          "label": "Lab authorization and receipt",
+          "fields": [
+            {
+              "key": "authorized_requester_and_date",
+              "label": "Authorized requester and date",
+              "units": 1.15
+            },
+            {
+              "key": "receiving_service_staff_and_date",
+              "label": "Receiving service staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the delivered scope and visible variance."
+        }
+      ]
+    }
+  ]
+}

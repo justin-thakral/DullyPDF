@@ -1,0 +1,348 @@
+{
+  "catalog_id": "home_services/dhs_2416__plumbing_call_estimate_worksheet",
+  "description": "For plumbing call, this estimate worksheet records urgency, isolation, diagnosis, repair options, parts, code or permit needs, water-damage concern, and price approval. Its supporting evidence includes leak photos, pressure or flow readings, drain observation, removed-part condition, and post-repair test.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Call opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Call site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Call contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Call service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Call due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this plumbing call record to its evidence.",
+          "key": "record_routing",
+          "label": "Plumbing Call Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Fixture or piping",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Leak location",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Shutoff access",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Water availability",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Affected rooms",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture fixture or piping, leak location, shutoff access, water availability, affected rooms, occupancy, and prior repair for this plumbing call.",
+          "key": "core_identity",
+          "label": "Plumbing Call Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify fixture or piping, leak location, shutoff access, water availability, affected rooms, occupancy, and prior repair for this plumbing call record.",
+      "key": "identity_1",
+      "title": "Estimate Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Urgency",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Isolation",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Diagnosis",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Repair options",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Code or permit needs",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For plumbing call, record urgency, isolation, diagnosis, repair options, parts, code or permit needs, water-damage concern, and price approval.",
+          "key": "task_inputs",
+          "label": "Plumbing Call Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Plumbing Call Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State plumbing call outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Plumbing Call Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Call work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Call owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate plumbing call items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Plumbing Call Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Shut off and escalate uncontrolled water, sewage exposure, gas concern, contamination, or concealed major damage. Route unresolved plumbing call work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Plumbing Call Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For plumbing call, capture urgency, isolation, diagnosis, repair options, parts, code or permit needs, water-damage concern, and price approval.",
+      "key": "task_2",
+      "title": "Quantities, Rates, and Assumptions"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Call when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Call measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Call evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Call result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For plumbing call, record leak photos, pressure or flow readings, drain observation, removed-part condition, and post-repair test.",
+          "key": "evidence_register",
+          "label": "Plumbing Call Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Leak photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Pressure or flow readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Drain observation",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Removed-part condition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every plumbing call evidence source.",
+          "key": "evidence_sources",
+          "label": "Plumbing Call Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Plumbing Call Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State plumbing call limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Plumbing Call Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support plumbing call findings with leak photos, pressure or flow readings, drain observation, removed-part condition, and post-repair test.",
+      "key": "observation_3",
+      "title": "Pricing Evidence and Options"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate worksheet disposition",
+                "Approve estimate",
+                "Approve with option",
+                "Revise basis",
+                "Decline to price"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Call decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Call scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Call authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Call review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate plumbing call disposition.",
+          "key": "disposition",
+          "label": "Plumbing Call Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Plumbing Call Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the plumbing call decision to evidence.",
+          "height": 46,
+          "key": "decision_basis",
+          "label": "Plumbing Call Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Call crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Call service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Plumbing Call Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the plumbing call next step from leak photos, pressure or flow readings, drain observation, removed-part condition, and post-repair test.",
+      "key": "decision_4",
+      "title": "Price Review"
+    }
+  ],
+  "slug": "plumbing-call-estimate-worksheet",
+  "source_filename": "dhs_2416__plumbing_call_estimate_worksheet.pdf",
+  "source_section": "home_services",
+  "subtitle": "Plumbing Call Estimate Worksheet: residential plumbing service call dispatch using fixture or piping, urgency, and leak photos.",
+  "title": "Plumbing Call Estimate Worksheet",
+  "use_case": "Use the estimate worksheet during residential plumbing service call dispatch when the plumbing call record must identify fixture or piping, leak location, shutoff access, water availability, affected rooms, occupancy, and prior repair. Complete the applicable handoff for leak-free test, restored fixtures, customer instructions, damage referral, permit follow-up, and service warranty."
+}

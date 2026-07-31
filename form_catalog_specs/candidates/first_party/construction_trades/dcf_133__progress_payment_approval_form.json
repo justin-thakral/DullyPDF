@@ -1,0 +1,329 @@
+{
+  "catalog_id": "construction_trades/dcf_133__progress_payment_approval_form",
+  "description": "For progress payment, this approval form records earned-value basis, percent complete, authorized changes, deductions, lien requirements, and forecast balance. Its supporting evidence includes quantity backup, site photos, delivery proof, stored-material inventory, payroll record, and inspection status.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Payment opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Payment site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Payment contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Payment superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Payment due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this progress payment record to its evidence.",
+          "key": "record_routing",
+          "label": "Progress Payment Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Schedule of values",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Pay period",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Contract modifications",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Retainage",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture schedule of values, pay period, contract modifications, retainage, stored materials, and prior certificates for this progress payment.",
+          "key": "core_identity",
+          "label": "Progress Payment Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify schedule of values, pay period, contract modifications, retainage, stored materials, and prior certificates for this progress payment record.",
+      "key": "identity_1",
+      "title": "Proposal and Authority Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Earned-value basis",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Percent complete",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Authorized changes",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Deductions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For progress payment, record earned-value basis, percent complete, authorized changes, deductions, lien requirements, and forecast balance.",
+          "key": "task_inputs",
+          "label": "Progress Payment Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Payment decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Payment supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Payment review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified progress payment facts from judgment.",
+          "key": "review_criteria",
+          "label": "Progress Payment Review Criteria and Support",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Resolve each failed progress payment approval check.",
+          "items": [
+            "Decision statement is singular and unambiguous",
+            "Approver authority and any conflict are checked",
+            "Cost, schedule, quality, safety, and compliance effects are addressed",
+            "Alternatives and recommendation are documented",
+            "Conditions and effective period can be monitored",
+            "Implementation owner acknowledges the disposition"
+          ],
+          "key": "decision_readiness",
+          "label": "Progress Payment Decision Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Hold unsupported, duplicated, disputed, nonconforming, or contractually ineligible amounts for qualified review. Route unresolved progress payment work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Progress Payment Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For progress payment, capture earned-value basis, percent complete, authorized changes, deductions, lien requirements, and forecast balance.",
+      "key": "task_2",
+      "title": "Decision Package"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Payment when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Payment measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Payment evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Payment result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For progress payment, record quantity backup, site photos, delivery proof, stored-material inventory, payroll record, and inspection status.",
+          "key": "evidence_register",
+          "label": "Progress Payment Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Quantity backup",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Site photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Delivery proof",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Stored-material inventory",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Payroll record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every progress payment evidence source.",
+          "key": "evidence_sources",
+          "label": "Progress Payment Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support progress payment findings with quantity backup, site photos, delivery proof, stored-material inventory, payroll record, and inspection status.",
+      "key": "observation_3",
+      "title": "Supporting Record Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select approval form disposition",
+                "Approve",
+                "Approve with conditions",
+                "Revise and resubmit",
+                "Reject"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Payment decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Payment approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Payment authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Payment review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate progress payment disposition.",
+          "key": "disposition",
+          "label": "Progress Payment Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Progress Payment Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the progress payment decision to evidence.",
+          "height": 44,
+          "key": "decision_basis",
+          "label": "Progress Payment Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Payment coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Payment manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Payment approver signature and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Progress Payment Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the progress payment next step from quantity backup, site photos, delivery proof, stored-material inventory, payroll record, and inspection status.",
+      "key": "decision_4",
+      "title": "Approver Disposition"
+    }
+  ],
+  "slug": "progress-payment-approval-form",
+  "source_filename": "dcf_133__progress_payment_approval_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Progress Payment Approval Form: progress-payment application review using schedule of values, earned-value basis, and quantity backup.",
+  "title": "Progress Payment Approval Form",
+  "use_case": "Use the approval form during progress-payment application review when the progress payment record must identify schedule of values, pay period, contract modifications, retainage, stored materials, and prior certificates. Complete the applicable handoff for certified amount, exception ledger, accounting handoff, updated continuation sheet, and payment record."
+}

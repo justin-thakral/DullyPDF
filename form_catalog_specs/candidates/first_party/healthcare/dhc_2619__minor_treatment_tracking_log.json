@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2619__minor_treatment_tracking_log",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2619__minor_treatment_tracking_log.pdf",
+  "slug": "minor-treatment-tracking-log",
+  "title": "Minor Treatment Tracking Log",
+  "subtitle": "Capture requested service, guardian authority, qualified decision, and consent limit; confirm encounter result and follow-up.",
+  "description": "Minor Treatment records requested service, guardian authority, qualified decision, consent limit, encounter result, and follow-up. Minor Treatment evidence stays linked.",
+  "use_case": "Use this minor treatment time-ordered tracking when staff must document requested service and guardian authority. Reconcile qualified decision, consent limit, encounter result, and follow-up before the minor treatment handoff. Use the service request, minor and guardian identity checks, authority documentation, qualified recommendation, itemized consent, encounter record, aftercare instructions, and follow-up receipt. This authorization centers a minor, guardian or other lawful authority, a named treatment or procedure, qualified explanation, itemized limits, encounter result, aftercare receipt, and guardian follow-up. Ask the assigned minor treatment reviewer to confirm requested service against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Minor Treatment starting details review",
+      "guidance": "Name requested service, minor and guardian, custody or authority source, qualified decision maker, consent limits, encounter outcome, aftercare route, and follow-up. Keep any urgent minor treatment issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Minor Treatment people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "patient_location_or_service_site",
+              "label": "Patient location or service site",
+              "units": 1.1
+            },
+            {
+              "key": "requested_service",
+              "label": "Requested service",
+              "units": 1.2
+            },
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Minor Treatment task details",
+          "fields": [
+            {
+              "key": "qualified_decision",
+              "label": "Qualified decision",
+              "units": 1.15
+            },
+            {
+              "key": "consent_limit",
+              "label": "Consent limit",
+              "units": 1.0
+            },
+            {
+              "key": "encounter_result",
+              "label": "Encounter result",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Minor Treatment event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Minor Treatment events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "requested_service",
+              "label": "Requested service",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "encounter_result",
+              "label": "Encounter result",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Minor Treatment correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Minor Treatment exception review and current state",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Minor Treatment status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Minor Treatment open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Minor Treatment log receipt",
+          "fields": [
+            {
+              "key": "department_log_custodian_and_date",
+              "label": "Department log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

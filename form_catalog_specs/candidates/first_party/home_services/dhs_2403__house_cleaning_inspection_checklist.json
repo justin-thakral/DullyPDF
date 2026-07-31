@@ -1,0 +1,285 @@
+{
+  "catalog_id": "home_services/dhs_2403__house_cleaning_inspection_checklist",
+  "description": "For house cleaning, this inspection checklist records included tasks, excluded areas, soil conditions, products, add-ons, crew plan, duration, and price basis. Its supporting evidence includes pre-service condition photos, customer instructions, task completion record, exception photos, and supply use.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this house cleaning review to the service record.",
+          "key": "service_review_reference",
+          "label": "House Cleaning Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Service address",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Rooms",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Surfaces",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Occupants",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed house cleaning location and assets.",
+          "key": "service_context",
+          "label": "House Cleaning Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the house cleaning service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Service Visit Reference"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each house cleaning item after direct review.",
+          "items": [
+            "Entry, living areas, and reachable surfaces match the agreed task list",
+            "Kitchen counters, sink, appliance exteriors, and floor are complete",
+            "Bathrooms, mirrors, fixtures, and floors are complete",
+            "Bedrooms and requested rotation items are complete",
+            "Trash, supplies, fragile items, pets, keys, and access are accounted for",
+            "Missed areas, damage concerns, add-ons, and customer notes are recorded"
+          ],
+          "key": "quality_checks",
+          "label": "House Cleaning Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one house cleaning row for each reviewed area.",
+          "key": "area_results",
+          "label": "House Cleaning Area and Task Results",
+          "rows": 6,
+          "type": "table"
+        }
+      ],
+      "guidance": "Check completed house cleaning work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Room and Task Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Cleaning owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each house cleaning concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "House Cleaning Issue, Photo, and Correction Record",
+          "rows": 8,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "House Cleaning Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved house cleaning expectations here.",
+          "height": 46,
+          "key": "customer_concern",
+          "label": "House Cleaning Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every house cleaning issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the house cleaning outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "House Cleaning Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Room-by-room verification",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Exception resolution",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "Customer acceptance",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Recurring preferences",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For house cleaning, record room-by-room verification, exception resolution, customer acceptance, recurring preferences, and payment handoff.",
+          "key": "quality_followup",
+          "label": "House Cleaning Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "House Cleaning Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the house cleaning result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Crew and Customer Acknowledgment"
+    }
+  ],
+  "slug": "house-cleaning-inspection-checklist",
+  "source_filename": "dhs_2403__house_cleaning_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "House Cleaning Inspection Checklist: home cleaning estimate, dispatch, and acceptance using service address, included tasks, and pre-service condition photos.",
+  "title": "House Cleaning Inspection Checklist",
+  "use_case": "Use the inspection checklist during home cleaning estimate, dispatch, and acceptance when the house cleaning record must identify service address, rooms, surfaces, occupants, pets, access, customer priorities, and fragile items. Complete the applicable handoff for room-by-room verification, exception resolution, customer acceptance, recurring preferences, and payment handoff."
+}

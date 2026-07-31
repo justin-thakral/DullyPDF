@@ -1,0 +1,239 @@
+{
+  "catalog_id": "construction_trades/dcf_162__bid_walkthrough_log_form",
+  "description": "For bid walkthrough, this log form records observable conditions, scope interfaces, measurement needs, protection, logistics, assumptions, and questions. Its supporting evidence includes annotated plans, measurements, photos, attendee notes, hazardous-material disclosures, and addendum references.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Walkthrough opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Walkthrough site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Walkthrough contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Walkthrough superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Walkthrough due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this bid walkthrough record to its evidence.",
+          "key": "record_routing",
+          "label": "Bid Walkthrough Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Bid package",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Site zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Existing systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Access routes",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Working hours",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture bid package, site zones, existing systems, access routes, working hours, utilities, and owner-furnished information for this bid walkthrough.",
+          "key": "core_identity",
+          "label": "Bid Walkthrough Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify bid package, site zones, existing systems, access routes, working hours, utilities, and owner-furnished information for this bid walkthrough record.",
+      "key": "identity_1",
+      "title": "Log Coverage and Custodian"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Walkthrough when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Walkthrough measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Walkthrough evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Walkthrough result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For bid walkthrough, record annotated plans, measurements, photos, attendee notes, hazardous-material disclosures, and addendum references.",
+          "key": "evidence_register",
+          "label": "Bid Walkthrough Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Annotated plans",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Attendee notes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Hazardous-material disclosures",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every bid walkthrough evidence source.",
+          "key": "evidence_sources",
+          "label": "Bid Walkthrough Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Walkthrough dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Walkthrough owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Walkthrough escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep bid walkthrough items open through verification.",
+          "key": "open_item_register",
+          "label": "Bid Walkthrough Open Items and Next Actions",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Walkthrough reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved bid walkthrough entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Bid Walkthrough Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Bid Walkthrough Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For bid walkthrough, explain bid assumptions, RFI list, estimate handoff, risk allowance, addendum tracking, and acknowledgment record; transfer each bid walkthrough open entry to the bid walkthrough successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Bid Walkthrough Period Transfer Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support bid walkthrough findings with annotated plans, measurements, photos, attendee notes, hazardous-material disclosures, and addendum references.",
+      "key": "observation_2",
+      "title": "Dated Events and Supporting Facts"
+    }
+  ],
+  "slug": "bid-walkthrough-log-form",
+  "source_filename": "dcf_162__bid_walkthrough_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Bid Walkthrough Log Form: pre-bid site walkthrough and constraint capture using bid package, observable conditions, and annotated plans.",
+  "title": "Bid Walkthrough Log Form",
+  "use_case": "Use the log form during pre-bid site walkthrough and constraint capture when the bid walkthrough record must identify bid package, site zones, existing systems, access routes, working hours, utilities, and owner-furnished information. Complete the applicable handoff for bid assumptions, RFI list, estimate handoff, risk allowance, addendum tracking, and acknowledgment record."
+}

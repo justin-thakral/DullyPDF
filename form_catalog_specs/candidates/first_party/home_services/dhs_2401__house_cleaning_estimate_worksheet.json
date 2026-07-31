@@ -1,0 +1,347 @@
+{
+  "catalog_id": "home_services/dhs_2401__house_cleaning_estimate_worksheet",
+  "description": "For house cleaning, this estimate worksheet records included tasks, excluded areas, soil conditions, products, add-ons, crew plan, duration, and price basis. Its supporting evidence includes pre-service condition photos, customer instructions, task completion record, exception photos, and supply use.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Cleaning opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Cleaning site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Cleaning contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Cleaning service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Cleaning due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this house cleaning record to its evidence.",
+          "key": "record_routing",
+          "label": "House Cleaning Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Service address",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Rooms",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Surfaces",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Occupants",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Pets",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Access",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture service address, rooms, surfaces, occupants, pets, access, customer priorities, and fragile items for this house cleaning.",
+          "key": "core_identity",
+          "label": "House Cleaning Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify service address, rooms, surfaces, occupants, pets, access, customer priorities, and fragile items for this house cleaning record.",
+      "key": "identity_1",
+      "title": "Estimate Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Included tasks",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Excluded areas",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Soil conditions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Products",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Add-ons",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Crew plan",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For house cleaning, record included tasks, excluded areas, soil conditions, products, add-ons, crew plan, duration, and price basis.",
+          "key": "task_inputs",
+          "label": "House Cleaning Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "House Cleaning Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State house cleaning outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "House Cleaning Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Cleaning work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Cleaning owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate house cleaning items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "House Cleaning Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        }
+      ],
+      "guidance": "For house cleaning, capture included tasks, excluded areas, soil conditions, products, add-ons, crew plan, duration, and price basis.",
+      "key": "task_2",
+      "title": "Quantities, Rates, and Assumptions"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Cleaning when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Cleaning measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Cleaning evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Cleaning result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For house cleaning, record pre-service condition photos, customer instructions, task completion record, exception photos, and supply use.",
+          "key": "evidence_register",
+          "label": "House Cleaning Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Pre-service condition photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Customer instructions",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Task completion record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Exception photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every house cleaning evidence source.",
+          "key": "evidence_sources",
+          "label": "House Cleaning Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "House Cleaning Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State house cleaning limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "House Cleaning Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support house cleaning findings with pre-service condition photos, customer instructions, task completion record, exception photos, and supply use.",
+      "key": "observation_3",
+      "title": "Pricing Evidence and Options"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate worksheet disposition",
+                "Approve estimate",
+                "Approve with option",
+                "Revise basis",
+                "Decline to price"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Cleaning decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Cleaning scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Cleaning authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Cleaning review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate house cleaning disposition.",
+          "key": "disposition",
+          "label": "House Cleaning Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "House Cleaning Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the house cleaning decision to evidence.",
+          "height": 46,
+          "key": "decision_basis",
+          "label": "House Cleaning Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Cleaning crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Cleaning service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "House Cleaning Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the house cleaning next step from pre-service condition photos, customer instructions, task completion record, exception photos, and supply use.",
+      "key": "decision_4",
+      "title": "Price Review"
+    }
+  ],
+  "slug": "house-cleaning-estimate-worksheet",
+  "source_filename": "dhs_2401__house_cleaning_estimate_worksheet.pdf",
+  "source_section": "home_services",
+  "subtitle": "House Cleaning Estimate Worksheet: home cleaning estimate, dispatch, and acceptance using service address, included tasks, and pre-service condition photos.",
+  "title": "House Cleaning Estimate Worksheet",
+  "use_case": "Use the estimate worksheet during home cleaning estimate, dispatch, and acceptance when the house cleaning record must identify service address, rooms, surfaces, occupants, pets, access, customer priorities, and fragile items. Complete the applicable handoff for room-by-room verification, exception resolution, customer acceptance, recurring preferences, and payment handoff."
+}

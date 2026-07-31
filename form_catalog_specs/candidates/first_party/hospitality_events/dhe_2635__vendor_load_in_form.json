@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2635__vendor_load_in_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2635__vendor_load_in_form.pdf",
+  "slug": "vendor-load-in-form",
+  "title": "Vendor Load-In Form",
+  "subtitle": "Capture vendor vehicle, dock slot, freight, and credential; confirm route and load-out reconciliation.",
+  "description": "Vendor Load In records vendor vehicle, dock slot, freight, credential, route, and load-out reconciliation. Vendor Load In evidence stays linked.",
+  "use_case": "Use this vendor load in operational record when staff must document vendor vehicle and dock slot. Reconcile freight, credential, route, and load-out reconciliation before the vendor load in handoff. Use the dock schedule, vehicle and driver list, freight manifest, credential roster, route map, elevator booking, marshal assignment, staging check, and load-out receipt. Ask the assigned vendor load in reviewer to confirm vendor vehicle against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Vendor Load In starting details",
+      "guidance": "Schedule vendor vehicle, driver, dock slot, freight dimensions, equipment, credential, approved route, elevator or marshal support, staging, and load-out reconciliation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Vendor Load In people and reference",
+          "fields": [
+            {
+              "key": "operational_record_subject",
+              "label": "Operational record subject",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_contact",
+              "label": "Responsible contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_work_area",
+              "label": "Property, venue, or work area",
+              "units": 1.25
+            },
+            {
+              "key": "scheduled_or_discovery_date",
+              "label": "Scheduled or discovery date",
+              "units": 1.1
+            },
+            {
+              "key": "vendor_vehicle",
+              "label": "Vendor vehicle",
+              "units": 1.2
+            },
+            {
+              "key": "dock_slot",
+              "label": "Dock slot",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Vendor Load In task details",
+          "fields": [
+            {
+              "key": "freight",
+              "label": "Freight",
+              "units": 1.15
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.0
+            },
+            {
+              "key": "route",
+              "label": "Route",
+              "units": 1.25
+            },
+            {
+              "key": "load_out_reconciliation",
+              "label": "Load-out reconciliation",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Vendor Load In activity",
+      "guidance": "Record each meaningful vendor load in event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Vendor Load In activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "vendor_vehicle",
+              "label": "Vendor vehicle",
+              "units": 1.1
+            },
+            {
+              "key": "freight",
+              "label": "Freight",
+              "units": 1.25
+            },
+            {
+              "key": "route",
+              "label": "Route",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Vendor Load In change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Vendor Load In exception review and completion",
+      "guidance": "Leave the current vendor load in result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Vendor Load In final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Vendor Load In completion receipt",
+          "fields": [
+            {
+              "key": "responsible_service_or_operations_staff_and_date",
+              "label": "Responsible service or operations staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded vendor load in task status."
+        }
+      ]
+    }
+  ]
+}

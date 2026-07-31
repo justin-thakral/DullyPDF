@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1828__vendor_booth_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1828__vendor_booth_registration_form.pdf",
+  "slug": "vendor-booth-registration-form",
+  "title": "Vendor Booth Registration Form",
+  "subtitle": "Capture booth number, footprint, product type, and power need; confirm load-in and credential.",
+  "description": "Vendor Booth records booth number, footprint, product type, power need, load-in, and credential. Vendor Booth evidence stays linked.",
+  "use_case": "Use this vendor booth registration and placement when staff must document booth number and footprint. Reconcile product type, power need, load-in, and credential before the vendor booth handoff. Use the exhibitor application, floorplan assignment, product description, utility order, insurance or approval route, load-in schedule, credential list, and load-out signoff. Ask the assigned vendor booth reviewer to confirm booth number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Vendor Booth contact and reference",
+      "guidance": "Assign booth number and footprint; record products, power and internet, load-in slot, fire-lane limit, credentials, waste plan, and load-out.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Vendor Booth people and reference",
+          "fields": [
+            {
+              "key": "organization_legal_or_public_name",
+              "label": "Organization legal or public name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_contact_name",
+              "label": "Primary contact name",
+              "units": 1.0
+            },
+            {
+              "key": "primary_contact_phone",
+              "label": "Primary contact phone",
+              "units": 1.25
+            },
+            {
+              "key": "primary_contact_email",
+              "label": "Primary contact email",
+              "units": 1.1
+            },
+            {
+              "key": "booth_number",
+              "label": "Booth number",
+              "units": 1.2
+            },
+            {
+              "key": "footprint",
+              "label": "Footprint",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Vendor Booth task details",
+          "fields": [
+            {
+              "key": "product_type",
+              "label": "Product type",
+              "units": 1.15
+            },
+            {
+              "key": "power_need",
+              "label": "Power need",
+              "units": 1.0
+            },
+            {
+              "key": "load_in",
+              "label": "Load-in",
+              "units": 1.25
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_choices",
+      "title": "Vendor Booth requested options and readiness",
+      "guidance": "Record requested options, prerequisites, availability, and conditions without assuming an outcome.",
+      "blocks": [
+        {
+          "key": "registration_options",
+          "type": "table",
+          "label": "Vendor Booth requested options",
+          "columns": [
+            {
+              "key": "requested_option_or_scope",
+              "label": "Requested option or scope",
+              "units": 1.2
+            },
+            {
+              "key": "availability_or_prerequisite",
+              "label": "Availability or prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.25
+            },
+            {
+              "key": "condition_support_or_owner",
+              "label": "Condition, support, or owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "start_readiness",
+          "type": "checklist",
+          "label": "Vendor Booth registration readiness",
+          "items": [
+            "Booth number is identified for this record",
+            "Footprint matches the current request or source",
+            "Product type is ready for point-of-use staff",
+            "Power need limits or questions are resolved",
+            "Load-in is communicated to the responsible person",
+            "Credential is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_result",
+      "title": "Vendor Booth exception review: confirmation and next steps",
+      "guidance": "Confirm the accepted scope, reference, open condition, and instructions.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Vendor Booth registration result",
+          "fields": [
+            {
+              "key": "registration_outcome",
+              "label": "Registration outcome",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_booth_and_footprint",
+              "label": "Confirmed booth and footprint",
+              "units": 1.0
+            },
+            {
+              "key": "utility_or_credential_reference",
+              "label": "Utility or credential reference",
+              "units": 1.25
+            },
+            {
+              "key": "open_condition_and_owner",
+              "label": "Open condition and owner",
+              "units": 1.1
+            },
+            {
+              "key": "load_in_instructions_sent",
+              "label": "Load-in instructions sent",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Vendor Booth registration receipt",
+          "fields": [
+            {
+              "key": "registration_coordinator_and_date",
+              "label": "Registration coordinator and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the recorded registration result and open condition."
+        }
+      ]
+    }
+  ]
+}

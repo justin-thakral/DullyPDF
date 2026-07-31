@@ -1,0 +1,336 @@
+{
+  "catalog_id": "business_operations/dbo_1805__internal_approval_intake_form",
+  "description": "For internal approval, this intake form records decision requested, authority basis, options, recommendation, impact, conditions, required reviewers, and expiry. Its supporting evidence includes supporting analysis, policy reference, budget proof, reviewer comments, conflict disclosure, and prior decisions.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Approval opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Approval site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Approval contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Approval process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Approval due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this internal approval record to its evidence.",
+          "key": "record_routing",
+          "label": "Internal Approval Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Request type",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Business unit",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Requester",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Approval owner",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Value",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Effective date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture request type, business unit, requester, responsible owner, value, effective date, related records, and confidentiality for this internal approval.",
+          "key": "core_identity",
+          "label": "Internal Approval Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify request type, business unit, requester, responsible owner, value, effective date, related records, and confidentiality for this internal approval record.",
+      "key": "identity_1",
+      "title": "Intake Contact and Ownership"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Decision requested",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Options",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Recommendation",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Impact",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Conditions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For internal approval, record decision requested, authority basis, options, recommendation, impact, conditions, required reviewers, and expiry.",
+          "key": "task_inputs",
+          "label": "Internal Approval Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Internal Approval Desired Outcome and Service Fit",
+              "multiline": true
+            }
+          ],
+          "guidance": "State internal approval outcomes, dependencies, timing, and sensitive-data limits.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Internal Approval Desired Outcome and Service Fit",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Route each unresolved internal approval qualification item.",
+          "items": [
+            "Identity, authority, and primary contacts are verified",
+            "Desired outcome and service fit are understood",
+            "Sensitive information is limited to a stated purpose",
+            "Conflicts, dependencies, and risk screens are complete",
+            "Commitments remain within policy and capacity",
+            "Intake disposition and retention path are explicit"
+          ],
+          "key": "qualification_readiness",
+          "label": "Internal Approval Qualification Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Route outside-authority, conflicted, incomplete, regulated, privacy-sensitive, or precedent-setting decisions for review. Route unresolved internal approval work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Internal Approval Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For internal approval, capture decision requested, authority basis, options, recommendation, impact, conditions, required reviewers, and expiry.",
+      "key": "task_2",
+      "title": "Qualification Inputs"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Route outside-authority, conflicted, incomplete, regulated, privacy-sensitive, or precedent-setting decisions for review. Do not release affected internal approval work.",
+          "key": "stop_boundary",
+          "label": "Internal Approval Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Approval exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Approval correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Approval escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close internal approval exceptions with verification.",
+          "key": "exception_register",
+          "label": "Internal Approval Exception and Corrective Action",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Approval notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Approval notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Approval interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Approval review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Approval release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep internal approval controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Internal Approval Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Route outside-authority, conflicted, incomplete, regulated, privacy-sensitive, or precedent-setting decisions for review. Control and route each internal approval exception.",
+      "key": "exception_3",
+      "title": "Intake Risk and Referrals"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select intake form disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Qualified review",
+                "Hold",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Approval decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Approval approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Approval schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate internal approval disposition.",
+          "key": "disposition",
+          "label": "Internal Approval Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Internal Approval Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the internal approval decision to evidence.",
+          "height": 36,
+          "key": "decision_basis",
+          "label": "Internal Approval Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Approval requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Approval process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Internal Approval Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the internal approval next step from supporting analysis, policy reference, budget proof, reviewer comments, conflict disclosure, and prior decisions.",
+      "key": "decision_4",
+      "title": "Intake Decision"
+    }
+  ],
+  "slug": "internal-approval-intake-form",
+  "source_filename": "dbo_1805__internal_approval_intake_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Internal Approval Intake Form: controlled internal decision and approval record using request type, decision requested, and supporting analysis.",
+  "title": "Internal Approval Intake Form",
+  "use_case": "Use the intake form during controlled internal decision and approval record when the internal approval record must identify request type, business unit, requester, responsible owner, value, effective date, related records, and confidentiality. Complete the applicable handoff for approval or rejection, conditions, effective period, implementation handoff, notification, and retained decision record."
+}

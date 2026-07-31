@@ -1,0 +1,344 @@
+{
+  "catalog_id": "construction_trades/dct_1158__jobsite_safety_completion_sign_off_form",
+  "description": "For jobsite safety, this completion sign-off form records task hazards, competent-person controls, PPE, access protection, emergency contacts, and weather limits. Its supporting evidence includes pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Safety opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Safety site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Safety contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Safety superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Safety due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this jobsite safety record to its evidence.",
+          "key": "record_routing",
+          "label": "Jobsite Safety Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Work zone",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Crew",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Task sequence",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Tools",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Mobile equipment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces for this jobsite safety.",
+          "key": "core_identity",
+          "label": "Jobsite Safety Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces for this jobsite safety record.",
+      "key": "identity_1",
+      "title": "Walkthrough Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Safety when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Safety measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Safety evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Safety result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For jobsite safety, record pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+          "key": "evidence_register",
+          "label": "Jobsite Safety Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Pre-task briefing record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Inspection observations",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Control photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Permits",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every jobsite safety evidence source.",
+          "key": "evidence_sources",
+          "label": "Jobsite Safety Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary jobsite safety evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Jobsite Safety Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Stop work for uncontrolled energy, fall exposure, excavation instability, missing protection, or imminent danger. Do not release affected jobsite safety work.",
+          "key": "stop_boundary",
+          "label": "Jobsite Safety Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Safety exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Safety correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Safety escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close jobsite safety exceptions with verification.",
+          "key": "exception_register",
+          "label": "Jobsite Safety Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Safety notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Safety notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Safety interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Safety review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Safety release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep jobsite safety controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Jobsite Safety Escalation Record",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Safety open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Safety owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Safety acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer jobsite safety items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Jobsite Safety Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Compare jobsite safety findings with jobsite safety open items and decide the jobsite safety customer handoff.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding and Correction Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Safety completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Competent-person release",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Corrective-action closure",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the jobsite safety outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Jobsite Safety Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Jobsite Safety Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For jobsite safety, document competent-person release, corrective-action closure, crew acknowledgment, and next-review trigger; identify each jobsite safety reservation and jobsite safety follow-up trigger, then record the jobsite safety instruction recipient.",
+          "height": 40,
+          "key": "acceptance_reservations",
+          "label": "Jobsite Safety Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Safety trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Safety site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Jobsite Safety Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the jobsite safety record with competent-person release, corrective-action closure, crew acknowledgment, and next-review trigger.",
+      "key": "closeout_4",
+      "title": "Customer Acceptance and Handoff"
+    }
+  ],
+  "slug": "jobsite-safety-completion-sign-off-form",
+  "source_filename": "dct_1158__jobsite_safety_completion_sign_off_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Jobsite Safety Completion Sign-Off Form: jobsite hazard assessment and control verification using work zone, task hazards, and pre-task briefing record.",
+  "title": "Jobsite Safety Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during jobsite hazard assessment and control verification when the jobsite safety record must identify work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces. Complete the applicable handoff for competent-person release, corrective-action closure, crew acknowledgment, and next-review trigger."
+}

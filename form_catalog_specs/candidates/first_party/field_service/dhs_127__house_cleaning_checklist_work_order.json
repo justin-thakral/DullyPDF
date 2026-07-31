@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_127__house_cleaning_checklist_work_order",
+  "source_section": "field_service",
+  "source_filename": "dhs_127__house_cleaning_checklist_work_order.pdf",
+  "slug": "house-cleaning-checklist-work-order",
+  "title": "House Cleaning Checklist Work Order",
+  "subtitle": "Residential House Cleaning: connects authorized scope to results.",
+  "description": "House Cleaning Checklist Work Order covers room, surface, fixture, furnishing, requested task, and protected personal item. The home-cleaning service coordinator records Residential House Cleaning authorized tasks, materials, results, and changes. House Cleaning Checklist Work Order keeps Residential House Cleaning exceptions visible until the home-cleaning service coordinator handoff.",
+  "use_case": "Use House Cleaning Checklist Work Order at residence, room sequence, access point, supply area, and excluded space. Document room, surface, fixture, furnishing, requested task, and protected personal item identity before Residential House Cleaning begins. Compare room, surface, fixture, furnishing, requested task, and protected personal item findings with stated Residential House Cleaning criteria; route unresolved Residential House Cleaning issues to cleaning quality reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Work authorization and responsible parties",
+      "guidance": "For Residential House Cleaning, identify responsible parties, residence, room sequence, access point, supply area, and excluded space, and the linked room, surface, fixture, furnishing, requested task, and protected personal item source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Record date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "scope_limit",
+              "label": "Scope / amount limit",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential House Cleaning identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and visit number",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Room list and selected service level",
+              "units": 2.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Access, pet, alarm, fragile-item, and product restriction",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Work-order tasks, resources, and results",
+      "guidance": "Capture Residential House Cleaning facts for room, surface, fixture, furnishing, requested task, and protected personal item; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Authorized work lines",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Authorized task or service",
+              "units": 1.25
+            },
+            {
+              "key": "resources",
+              "label": "Part, material, or resource",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Work performed and result",
+              "units": 1.15
+            },
+            {
+              "key": "status",
+              "label": "Change, status, or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential House Cleaning authorized-work checks",
+          "items": [
+            "Room-by-room baseline condition",
+            "High-touch, kitchen, bathroom, floor, and fixture condition",
+            "Stain, damage, delicate material, and do-not-clean marker",
+            "Customer-supplied or restricted product requirement",
+            "Waste, laundry, dishes, and add-on scope boundary",
+            "Final walkthrough and callback item"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Authorized-work result and open follow-up",
+      "guidance": "Resolve open Residential House Cleaning conditions; have home-cleaning service coordinator assign the next Residential House Cleaning owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scope changes, holds, and retained evidence",
+          "items": [
+            "Unknown spill, sharp, pest, or hazardous material",
+            "Fragile or damaged item without direction",
+            "Restricted room, privacy, or security boundary",
+            "Requested result requires restoration beyond cleaning",
+            "Pre-existing damage and exception photographs",
+            "Room completion record",
+            "Product or supply exception note",
+            "Customer walkthrough and key-return evidence"
+          ],
+          "guidance": "Pause Residential House Cleaning when an unknown exposure, damage, access, privacy, security, or scope boundary remains. Retain the available Residential House Cleaning proof and route unresolved room, surface, fixture, furnishing, requested task, and protected personal item scope to home-cleaning service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Completion status and open work",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work-order status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed within authorization",
+                "Completed with listed change",
+                "Follow-up work required",
+                "Held for approval",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer work acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Home-Cleaning Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

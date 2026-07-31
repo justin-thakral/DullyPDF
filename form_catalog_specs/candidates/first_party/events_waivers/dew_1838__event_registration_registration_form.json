@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1838__event_registration_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1838__event_registration_registration_form.pdf",
+  "slug": "event-registration-registration-form",
+  "title": "Event Registration Form",
+  "subtitle": "Capture event admission, ticket class, session choice, and accommodation; confirm payment reference and check-in status.",
+  "description": "Event Registration records event admission, ticket class, session choice, accommodation, payment reference, and check-in status. Event Registration evidence stays linked.",
+  "use_case": "Use this event registration registration and placement when staff must document event admission and ticket class. Reconcile session choice, accommodation, payment reference, and check-in status before the event registration handoff. Use the registration record, ticket or admission selection, payment receipt reference, session inventory, accommodation acknowledgment, confirmation message, and check-in scan. This record establishes attendee admission through ticket type, session inventory, purchaser contact, confirmation barcode, accommodation routing, payment reference, and check-in eligibility. It may also distinguish access tiers, guest passes, promotional codes, refund status, transferability, QR delivery, door-list lookup, and badge-printing readiness. Ask the assigned event registration reviewer to confirm event admission against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Event Registration contact and reference",
+      "guidance": "Capture admission type, ticket class, session choices, attendee contact, accommodation route, payment reference, confirmation, and check-in.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Event Registration people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "event_admission",
+              "label": "Event admission",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Event Registration task details",
+          "fields": [
+            {
+              "key": "ticket_class",
+              "label": "Ticket class",
+              "units": 1.15
+            },
+            {
+              "key": "session_choice",
+              "label": "Session choice",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Include",
+                "Include with limit",
+                "Do not include",
+                "Pending"
+              ]
+            },
+            {
+              "key": "accommodation",
+              "label": "Accommodation",
+              "units": 1.25
+            },
+            {
+              "key": "payment_reference",
+              "label": "Payment reference",
+              "units": 1.1
+            },
+            {
+              "key": "check_in_status",
+              "label": "Check-in status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_choices",
+      "title": "Event Registration requested options and readiness review",
+      "guidance": "Record requested options, prerequisites, availability, and conditions without assuming an outcome.",
+      "blocks": [
+        {
+          "key": "registration_options",
+          "type": "table",
+          "label": "Event Registration requested options",
+          "columns": [
+            {
+              "key": "requested_option_or_scope",
+              "label": "Requested option or scope",
+              "units": 1.2
+            },
+            {
+              "key": "availability_or_prerequisite",
+              "label": "Availability or prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.25
+            },
+            {
+              "key": "condition_support_or_owner",
+              "label": "Condition, support, or owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "start_readiness",
+          "type": "checklist",
+          "label": "Event Registration readiness",
+          "items": [
+            "Event admission is identified for this record",
+            "Ticket class matches the current request or source",
+            "Session choice is ready for point-of-use staff",
+            "Accommodation limits or questions are resolved",
+            "Payment reference is communicated to the responsible person",
+            "Check-in status is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_result",
+      "title": "Event Registration confirmation and next steps: handoff",
+      "guidance": "Confirm the accepted scope, reference, open condition, and instructions.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Event Registration result",
+          "fields": [
+            {
+              "key": "registration_outcome",
+              "label": "Registration outcome",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_admission_and_session",
+              "label": "Confirmed admission and session",
+              "units": 1.0
+            },
+            {
+              "key": "ticket_or_credential_reference",
+              "label": "Ticket or credential reference",
+              "units": 1.25
+            },
+            {
+              "key": "open_condition_and_owner",
+              "label": "Open condition and owner",
+              "units": 1.1
+            },
+            {
+              "key": "check_in_instructions_sent",
+              "label": "Check-in instructions sent",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Event Registration receipt",
+          "fields": [
+            {
+              "key": "registration_coordinator_and_date",
+              "label": "Registration coordinator and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the recorded registration result and open condition."
+        }
+      ]
+    }
+  ]
+}

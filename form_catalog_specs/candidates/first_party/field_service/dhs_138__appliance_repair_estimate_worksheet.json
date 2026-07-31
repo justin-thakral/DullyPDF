@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_138__appliance_repair_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_138__appliance_repair_estimate_worksheet.pdf",
+  "slug": "appliance-repair-estimate-worksheet",
+  "title": "Appliance Repair Estimate Worksheet",
+  "subtitle": "Residential Appliance Repair: prices observed scope, options, and exclusions.",
+  "description": "Appliance Repair Estimate Worksheet covers household appliance, connected utility, control, enclosure, and surrounding finish. The home appliance service coordinator records Residential Appliance Repair observed scope, costs, options, and terms. Appliance Repair Estimate Worksheet keeps Residential Appliance Repair exceptions visible until the home appliance service coordinator handoff.",
+  "use_case": "Use Appliance Repair Estimate Worksheet at residence, room, appliance position, utility connection, and protected work area. Document household appliance, connected utility, control, enclosure, and surrounding finish identity before Residential Appliance Repair begins. Compare household appliance, connected utility, control, enclosure, and surrounding finish findings with stated Residential Appliance Repair criteria; route unresolved Residential Appliance Repair issues to qualified appliance technician. For Appliance Repair Estimate Worksheet, confirm requirements for Residential Appliance Repair. Ask qualified appliance technician to review Residential Appliance Repair conditions beyond the home appliance service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Pricing evidence and service location",
+      "guidance": "For Residential Appliance Repair, identify responsible parties, residence, room, appliance position, utility connection, and protected work area, and the linked household appliance, connected utility, control, enclosure, and surrounding finish source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Estimate ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Estimate date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Customer / party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Estimator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Appliance Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and service call",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Appliance type, make, model, and serial",
+              "units": 2.1666666666666665
+            },
+            {
+              "key": "identity_3",
+              "label": "Symptom, fault code, cycle, load, and prior repair history",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Estimated scope, options, and pricing",
+      "guidance": "Capture Residential Appliance Repair facts for household appliance, connected utility, control, enclosure, and surrounding finish; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Estimate and option lines",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Task, item, or option",
+              "units": 1.15
+            },
+            {
+              "key": "basis",
+              "label": "Quantity or condition basis",
+              "units": 1.05
+            },
+            {
+              "key": "labor",
+              "label": "Labor or time",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Part, material, or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "amount",
+              "label": "Amount or option status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Appliance Repair estimate checks",
+          "items": [
+            "Power, gas, water, drain, and vent connection",
+            "Door, seal, latch, interlock, and enclosure",
+            "Motor, pump, fan, heater, sensor, and control behavior",
+            "Leak, drainage, airflow, temperature, and cycle result",
+            "Floor, cabinet, wall, and surrounding property condition",
+            "Representative operating cycle after repair"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Estimate assumptions and customer decision",
+      "guidance": "Resolve open Residential Appliance Repair conditions; have home appliance service coordinator assign the next Residential Appliance Repair owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Pricing assumptions, exclusions, and retained evidence",
+          "items": [
+            "Gas, electrical, water, refrigerant, or combustion concern",
+            "Failed interlock or protective device",
+            "Recall or incompatible-part concern",
+            "Property damage or test condition outside scope",
+            "Model and serial label image",
+            "Fault code and diagnostic readings",
+            "Part compatibility and repair trace",
+            "Utility restoration and customer-observed test"
+          ],
+          "guidance": "Pause Residential Appliance Repair when a utility hazard, protective-device failure, part concern, property risk, or unsafe test remains. Retain the available Residential Appliance Repair proof and route unresolved household appliance, connected utility, control, enclosure, and surrounding finish scope to home appliance service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Estimate status and next customer action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Estimate review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for customer review",
+                "Accepted as written",
+                "Accepted with listed option",
+                "Revision required",
+                "Declined"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Estimator and customer review",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Home Appliance Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

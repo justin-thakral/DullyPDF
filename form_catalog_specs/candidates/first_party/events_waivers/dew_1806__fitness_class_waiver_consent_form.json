@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1806__fitness_class_waiver_consent_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1806__fitness_class_waiver_consent_form.pdf",
+  "slug": "fitness-class-waiver-consent-form",
+  "title": "Fitness Class Waiver Consent Form",
+  "subtitle": "Capture class format, instructor, equipment, and exertion condition; confirm participant choice and session completion.",
+  "description": "Fitness Class Waiver records class format, instructor, equipment, exertion condition, participant choice, and session completion. Fitness Class Waiver evidence stays linked.",
+  "use_case": "Use this fitness class waiver scoped consent when staff must document class format and instructor. Reconcile equipment, exertion condition, participant choice, and session completion before the fitness class waiver handoff. Use the class description, instructor credential reference, equipment list, disclosed exertion conditions, modification menu, participant questions, and attendance result. This acknowledgment concerns an instructor-led exercise session with cardio or resistance intensity, repetitions, studio equipment, modification choices, rest, and class completion. Ask the assigned fitness class waiver reviewer to confirm class format against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Fitness Class Waiver contact and reference",
+      "guidance": "Name class format, instructor, equipment, exertion and environment conditions, modification options, participant questions, session choice, and completion. Record the fitness class waiver decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Fitness Class Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "class_format",
+              "label": "Class format",
+              "units": 1.2
+            },
+            {
+              "key": "instructor",
+              "label": "Instructor",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Fitness Class Waiver task details",
+          "fields": [
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.15
+            },
+            {
+              "key": "exertion_condition",
+              "label": "Exertion condition",
+              "units": 1.0
+            },
+            {
+              "key": "participant_choice",
+              "label": "Participant choice",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Participate",
+                "Participate with limit",
+                "Do not participate",
+                "Pending"
+              ]
+            },
+            {
+              "key": "session_completion",
+              "label": "Session completion",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_choices",
+      "title": "Fitness Class Waiver exception review and voluntary choices",
+      "guidance": "Present each choice independently; do not preselect an answer.",
+      "blocks": [
+        {
+          "key": "itemized_consent",
+          "type": "fields",
+          "label": "Fitness Class Waiver itemized consent",
+          "fields": [
+            {
+              "key": "class_format",
+              "label": "Class format",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "instructor",
+              "label": "Instructor",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "exertion_condition",
+              "label": "Exertion condition",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "participant_choice",
+              "label": "Participant choice",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "session_completion",
+              "label": "Session completion",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consent_checks",
+          "type": "checklist",
+          "label": "Fitness Class Waiver informed-choice checks",
+          "items": [
+            "Purpose and practical conditions are explained",
+            "Questions and access needs are addressed",
+            "Declining one choice does not decide another",
+            "Withdrawal route and practical limits are explained"
+          ]
+        },
+        {
+          "key": "consent_conditions",
+          "type": "fields",
+          "label": "Fitness Class Waiver conditions and withdrawal",
+          "fields": [
+            {
+              "key": "choice_explained_by",
+              "label": "Choice explained by",
+              "units": 1.15
+            },
+            {
+              "key": "question_or_accessibility_need",
+              "label": "Question or accessibility need",
+              "units": 1.0
+            },
+            {
+              "key": "special_condition_or_exclusion",
+              "label": "Special condition or exclusion",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal_contact",
+              "label": "Withdrawal contact",
+              "units": 1.1
+            },
+            {
+              "key": "consent_copy_provided_date",
+              "label": "Consent copy provided date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_signoff",
+      "title": "Fitness Class Waiver contact and reference",
+      "guidance": "Record the voluntary decision and responsible staff recipient.",
+      "blocks": [
+        {
+          "key": "consent_note",
+          "type": "textarea",
+          "label": "Fitness Class Waiver question or limit",
+          "fields": [
+            {
+              "key": "question_explanation_declined_scope_or_participation_limit",
+              "label": "Question, explanation, declined scope, or participation limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "consent_signatures",
+          "type": "signatures",
+          "label": "Fitness Class Waiver signatures",
+          "fields": [
+            {
+              "key": "person_giving_consent_and_date",
+              "label": "Person giving consent and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The signature applies only to choices recorded above."
+        }
+      ]
+    }
+  ]
+}

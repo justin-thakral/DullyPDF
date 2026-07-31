@@ -1,0 +1,287 @@
+{
+  "catalog_id": "construction_trades/dct_1103__roofing_repair_completion_sign_off_form",
+  "description": "For roofing repair, this completion sign-off form records leak history, wet-area boundary, repair method, temporary protection, materials, weather window, and occupant coordination. Its supporting evidence includes moisture readings, test cuts, infrared or visual findings, photos, water test, and repair detail.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Roofing opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Roofing site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Roofing contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Roofing superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Roofing due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this roofing repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Roofing Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Roof area",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Membrane or shingle system",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Penetrations",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Drainage",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Interior symptom",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture roof area, membrane or shingle system, penetrations, drainage, interior symptom, access, and warranty status for this roofing repair.",
+          "key": "core_identity",
+          "label": "Roofing Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify roof area, membrane or shingle system, penetrations, drainage, interior symptom, access, and warranty status for this roofing repair record.",
+      "key": "identity_1",
+      "title": "Walkthrough Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Roofing when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Roofing measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Roofing evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Roofing result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For roofing repair, record moisture readings, test cuts, infrared or visual findings, photos, water test, and repair detail.",
+          "key": "evidence_register",
+          "label": "Roofing Repair Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Moisture readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Test cuts",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Infrared or visual findings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Water test",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every roofing repair evidence source.",
+          "key": "evidence_sources",
+          "label": "Roofing Repair Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary roofing repair evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Roofing Repair Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Stop for unsafe access, lightning, saturated deck, suspected hazardous materials, or structural deterioration. Route unresolved roofing repair work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Roofing Repair Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support roofing repair findings with moisture readings, test cuts, infrared or visual findings, photos, water test, and repair detail.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Roofing completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Watertightness verification",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Repair photos",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Warranty disposition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the roofing repair outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Roofing Repair Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Roofing open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Roofing owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Roofing acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer roofing repair items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Roofing Repair Remaining Work and Handoff",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Roofing Repair Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For roofing repair, document watertightness verification, repair photos, warranty disposition, maintenance note, and customer signoff; identify each roofing repair reservation and roofing repair follow-up trigger, then record the roofing repair instruction recipient.",
+          "height": 48,
+          "key": "acceptance_reservations",
+          "label": "Roofing Repair Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Roofing trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Roofing site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Roofing Repair Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the roofing repair record with watertightness verification, repair photos, warranty disposition, maintenance note, and customer signoff.",
+      "key": "closeout_3",
+      "title": "Customer Acceptance and Handoff"
+    }
+  ],
+  "slug": "roofing-repair-completion-sign-off-form",
+  "source_filename": "dct_1103__roofing_repair_completion_sign_off_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Roofing Repair Completion Sign-Off Form: roof leak diagnosis and repair execution using roof area, leak history, and moisture readings.",
+  "title": "Roofing Repair Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during roof leak diagnosis and repair execution when the roofing repair record must identify roof area, membrane or shingle system, penetrations, drainage, interior symptom, access, and warranty status. Complete the applicable handoff for watertightness verification, repair photos, warranty disposition, maintenance note, and customer signoff."
+}

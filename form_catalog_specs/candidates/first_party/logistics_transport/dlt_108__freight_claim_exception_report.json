@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_108__freight_claim_exception_report",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_108__freight_claim_exception_report.pdf",
+  "slug": "freight-claim-exception-report",
+  "title": "Freight Claim Exception Report",
+  "subtitle": "Freight Claim Intake: preserves facts, evidence, and actions.",
+  "description": "Freight Claim Exception Report covers claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation. The freight claims coordinator records Freight Claim Intake chronology, evidence, containment, and effectiveness. Freight Claim Exception Report keeps Freight Claim Intake exceptions visible until the freight claims coordinator handoff.",
+  "use_case": "Use Freight Claim Exception Report at origin, transit custody points, destination, inspection location, and evidence repository. Document claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation identity before Freight Claim Intake begins. Compare claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation findings with stated Freight Claim Intake criteria; route unresolved Freight Claim Intake issues to authorized claims reviewer. For Freight Claim Exception Report, confirm requirements for Freight Claim Intake. Ask authorized claims reviewer to review Freight Claim Intake conditions beyond the freight claims coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Freight Claim Intake incident details",
+      "guidance": "Record when the issue was discovered, who reported it, the exact affected subject, and the initial condition.",
+      "blocks": [
+        {
+          "key": "incident_header",
+          "type": "fields",
+          "label": "Incident header",
+          "fields": [
+            {
+              "key": "incident_number",
+              "label": "Claim, shipment, or evidence ID",
+              "units": 1.0
+            },
+            {
+              "key": "event_date",
+              "label": "Event or discovery date",
+              "units": 0.7
+            },
+            {
+              "key": "event_time",
+              "label": "Event or discovery time",
+              "units": 0.65
+            },
+            {
+              "key": "reported_by",
+              "label": "Freight Claims Coordinator",
+              "units": 1.05
+            },
+            {
+              "key": "party",
+              "label": "Claimant / liable party",
+              "units": 1.1
+            },
+            {
+              "key": "location",
+              "label": "Custody point / evidence repository",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Freight Claim Intake identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Claim, bill, shipment, order, and invoice",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Claimant, carrier, shipper, and consignee",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, lot, serial, package, quantity, and amount",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Freight Claim Intake identifier printed on claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation or its linked source record."
+        },
+        {
+          "key": "initial_account",
+          "type": "textarea",
+          "label": "Initial factual account, affected scope, and immediate containment",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Initial factual account, affected scope, and immediate containment",
+              "multiline": true
+            }
+          ],
+          "height": 70,
+          "guidance": "Separate direct observation from reported information, assumption, and unknown fact."
+        }
+      ]
+    },
+    {
+      "key": "incident_chronology",
+      "title": "Chronology, custody, and response",
+      "guidance": "Enter events in time order and identify the source of each fact and the person responsible for the response.",
+      "blocks": [
+        {
+          "key": "chronology",
+          "type": "table",
+          "label": "Incident chronology",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date and time",
+              "units": 0.8
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact, event, or custody change",
+              "units": 1.3
+            },
+            {
+              "key": "source",
+              "label": "Source, witness, record, or device",
+              "units": 1.0
+            },
+            {
+              "key": "response",
+              "label": "Immediate response or notification",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "chronology_gaps",
+          "type": "textarea",
+          "label": "Unknown times, conflicting accounts, missing custody events, and source limitations",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unknown times, conflicting accounts, missing custody events, and source limitations",
+              "multiline": true
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "incident_evidence",
+      "title": "Affected scope, evidence, and escalation",
+      "guidance": "Preserve volatile evidence, distinguish affected from unaffected scope, and keep required notifications visible.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when claim identity, determinable amount, evidence preservation, notice, or authorized investigation remains unresolved. Protect claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation; document the Freight Claim Intake notification and await authorized claims reviewer direction."
+        },
+        {
+          "key": "preserved_evidence",
+          "type": "checklist",
+          "label": "Evidence preserved or linked",
+          "items": [
+            "Bill, invoice, packing, and delivery documents",
+            "Damage and packaging images",
+            "Amount worksheet and mitigation receipts",
+            "Notice, inspection, and custody chronology"
+          ],
+          "guidance": "Attach or link proof for claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation; mark only Freight Claim Intake evidence present in that record."
+        },
+        {
+          "key": "investigation_checks",
+          "type": "checklist",
+          "label": "Freight Claim Intake investigation points",
+          "items": [
+            "Loss, damage, delay, or expense allegation",
+            "Delivery notation and discovery timing",
+            "Affected quantity and amount calculation",
+            "Packaging, handling, and custody evidence",
+            "Mitigation, salvage, repair, and retained goods",
+            "Notice, document completeness, and investigation owner"
+          ],
+          "guidance": "Record what was checked without converting an allegation, inference, or unavailable fact into an observation."
+        },
+        {
+          "key": "severity_and_escalation",
+          "type": "checklist",
+          "label": "Severity, notification, and escalation triggers",
+          "items": [
+            "Claimant or shipment identity incomplete",
+            "Amount lacks traceable support",
+            "Evidence or goods not preserved",
+            "Intake treated as liability or payment decision"
+          ],
+          "guidance": "For Freight Claim Intake, identify affected claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation scope; ask freight claims coordinator to document the Freight Claim Intake immediate control before continuing."
+        }
+      ]
+    },
+    {
+      "key": "incident_actions",
+      "title": "Corrective action, disposition, and review",
+      "guidance": "Track containment through disposition and an effectiveness check; do not close an incident merely because the immediate event stopped.",
+      "blocks": [
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Corrective and preventive actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action or affected-scope disposition",
+              "units": 1.3
+            },
+            {
+              "key": "basis",
+              "label": "Supported cause, requirement, or reason",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "verification",
+              "label": "Completion or effectiveness evidence",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "incident_status",
+          "type": "fields",
+          "label": "Incident status",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contained; investigation open",
+                "Corrective action in progress",
+                "Affected scope held",
+                "Ready for closure review",
+                "Escalated or externally referred"
+              ]
+            },
+            {
+              "key": "lead",
+              "label": "Investigation or action lead",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            },
+            {
+              "key": "next_review",
+              "label": "Next action or effectiveness-review trigger",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "incident_review",
+          "type": "signatures",
+          "label": "Incident preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by authorized claims reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

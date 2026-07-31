@@ -1,0 +1,335 @@
+{
+  "catalog_id": "construction_trades/dcf_145__incident_request_form",
+  "description": "For incident, this request form records immediate care, scene control, notification chain, evidence preservation, preliminary classification, and reporting duties. Its supporting evidence includes firsthand statements, scene photos, equipment status, training record, timeline, and corrective-action evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Incident opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Incident site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Incident contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Incident superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Incident due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this incident record to its evidence.",
+          "key": "record_routing",
+          "label": "Incident Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "People involved",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Exact location",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Activity",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Witnesses",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture people involved, exact location, activity, equipment, witnesses, environmental conditions, and emergency response for this incident.",
+          "key": "core_identity",
+          "label": "Incident Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify people involved, exact location, activity, equipment, witnesses, environmental conditions, and emergency response for this incident record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Immediate care",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Scene control",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Notification chain",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Evidence preservation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For incident, record immediate care, scene control, notification chain, evidence preservation, preliminary classification, and reporting duties.",
+          "key": "task_inputs",
+          "label": "Incident Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Incident Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State incident outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Incident Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Incident work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Incident owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate incident items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Incident Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Preserve the scene and stop related work when required for emergency response, investigation, or uncontrolled risk. Route unresolved incident work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Incident Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For incident, capture immediate care, scene control, notification chain, evidence preservation, preliminary classification, and reporting duties.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Preserve the scene and stop related work when required for emergency response, investigation, or uncontrolled risk. Do not release affected incident work.",
+          "key": "stop_boundary",
+          "label": "Incident Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Incident exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Incident correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Incident escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close incident exceptions with verification.",
+          "key": "exception_register",
+          "label": "Incident Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Incident notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Incident notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Incident interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Incident review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Incident release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep incident controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Incident Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Preserve the scene and stop related work when required for emergency response, investigation, or uncontrolled risk. Control and route each incident exception.",
+      "key": "exception_3",
+      "title": "Request Risk and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Incident decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Incident approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Incident schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate incident disposition.",
+          "key": "disposition",
+          "label": "Incident Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Incident Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the incident decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Incident Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Incident requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Incident coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Incident Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the incident next step from firsthand statements, scene photos, equipment status, training record, timeline, and corrective-action evidence.",
+      "key": "decision_4",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "incident-request-form",
+  "source_filename": "dcf_145__incident_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Incident Request Form: construction incident stabilization and fact record using people involved, immediate care, and firsthand statements.",
+  "title": "Incident Request Form",
+  "use_case": "Use the request form during construction incident stabilization and fact record when the incident record must identify people involved, exact location, activity, equipment, witnesses, environmental conditions, and emergency response. Complete the applicable handoff for qualified review, required notifications, corrective actions, return-to-work authority, and record retention."
+}

@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_118__camp_registration_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_118__camp_registration_information_sheet.pdf",
+  "slug": "camp-registration-information-sheet",
+  "title": "Camp Registration Information Sheet",
+  "subtitle": "Capture session placement, cabin group, transportation, and activity support; confirm packing readiness and guardian orientation.",
+  "description": "Camp Registration records session placement, cabin group, transportation, activity support, packing readiness, and guardian orientation. Camp Registration evidence stays linked.",
+  "use_case": "Use this camp registration controlled information handoff when staff must document session placement and cabin group. Reconcile transportation, activity support, packing readiness, and guardian orientation before the camp registration handoff. Use the placement confirmation, unit roster, bus list, optional-activity choices, support-routing receipt, orientation delivery, and guardian confirmation. This registration establishes seasonal program placement, cabin community, counselor coverage, waterfront or excursion choices, packing readiness, and multi-day guardian release. Ask the assigned camp registration reviewer to confirm session placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Camp Registration contact and reference",
+      "guidance": "Confirm session capacity, cabin placement, bus choice, packing readiness, activity support, orientation delivery, and guardian handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Camp Registration people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "session_placement",
+              "label": "Session placement",
+              "units": 1.1
+            },
+            {
+              "key": "cabin_group",
+              "label": "Cabin group",
+              "units": 1.2
+            },
+            {
+              "key": "transportation",
+              "label": "Transportation",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Camp Registration task details",
+          "fields": [
+            {
+              "key": "activity_support",
+              "label": "Activity support",
+              "units": 1.15
+            },
+            {
+              "key": "packing_readiness",
+              "label": "Packing readiness",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_orientation",
+              "label": "Guardian orientation",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Camp Registration exception review and current instructions",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Camp Registration instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Camp Registration questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Camp Registration update route and handoff",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Camp Registration effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Camp Registration update boundary",
+          "guidance": "Replace outdated camp registration instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

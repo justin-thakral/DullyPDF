@@ -1,0 +1,331 @@
+{
+  "catalog_id": "legal_office/dlo_2160__estate_planning_intake_authorization_form",
+  "description": "Use this Estate Planning Intake Authorization Form for its named administrative intake job while preserving source attribution, qualified review, stop conditions, and secure record custody.",
+  "risk_tier": "C",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "intake_number",
+              "label": "Administrative intake number",
+              "units": 1.0
+            },
+            {
+              "key": "client_name",
+              "label": "Prospective client's full legal name",
+              "units": 1.0
+            },
+            {
+              "key": "domicile",
+              "label": "Current state or country of domicile",
+              "units": 1.0
+            },
+            {
+              "key": "intake_date",
+              "label": "Intake date and local time",
+              "units": 1.0
+            },
+            {
+              "key": "safe_contact",
+              "label": "Safe contact method",
+              "units": 1.0
+            },
+            {
+              "key": "intake_owner",
+              "label": "Intake owner",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use a stable intake number and do not imply that an attorney-client relationship exists.",
+          "key": "intake_identity",
+          "label": "Limited Intake Authorization Intake Identity",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "participants",
+              "label": "Participants and stated roles",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "private_interview",
+              "label": "Private interview available",
+              "options": [
+                "Yes",
+                "No",
+                "Not yet requested"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "language_access",
+              "label": "Language support",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "conflict_status",
+              "label": "Conflict-screen status",
+              "options": [
+                "Pending",
+                "Clear to consult",
+                "Attorney review",
+                "Stop"
+              ],
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "engagement_status",
+              "label": "Relationship status",
+              "options": [
+                "Prospective only",
+                "Consultation scheduled",
+                "Engaged separately",
+                "Declined"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Collect only what the current administrative purpose requires.",
+          "key": "participation_boundary",
+          "label": "Limited Intake Authorization Participation and Privacy",
+          "type": "fields"
+        },
+        {
+          "guidance": "This intake form does not create representation, legal advice, a testamentary instrument, a power, a transfer, or authority to act.",
+          "key": "legal_boundary",
+          "label": "Administrative Record Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Establish the prospective-client, privacy, conflict, and administrative record boundary.",
+      "key": "identity_boundary",
+      "title": "Limited Intake Authorization Identity and Routing"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "person",
+              "label": "Authorizing person's full legal name",
+              "units": 1.0
+            },
+            {
+              "key": "identity_check",
+              "label": "Identity verification method",
+              "units": 1.0
+            },
+            {
+              "key": "role",
+              "label": "Role and stated authority source",
+              "units": 1.0
+            },
+            {
+              "key": "safe_contact",
+              "label": "Safe contact method",
+              "units": 1.0
+            },
+            {
+              "key": "questions_answered",
+              "label": "Questions answered by",
+              "units": 1.0
+            },
+            {
+              "key": "copy_delivery",
+              "label": "Copy delivery method and date",
+              "units": 1.0
+            }
+          ],
+          "key": "authorizing_person",
+          "label": "Authorizing Person and Authority",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Named recipient",
+              "units": 1.8
+            },
+            {
+              "key": "source",
+              "label": "Record source or custodian",
+              "units": 1.8
+            },
+            {
+              "key": "information",
+              "label": "Narrow information category",
+              "units": 2.2
+            },
+            {
+              "key": "purpose",
+              "label": "Administrative purpose",
+              "units": 2.0
+            },
+            {
+              "key": "exclusion",
+              "label": "Explicit exclusion or limit",
+              "units": 2.0
+            }
+          ],
+          "key": "authorized_uses",
+          "label": "Named Recipient, Record Source, and Permitted Use",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.0
+            },
+            {
+              "key": "expiry",
+              "label": "Expiry date or event",
+              "units": 1.0
+            },
+            {
+              "key": "revocation_method",
+              "label": "Revocation method",
+              "units": 1.0
+            },
+            {
+              "key": "received_revocation",
+              "label": "Revocation received date and time",
+              "units": 1.0
+            },
+            {
+              "key": "reliance_cutoff",
+              "label": "Downstream reliance cutoff",
+              "units": 1.0
+            }
+          ],
+          "key": "authorization_term",
+          "label": "Effective Term and Revocation",
+          "type": "fields"
+        },
+        {
+          "guidance": "This is not a power of attorney, health-care proxy, engagement agreement, blanket release, waiver, testamentary instrument, transfer directive, or permission to sign for another person.",
+          "key": "authorization_boundary",
+          "label": "Limited Administrative Authorization",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Record a voluntary, narrow administrative permission with named parties, purpose, exclusions, expiry, and revocation.",
+      "key": "authorization_scope",
+      "title": "Limited Intake Authorization Decision and Authorization"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date and time",
+              "units": 1.4
+            },
+            {
+              "key": "sender",
+              "label": "Sender or requester",
+              "units": 1.6
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient",
+              "units": 1.6
+            },
+            {
+              "key": "minimum_content",
+              "label": "Information requested or disclosed",
+              "units": 2.4
+            },
+            {
+              "key": "status",
+              "label": "Result, revocation, or stop",
+              "units": 1.8
+            }
+          ],
+          "key": "use_log",
+          "label": "Request, Disclosure, and Revocation Log",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "status",
+              "label": "Status",
+              "options": [
+                "Approved as limited",
+                "Narrowed",
+                "Attorney review",
+                "Revoked",
+                "Expired",
+                "Unusable"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Attorney or authorized reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "conditions",
+              "label": "Conditions and access limits",
+              "units": 1.0
+            },
+            {
+              "key": "notice",
+              "label": "Affected-party notice",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Secure record location",
+              "units": 1.0
+            }
+          ],
+          "key": "review_disposition",
+          "label": "Qualified Review Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "authorizing_person",
+              "label": "Authorizing person, signature, and date",
+              "units": 1.0
+            },
+            {
+              "key": "witness_reviewer",
+              "label": "Witness or reviewer if required, signature, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "authorization_signatures",
+          "label": "Authorization and Review Acknowledgments",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "An attorney must review protected information, third-party authority, conflicts, incapacity, legal rights, or requested reliance beyond administration.",
+      "key": "authorization_review",
+      "title": "Limited Intake Authorization Exceptions and Escalation"
+    }
+  ],
+  "slug": "estate-planning-intake-authorization-form",
+  "source_filename": "dlo_2160__estate_planning_intake_authorization_form.pdf",
+  "source_section": "legal_office",
+  "subtitle": "A bounded Tier-C limited intake authorization record with direct inputs, attorney-review routing, and privacy safeguards.",
+  "title": "Estate Planning Intake Authorization Form",
+  "use_case": "Use before or during attorney-supervised estate-planning intake. The form does not create representation, legal advice, or a legally operative instrument."
+}

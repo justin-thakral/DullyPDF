@@ -1,0 +1,404 @@
+{
+  "catalog_id": "construction_trades/dcf_118__rfi_approval_form",
+  "description": "For rfi, this approval form records precise conflict or omission, proposed interpretation, response-needed date, and potential cost or schedule effect. Its supporting evidence includes marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "RFI opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "RFI site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "RFI contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "RFI superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "RFI due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this rfi record to its evidence.",
+          "key": "record_routing",
+          "label": "Rfi Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Drawing",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Specification",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Detail",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Submittal",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture drawing, specification, detail, submittal, location, discipline, and related change records for this rfi.",
+          "key": "core_identity",
+          "label": "Rfi Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify drawing, specification, detail, submittal, location, discipline, and related change records for this rfi record.",
+      "key": "identity_1",
+      "title": "Proposal and Authority Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Precise conflict or omission",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Proposed interpretation",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Response-needed date",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Potential cost or schedule effect",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For rfi, record precise conflict or omission, proposed interpretation, response-needed date, and potential cost or schedule effect.",
+          "key": "task_inputs",
+          "label": "Rfi Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "RFI decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "RFI supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "RFI review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified rfi facts from judgment.",
+          "key": "review_criteria",
+          "label": "Rfi Review Criteria and Support",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Resolve each failed rfi approval check.",
+          "items": [
+            "Decision statement is singular and unambiguous",
+            "Approver authority and any conflict are checked",
+            "Cost, schedule, quality, safety, and compliance effects are addressed",
+            "Alternatives and recommendation are documented",
+            "Conditions and effective period can be monitored",
+            "Implementation owner acknowledges the disposition"
+          ],
+          "key": "decision_readiness",
+          "label": "Rfi Decision Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Hold affected work when proceeding could conceal work, create rework, violate requirements, or prejudice entitlement. Route unresolved rfi work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Rfi Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For rfi, capture precise conflict or omission, proposed interpretation, response-needed date, and potential cost or schedule effect.",
+      "key": "task_2",
+      "title": "Decision Package"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "RFI when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "RFI measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "RFI evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "RFI result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For rfi, record marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence.",
+          "key": "evidence_register",
+          "label": "Rfi Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Marked-up excerpt",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Field photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Coordination sketch",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Meeting note",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every rfi evidence source.",
+          "key": "evidence_sources",
+          "label": "Rfi Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support rfi findings with marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence.",
+      "key": "observation_3",
+      "title": "Supporting Record Review"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Hold affected work when proceeding could conceal work, create rework, violate requirements, or prejudice entitlement. Do not release affected rfi work.",
+          "key": "stop_boundary",
+          "label": "Rfi Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "RFI exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "RFI correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "RFI escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close rfi exceptions with verification.",
+          "key": "exception_register",
+          "label": "Rfi Exception and Corrective Action",
+          "rows": 3,
+          "type": "table"
+        }
+      ],
+      "guidance": "Hold affected work when proceeding could conceal work, create rework, violate requirements, or prejudice entitlement. Control and route each rfi exception.",
+      "key": "exception_4",
+      "title": "Conflicts and Approval Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select approval form disposition",
+                "Approve",
+                "Approve with conditions",
+                "Revise and resubmit",
+                "Reject"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "RFI decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "RFI approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "RFI authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "RFI review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate rfi disposition.",
+          "key": "disposition",
+          "label": "Rfi Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Rfi Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the rfi decision to evidence.",
+          "height": 119,
+          "key": "decision_basis",
+          "label": "Rfi Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "approval_handoff_1",
+              "label": "Authorized response",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_2",
+              "label": "Incorporated drawing note",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_3",
+              "label": "Affected-party distribution",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_4",
+              "label": "Change-impact follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For rfi, record authorized response, incorporated drawing note, affected-party distribution, and change-impact follow-up.",
+          "key": "approval_handoff",
+          "label": "Rfi Approved Record Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "RFI coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "RFI manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "RFI approver signature and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Rfi Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the rfi next step from marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence.",
+      "key": "decision_5",
+      "title": "Approver Disposition"
+    }
+  ],
+  "slug": "rfi-approval-form",
+  "source_filename": "dcf_118__rfi_approval_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Rfi Approval Form: request-for-information clarification and response control using drawing, precise conflict or omission, and marked-up excerpt.",
+  "title": "RFI Approval Form",
+  "use_case": "Use the approval form during request-for-information clarification and response control when the rfi record must identify drawing, specification, detail, submittal, location, discipline, and related change records. Complete the applicable handoff for authorized response, incorporated drawing note, affected-party distribution, and change-impact follow-up."
+}

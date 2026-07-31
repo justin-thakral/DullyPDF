@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 from typing import Any
 
-from .ledger import CatalogFactoryLedger, ConflictError
+from .ledger import CatalogFactoryLedger, ConflictError, Stage
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
@@ -70,6 +70,40 @@ def _raise_selection_mismatches(mismatches: list[str]) -> None:
     if len(mismatches) > 20:
         preview += f"; ... {len(mismatches) - 20} more"
     raise BatchControlError(f"Selection no longer matches ledger: {preview}")
+
+
+def _new_batch_queue_mismatches(
+    ledger: CatalogFactoryLedger,
+    *,
+    batch_id: str,
+    catalog_ids: list[str],
+) -> list[str]:
+    """Reject stale selections before they can leave an empty batch behind."""
+
+    existing_batch = ledger.get_batch(batch_id)
+    if existing_batch is not None:
+        existing_membership = {
+            item.catalog_id for item in ledger.list_items(batch_id=batch_id)
+        }
+        # An exact existing membership is an idempotent read, not a new
+        # assignment. This keeps schemaVersion 1 batch-1 plans replayable after
+        # their items have advanced beyond the queue.
+        if existing_membership == set(catalog_ids):
+            return []
+
+    mismatches: list[str] = []
+    for catalog_id in catalog_ids:
+        item = ledger.get_item(catalog_id)
+        if item is None:
+            mismatches.append(f"{catalog_id}: missing from ledger")
+            continue
+        if item.stage is not Stage.QUEUED or item.batch_id is not None:
+            mismatches.append(
+                f"{catalog_id}: new batch assignment requires stage='queued' "
+                f"and batch_id=None; found stage={item.stage.value!r}, "
+                f"batch_id={item.batch_id!r}"
+            )
+    return mismatches
 
 
 def _run_git(
@@ -195,20 +229,23 @@ def open_batch_from_plan(
         raise BatchControlError("Selection plan has no releaseId")
     catalog_ids, mismatches = _selection_catalog_ids(ledger, plan)
     _raise_selection_mismatches(mismatches)
-
-    plan_digest = _canonical_digest(plan)
-    batch = ledger.create_batch(
-        batch_id=batch_id,
-        target_count=plan["targetCount"],
-        base_commit=base_commit,
-        renderer_commit=renderer_commit,
-        idempotency_key=f"open-batch:{batch_id}:{plan_digest}",
-    )
-    try:
-        assigned = ledger.assign_to_batch(
+    _raise_selection_mismatches(
+        _new_batch_queue_mismatches(
+            ledger,
             batch_id=batch_id,
             catalog_ids=catalog_ids,
-            idempotency_key=f"assign-batch:{batch_id}:{plan_digest}",
+        )
+    )
+
+    plan_digest = _canonical_digest(plan)
+    try:
+        batch, assigned = ledger.create_batch_with_exact_assignment(
+            batch_id=batch_id,
+            target_count=plan["targetCount"],
+            base_commit=base_commit,
+            renderer_commit=renderer_commit,
+            catalog_ids=catalog_ids,
+            idempotency_key=f"open-batch-exact:{batch_id}:{plan_digest}",
         )
     except ConflictError as exc:
         raise BatchControlError(str(exc)) from exc

@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2640__therapy_intake_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2640__therapy_intake_form.pdf",
+  "slug": "therapy-intake-form",
+  "title": "Therapy Intake Form",
+  "subtitle": "Capture patient goal, referral source, intake boundary, and clinician match; confirm schedule and follow-up.",
+  "description": "Therapy records patient goal, referral source, intake boundary, clinician match, schedule, and follow-up. Therapy evidence stays linked.",
+  "use_case": "Use this therapy structured intake when staff must document patient goal and referral source. Reconcile intake boundary, clinician match, schedule, and follow-up before the therapy handoff. Use the referral or self-request, patient goal, screening source, clinician-match record, availability calendar, communication preference, initial plan, and follow-up appointment. This coordination record centers a person's stated therapy goal, referral or self-request, therapist matching, modality and scheduling preferences, engagement handoff, and continuing follow-up. Track provider-panel availability, session cadence, office or remote preference, continuity contact, attendance outreach, rescheduling pattern, and ongoing appointment ownership. Ask the assigned therapy reviewer to confirm patient goal against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Therapy starting details review",
+      "guidance": "Preserve patient goal and referral source, explain intake boundaries, route urgent concerns, match clinician and modality, schedule access, and record follow-up. Keep any urgent therapy issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Therapy people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "patient_location_or_service_site",
+              "label": "Patient location or service site",
+              "units": 1.1
+            },
+            {
+              "key": "patient_goal",
+              "label": "Patient goal",
+              "units": 1.2
+            },
+            {
+              "key": "referral_source",
+              "label": "Referral source",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Therapy task details",
+          "fields": [
+            {
+              "key": "intake_boundary",
+              "label": "Intake boundary",
+              "units": 1.15
+            },
+            {
+              "key": "clinician_match",
+              "label": "Clinician match",
+              "units": 1.0
+            },
+            {
+              "key": "schedule",
+              "label": "Schedule",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_story",
+      "title": "Therapy exception review and reported needs",
+      "guidance": "Preserve the person's wording and route questions without interpretation.",
+      "blocks": [
+        {
+          "key": "stated_need",
+          "type": "textarea",
+          "label": "Therapy stated need or goal",
+          "fields": [
+            {
+              "key": "person_s_words_desired_outcome_and_priority",
+              "label": "Person's words, desired outcome, and priority"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "source_facts",
+          "type": "table",
+          "label": "Therapy facts and questions",
+          "columns": [
+            {
+              "key": "patient_goal",
+              "label": "Patient goal",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "intake_boundary",
+              "label": "Intake boundary",
+              "units": 1.25
+            },
+            {
+              "key": "question_or_route",
+              "label": "Question or route",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "intake_readiness",
+          "type": "checklist",
+          "label": "Therapy intake readiness",
+          "items": [
+            "Patient goal is identified for this record",
+            "Referral source matches the current request or source",
+            "Intake boundary is ready for point-of-use staff",
+            "Clinician match limits or questions are resolved",
+            "Schedule is communicated to the responsible person",
+            "Follow-up is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_handoff",
+      "title": "Therapy receiving route and handoff",
+      "guidance": "Assign open questions and confirm where the intake goes next.",
+      "blocks": [
+        {
+          "key": "intake_route",
+          "type": "fields",
+          "label": "Therapy next step",
+          "fields": [
+            {
+              "key": "receiving_person_or_team",
+              "label": "Receiving person or team",
+              "units": 1.15
+            },
+            {
+              "key": "open_question_or_missing_item",
+              "label": "Open question or missing item",
+              "units": 1.0
+            },
+            {
+              "key": "urgent_route_if_applicable",
+              "label": "Urgent route if applicable",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "intake_receipt",
+          "type": "signatures",
+          "label": "Therapy intake receipt",
+          "fields": [
+            {
+              "key": "intake_coordinator_and_date",
+              "label": "Intake coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms routing, not professional review."
+        }
+      ]
+    }
+  ]
+}

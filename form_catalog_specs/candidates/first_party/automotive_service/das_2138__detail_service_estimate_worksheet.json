@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2138__detail_service_estimate_worksheet",
+  "source_section": "automotive_service",
+  "source_filename": "das_2138__detail_service_estimate_worksheet.pdf",
+  "slug": "detail-service-estimate-worksheet",
+  "title": "Detail Service Estimate Worksheet",
+  "subtitle": "Vehicle Detailing Service: prices observed scope, options, and exclusions.",
+  "description": "Detail Service Estimate Worksheet covers vehicle exterior, interior, finish, material, contamination, selected package, and protected feature. The detail service advisor records Vehicle Detailing Service observed scope, costs, options, and terms. Detail Service Estimate Worksheet keeps Vehicle Detailing Service exceptions visible until the detail service advisor handoff.",
+  "use_case": "Use Detail Service Estimate Worksheet at detail bay, wash area, interior work zone, drying area, and delivery point. Document vehicle exterior, interior, finish, material, contamination, selected package, and protected feature identity before Vehicle Detailing Service begins. Compare vehicle exterior, interior, finish, material, contamination, selected package, and protected feature findings with stated Vehicle Detailing Service criteria; route unresolved Vehicle Detailing Service issues to vehicle appearance quality reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Pricing evidence and service location",
+      "guidance": "For Vehicle Detailing Service, identify responsible parties, detail bay, wash area, interior work zone, drying area, and delivery point, and the linked vehicle exterior, interior, finish, material, contamination, selected package, and protected feature source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Estimate ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Estimate date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Customer / party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Vehicle Detailing Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Work order and customer",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN or vehicle, plate, color, and mileage",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Selected package, add-on, material, and customer concern",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Estimated scope, options, and pricing",
+      "guidance": "Capture Vehicle Detailing Service facts for vehicle exterior, interior, finish, material, contamination, selected package, and protected feature; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Vehicle Detailing Service estimate checks",
+          "items": [
+            "Paint, trim, glass, wheel, and exterior baseline",
+            "Seat, carpet, headliner, console, and interior baseline",
+            "Scratch, chip, stain, odor, damage, and sensitive material",
+            "Product compatibility and test area",
+            "Wash, decontamination, correction, protection, and interior step",
+            "Final lighting inspection and customer walkthrough"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Estimate and option lines",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Task, item, or option",
+              "units": 1.15
+            },
+            {
+              "key": "basis",
+              "label": "Quantity or condition basis",
+              "units": 1.05
+            },
+            {
+              "key": "labor",
+              "label": "Labor or time",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Part, material, or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "amount",
+              "label": "Amount or option status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Estimate review, options, and acknowledgment",
+      "guidance": "Resolve open Vehicle Detailing Service conditions; have detail service advisor assign the next Vehicle Detailing Service owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Pricing assumptions, exclusions, and retained evidence",
+          "items": [
+            "Material or coating compatibility uncertain",
+            "Damage could worsen with requested process",
+            "Biohazard or unknown contamination",
+            "Expected correction exceeds approved package",
+            "Intake condition photographs",
+            "Product and test-area record",
+            "Completed-service checklist",
+            "Remaining defect and final walkthrough"
+          ],
+          "guidance": "Pause Vehicle Detailing Service when compatibility, damage, contamination, scope expectation, or final quality concern remains unresolved. Retain the available Vehicle Detailing Service proof and route unresolved vehicle exterior, interior, finish, material, contamination, selected package, and protected feature scope to detail service advisor."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Estimate status and next customer action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Estimate review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for customer review",
+                "Accepted as written",
+                "Accepted with listed option",
+                "Revision required",
+                "Declined"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Estimator and customer review",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Detail Service Advisor",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer, fleet, or vehicle owner",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

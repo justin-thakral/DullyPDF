@@ -1,0 +1,374 @@
+{
+  "catalog_id": "home_services/dhs_2437__window_cleaning_work_order_form",
+  "description": "For window cleaning, this work order form records interior or exterior surfaces, screen and track work, hard-water treatment, ladder or lift plan, exclusions, and price. Its supporting evidence includes count verification, pre-existing damage photos, access assessment, completed panes, and unresolved stain or seal findings.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Cleaning opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Cleaning site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Cleaning contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Cleaning service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Cleaning due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this window cleaning record to its evidence.",
+          "key": "record_routing",
+          "label": "Window Cleaning Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Window counts",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Types",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Floors",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Screens",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Tracks",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Skylights",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture window counts, types, floors, screens, tracks, skylights, access, landscaping, and interior protection needs for this window cleaning.",
+          "key": "core_identity",
+          "label": "Window Cleaning Core Identifiers",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Interior or exterior surfaces",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Screen",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Track work",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Hard-water treatment",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Ladder or lift plan",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For window cleaning, record interior or exterior surfaces, screen and track work, hard-water treatment, ladder or lift plan, exclusions, and price.",
+          "key": "task_inputs",
+          "label": "Window Cleaning Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Cleaning work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized window cleaning work from additions.",
+          "key": "assigned_work",
+          "label": "Window Cleaning Assigned Work and Acceptance Criteria",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Cleaning arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Cleaning access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Cleaning added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Cleaning inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop window cleaning work at recorded limits.",
+          "key": "work_window",
+          "label": "Window Cleaning Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Cleaning when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Cleaning measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Cleaning evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Cleaning result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For window cleaning, record count verification, pre-existing damage photos, access assessment, completed panes, and unresolved stain or seal findings.",
+          "key": "evidence_register",
+          "label": "Window Cleaning Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Count verification",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Pre-existing damage photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Access assessment",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Completed panes",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every window cleaning evidence source.",
+          "key": "evidence_sources",
+          "label": "Window Cleaning Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary window cleaning evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Window Cleaning Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Cleaning open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Cleaning owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Cleaning acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer window cleaning items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Window Cleaning Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Cleaning completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Pane",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Screen check",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Furniture restoration",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Damage exception",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the window cleaning outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Window Cleaning Final Outcome",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the window cleaning assignment, authorize its window cleaning plan, and record each field finding.",
+      "key": "identity_1",
+      "title": "Work Reference, Plan, and Field Finding"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Window Cleaning Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For window cleaning, record pane and screen check, furniture restoration, damage exception, customer walkthrough, and future-service note; give the window cleaning care or operating instruction, identify window cleaning access restoration and recipient.",
+          "height": 40,
+          "key": "completion_care_notes",
+          "label": "Window Cleaning Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Cleaning technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Cleaning customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Window Cleaning Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the window cleaning record with pane and screen check, furniture restoration, damage exception, customer walkthrough, and future-service note.",
+      "key": "closeout_4",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "window-cleaning-work-order-form",
+  "source_filename": "dhs_2437__window_cleaning_work_order_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Window Cleaning Work Order Form: window cleaning survey and service completion using window counts, interior or exterior surfaces, and count verification.",
+  "title": "Window Cleaning Work Order Form",
+  "use_case": "Use the work order form during window cleaning survey and service completion when the window cleaning record must identify window counts, types, floors, screens, tracks, skylights, access, landscaping, and interior protection needs. Complete the applicable handoff for pane and screen check, furniture restoration, damage exception, customer walkthrough, and future-service note."
+}

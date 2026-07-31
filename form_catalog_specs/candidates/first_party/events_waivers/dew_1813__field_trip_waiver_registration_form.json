@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1813__field_trip_waiver_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1813__field_trip_waiver_registration_form.pdf",
+  "slug": "field-trip-waiver-registration-form",
+  "title": "Field Trip Waiver Registration Form",
+  "subtitle": "Capture trip destination, transport, activity condition, and supervision; confirm guardian choice and return.",
+  "description": "Field Trip Waiver records trip destination, transport, activity condition, supervision, guardian choice, and return. Field Trip Waiver evidence stays linked.",
+  "use_case": "Use this field trip waiver registration and placement when staff must document trip destination and transport. Reconcile activity condition, supervision, guardian choice, and return before the field trip waiver handoff. Use the itinerary, transportation plan, disclosed activity conditions, supervision roster, accessible alternative, participant questions, guardian choice, and return headcount. This acknowledgment concerns an excursion with bus or walking travel, off-site terrain, destination activities, chaperone supervision, group movement, and school return. Ask the assigned field trip waiver reviewer to confirm trip destination against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "participant_and_activity",
+      "title": "Field Trip Waiver participant contact and activity details",
+      "guidance": "Disclose destination, transport conditions, walking or activity demands, supervision, available alternative, guardian choice, emergency route, and return.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Field Trip Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "trip_destination",
+              "label": "Trip destination",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Field Trip Waiver task details",
+          "fields": [
+            {
+              "key": "transport",
+              "label": "Transport",
+              "units": 1.15
+            },
+            {
+              "key": "activity_condition",
+              "label": "Activity condition",
+              "units": 1.0
+            },
+            {
+              "key": "supervision",
+              "label": "Supervision",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_choice",
+              "label": "Guardian choice",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Approve",
+                "Approve with limit",
+                "Do not approve",
+                "Pending"
+              ]
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "disclosures_and_registration",
+      "title": "Field Trip Waiver disclosure review and registration readiness",
+      "guidance": "Keep the registration decision separate from the disclosed conditions, questions, and available alternatives.",
+      "blocks": [
+        {
+          "key": "disclosure_readiness",
+          "type": "checklist",
+          "label": "Field Trip Waiver disclosure checks",
+          "items": [
+            "Trip destination is named for this registration",
+            "Transport is stated and current",
+            "Activity condition is explained or verified",
+            "Supervision and related limits are disclosed",
+            "Guardian choice is recorded separately",
+            "Return is confirmed or routed",
+            "Questions and a practical alternative are offered",
+            "Organizer safety duties and non-waivable rights remain in force"
+          ]
+        },
+        {
+          "key": "registration_and_choice",
+          "type": "fields",
+          "label": "Field Trip Waiver registration and choice",
+          "fields": [
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "activity_or_session",
+              "label": "Activity or session",
+              "units": 1.0
+            },
+            {
+              "key": "participation_choice",
+              "label": "Participation choice",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Participate",
+                "Participate with limit",
+                "Do not participate",
+                "Pending"
+              ]
+            },
+            {
+              "key": "modification_or_alternative",
+              "label": "Modification or alternative",
+              "units": 1.1
+            },
+            {
+              "key": "waiver_version_or_date",
+              "label": "Waiver version or date",
+              "units": 1.2
+            },
+            {
+              "key": "fee_or_roster_reference",
+              "label": "Fee or roster reference",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "confirmation_and_receipt",
+      "title": "Field Trip Waiver decision, limits, and receipt",
+      "guidance": "Do not complete registration while a material question remains open.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Field Trip Waiver registration confirmation",
+          "fields": [
+            {
+              "key": "confirmed_activity_team_trip_or_session",
+              "label": "Confirmed activity, team, trip, or session",
+              "units": 1.15
+            },
+            {
+              "key": "registration_confirmation_number",
+              "label": "Registration confirmation number",
+              "units": 1.0
+            },
+            {
+              "key": "question_or_participation_limit",
+              "label": "Question or participation limit",
+              "units": 1.25
+            },
+            {
+              "key": "check_in_or_start_instructions_sent_date",
+              "label": "Check-in or start instructions sent date",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_coordinator",
+              "label": "Responsible coordinator",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Field Trip Waiver acknowledgment and receipt",
+          "fields": [
+            {
+              "key": "participant_or_guardian_acknowledgment_and_date",
+              "label": "Participant or guardian acknowledgment and date",
+              "units": 1.15
+            },
+            {
+              "key": "registration_staff_receipt_and_date",
+              "label": "Registration staff receipt and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Acknowledgment records the named conditions and voluntary choice; it does not remove organizer safety duties or non-waivable rights."
+        }
+      ]
+    }
+  ]
+}

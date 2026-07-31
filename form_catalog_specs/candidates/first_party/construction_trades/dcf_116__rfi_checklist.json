@@ -1,0 +1,359 @@
+{
+  "catalog_id": "construction_trades/dcf_116__rfi_checklist",
+  "description": "For rfi, this checklist records precise conflict or omission, proposed interpretation, response-needed date, and potential cost or schedule effect. Its supporting evidence includes marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "RFI opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "RFI site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "RFI contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "RFI superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "RFI due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this rfi record to its evidence.",
+          "key": "record_routing",
+          "label": "Rfi Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Drawing",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Specification",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Detail",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Submittal",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture drawing, specification, detail, submittal, location, discipline, and related change records for this rfi.",
+          "key": "core_identity",
+          "label": "Rfi Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify drawing, specification, detail, submittal, location, discipline, and related change records for this rfi record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Precise conflict or omission",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Proposed interpretation",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Response-needed date",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Potential cost or schedule effect",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For rfi, record precise conflict or omission, proposed interpretation, response-needed date, and potential cost or schedule effect.",
+          "key": "task_inputs",
+          "label": "Rfi Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the rfi condition before marking.",
+          "items": [
+            "Verify precise conflict or omission",
+            "Verify proposed interpretation",
+            "Verify response-needed date",
+            "Verify potential cost or schedule effect"
+          ],
+          "key": "task_checks",
+          "label": "Rfi Verification Points",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Reconcile unchecked rfi items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Rfi Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "RFI checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "RFI review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "RFI qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "RFI check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each rfi result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Rfi Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Hold affected work when proceeding could conceal work, create rework, violate requirements, or prejudice entitlement. Do not release affected rfi work.",
+          "key": "stop_boundary",
+          "label": "Rfi Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "RFI exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "RFI correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "RFI escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close rfi exceptions with verification.",
+          "key": "exception_register",
+          "label": "Rfi Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "RFI notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "RFI notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "RFI interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "RFI review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "RFI release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep rfi controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Rfi Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Rfi Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State rfi limits, assumptions, and access gaps.",
+          "height": 36,
+          "key": "limitations",
+          "label": "Rfi Limitations and Interpretation",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Rfi Correction Verification and Release Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For rfi, connect the correction to marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence; name the release decision and retained rfi limitation.",
+          "height": 45,
+          "key": "checklist_correction_verification",
+          "label": "Rfi Correction Verification and Release Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Verify rfi conditions, control exceptions, and preserve release evidence.",
+      "key": "task_2",
+      "title": "Checklist Conditions, Exception, and Release"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "RFI when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "RFI measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "RFI evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "RFI result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For rfi, record marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence.",
+          "key": "evidence_register",
+          "label": "Rfi Findings, Measurements, and Evidence",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Marked-up excerpt",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Field photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Coordination sketch",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Meeting note",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every rfi evidence source.",
+          "key": "evidence_sources",
+          "label": "Rfi Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support rfi findings with marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence.",
+      "key": "observation_4",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "rfi-checklist",
+  "source_filename": "dcf_116__rfi_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Rfi Checklist: request-for-information clarification and response control using drawing, precise conflict or omission, and marked-up excerpt.",
+  "title": "RFI Checklist",
+  "use_case": "Use the checklist during request-for-information clarification and response control when the rfi record must identify drawing, specification, detail, submittal, location, discipline, and related change records. Complete the applicable handoff for authorized response, incorporated drawing note, affected-party distribution, and change-impact follow-up."
+}

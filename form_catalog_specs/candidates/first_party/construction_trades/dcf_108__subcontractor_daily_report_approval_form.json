@@ -1,0 +1,399 @@
+{
+  "catalog_id": "construction_trades/dcf_108__subcontractor_daily_report_approval_form",
+  "description": "For subcontractor daily report, this approval form records shift plan, trade activity, coordination dependencies, inspections, and remaining work. Its supporting evidence includes time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Daily opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Daily site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Daily contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Daily superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Daily due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this subcontractor daily report record to its evidence.",
+          "key": "record_routing",
+          "label": "Subcontractor Daily Report Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Crew roster",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Work areas",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Installed quantities",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Equipment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture crew roster, work areas, installed quantities, equipment, deliveries, and site conditions for this subcontractor daily report.",
+          "key": "core_identity",
+          "label": "Subcontractor Daily Report Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify crew roster, work areas, installed quantities, equipment, deliveries, and site conditions for this subcontractor daily report record.",
+      "key": "identity_1",
+      "title": "Proposal and Authority Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Shift plan",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Trade activity",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Coordination dependencies",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Inspections",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For subcontractor daily report, record shift plan, trade activity, coordination dependencies, inspections, and remaining work.",
+          "key": "task_inputs",
+          "label": "Subcontractor Daily Report Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Daily decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Daily supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Daily review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified subcontractor daily report facts from judgment.",
+          "key": "review_criteria",
+          "label": "Subcontractor Daily Report Review Criteria and Support",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Resolve each failed subcontractor daily report approval check.",
+          "items": [
+            "Decision statement is singular and unambiguous",
+            "Approver authority and any conflict are checked",
+            "Cost, schedule, quality, safety, and compliance effects are addressed",
+            "Alternatives and recommendation are documented",
+            "Conditions and effective period can be monitored",
+            "Implementation owner acknowledges the disposition"
+          ],
+          "key": "decision_readiness",
+          "label": "Subcontractor Daily Report Decision Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Stop and notify supervision for unsafe conditions, concealed conflicts, blocked access, or unapproved extra work. Route unresolved subcontractor daily report work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Subcontractor Daily Report Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For subcontractor daily report, capture shift plan, trade activity, coordination dependencies, inspections, and remaining work.",
+      "key": "task_2",
+      "title": "Decision Package"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Daily when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Daily measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Daily evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Daily result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For subcontractor daily report, record time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+          "key": "evidence_register",
+          "label": "Subcontractor Daily Report Findings, Measurements, and Evidence",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Time-stamped progress photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Quantity measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Delivery tickets",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Inspector observations",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every subcontractor daily report evidence source.",
+          "key": "evidence_sources",
+          "label": "Subcontractor Daily Report Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support subcontractor daily report findings with time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+      "key": "observation_3",
+      "title": "Supporting Record Review"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Stop and notify supervision for unsafe conditions, concealed conflicts, blocked access, or unapproved extra work. Do not release affected subcontractor daily report work.",
+          "key": "stop_boundary",
+          "label": "Subcontractor Daily Report Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Daily exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Daily correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Daily escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close subcontractor daily report exceptions with verification.",
+          "key": "exception_register",
+          "label": "Subcontractor Daily Report Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Stop and notify supervision for unsafe conditions, concealed conflicts, blocked access, or unapproved extra work. Control and route each subcontractor daily report exception.",
+      "key": "exception_4",
+      "title": "Conflicts and Approval Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select approval form disposition",
+                "Approve",
+                "Approve with conditions",
+                "Revise and resubmit",
+                "Reject"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Daily decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Daily approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Daily authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Daily review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate subcontractor daily report disposition.",
+          "key": "disposition",
+          "label": "Subcontractor Daily Report Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Subcontractor Daily Report Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the subcontractor daily report decision to evidence.",
+          "height": 127,
+          "key": "decision_basis",
+          "label": "Subcontractor Daily Report Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "approval_handoff_1",
+              "label": "Daily certification",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_2",
+              "label": "Unresolved-item carryover",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_3",
+              "label": "Next-shift plan",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_4",
+              "label": "Project-record upload",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For subcontractor daily report, record daily certification, unresolved-item carryover, next-shift plan, and project-record upload.",
+          "key": "approval_handoff",
+          "label": "Subcontractor Daily Report Approved Record Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Daily coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Daily manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Daily approver signature and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Subcontractor Daily Report Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the subcontractor daily report next step from time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+      "key": "decision_5",
+      "title": "Approver Disposition"
+    }
+  ],
+  "slug": "subcontractor-daily-report-approval-form",
+  "source_filename": "dcf_108__subcontractor_daily_report_approval_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Subcontractor Daily Report Approval Form: daily subcontractor production reporting using crew roster, shift plan, and time-stamped progress photos.",
+  "title": "Subcontractor Daily Report Approval Form",
+  "use_case": "Use the approval form during daily subcontractor production reporting when the subcontractor daily report record must identify crew roster, work areas, installed quantities, equipment, deliveries, and site conditions. Complete the applicable handoff for daily certification, unresolved-item carryover, next-shift plan, and project-record upload."
+}

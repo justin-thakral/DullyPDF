@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1822__photography_release_checklist",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1822__photography_release_checklist.pdf",
+  "slug": "photography-release-checklist",
+  "title": "Photography Release Checklist",
+  "subtitle": "Capture image or audio, capture setting, name use, and publication channel; confirm duration and withdrawal.",
+  "description": "Photography Release records image or audio, capture setting, name use, publication channel, duration, and withdrawal. Photography Release evidence stays linked.",
+  "use_case": "Use this photography release stage-gated verification when staff must document image or audio and capture setting. Reconcile name use, publication channel, duration, and withdrawal before the photography release handoff. Use the production brief, capture list, subject match, permitted-use matrix, channel inventory, editing and attribution instruction, publication record, and withdrawal log. Ask the assigned photography release reviewer to confirm image or audio against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Photography Release contact and reference",
+      "guidance": "Itemize image, video, audio, name and quotation use; bound capture setting, publication channel, audience, editing, duration, storage, and withdrawal. Record the photography release decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Photography Release people and reference",
+          "fields": [
+            {
+              "key": "person_shown_or_recorded",
+              "label": "Person shown or recorded",
+              "units": 1.15
+            },
+            {
+              "key": "person_contact",
+              "label": "Person contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "contact_for_release_questions",
+              "label": "Contact for release questions",
+              "units": 1.1
+            },
+            {
+              "key": "image_or_audio",
+              "label": "Image or audio",
+              "units": 1.2
+            },
+            {
+              "key": "capture_setting",
+              "label": "Capture setting",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Photography Release task details",
+          "fields": [
+            {
+              "key": "name_use",
+              "label": "Name use",
+              "units": 1.15
+            },
+            {
+              "key": "publication_channel",
+              "label": "Publication channel",
+              "units": 1.0
+            },
+            {
+              "key": "duration",
+              "label": "Duration",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal",
+              "label": "Withdrawal",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Photography Release checks and corrections",
+      "guidance": "Check current photography release facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Photography Release required checks",
+          "items": [
+            "Image or audio is identified for this record",
+            "Capture setting matches the current request or source",
+            "Name use is ready for point-of-use staff",
+            "Publication channel limits or questions are resolved",
+            "Duration is communicated to the responsible person",
+            "Withdrawal is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Photography Release failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Photography Release readiness and handoff",
+      "guidance": "Hold photography release readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Photography Release checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Photography Release reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Photography Release receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

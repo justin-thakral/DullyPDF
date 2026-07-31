@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_114__bill_of_lading_intake_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_114__bill_of_lading_intake_authorization_form.pdf",
+  "slug": "bill-of-lading-intake-authorization-form",
+  "title": "Bill of Lading Intake Authorization Form",
+  "subtitle": "Bill Of Lading Intake: bounds the decision, conditions, and expiry.",
+  "description": "Bill of Lading Intake Authorization Form binds received transport document, shipment terms, commodity lines, parties, and exceptions to a named transport decision, commercial or operating limit, effective time, and the carrier / document acceptance authority's confirmation. The transport document intake coordinator records the requested Bill Of Lading Intake action and keeps any variance outside the granted authority.",
+  "use_case": "Use Bill of Lading Intake Authorization Form at shipping office, receiving office, dispatch system, and document repository. Reconcile applicable Bill Of Lading Intake requirements with the load, carrier, rate, claim, equipment, document, or inventory boundary that applies. Capture the carrier / document acceptance authority's approval, counteroffer, hold, or decline, then reauthorize any change to received transport document, shipment terms, commodity lines, parties, and exceptions.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "authorization_request",
+      "title": "Carrier and shipment identity",
+      "guidance": "Identify the Bill Of Lading Intake request, named decision maker, contact, effective time, and subject.",
+      "blocks": [
+        {
+          "key": "authorization_header",
+          "type": "fields",
+          "label": "Request and decision-maker details",
+          "fields": [
+            {
+              "key": "authorization_number",
+              "label": "BOL intake record ID",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "requesting_party",
+              "label": "Shipment parties / document owner",
+              "units": 1.15
+            },
+            {
+              "key": "decision_maker",
+              "label": "Carrier / document acceptance authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_contact",
+              "label": "Decision-maker contact",
+              "units": 1.05
+            },
+            {
+              "key": "requested_effective_time",
+              "label": "Requested effective time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Bill Of Lading Intake identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Document number, version, and received time",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Shipper, consignee, carrier, and billing party",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Shipment, commodity, package, weight, class, and reference identifiers",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Bill Of Lading Intake identifier printed on received transport document, shipment terms, commodity lines, parties, and exceptions or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Requested authorization and task details",
+      "guidance": "List each Bill Of Lading Intake action with its quantity, amount, route, custody, or time limit.",
+      "blocks": [
+        {
+          "key": "authorization_basis",
+          "type": "checklist",
+          "label": "Bill Of Lading Intake authorization checks",
+          "items": [
+            "Document legibility and completeness",
+            "Party and address consistency",
+            "Commodity, package, and weight reconciliation",
+            "Signature, date, instruction, and notation",
+            "Special handling or classification review status",
+            "System entry and retained source copy"
+          ],
+          "guidance": "Confirm the Bill Of Lading Intake facts supporting each listed action."
+        },
+        {
+          "key": "authorized_actions",
+          "type": "table",
+          "label": "Requested and authorized actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Issue, accept, correct, replace, or void",
+              "units": 1.25
+            },
+            {
+              "key": "subject",
+              "label": "Document, shipment, or party",
+              "units": 1.15
+            },
+            {
+              "key": "change",
+              "label": "Authorized correction or term",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Quantity, signature, or term limit",
+              "units": 1.0
+            },
+            {
+              "key": "expiry",
+              "label": "Effective time or expiry",
+              "units": 0.85
+            },
+            {
+              "key": "initials",
+              "label": "Authority initials",
+              "units": 0.7
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "fields",
+          "label": "Authorization boundary",
+          "fields": [
+            {
+              "key": "primary_limit",
+              "label": "Document / version limit",
+              "units": 1.1
+            },
+            {
+              "key": "secondary_limit",
+              "label": "Quantity / term limit",
+              "units": 1.1
+            },
+            {
+              "key": "effective_time",
+              "label": "Effective date and time",
+              "units": 0.95
+            },
+            {
+              "key": "expiry_reference",
+              "label": "Expiry / superseded record",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_conditions",
+      "title": "Authorization exception and restrictions",
+      "guidance": "Stop Bill Of Lading Intake at the stated boundary and obtain renewed consent for a material variance.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without renewed authorization",
+          "guidance": "Stop normal processing when document integrity, party identity, shipment reconciliation, or required qualified review remains unresolved. Protect received transport document, shipment terms, commodity lines, parties, and exceptions; record the Bill Of Lading Intake notification and obtain renewed authorization from carrier / document acceptance authority before continuing."
+        },
+        {
+          "key": "authorization_stops",
+          "type": "checklist",
+          "label": "Conditions requiring a hold or renewed authorization",
+          "items": [
+            "Document version or authenticity uncertain",
+            "Party, quantity, or weight conflict",
+            "Special term lacks qualified review",
+            "Source document altered during intake"
+          ],
+          "guidance": "Identify the affected received transport document, shipment terms, commodity lines, parties, and exceptions scope, preserve the stated limit, and contact carrier / document acceptance authority before continuing."
+        },
+        {
+          "key": "authorization_variance_instructions",
+          "type": "fields",
+          "label": "Variance and contact instructions",
+          "fields": [
+            {
+              "key": "variance_instruction",
+              "label": "Variance instruction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contact decision maker before any variance",
+                "Proceed only within stated limits",
+                "Hold and request new authorization",
+                "No substitution or route change"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Decision-maker contact / method",
+              "units": 1.15
+            },
+            {
+              "key": "revocation_trigger",
+              "label": "Revocation or hold trigger",
+              "units": 1.0
+            },
+            {
+              "key": "variance_reference",
+              "label": "New-authorization reference",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "conditions_and_limits",
+          "type": "textarea",
+          "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_decision",
+      "title": "Transport authorization decision",
+      "guidance": "Record the Bill Of Lading Intake consent, final limit, effective time, confirmation, and signatures.",
+      "blocks": [
+        {
+          "key": "authorization_evidence",
+          "type": "checklist",
+          "label": "Evidence reviewed with the decision maker",
+          "items": [
+            "Unaltered received document image",
+            "Source-order and shipment comparison",
+            "Qualified classification or instruction reference",
+            "System-entry and review audit trail"
+          ],
+          "guidance": "Attach or link proof for received transport document, shipment terms, commodity lines, parties, and exceptions; mark only Bill Of Lading Intake evidence present in that record."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Document authorization outcome",
+          "fields": [
+            {
+              "key": "authorization_result",
+              "label": "Document authorization",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Issue or accept as listed",
+                "Issue or accept with listed corrections",
+                "Replace or void prior document",
+                "Hold pending correction",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_limit",
+              "label": "Authorized document / term limit",
+              "units": 1.15
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation / PO / message reference",
+              "units": 1.05
+            },
+            {
+              "key": "verification_owner",
+              "label": "Verification / release owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Decision-maker consent and operator acknowledgment",
+          "fields": [
+            {
+              "key": "decision_maker_signature",
+              "label": "Authorizing authority: Carrier / document acceptance authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_maker_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "operator_signature",
+              "label": "Document preparer / carrier",
+              "units": 1.15
+            },
+            {
+              "key": "operator_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

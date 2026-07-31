@@ -1,0 +1,288 @@
+{
+  "catalog_id": "construction_trades/dcf_150__time_and_materials_request_form",
+  "description": "For time and materials, this request form records authorized extra-work boundary, productive and standby time, quantities, markup basis, and daily cutoff. Its supporting evidence includes signed tickets, timecards, invoices, delivery slips, equipment hours, progress photos, and supervisor notes.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Materials opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Materials site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Materials contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Materials superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Materials due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this time and materials record to its evidence.",
+          "key": "record_routing",
+          "label": "Time And Materials Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Directive",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Date",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Crew classifications",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Materials",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture directive, date, location, crew classifications, equipment, materials, subcontractors, and applicable rates for this time and materials.",
+          "key": "core_identity",
+          "label": "Time And Materials Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify directive, date, location, crew classifications, equipment, materials, subcontractors, and applicable rates for this time and materials record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Authorized extra-work boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Productive",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Standby time",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Quantities",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For time and materials, record authorized extra-work boundary, productive and standby time, quantities, markup basis, and daily cutoff.",
+          "key": "task_inputs",
+          "label": "Time And Materials Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Time And Materials Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State time and materials outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Time And Materials Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Materials work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Materials owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate time and materials items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Time And Materials Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Pause unverified or out-of-scope work when direction, rates, authority, or daily acknowledgment is missing. Route unresolved time and materials work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Time And Materials Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For time and materials, capture authorized extra-work boundary, productive and standby time, quantities, markup basis, and daily cutoff.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Materials decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Materials approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Materials schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate time and materials disposition.",
+          "key": "disposition",
+          "label": "Time And Materials Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Time And Materials Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the time and materials decision to evidence.",
+          "height": 116,
+          "key": "decision_basis",
+          "label": "Time And Materials Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Daily customer verification",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Cost summary",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Unresolved exception",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Change-order linkage",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For time and materials, record daily customer verification, cost summary, unresolved exception, change-order linkage, and billing handoff.",
+          "key": "request_handoff",
+          "label": "Time And Materials Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Materials requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Materials coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Time And Materials Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the time and materials next step from signed tickets, timecards, invoices, delivery slips, equipment hours, progress photos, and supervisor notes.",
+      "key": "decision_3",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "time-and-materials-request-form",
+  "source_filename": "dcf_150__time_and_materials_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Time And Materials Request Form: time-and-material work capture and verification using directive, authorized extra-work boundary, and signed tickets.",
+  "title": "Time and Materials Request Form",
+  "use_case": "Use the request form during time-and-material work capture and verification when the time and materials record must identify directive, date, location, crew classifications, equipment, materials, subcontractors, and applicable rates. Complete the applicable handoff for daily customer verification, cost summary, unresolved exception, change-order linkage, and billing handoff."
+}

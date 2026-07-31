@@ -1,0 +1,365 @@
+{
+  "catalog_id": "construction_trades/dcf_196__weather_delay_checklist",
+  "description": "For weather delay, this checklist records observed conditions, workability thresholds, lost or redirected activity, protection measures, and forecast outlook. Its supporting evidence includes on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Delay opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Delay site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Delay contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Delay superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Delay due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this weather delay record to its evidence.",
+          "key": "record_routing",
+          "label": "Weather Delay Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Date",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Site",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Scheduled activities",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Contractual weather basis",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Crew",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture date, site, scheduled activities, contractual weather basis, crew, equipment, and affected milestones for this weather delay.",
+          "key": "core_identity",
+          "label": "Weather Delay Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify date, site, scheduled activities, contractual weather basis, crew, equipment, and affected milestones for this weather delay record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Observed conditions",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Workability thresholds",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Lost or redirected activity",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Protection measures",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For weather delay, record observed conditions, workability thresholds, lost or redirected activity, protection measures, and forecast outlook.",
+          "key": "task_inputs",
+          "label": "Weather Delay Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the weather delay condition before marking.",
+          "items": [
+            "Verify observed conditions",
+            "Verify workability thresholds",
+            "Verify lost or redirected activity",
+            "Verify protection measures",
+            "Verify forecast outlook"
+          ],
+          "key": "task_checks",
+          "label": "Weather Delay Verification Points",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Reconcile unchecked weather delay items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Weather Delay Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Delay checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Delay review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Delay qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Delay check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each weather delay result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Weather Delay Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Stop exposed or unsafe operations when wind, lightning, heat, cold, precipitation, or ground conditions exceed controls. Do not release affected weather delay work.",
+          "key": "stop_boundary",
+          "label": "Weather Delay Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Delay exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Delay correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Delay escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close weather delay exceptions with verification.",
+          "key": "exception_register",
+          "label": "Weather Delay Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Delay notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Delay notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Delay interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Delay review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Delay release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep weather delay controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Weather Delay Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Weather Delay Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State weather delay limits, assumptions, and access gaps.",
+          "height": 36,
+          "key": "limitations",
+          "label": "Weather Delay Limitations and Interpretation",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Weather Delay Correction Verification and Release Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For weather delay, connect the correction to on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record; name the release decision and retained weather delay limitation.",
+          "height": 45,
+          "key": "checklist_correction_verification",
+          "label": "Weather Delay Correction Verification and Release Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Verify weather delay conditions, control exceptions, and preserve release evidence.",
+      "key": "task_2",
+      "title": "Checklist Conditions, Exception, and Release"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Delay when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Delay measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Delay evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Delay result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For weather delay, record on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record.",
+          "key": "evidence_register",
+          "label": "Weather Delay Findings, Measurements, and Evidence",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "On-site readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Weather source",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Daily reports",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Schedule fragment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every weather delay evidence source.",
+          "key": "evidence_sources",
+          "label": "Weather Delay Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support weather delay findings with on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record.",
+      "key": "observation_4",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "weather-delay-checklist",
+  "source_filename": "dcf_196__weather_delay_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Weather Delay Checklist: weather-impact documentation and recovery planning using date, observed conditions, and on-site readings.",
+  "title": "Weather Delay Checklist",
+  "use_case": "Use the checklist during weather-impact documentation and recovery planning when the weather delay record must identify date, site, scheduled activities, contractual weather basis, crew, equipment, and affected milestones. Complete the applicable handoff for verified impact, notice status, schedule analysis, mitigation assignment, recovery plan, and claim-record linkage."
+}

@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2636__vendor_load_in_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2636__vendor_load_in_request_form.pdf",
+  "slug": "dhe-2636-vendor-load-in-request-form",
+  "title": "Vendor Load-In Request Form",
+  "subtitle": "Capture vendor vehicle, dock slot, freight, and credential; confirm route and load-out reconciliation.",
+  "description": "Vendor Load In records vendor vehicle, dock slot, freight, credential, route, and load-out reconciliation. Vendor Load In evidence stays linked.",
+  "use_case": "Use this vendor load in request intake when staff must document vendor vehicle and dock slot. Reconcile freight, credential, route, and load-out reconciliation before the vendor load in handoff. Use the dock schedule, vehicle and driver list, freight manifest, credential roster, route map, elevator booking, marshal assignment, staging check, and load-out receipt. Ask the assigned vendor load in reviewer to confirm vendor vehicle against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Vendor Load In requester details review",
+      "guidance": "Schedule vendor vehicle, driver, dock slot, freight dimensions, equipment, credential, approved route, elevator or marshal support, staging, and load-out reconciliation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Vendor Load In people and reference",
+          "fields": [
+            {
+              "key": "operational_record_subject",
+              "label": "Operational record subject",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_contact",
+              "label": "Responsible contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_work_area",
+              "label": "Property, venue, or work area",
+              "units": 1.25
+            },
+            {
+              "key": "scheduled_or_discovery_date",
+              "label": "Scheduled or discovery date",
+              "units": 1.1
+            },
+            {
+              "key": "vendor_vehicle",
+              "label": "Vendor vehicle",
+              "units": 1.2
+            },
+            {
+              "key": "dock_slot",
+              "label": "Dock slot",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Vendor Load In task details",
+          "fields": [
+            {
+              "key": "freight",
+              "label": "Freight",
+              "units": 1.15
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.0
+            },
+            {
+              "key": "route",
+              "label": "Route",
+              "units": 1.25
+            },
+            {
+              "key": "load_out_reconciliation",
+              "label": "Load-out reconciliation",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Vendor Load In exception review and request scope",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Vendor Load In requested items",
+          "columns": [
+            {
+              "key": "requested_vendor_vehicle",
+              "label": "Requested vendor vehicle",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_dock_slot",
+              "label": "Need or dock slot",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_credential",
+              "label": "Constraint or credential",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Vendor Load In request checks",
+          "items": [
+            "Vendor vehicle is identified for this record",
+            "Dock slot matches the current request or source",
+            "Freight is ready for point-of-use staff",
+            "Credential limits or questions are resolved",
+            "Route is communicated to the responsible person",
+            "Load-out reconciliation is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Vendor Load In exception review and response",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Vendor Load In request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Vendor Load In request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

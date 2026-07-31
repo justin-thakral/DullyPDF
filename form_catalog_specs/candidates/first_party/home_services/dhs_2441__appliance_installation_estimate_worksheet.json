@@ -1,0 +1,358 @@
+{
+  "catalog_id": "home_services/dhs_2441__appliance_installation_estimate_worksheet",
+  "description": "For appliance installation, this estimate worksheet records connection requirements, code-listed parts, protection, leveling, anchoring, testing, haul-away, and customer orientation. Its supporting evidence includes delivery condition, fit measurements, connection photos, leak or electrical test, serial record, and operation check.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Appliance opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Appliance site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Appliance contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Appliance service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Appliance due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this appliance installation record to its evidence.",
+          "key": "record_routing",
+          "label": "Appliance Installation Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Appliance model",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Serial",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Dimensions",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Path",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Utilities",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture appliance model, serial, location, dimensions, path, utilities, cabinetry, ventilation, and old-unit disposition for this appliance installation.",
+          "key": "core_identity",
+          "label": "Appliance Installation Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify appliance model, serial, location, dimensions, path, utilities, cabinetry, ventilation, and old-unit disposition for this appliance installation record.",
+      "key": "identity_1",
+      "title": "Estimate Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Connection requirements",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Code-listed parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Protection",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Leveling",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Anchoring",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Testing",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For appliance installation, record connection requirements, code-listed parts, protection, leveling, anchoring, testing, haul-away, and customer orientation.",
+          "key": "task_inputs",
+          "label": "Appliance Installation Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Appliance Installation Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State appliance installation outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Appliance Installation Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Appliance work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Appliance owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate appliance installation items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Appliance Installation Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not connect incompatible, damaged, improperly supplied, poorly vented, leaking, or code-deficient installations. Route unresolved appliance installation work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Appliance Installation Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For appliance installation, capture connection requirements, code-listed parts, protection, leveling, anchoring, testing, haul-away, and customer orientation.",
+      "key": "task_2",
+      "title": "Quantities, Rates, and Assumptions"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Appliance when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Appliance measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Appliance evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Appliance result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For appliance installation, record delivery condition, fit measurements, connection photos, leak or electrical test, serial record, and operation check.",
+          "key": "evidence_register",
+          "label": "Appliance Installation Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Delivery condition",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Fit measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Connection photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Leak or electrical test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Serial record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every appliance installation evidence source.",
+          "key": "evidence_sources",
+          "label": "Appliance Installation Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Appliance Installation Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State appliance installation limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Appliance Installation Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support appliance installation findings with delivery condition, fit measurements, connection photos, leak or electrical test, serial record, and operation check.",
+      "key": "observation_3",
+      "title": "Pricing Evidence and Options"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate worksheet disposition",
+                "Approve estimate",
+                "Approve with option",
+                "Revise basis",
+                "Decline to price"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Appliance decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Appliance scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Appliance authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Appliance review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate appliance installation disposition.",
+          "key": "disposition",
+          "label": "Appliance Installation Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Appliance Installation Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the appliance installation decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Appliance Installation Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Appliance crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Appliance service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Appliance Installation Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the appliance installation next step from delivery condition, fit measurements, connection photos, leak or electrical test, serial record, and operation check.",
+      "key": "decision_4",
+      "title": "Price Review"
+    }
+  ],
+  "slug": "appliance-installation-estimate-worksheet",
+  "source_filename": "dhs_2441__appliance_installation_estimate_worksheet.pdf",
+  "source_section": "home_services",
+  "subtitle": "Appliance Installation Estimate Worksheet: residential appliance delivery and installation using appliance model, connection requirements, and delivery condition.",
+  "title": "Appliance Installation Estimate Worksheet",
+  "use_case": "Use the estimate worksheet during residential appliance delivery and installation when the appliance installation record must identify appliance model, serial, location, dimensions, path, utilities, cabinetry, ventilation, and old-unit disposition. Complete the applicable handoff for installed condition, function verification, customer demonstration, warranty registration, debris removal, and signoff."
+}

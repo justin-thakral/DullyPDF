@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2613__venue_rental_authorization_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2613__venue_rental_authorization_form.pdf",
+  "slug": "venue-rental-authorization-form",
+  "title": "Venue Rental Authorization Form",
+  "subtitle": "Capture event date, space hold, occupancy, and setup window; confirm outside vendor and venue return.",
+  "description": "Venue Rental records event date, space hold, occupancy, setup window, outside vendor, and venue return. Venue Rental evidence stays linked.",
+  "use_case": "Use this venue rental authorization decision when staff must document event date and space hold. Reconcile occupancy, setup window, outside vendor, and venue return before the venue rental handoff. Use the space-hold record, floorplan, occupancy source, vendor list, access schedule, condition photos, key log, post-event inspection, and damage or deposit disposition. Ask the assigned venue rental reviewer to confirm event date against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Venue Rental signer details review",
+      "guidance": "Record event date, held spaces, occupancy, setup and strike windows, outside vendors, access keys, noise or use limits, condition evidence, and venue return.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Venue Rental people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "event_stay_or_reservation_date",
+              "label": "Event, stay, or reservation date",
+              "units": 1.1
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 1.2
+            },
+            {
+              "key": "space_hold",
+              "label": "Space hold",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Venue Rental task details",
+          "fields": [
+            {
+              "key": "occupancy",
+              "label": "Occupancy",
+              "units": 1.15
+            },
+            {
+              "key": "setup_window",
+              "label": "Setup window",
+              "units": 1.0
+            },
+            {
+              "key": "outside_vendor",
+              "label": "Outside vendor",
+              "units": 1.25
+            },
+            {
+              "key": "venue_return",
+              "label": "Venue return",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Venue Rental decision and scope choices",
+      "guidance": "Decide each venue rental scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Venue Rental primary scope",
+          "fields": [
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "space_hold",
+              "label": "Space hold",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "occupancy",
+              "label": "Occupancy",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Venue Rental additional scope",
+          "fields": [
+            {
+              "key": "setup_window",
+              "label": "Setup window",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "outside_vendor",
+              "label": "Outside vendor",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "venue_return",
+              "label": "Venue return",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Venue Rental authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Venue Rental effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_service_recipient",
+              "label": "Authorized service recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Venue Rental decision and signer receipt",
+      "guidance": "Only recorded venue rental choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Venue Rental limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Venue Rental signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Venue Rental signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Venue Rental authorization boundary",
+          "guidance": "Named venue rental reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

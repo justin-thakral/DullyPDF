@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1847__equipment_rental_checklist",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1847__equipment_rental_checklist.pdf",
+  "slug": "dew-1847-equipment-rental-checklist-0ddbfc29",
+  "title": "Equipment Rental Checklist",
+  "subtitle": "Capture asset number, component count, approved use, and condition photo; confirm custody and return.",
+  "description": "Equipment Rental records asset number, component count, approved use, condition photo, custody, and return. Equipment Rental evidence stays linked.",
+  "use_case": "Use this equipment rental stage-gated verification when staff must document asset number and component count. Reconcile approved use, condition photo, custody, and return before the equipment rental handoff. Use the rental agreement reference, asset inventory, accessory checklist, condition photos, pickup receipt, custody transfer, damage ticket, return timestamp, and deposit disposition. This rental follows a portable asset by inventory class, serial identifier, accessory kit, pickup inspection, borrower custody, deposit disposition, damage charge, and physical return. Ask the assigned equipment rental reviewer to confirm asset number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Equipment Rental starting details review",
+      "guidance": "List asset and component count, approved use, pickup condition photographs, custodian, deposit reference, damage route, return time, and final condition.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Equipment Rental people and reference",
+          "fields": [
+            {
+              "key": "renter_or_responsible_party",
+              "label": "Renter or responsible party",
+              "units": 1.15
+            },
+            {
+              "key": "renter_phone",
+              "label": "Renter phone",
+              "units": 1.0
+            },
+            {
+              "key": "renter_email",
+              "label": "Renter email",
+              "units": 1.25
+            },
+            {
+              "key": "asset_number",
+              "label": "Asset number",
+              "units": 1.1
+            },
+            {
+              "key": "component_count",
+              "label": "Component count",
+              "units": 1.2
+            },
+            {
+              "key": "approved_use",
+              "label": "Approved use",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Equipment Rental task details",
+          "fields": [
+            {
+              "key": "condition_photo",
+              "label": "Condition photo",
+              "units": 1.15
+            },
+            {
+              "key": "custody",
+              "label": "Custody",
+              "units": 1.0
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Equipment Rental checks and corrections",
+      "guidance": "Check current equipment rental facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Equipment Rental required checks",
+          "items": [
+            "Asset number is identified for this record",
+            "Component count matches the current request or source",
+            "Approved use is ready for point-of-use staff",
+            "Condition photo limits or questions are resolved",
+            "Custody is communicated to the responsible person",
+            "Return is confirmed at handoff",
+            "A changed equipment rental fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Equipment Rental failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Equipment Rental exception review and readiness",
+      "guidance": "Hold equipment rental readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Equipment Rental checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Equipment Rental reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Equipment Rental receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,356 @@
+{
+  "catalog_id": "construction_trades/dct_1115__hvac_installation_estimate_request_form",
+  "description": "For hvac installation, this estimate request form records load basis, placement, clearances, connections, commissioning points, permits, training, and warranty registration. Its supporting evidence includes equipment data, pressure test, vacuum record, airflow and temperature readings, startup sheet, and installation photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "HVAC opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "HVAC site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "HVAC contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "HVAC superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "HVAC due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this hvac installation record to its evidence.",
+          "key": "record_routing",
+          "label": "Hvac Installation Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Equipment model",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Capacity",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Refrigerant",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Duct or piping interfaces",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Controls",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Power",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture equipment model, capacity, refrigerant, duct or piping interfaces, controls, power, drain, and served zones for this hvac installation.",
+          "key": "core_identity",
+          "label": "Hvac Installation Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify equipment model, capacity, refrigerant, duct or piping interfaces, controls, power, drain, and served zones for this hvac installation record.",
+      "key": "identity_1",
+      "title": "Estimate Assignment and Site"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Load basis",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Placement",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Clearances",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Connections",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Commissioning points",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Permits",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For hvac installation, record load basis, placement, clearances, connections, commissioning points, permits, training, and warranty registration.",
+          "key": "task_inputs",
+          "label": "Hvac Installation Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Hvac Installation Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State hvac installation outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Hvac Installation Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "HVAC work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "HVAC owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate hvac installation items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Hvac Installation Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not start equipment with unresolved electrical, combustion, refrigerant, drainage, clearance, or ventilation hazards. Route unresolved hvac installation work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Hvac Installation Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For hvac installation, capture load basis, placement, clearances, connections, commissioning points, permits, training, and warranty registration.",
+      "key": "task_2",
+      "title": "Scope Review and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "HVAC when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "HVAC measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "HVAC evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "HVAC result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For hvac installation, record equipment data, pressure test, vacuum record, airflow and temperature readings, startup sheet, and installation photos.",
+          "key": "evidence_register",
+          "label": "Hvac Installation Findings, Measurements, and Evidence",
+          "rows": 9,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Equipment data",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Pressure test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Vacuum record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Airflow",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Temperature readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Startup sheet",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every hvac installation evidence source.",
+          "key": "evidence_sources",
+          "label": "Hvac Installation Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary hvac installation evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Hvac Installation Evidence Completeness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Support hvac installation findings with equipment data, pressure test, vacuum record, airflow and temperature readings, startup sheet, and installation photos.",
+      "key": "observation_3",
+      "title": "Pricing Inputs and Site Evidence"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate request form disposition",
+                "Ready to estimate",
+                "Site visit required",
+                "Clarification required",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "HVAC decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "HVAC approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "HVAC schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate hvac installation disposition.",
+          "key": "disposition",
+          "label": "Hvac Installation Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Hvac Installation Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the hvac installation decision to evidence.",
+          "height": 36,
+          "key": "decision_basis",
+          "label": "Hvac Installation Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "HVAC requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "HVAC coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Hvac Installation Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the hvac installation next step from equipment data, pressure test, vacuum record, airflow and temperature readings, startup sheet, and installation photos.",
+      "key": "decision_4",
+      "title": "Estimate Readiness"
+    }
+  ],
+  "slug": "dct-1115-hvac-installation-estimate-request-form-79399302",
+  "source_filename": "dct_1115__hvac_installation_estimate_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Hvac Installation Estimate Request Form: HVAC equipment installation and startup using equipment model, load basis, and equipment data.",
+  "title": "HVAC Installation Estimate Request Form",
+  "use_case": "Use the estimate request form during HVAC equipment installation and startup when the hvac installation record must identify equipment model, capacity, refrigerant, duct or piping interfaces, controls, power, drain, and served zones. Complete the applicable handoff for commissioning acceptance, setpoints, owner training, warranty registration, permit closure, and service baseline."
+}

@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_178__bullying_incident_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_178__bullying_incident_information_sheet.pdf",
+  "slug": "bullying-incident-information-sheet",
+  "title": "Bullying Incident Information Sheet",
+  "subtitle": "Capture reported conduct, exact statement, location pattern, and protective step; confirm retaliation concern and support follow-up.",
+  "description": "Bullying Incident records reported conduct, exact statement, location pattern, protective step, retaliation concern, and support follow-up. Bullying Incident evidence stays linked.",
+  "use_case": "Use this bullying incident controlled information handoff when staff must document reported conduct and exact statement. Reconcile location pattern, protective step, retaliation concern, and support follow-up before the bullying incident handoff. Preserve the original report, dated witness accounts, location map or digital-channel reference, protective-action log, retaliation check, and restricted support record. Ask the assigned bullying incident reviewer to confirm reported conduct against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Bullying Incident audience details review",
+      "guidance": "Separate reported conduct and exact statements from observations; record location patterns, protective measures, retaliation concerns, and support follow-up.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Bullying Incident people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "reporting_person_and_role",
+              "label": "Reporting person and role",
+              "units": 1.0
+            },
+            {
+              "key": "date_and_time_first_reported",
+              "label": "Date and time first reported",
+              "units": 1.25
+            },
+            {
+              "key": "reported_conduct",
+              "label": "Reported conduct",
+              "units": 1.1
+            },
+            {
+              "key": "exact_statement",
+              "label": "Exact statement",
+              "units": 1.2
+            },
+            {
+              "key": "location_pattern",
+              "label": "Location pattern",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Bullying Incident task details",
+          "fields": [
+            {
+              "key": "protective_step",
+              "label": "Protective step",
+              "units": 1.15
+            },
+            {
+              "key": "retaliation_concern",
+              "label": "Retaliation concern",
+              "units": 1.0
+            },
+            {
+              "key": "support_follow_up",
+              "label": "Support follow-up",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Bullying Incident current instructions review",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Bullying Incident instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Bullying Incident questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Bullying Incident update route and handoff",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Bullying Incident effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Bullying Incident update boundary",
+          "guidance": "Replace outdated bullying incident instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

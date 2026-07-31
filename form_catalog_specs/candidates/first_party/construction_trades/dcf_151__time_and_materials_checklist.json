@@ -1,0 +1,295 @@
+{
+  "catalog_id": "construction_trades/dcf_151__time_and_materials_checklist",
+  "description": "For time and materials, this checklist records authorized extra-work boundary, productive and standby time, quantities, markup basis, and daily cutoff. Its supporting evidence includes signed tickets, timecards, invoices, delivery slips, equipment hours, progress photos, and supervisor notes.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Materials opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Materials site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Materials contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Materials superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Materials due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this time and materials record to its evidence.",
+          "key": "record_routing",
+          "label": "Time And Materials Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Directive",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Date",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Crew classifications",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Materials",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture directive, date, location, crew classifications, equipment, materials, subcontractors, and applicable rates for this time and materials.",
+          "key": "core_identity",
+          "label": "Time And Materials Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify directive, date, location, crew classifications, equipment, materials, subcontractors, and applicable rates for this time and materials record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Authorized extra-work boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Productive",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Standby time",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Quantities",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For time and materials, record authorized extra-work boundary, productive and standby time, quantities, markup basis, and daily cutoff.",
+          "key": "task_inputs",
+          "label": "Time And Materials Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the time and materials condition before marking.",
+          "items": [
+            "Verify authorized extra-work boundary",
+            "Verify productive",
+            "Verify standby time",
+            "Verify quantities",
+            "Verify markup basis",
+            "Verify daily cutoff"
+          ],
+          "key": "task_checks",
+          "label": "Time And Materials Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Materials checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Materials review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Materials qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Materials check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each time and materials result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Time And Materials Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Pause unverified or out-of-scope work when direction, rates, authority, or daily acknowledgment is missing. Route unresolved time and materials work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Time And Materials Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For time and materials, capture authorized extra-work boundary, productive and standby time, quantities, markup basis, and daily cutoff.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Materials when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Materials measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Materials evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Materials result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For time and materials, record signed tickets, timecards, invoices, delivery slips, equipment hours, progress photos, and supervisor notes.",
+          "key": "evidence_register",
+          "label": "Time And Materials Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Signed tickets",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Timecards",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Invoices",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Delivery slips",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Equipment hours",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Progress photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every time and materials evidence source.",
+          "key": "evidence_sources",
+          "label": "Time And Materials Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked time and materials items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Time And Materials Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Time And Materials Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State time and materials limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Time And Materials Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support time and materials findings with signed tickets, timecards, invoices, delivery slips, equipment hours, progress photos, and supervisor notes.",
+      "key": "observation_3",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "time-and-materials-checklist",
+  "source_filename": "dcf_151__time_and_materials_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Time And Materials Checklist: time-and-material work capture and verification using directive, authorized extra-work boundary, and signed tickets.",
+  "title": "Time and Materials Checklist",
+  "use_case": "Use the checklist during time-and-material work capture and verification when the time and materials record must identify directive, date, location, crew classifications, equipment, materials, subcontractors, and applicable rates. Complete the applicable handoff for daily customer verification, cost summary, unresolved exception, change-order linkage, and billing handoff."
+}

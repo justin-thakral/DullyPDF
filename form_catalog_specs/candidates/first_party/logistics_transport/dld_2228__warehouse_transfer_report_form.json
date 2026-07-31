@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2228__warehouse_transfer_report_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2228__warehouse_transfer_report_form.pdf",
+  "slug": "warehouse-transfer-report-form",
+  "title": "Warehouse Transfer Report Form",
+  "subtitle": "Warehouse Transfer: reconciles results, variances, and follow-up.",
+  "description": "Warehouse Transfer Report Form covers inventory unit, source bin, destination bin, transfer order, handling unit, and posting. The inventory transfer coordinator records Warehouse Transfer source records, totals, variance, and distribution. Warehouse Transfer Report Form keeps Warehouse Transfer exceptions visible until the inventory transfer coordinator handoff.",
+  "use_case": "Use Warehouse Transfer Report Form at source warehouse, staging lane, vehicle or conveyance, and destination warehouse. Document inventory unit, source bin, destination bin, transfer order, handling unit, and posting identity before Warehouse Transfer begins. Compare inventory unit, source bin, destination bin, transfer order, handling unit, and posting findings with stated Warehouse Transfer criteria; route unresolved Warehouse Transfer issues to warehouse control reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Reporting period and source identity",
+      "guidance": "For Warehouse Transfer, identify responsible parties, source warehouse, staging lane, vehicle or conveyance, and destination warehouse, and the linked inventory unit, source bin, destination bin, transfer order, handling unit, and posting source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Report ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Inventory owner / custodian",
+              "units": 1.5
+            },
+            {
+              "key": "location",
+              "label": "Source / destination zone",
+              "units": 1.3888888888888888
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Warehouse Transfer identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Transfer order and reason",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "identity_2",
+              "label": "Item, lot, serial, quantity, and unit of measure",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Source, destination, handling-unit, and seal identifiers",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Reported results and source reconciliation",
+      "guidance": "Capture Warehouse Transfer facts for inventory unit, source bin, destination bin, transfer order, handling unit, and posting; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Warehouse Transfer report checks",
+          "items": [
+            "Source-system and physical quantity",
+            "Pick and load confirmation",
+            "Handling-unit and seal integrity",
+            "Custody departure and arrival events",
+            "Destination receipt and variance",
+            "Source and destination posting result"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Reported result lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Source record, item, or event",
+              "units": 1.2
+            },
+            {
+              "key": "expected",
+              "label": "Expected state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual result or variance",
+              "units": 1.05
+            },
+            {
+              "key": "follow_up",
+              "label": "Owner, recipient, or follow-up",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Report reconciliation, review, and distribution",
+      "guidance": "Resolve open Warehouse Transfer conditions; have inventory transfer coordinator assign the next Warehouse Transfer owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Reconciliation exceptions and retained evidence",
+          "items": [
+            "Source quantity mismatch",
+            "Wrong item, lot, serial, or destination",
+            "Seal or custody interruption",
+            "Posting fails or duplicates movement",
+            "Source count and transfer transaction",
+            "Handling-unit and seal record",
+            "Custody and arrival timestamps",
+            "Destination count and posting confirmation"
+          ],
+          "guidance": "Pause Warehouse Transfer when physical quantity, identity, custody, destination receipt, or system posting remains unresolved. Retain the available Warehouse Transfer proof and route unresolved inventory unit, source bin, destination bin, transfer order, handling unit, and posting scope to inventory transfer coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Report status and distribution",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Report review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for distribution",
+                "Distributed with follow-up",
+                "Correction required",
+                "Returned for clarification",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Report preparer and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Inventory Transfer Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Warehouse Control Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

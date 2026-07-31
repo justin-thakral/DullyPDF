@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1258__it_help_desk_technician_sign_off_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1258__it_help_desk_technician_sign_off_form.pdf",
+  "slug": "it-help-desk-technician-sign-off-form",
+  "title": "IT Help Desk Technician Sign-Off Form",
+  "subtitle": "IT Help-Desk Service: verifies results and open follow-up.",
+  "description": "IT Help Desk Technician Sign-Off Form covers user account, endpoint, application, network path, service, and business function. The service desk coordinator records IT Help-Desk Service performed work, tests, limits, and acceptance. IT Help Desk Technician Sign-Off Form keeps IT Help-Desk Service exceptions visible until the service desk coordinator handoff.",
+  "use_case": "Use IT Help Desk Technician Sign-Off Form at approved remote session, user workspace, equipment room, or service environment. Document user account, endpoint, application, network path, service, and business function identity before IT Help-Desk Service begins. Compare user account, endpoint, application, network path, service, and business function findings with stated IT Help-Desk Service criteria; route unresolved IT Help-Desk Service issues to authorized IT support reviewer. For IT Help Desk Technician Sign-Off Form, confirm requirements for IT Help-Desk Service. Ask authorized IT support reviewer to review IT Help-Desk Service conditions beyond the service desk coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Completion parties and source record",
+      "guidance": "For IT Help-Desk Service, identify responsible parties, approved remote session, user workspace, equipment room, or service environment, and the linked user account, endpoint, application, network path, service, and business function source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Completion record ID",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "IT Help-Desk Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Ticket and requester identity",
+              "units": 1.6111111111111112
+            },
+            {
+              "key": "identity_2",
+              "label": "Device, asset tag, hostname, account, or service identifier",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Affected application, location, and business-impact reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Completion checks and remaining limitations",
+      "guidance": "Capture IT Help-Desk Service facts for user account, endpoint, application, network path, service, and business function; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Completion verification lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Performed task or delivered item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 0.9
+            },
+            {
+              "key": "result",
+              "label": "Verified result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.85
+            },
+            {
+              "key": "follow_up",
+              "label": "Limitation or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "IT Help-Desk Service completion checks",
+          "items": [
+            "Reported behavior and reproducible steps",
+            "Error text, timestamp, log, and recent-change history",
+            "Device, operating system, application, and network context",
+            "Account state and least-privilege requirement",
+            "Backup, data-protection, and rollback readiness",
+            "Post-change functional and user acceptance result"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Verified outcome and customer acknowledgment",
+      "guidance": "Resolve open IT Help-Desk Service conditions; have service desk coordinator assign the next IT Help-Desk Service owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Limitations, open work, and retained evidence",
+          "items": [
+            "Requester authority cannot be verified",
+            "Sensitive data or credential exposure",
+            "Change exceeds approved access or maintenance window",
+            "Security incident indicators require separate response",
+            "Sanitized error and diagnostic record",
+            "Approved change and configuration evidence",
+            "Backup or rollback confirmation",
+            "Test result without unnecessary sensitive data"
+          ],
+          "guidance": "Pause IT Help-Desk Service when identity, authorization, security, backup, or rollback control is unresolved. Retain the available IT Help-Desk Service proof and route unresolved user account, endpoint, application, network path, service, and business function scope to service desk coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Acceptance status and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completion status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Accepted",
+                "Accepted with listed limitation",
+                "Follow-up required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Service Desk Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Site contact or service reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_179__moving_inventory_completion_report",
+  "source_section": "field_service",
+  "source_filename": "dhs_179__moving_inventory_completion_report.pdf",
+  "slug": "moving-inventory-completion-report",
+  "title": "Moving Inventory Completion Report",
+  "subtitle": "Household Moving Inventory: verifies results and open follow-up.",
+  "description": "Moving Inventory Completion Report covers inventory item, carton, room, handling instruction, custody event, and destination placement. The move coordinator records Household Moving Inventory performed work, tests, limits, and acceptance. Moving Inventory Completion Report keeps Household Moving Inventory exceptions visible until the move coordinator handoff.",
+  "use_case": "Use Moving Inventory Completion Report at origin residence, vehicle, storage point, destination, and room placement. Document inventory item, carton, room, handling instruction, custody event, and destination placement identity before Household Moving Inventory begins. Compare inventory item, carton, room, handling instruction, custody event, and destination placement findings with stated Household Moving Inventory criteria; route unresolved Household Moving Inventory issues to moving operations reviewer. For Moving Inventory Completion Report, confirm requirements for Household Moving Inventory. Ask moving operations reviewer to review Household Moving Inventory conditions beyond the move coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Provider, customer, and service record",
+      "guidance": "For Household Moving Inventory, identify responsible parties, origin residence, vehicle, storage point, destination, and room placement, and the linked inventory item, carton, room, handling instruction, custody event, and destination placement source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Completion record ID",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Household Moving Inventory identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, move, and estimate number",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Origin, destination, dates, and access window",
+              "units": 2.5
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, carton, tag, room, and declared special-handling identity",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Completion checks and remaining limitations",
+      "guidance": "Capture Household Moving Inventory facts for inventory item, carton, room, handling instruction, custody event, and destination placement; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Completion verification lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Performed task or delivered item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 0.9
+            },
+            {
+              "key": "result",
+              "label": "Verified result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.85
+            },
+            {
+              "key": "follow_up",
+              "label": "Limitation or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Household Moving Inventory completion checks",
+          "items": [
+            "Item count, description, and origin room",
+            "Pre-move condition and existing damage",
+            "Fragile, high-value, disassembled, or restricted handling",
+            "Carton, seal, tag, load position, and custody transfer",
+            "Delivery count, placement, assembly, and condition",
+            "Shortage, damage, refusal, or unlocated item"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Completion limitation, status, and follow-up",
+      "guidance": "Resolve open Household Moving Inventory conditions; have move coordinator assign the next Household Moving Inventory owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Limitations, open work, and retained evidence",
+          "items": [
+            "Unlisted hazardous or prohibited item",
+            "Access or weight requires different equipment",
+            "Inventory count or custody gap",
+            "Damage or shortage requires preservation and escalation",
+            "Tagged inventory and carton record",
+            "Condition photographs for noted items",
+            "Load and custody checkpoint evidence",
+            "Delivery exception and customer reconciliation"
+          ],
+          "guidance": "Pause Household Moving Inventory when a prohibited-item, access, equipment, custody, shortage, or damage exception remains unassigned. Retain the available Household Moving Inventory proof and route unresolved inventory item, carton, room, handling instruction, custody event, and destination placement scope to move coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Acceptance status and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completion status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Accepted",
+                "Accepted with listed limitation",
+                "Follow-up required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Move Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

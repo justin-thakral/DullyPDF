@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_140__roof_inspection_form",
+  "source_section": "field_service",
+  "source_filename": "dhs_140__roof_inspection_form.pdf",
+  "slug": "roof-inspection-form",
+  "title": "Roof Inspection Form",
+  "subtitle": "Residential Roof Inspection: documents findings, limits, and disposition.",
+  "description": "Roof Inspection Form covers roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area. The roof inspection coordinator records Residential Roof Inspection criteria, findings, restrictions, and follow-up. Roof Inspection Form keeps Residential Roof Inspection exceptions visible until the roof inspection coordinator handoff.",
+  "use_case": "Use Roof Inspection Form at residence, roof plane, edge, penetration, attic area, and reported leak zone. Document roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area identity before Residential Roof Inspection begins. Compare roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area findings with stated Residential Roof Inspection criteria; route unresolved Residential Roof Inspection issues to qualified roofing reviewer. For Roof Inspection Form, confirm requirements for Residential Roof Inspection. Ask qualified roofing reviewer to review Residential Roof Inspection conditions beyond the roof inspection coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "inspection_context",
+      "title": "Customer inspection review and subject identity",
+      "guidance": "Identify the Residential Roof Inspection subject, inspector, location, time, and criteria.",
+      "blocks": [
+        {
+          "key": "inspection_header",
+          "type": "fields",
+          "label": "Inspection header",
+          "fields": [
+            {
+              "key": "inspection_number",
+              "label": "Roof job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.65
+            },
+            {
+              "key": "inspector",
+              "label": "Roof Inspection Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "party",
+              "label": "Roof customer / contact",
+              "units": 1.1
+            },
+            {
+              "key": "location",
+              "label": "Roof address / work area",
+              "units": 1.15
+            },
+            {
+              "key": "criteria",
+              "label": "Criteria, order, policy, or procedure",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Roof Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and inspection reference",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Roof type, approximate age, slope, and area",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Weather event, leak history, prior repair, and access method",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Roof Inspection identifier printed on roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "inspection_findings",
+      "title": "Inspection findings and condition evidence",
+      "guidance": "Capture Residential Roof Inspection measurements, defects, inaccessible areas, and follow-up.",
+      "blocks": [
+        {
+          "key": "inspection_points",
+          "type": "checklist",
+          "label": "Residential Roof Inspection points",
+          "items": [
+            "Covering wear, displacement, breakage, and fastening indication",
+            "Flashing, valley, penetration, wall, and transition condition",
+            "Ridge, edge, gutter, downspout, and drainage path",
+            "Sealant, membrane, coating, and visible repair condition",
+            "Attic, deck, insulation, staining, and moisture indication",
+            "Ground or limited-access observation and unobserved scope"
+          ],
+          "guidance": "Classify every required Residential Roof Inspection point for roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area as checked, not inspected, inaccessible, or deficient."
+        },
+        {
+          "key": "finding_lines",
+          "type": "table",
+          "label": "Inspection findings",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Area, unit, component, or function",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Expected condition or requirement",
+              "units": 1.05
+            },
+            {
+              "key": "observed",
+              "label": "Observation, test, or reading",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Correction, restriction, or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 10
+        }
+      ]
+    },
+    {
+      "key": "inspection_issues",
+      "title": "Deficiencies, limitations, and corrective action",
+      "guidance": "Do not pass unobserved Residential Roof Inspection scope; name the affected area and next action.",
+      "blocks": [
+        {
+          "key": "inspection_stops",
+          "type": "checklist",
+          "label": "Findings requiring hold, restriction, or prompt review",
+          "items": [
+            "Unsafe slope, weather, surface, ladder, or edge condition",
+            "Active structural movement or collapse concern",
+            "Concealed moisture extent cannot be determined",
+            "Temporary protection or qualified escalation needed"
+          ],
+          "guidance": "Pause Residential Roof Inspection and notify roof inspection coordinator when safe access, weather, structural stability, water entry, or required qualified assessment remains unresolved."
+        },
+        {
+          "key": "limitations_and_actions",
+          "type": "textarea",
+          "label": "Deficiency details, inaccessible scope, immediate action, and reinspection need",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Deficiency details, inaccessible scope, immediate action, and reinspection need",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "inspection_disposition",
+      "title": "Inspection result and follow-up",
+      "guidance": "Use Residential Roof Inspection findings for disposition, restrictions, and reinspection.",
+      "blocks": [
+        {
+          "key": "inspection_evidence",
+          "type": "checklist",
+          "label": "Inspection records retained",
+          "items": [
+            "Overview and defect-location photographs",
+            "Annotated roof-plane or area sketch",
+            "Moisture indication and interior correlation",
+            "Access limitation and recommendation record"
+          ],
+          "guidance": "Attach or link proof for roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area; mark only Residential Roof Inspection evidence present in that record."
+        },
+        {
+          "key": "inspection_result",
+          "type": "fields",
+          "label": "Disposition",
+          "fields": [
+            {
+              "key": "result",
+              "label": "Inspection result",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Acceptable",
+                "Acceptable with follow-up",
+                "Correction required",
+                "Held or restricted",
+                "Incomplete inspection"
+              ]
+            },
+            {
+              "key": "action_owner",
+              "label": "Correction or follow-up owner",
+              "units": 1.05
+            },
+            {
+              "key": "reinspection",
+              "label": "Reinspection date or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "report_reference",
+              "label": "Finding or work reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Residential Roof Inspection disposition rationale and reinspection instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Residential Roof Inspection disposition rationale and reinspection instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "State why the Residential Roof Inspection disposition follows from observed findings and what correction or reinspection remains."
+        },
+        {
+          "key": "inspection_signoff",
+          "type": "signatures",
+          "label": "Inspection acknowledgment",
+          "fields": [
+            {
+              "key": "inspector_signature",
+              "label": "Inspector",
+              "units": 1.1
+            },
+            {
+              "key": "inspector_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "review_signature",
+              "label": "Qualified Roofing Reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "review_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "A signature confirms the recorded Residential Roof Inspection scope and result, including limitations or uninspected roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area."
+        }
+      ]
+    }
+  ]
+}

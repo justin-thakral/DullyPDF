@@ -1,0 +1,367 @@
+{
+  "catalog_id": "business_operations/dbo_1788__employee_equipment_request_form",
+  "description": "For employee equipment, this request form records business need, standard configuration, exception, data classification, shipping, access, support, and return trigger. Its supporting evidence includes manager approval, asset tag, serial, configuration record, security controls, delivery receipt, and condition photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Equipment opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Equipment site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Equipment contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Equipment process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Equipment due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this employee equipment record to its evidence.",
+          "key": "record_routing",
+          "label": "Employee Equipment Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Employee",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Manager",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Role",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Device or asset",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Accessories",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture employee, manager, role, location, device or asset, accessories, software, cost center, and employment event for this employee equipment.",
+          "key": "core_identity",
+          "label": "Employee Equipment Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify employee, manager, role, location, device or asset, accessories, software, cost center, and employment event for this employee equipment record.",
+      "key": "identity_1",
+      "title": "Business Request Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Business need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Standard configuration",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Exception",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Data classification",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Shipping",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Access",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For employee equipment, record business need, standard configuration, exception, data classification, shipping, access, support, and return trigger.",
+          "key": "task_inputs",
+          "label": "Employee Equipment Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Employee Equipment Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State employee equipment outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Employee Equipment Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Equipment work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Equipment owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate employee equipment items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Employee Equipment Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not issue unsupported, unapproved, unencrypted, export-restricted, or improperly licensed equipment. Route unresolved employee equipment work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Employee Equipment Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For employee equipment, capture business need, standard configuration, exception, data classification, shipping, access, support, and return trigger.",
+      "key": "task_2",
+      "title": "Requested Commitment and Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Equipment decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Equipment approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Equipment schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate employee equipment disposition.",
+          "key": "disposition",
+          "label": "Employee Equipment Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Employee Equipment Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the employee equipment decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Employee Equipment Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Equipment requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Equipment process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Employee Equipment Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the employee equipment next step from manager approval, asset tag, serial, configuration record, security controls, delivery receipt, and condition photos.",
+      "key": "decision_3",
+      "title": "Sponsor Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "response_status",
+              "label": "Response status",
+              "options": [
+                "Select response status",
+                "Approved for next step",
+                "Scheduled",
+                "More information required",
+                "Declined with reason",
+                "Escalated for review"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "response_date",
+              "label": "Response date",
+              "units": 1.0
+            },
+            {
+              "key": "response_owner",
+              "label": "Responding process owner",
+              "units": 1.0
+            },
+            {
+              "key": "requester_notice",
+              "label": "Requester notice date",
+              "units": 1.0
+            },
+            {
+              "key": "notice_method",
+              "label": "Notice method",
+              "units": 1.0
+            },
+            {
+              "key": "response_record",
+              "label": "Response record location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Return the employee equipment response to the requester and record.",
+          "key": "request_response",
+          "label": "Employee Equipment Response and Notice",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question or information needed",
+              "units": 2.6
+            },
+            {
+              "key": "owner",
+              "label": "Assigned process owner",
+              "units": 1.7
+            },
+            {
+              "key": "due",
+              "label": "Due or response date",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Response or decision evidence",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Keep unresolved employee equipment questions visible to closure.",
+          "key": "request_followup",
+          "label": "Employee Equipment Open Questions and Follow-Up",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Employee Equipment Requester Message and Conditions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State the employee equipment response, conditions, next action, and contact for questions.",
+          "height": 43,
+          "key": "requester_message",
+          "label": "Employee Equipment Requester Message and Conditions",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close the employee equipment record with custody acknowledgment, inventory update, support handoff, return due date, recovered condition, and access deprovisioning.",
+      "key": "closeout_4",
+      "title": "Requester Notice and Next Step"
+    }
+  ],
+  "slug": "employee-equipment-request-form",
+  "source_filename": "dbo_1788__employee_equipment_request_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Employee Equipment Request Form: employee equipment request, custody, and return using employee, business need, and manager approval.",
+  "title": "Employee Equipment Request Form",
+  "use_case": "Use the request form during employee equipment request, custody, and return when the employee equipment record must identify employee, manager, role, location, device or asset, accessories, software, cost center, and employment event. Complete the applicable handoff for custody acknowledgment, inventory update, support handoff, return due date, recovered condition, and access deprovisioning."
+}

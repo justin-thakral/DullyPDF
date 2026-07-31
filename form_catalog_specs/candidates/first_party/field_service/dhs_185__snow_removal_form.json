@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_185__snow_removal_form",
+  "source_section": "field_service",
+  "source_filename": "dhs_185__snow_removal_form.pdf",
+  "slug": "snow-removal-form",
+  "title": "Snow Removal Form",
+  "subtitle": "Residential Snow Removal: captures actual activity and handoff.",
+  "description": "Snow Removal Form covers drive, walk, step, entrance, snow storage area, drainage point, and treatment zone. The snow service coordinator records Residential Snow Removal activity, quantities, variance, and handoff. Snow Removal Form keeps Residential Snow Removal exceptions visible until the snow service coordinator handoff.",
+  "use_case": "Use Snow Removal Form at residence access, drive, walkway, steps, curb, and designated snow-storage area. Document drive, walk, step, entrance, snow storage area, drainage point, and treatment zone identity before Residential Snow Removal begins. Compare drive, walk, step, entrance, snow storage area, drainage point, and treatment zone findings with stated Residential Snow Removal criteria; route unresolved Residential Snow Removal issues to winter operations reviewer. For Snow Removal Form, confirm requirements for Residential Snow Removal. Ask winter operations reviewer to review Residential Snow Removal conditions beyond the snow service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Activity parties and source record",
+      "guidance": "For Residential Snow Removal, identify responsible parties, residence access, drive, walkway, steps, curb, and designated snow-storage area, and the linked drive, walk, step, entrance, snow storage area, drainage point, and treatment zone source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Activity record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Snow Removal identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, route, and visit",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Service trigger, depth, timing, and priority area",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Surface type, marker, obstacle, drainage, and product restriction",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Recorded quantities, results, and controls",
+      "guidance": "Capture Residential Snow Removal facts for drive, walk, step, entrance, snow storage area, drainage point, and treatment zone; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Snow Removal operating checks",
+          "items": [
+            "Snow depth, ice condition, and precipitation stage",
+            "Vehicle, pedestrian, emergency, and delivery access",
+            "Surface edge, marker, drain, hydrant, and hidden-obstacle location",
+            "Plowed or shoveled width and snow placement",
+            "Deicer or abrasive type, amount, and restricted area",
+            "Refreeze, drifting, residual ice, and return trigger"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Activity and result lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Task, item, or service point",
+              "units": 1.25
+            },
+            {
+              "key": "required",
+              "label": "Required result or target",
+              "units": 1.05
+            },
+            {
+              "key": "actual",
+              "label": "Actual result or quantity",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Correction, status, or next action",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Operating exception, outcome, and review",
+      "guidance": "Resolve open Residential Snow Removal conditions; have snow service coordinator assign the next Residential Snow Removal owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Operating exceptions, holds, and retained evidence",
+          "items": [
+            "Visibility, lightning, extreme condition, or unsafe equipment operation",
+            "Hidden obstacle or unmarked edge",
+            "Blocked drain, hydrant, road, or neighboring property",
+            "Refreeze or continuing storm defeats completed condition",
+            "Arrival and completion condition photographs",
+            "Depth, weather, and visit timestamp",
+            "Material application and zone record",
+            "Residual risk and customer notice"
+          ],
+          "guidance": "Pause Residential Snow Removal when safe operation, access, snow placement, drainage, hidden obstacle, or residual ice remains uncontrolled. Retain the available Residential Snow Removal proof and route unresolved drive, walk, step, entrance, snow storage area, drainage point, and treatment zone scope to snow service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Service outcome and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Recorded activity outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with follow-up",
+                "Partially completed",
+                "Held",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Operator and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Snow Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Winter Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

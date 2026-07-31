@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_145__photo_release_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_145__photo_release_form.pdf",
+  "slug": "photo-release-form",
+  "title": "Photo Release Form",
+  "subtitle": "Capture capture type, event setting, audience, and channel; confirm attribution and withdrawal route.",
+  "description": "Photo Release records capture type, event setting, audience, channel, attribution, and withdrawal route. Photo Release evidence stays linked.",
+  "use_case": "Use this photo release operational record when staff must document capture type and event setting. Reconcile audience, channel, attribution, and withdrawal route before the photo release handoff. Use the capture plan, shot list, subject or roster match, approved channel list, production exclusion list, published-asset reference, and withdrawal request log. Ask the assigned photo release reviewer to confirm capture type against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "subject_and_capture",
+      "title": "Student, guardian, and capture details",
+      "guidance": "Identify who may be recorded and the event covered by this choice.",
+      "blocks": [
+        {
+          "key": "subject_details",
+          "type": "fields",
+          "label": "Student and guardian",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_classroom",
+              "label": "Grade or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_phone_or_email",
+              "label": "Guardian phone or email",
+              "units": 1.1
+            },
+            {
+              "key": "guardian_authority_or_relationship",
+              "label": "Guardian authority or relationship",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "capture_details",
+          "type": "fields",
+          "label": "Capture setting and owner",
+          "fields": [
+            {
+              "key": "school_or_program",
+              "label": "School or program",
+              "units": 1.15
+            },
+            {
+              "key": "event_setting",
+              "label": "Event setting",
+              "units": 1.0
+            },
+            {
+              "key": "capture_type",
+              "label": "Capture type",
+              "units": 1.25
+            },
+            {
+              "key": "capture_date_or_date_range",
+              "label": "Capture date or date range",
+              "units": 1.1
+            },
+            {
+              "key": "communications_owner",
+              "label": "Communications owner",
+              "units": 1.2
+            },
+            {
+              "key": "release_effective_date",
+              "label": "Release effective date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "media_and_channels",
+      "title": "Media and publication choices",
+      "guidance": "Choose each media type and publication channel separately.",
+      "blocks": [
+        {
+          "key": "media_choices",
+          "type": "fields",
+          "label": "Media permitted",
+          "fields": [
+            {
+              "key": "still_image_choice",
+              "label": "Still image choice",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "video_choice",
+              "label": "Video choice",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "audio_choice",
+              "label": "Audio choice",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "student_name_or_quotation_choice",
+              "label": "Student name or quotation choice",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "channel_choices",
+          "type": "fields",
+          "label": "Publication channels permitted",
+          "fields": [
+            {
+              "key": "classroom_or_private_family_channel",
+              "label": "Classroom or private family channel",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "school_website_or_newsletter",
+              "label": "School website or newsletter",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "school_social_media",
+              "label": "School social media",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "print_or_annual_report",
+              "label": "Print or annual report",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "news_media_or_external_partner",
+              "label": "News media or external partner",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "other_channel_described_below",
+              "label": "Other channel described below",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            }
+          ],
+          "guidance": "A choice for one channel does not authorize another."
+        },
+        {
+          "key": "use_limits",
+          "type": "fields",
+          "label": "Use, attribution, and duration limits",
+          "fields": [
+            {
+              "key": "audience_or_geographic_limit",
+              "label": "Audience or geographic limit",
+              "units": 1.15
+            },
+            {
+              "key": "editing_or_cropping_limit",
+              "label": "Editing or cropping limit",
+              "units": 1.0
+            },
+            {
+              "key": "attribution_preference",
+              "label": "Attribution preference",
+              "units": 1.25
+            },
+            {
+              "key": "permission_end_date_or_event",
+              "label": "Permission end date or event",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "limits_and_authorization",
+      "title": "Limits, withdrawal, and authorization",
+      "guidance": "Record any declined use, withdrawal route, and the authorized signer.",
+      "blocks": [
+        {
+          "key": "declined_uses",
+          "type": "textarea",
+          "label": "Declined uses or special instructions",
+          "fields": [
+            {
+              "key": "media_channel_audience_editing_or_attribution_limit",
+              "label": "Media, channel, audience, editing, or attribution limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "withdrawal_route",
+          "type": "fields",
+          "label": "Withdrawal and update route",
+          "fields": [
+            {
+              "key": "withdrawal_route_or_contact",
+              "label": "Withdrawal route or contact",
+              "units": 1.15
+            },
+            {
+              "key": "withdrawal_request_date",
+              "label": "Withdrawal request date",
+              "units": 1.0
+            },
+            {
+              "key": "published_asset_or_project_reference",
+              "label": "Published asset or project reference",
+              "units": 1.25
+            },
+            {
+              "key": "change_communicated_by",
+              "label": "Change communicated by",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "guardian_authorization",
+          "type": "signatures",
+          "label": "Guardian or adult authorization",
+          "fields": [
+            {
+              "key": "adult_subject_guardian_signature_and_date",
+              "label": "Adult subject/guardian signature and date",
+              "units": 1.15
+            },
+            {
+              "key": "printed_signer_name_and_relationship",
+              "label": "Printed signer name and relationship",
+              "units": 1.0
+            },
+            {
+              "key": "school_communications_receipt_and_date",
+              "label": "School communications receipt and date",
+              "units": 1.25
+            }
+          ],
+          "guidance": "The signer authorizes only the media, channels, and duration selected above."
+        },
+        {
+          "key": "withdrawal_limit",
+          "type": "notice",
+          "label": "Withdrawal limit",
+          "guidance": "A later withdrawal stops new authorized use after it is processed, but may not retrieve material already published or distributed."
+        }
+      ]
+    }
+  ]
+}

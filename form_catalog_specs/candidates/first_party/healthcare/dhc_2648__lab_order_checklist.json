@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2648__lab_order_checklist",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2648__lab_order_checklist.pdf",
+  "slug": "lab-order-checklist",
+  "title": "Lab Order Checklist",
+  "subtitle": "Capture authenticated order, test code, specimen, and collection window; confirm result route and cancellation.",
+  "description": "Lab Order records authenticated order, test code, specimen, collection window, result route, and cancellation. Lab Order evidence stays linked.",
+  "use_case": "Use this lab order stage-gated verification when staff must document authenticated order and test code. Reconcile specimen, collection window, result route, and cancellation before the lab order handoff. Use the authenticated requisition, ordered test list, diagnosis or reason source as allowed, specimen requirement, collection window, laboratory destination, and cancellation log. Ask the assigned lab order reviewer to confirm authenticated order against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Lab Order starting details",
+      "guidance": "Record ordering professional, test names or codes, specimen and handling, fasting or timing requirement, collection window, result routing, standing-order limit, and cancellation. Keep any urgent lab order issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Lab Order people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "authenticated_order",
+              "label": "Authenticated order",
+              "units": 1.1
+            },
+            {
+              "key": "test_code",
+              "label": "Test code",
+              "units": 1.2
+            },
+            {
+              "key": "specimen",
+              "label": "Specimen",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Lab Order task details",
+          "fields": [
+            {
+              "key": "collection_window",
+              "label": "Collection window",
+              "units": 1.15
+            },
+            {
+              "key": "result_route",
+              "label": "Result route",
+              "units": 1.0
+            },
+            {
+              "key": "cancellation",
+              "label": "Cancellation",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Lab Order checks and corrections",
+      "guidance": "Check current lab order facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Lab Order required checks",
+          "items": [
+            "Authenticated order is identified for this record",
+            "Test code matches the current request or source",
+            "Specimen is ready for point-of-use staff",
+            "Collection window limits or questions are resolved",
+            "Result route is communicated to the responsible person",
+            "Cancellation is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Lab Order failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Lab Order decision and readiness",
+      "guidance": "Hold lab order readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Lab Order checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Lab Order reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Lab Order receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

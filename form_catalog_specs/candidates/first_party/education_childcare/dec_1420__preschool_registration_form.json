@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1420__preschool_registration_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1420__preschool_registration_form.pdf",
+  "slug": "preschool-registration-form",
+  "title": "Preschool Registration Form",
+  "subtitle": "Capture classroom placement, developmental support route, toileting plan reference, and rest routine; confirm pickup and transition.",
+  "description": "Preschool records classroom placement, developmental support route, toileting plan reference, rest routine, pickup, and transition. Preschool evidence stays linked.",
+  "use_case": "Use this preschool registration and placement when staff must document classroom placement and developmental support route. Reconcile toileting plan reference, rest routine, pickup, and transition before the preschool handoff. Use the classroom roster, transition schedule, routine sheet, authorized-pickup list, support-plan location, rest and toileting instructions, and family handoff note. Ask the assigned preschool reviewer to confirm classroom placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Preschool registrant details review",
+      "guidance": "Coordinate classroom placement, developmental-support routing, toileting-plan reference, rest routine, comfort item, authorized pickup, and transition days.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Preschool people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "classroom_placement",
+              "label": "Classroom placement",
+              "units": 1.2
+            },
+            {
+              "key": "developmental_support_route",
+              "label": "Developmental support route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Preschool task details",
+          "fields": [
+            {
+              "key": "toileting_plan_reference",
+              "label": "Toileting plan reference",
+              "units": 1.15
+            },
+            {
+              "key": "rest_routine",
+              "label": "Rest routine",
+              "units": 1.0
+            },
+            {
+              "key": "pickup",
+              "label": "Pickup",
+              "units": 1.25
+            },
+            {
+              "key": "transition",
+              "label": "Transition",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_choices",
+      "title": "Preschool requested options and readiness review",
+      "guidance": "Record requested options, prerequisites, availability, and conditions without assuming an outcome.",
+      "blocks": [
+        {
+          "key": "registration_options",
+          "type": "table",
+          "label": "Preschool requested options",
+          "columns": [
+            {
+              "key": "requested_option_or_scope",
+              "label": "Requested option or scope",
+              "units": 1.2
+            },
+            {
+              "key": "availability_or_prerequisite",
+              "label": "Availability or prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.25
+            },
+            {
+              "key": "condition_support_or_owner",
+              "label": "Condition, support, or owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "start_readiness",
+          "type": "checklist",
+          "label": "Preschool registration readiness",
+          "items": [
+            "Classroom placement is identified for this record",
+            "Developmental support route matches the current request or source",
+            "Toileting plan reference is ready for point-of-use staff",
+            "Rest routine limits or questions are resolved",
+            "Pickup is communicated to the responsible person",
+            "Transition is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_result",
+      "title": "Preschool confirmation and next steps",
+      "guidance": "Confirm the accepted scope, reference, open condition, and instructions.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Preschool registration result",
+          "fields": [
+            {
+              "key": "registration_outcome",
+              "label": "Registration outcome",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_class_unit_club_or_session",
+              "label": "Confirmed class, unit, club, or session",
+              "units": 1.0
+            },
+            {
+              "key": "confirmed_start_or_orientation_date",
+              "label": "Confirmed start or orientation date",
+              "units": 1.25
+            },
+            {
+              "key": "open_condition_and_owner",
+              "label": "Open condition and owner",
+              "units": 1.1
+            },
+            {
+              "key": "start_or_orientation_instructions_sent",
+              "label": "Start or orientation instructions sent",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Preschool registration receipt",
+          "fields": [
+            {
+              "key": "registration_coordinator_and_date",
+              "label": "Registration coordinator and date",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_teacher_or_program_coordinator_and_date",
+              "label": "Responsible teacher or program coordinator and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the recorded registration result and open condition."
+        }
+      ]
+    }
+  ]
+}

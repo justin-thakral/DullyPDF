@@ -1,0 +1,183 @@
+{
+  "catalog_id": "business_operations/dbo_1796__policy_acknowledgment_checklist",
+  "description": "For policy acknowledgment, this checklist records required reading, training dependency, questions, disclosure or consent boundaries, acknowledgment deadline, and exceptions. Its supporting evidence includes delivery record, training completion, employee questions, accessible-format request, acknowledgment, and manager follow-up.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "policy_id",
+              "label": "Policy identifier",
+              "units": 1.0
+            },
+            {
+              "key": "version",
+              "label": "Version and effective date",
+              "units": 1.0
+            },
+            {
+              "key": "delivery",
+              "label": "Delivery channel",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the exact policy copy assigned for distribution.",
+          "key": "policy_reference",
+          "label": "Policy Assignment Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "recipient",
+              "label": "Employee or audience",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Department or location",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Language or accessible format",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the intended recipient and a usable delivery format.",
+          "key": "policy_recipient",
+          "label": "Recipient and Access Needs",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Match the recipient to the policy copy actually delivered.",
+      "key": "identity_1",
+      "title": "Assigned Policy and Recipient"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Leave an item open until its evidence or exception is recorded.",
+          "items": [
+            "Assigned policy identifier and version match the delivered copy",
+            "Recipient received a usable language and accessible format",
+            "Required reading was completed by the stated deadline",
+            "Required training was completed or linked",
+            "Questions and exceptions were answered or routed",
+            "The acknowledgment does not substitute for consent or waive rights"
+          ],
+          "key": "receipt_checks",
+          "label": "Delivery, Reading, and Training Checks",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "delivered",
+              "label": "Delivered date",
+              "units": 1.0
+            },
+            {
+              "key": "completed",
+              "label": "Reading or training date",
+              "units": 1.0
+            },
+            {
+              "key": "question",
+              "label": "Question or exception",
+              "units": 1.0
+            },
+            {
+              "key": "followup",
+              "label": "Manager follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Record dates and unresolved questions from the recipient.",
+          "key": "receipt_facts",
+          "label": "Receipt and Follow-Up Facts",
+          "type": "fields"
+        },
+        {
+          "guidance": "Use this record only to document delivery, reading, questions, training, and receipt. Route rights, consent, conflict, or policy interpretation questions for qualified review.",
+          "key": "acknowledgment_boundary",
+          "label": "Acknowledgment Is Not Consent or Waiver",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Verify delivery, reading, training, questions, and exceptions.",
+      "key": "task_2",
+      "title": "Delivery, Reading, and Training Verification"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "status",
+              "label": "Receipt status",
+              "options": [
+                "Select receipt status",
+                "Acknowledged",
+                "Acknowledged with question",
+                "Training pending",
+                "Exception routed",
+                "Overdue"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "timestamp",
+              "label": "Acknowledgment timestamp",
+              "units": 1.0
+            },
+            {
+              "key": "retained_version",
+              "label": "Retained policy version",
+              "units": 1.0
+            },
+            {
+              "key": "training_link",
+              "label": "Training record link",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Retain the exact version, timestamp, and linked training record.",
+          "key": "receipt_status",
+          "label": "Acknowledgment Status and Retention",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "recipient",
+              "label": "Recipient, signature, and date",
+              "units": 1.0
+            },
+            {
+              "key": "manager",
+              "label": "Manager or reviewer, signature, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "receipt_acknowledgment",
+          "label": "Recipient and Manager Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Record receipt status, retained version, and linked training.",
+      "key": "closeout_3",
+      "title": "Receipt Status and Acknowledgment"
+    }
+  ],
+  "slug": "policy-acknowledgment-checklist",
+  "source_filename": "dbo_1796__policy_acknowledgment_checklist.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Policy Acknowledgment Checklist: workplace policy distribution and acknowledgment using policy identifier, required reading, and delivery record.",
+  "title": "Policy Acknowledgment Checklist",
+  "use_case": "Use the checklist during workplace policy distribution and acknowledgment when the policy acknowledgment record must identify policy identifier, version, effective date, audience, employee identity, location, language, and delivery channel. Complete the applicable handoff for acknowledgment timestamp, exception routing, overdue follow-up, version retention, training linkage, and HR record handoff."
+}

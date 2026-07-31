@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1804__youth_sports_waiver_sign_in_log",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1804__youth_sports_waiver_sign_in_log.pdf",
+  "slug": "youth-sports-waiver-sign-in-log",
+  "title": "Youth Sports Waiver Sign-In Log",
+  "subtitle": "Capture sport, season, guardian authority, and contact level; confirm equipment and coach release.",
+  "description": "Youth Sports Waiver records sport, season, guardian authority, contact level, equipment, and coach release. Youth Sports Waiver evidence stays linked.",
+  "use_case": "Use this youth sports waiver attendance and custody reconciliation when staff must document sport and season. Reconcile guardian authority, contact level, equipment, and coach release before the youth sports waiver handoff. Use the season plan, team roster, guardian verification, disclosed contact conditions, equipment issue, coach brief, optional-activity choices, and player release. This acknowledgment concerns a player in a team season with practice and competition, contact level, coach supervision, protective gear, league rules, sideline release, and guardian choice. Ask the assigned youth sports waiver reviewer to confirm sport against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Youth Sports Waiver details",
+      "guidance": "Name sport, season, team, participant and guardian authority, contact level, equipment, coaching supervision, alternative activity, and release. Record the youth sports waiver decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Youth Sports Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "sport",
+              "label": "Sport",
+              "units": 1.1
+            },
+            {
+              "key": "season",
+              "label": "Season",
+              "units": 1.2
+            },
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Youth Sports Waiver task details",
+          "fields": [
+            {
+              "key": "contact_level",
+              "label": "Contact level",
+              "units": 1.15
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "coach_release",
+              "label": "Coach release",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance_rows",
+      "title": "Youth Sports Waiver participant identity and waiver-status review",
+      "guidance": "Match each participant to the named activity, current waiver version, signer or guardian status, and participation limit.",
+      "blocks": [
+        {
+          "key": "sign_in_rows",
+          "type": "table",
+          "label": "Youth Sports Waiver participant rows",
+          "columns": [
+            {
+              "key": "participant",
+              "label": "Participant",
+              "units": 1.2
+            },
+            {
+              "key": "check_in_and_identity",
+              "label": "Check-in and identity",
+              "units": 1.1
+            },
+            {
+              "key": "waiver_version_and_signer",
+              "label": "Waiver version and signer",
+              "units": 1.25
+            },
+            {
+              "key": "choice_limit_or_check_out",
+              "label": "Choice, limit, or check-out",
+              "units": 1.0
+            },
+            {
+              "key": "exception_and_owner",
+              "label": "Exception and owner",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "roster_boundary",
+          "type": "notice",
+          "label": "Youth Sports Waiver roster boundary",
+          "guidance": "Check-in does not replace a completed waiver choice. Route any missing signer, outdated version, participation limit, or unanswered question before participation."
+        }
+      ]
+    },
+    {
+      "key": "attendance_close",
+      "title": "Youth Sports Waiver decision and participant reconciliation",
+      "guidance": "Reconcile participant count, waiver status, and every open question before close.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Youth Sports Waiver closing counts",
+          "fields": [
+            {
+              "key": "expected_participants",
+              "label": "Expected participants",
+              "units": 1.15
+            },
+            {
+              "key": "participants_checked_in",
+              "label": "Participants checked in",
+              "units": 1.0
+            },
+            {
+              "key": "waiver_records_verified",
+              "label": "Waiver records verified",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_participant_or_waiver_and_owner",
+              "label": "Unresolved participant or waiver and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "attendance_receipt",
+          "type": "signatures",
+          "label": "Youth Sports Waiver log receipt",
+          "fields": [
+            {
+              "key": "event_coordinator_or_roster_custodian_and_date",
+              "label": "Event coordinator or roster custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Do not close an unreconciled entry without a named owner."
+        }
+      ]
+    }
+  ]
+}

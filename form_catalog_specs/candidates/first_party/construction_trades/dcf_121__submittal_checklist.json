@@ -1,0 +1,275 @@
+{
+  "catalog_id": "construction_trades/dcf_121__submittal_checklist",
+  "description": "For submittal, this checklist records package completeness, deviations, substitutions, interfaces, long-lead constraints, and required approvals. Its supporting evidence includes manufacturer literature, compliance matrix, coordination drawings, certifications, and revision comparison.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Submittal opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Submittal site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Submittal contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Submittal superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Submittal due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this submittal record to its evidence.",
+          "key": "record_routing",
+          "label": "Submittal Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Specification section",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Product data",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Shop drawings",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Samples",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture specification section, product data, shop drawings, samples, calculations, and procurement milestone for this submittal.",
+          "key": "core_identity",
+          "label": "Submittal Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify specification section, product data, shop drawings, samples, calculations, and procurement milestone for this submittal record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Package completeness",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Deviations",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Substitutions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Interfaces",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For submittal, record package completeness, deviations, substitutions, interfaces, long-lead constraints, and required approvals.",
+          "key": "task_inputs",
+          "label": "Submittal Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the submittal condition before marking.",
+          "items": [
+            "Verify package completeness",
+            "Verify deviations",
+            "Verify substitutions",
+            "Verify interfaces",
+            "Verify long-lead constraints",
+            "Verify required approvals"
+          ],
+          "key": "task_checks",
+          "label": "Submittal Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Submittal checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Submittal review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Submittal qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Submittal check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each submittal result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Submittal Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not fabricate, procure, or install from a rejected, incomplete, superseded, or unreviewed submittal. Route unresolved submittal work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Submittal Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For submittal, capture package completeness, deviations, substitutions, interfaces, long-lead constraints, and required approvals.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Submittal when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Submittal measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Submittal evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Submittal result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For submittal, record manufacturer literature, compliance matrix, coordination drawings, certifications, and revision comparison.",
+          "key": "evidence_register",
+          "label": "Submittal Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Manufacturer literature",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Compliance matrix",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Coordination drawings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Certifications",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every submittal evidence source.",
+          "key": "evidence_sources",
+          "label": "Submittal Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked submittal items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Submittal Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Submittal Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State submittal limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Submittal Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support submittal findings with manufacturer literature, compliance matrix, coordination drawings, certifications, and revision comparison.",
+      "key": "observation_3",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "submittal-checklist",
+  "source_filename": "dcf_121__submittal_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Submittal Checklist: technical submittal routing and disposition using specification section, package completeness, and manufacturer literature.",
+  "title": "Submittal Checklist",
+  "use_case": "Use the checklist during technical submittal routing and disposition when the submittal record must identify specification section, product data, shop drawings, samples, calculations, and procurement milestone. Complete the applicable handoff for review disposition, revision status, procurement release, field distribution, and approved-record archive."
+}

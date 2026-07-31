@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_168__scholarship_application_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_168__scholarship_application_information_sheet.pdf",
+  "slug": "scholarship-application-information-sheet",
+  "title": "Scholarship Application Information Sheet",
+  "subtitle": "Capture award cycle, eligibility source, application evidence, and review rubric; confirm conflict disclosure and award notice.",
+  "description": "Scholarship Application records award cycle, eligibility source, application evidence, review rubric, conflict disclosure, and award notice. Scholarship Application evidence stays linked.",
+  "use_case": "Use this scholarship application controlled information handoff when staff must document award cycle and eligibility source. Reconcile application evidence, review rubric, conflict disclosure, and award notice before the scholarship application handoff. Use the program rules, eligibility documents, transcript or work evidence, rubric scores, reviewer conflict statement, award ledger, decision notice, and acceptance receipt. Ask the assigned scholarship application reviewer to confirm award cycle against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Scholarship Application contact and reference",
+      "guidance": "Identify award cycle, eligibility source, application materials, rubric evidence, reviewer conflict disclosure, decision rationale, and award notification.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Scholarship Application people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_team",
+              "label": "Grade or team",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "award_cycle",
+              "label": "Award cycle",
+              "units": 1.1
+            },
+            {
+              "key": "eligibility_source",
+              "label": "Eligibility source",
+              "units": 1.2
+            },
+            {
+              "key": "application_evidence",
+              "label": "Application evidence",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Scholarship Application task details",
+          "fields": [
+            {
+              "key": "review_rubric",
+              "label": "Review rubric",
+              "units": 1.15
+            },
+            {
+              "key": "conflict_disclosure",
+              "label": "Conflict disclosure",
+              "units": 1.0
+            },
+            {
+              "key": "award_notice",
+              "label": "Award notice",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Scholarship Application current instructions review",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Scholarship Application instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Scholarship Application questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Scholarship Application decision and update route",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Scholarship Application effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Scholarship Application update boundary",
+          "guidance": "Replace outdated scholarship application instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

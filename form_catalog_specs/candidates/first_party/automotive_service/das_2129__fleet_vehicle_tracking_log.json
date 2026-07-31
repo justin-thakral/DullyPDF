@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2129__fleet_vehicle_tracking_log",
+  "source_section": "automotive_service",
+  "source_filename": "das_2129__fleet_vehicle_tracking_log.pdf",
+  "slug": "fleet-vehicle-tracking-log",
+  "title": "Fleet Vehicle Tracking Log",
+  "subtitle": "Fleet Vehicle Service: preserves changes and next triggers.",
+  "description": "Fleet Vehicle Tracking Log covers fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision. The fleet maintenance coordinator records Fleet Vehicle Service events, owners, exceptions, and next triggers. Fleet Vehicle Tracking Log keeps Fleet Vehicle Service exceptions visible until the fleet maintenance coordinator handoff.",
+  "use_case": "Use Fleet Vehicle Tracking Log at fleet yard, service facility, operating route, and vehicle assignment point. Document fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision identity before Fleet Vehicle Service begins. Compare fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision findings with stated Fleet Vehicle Service criteria; route unresolved Fleet Vehicle Service issues to qualified fleet maintenance reviewer. For Fleet Vehicle Tracking Log, confirm requirements for Fleet Vehicle Service. Ask qualified fleet maintenance reviewer to review Fleet Vehicle Service conditions beyond the fleet maintenance coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking period and subject identity",
+      "guidance": "For Fleet Vehicle Service, identify responsible parties, fleet yard, service facility, operating route, and vehicle assignment point, and the linked fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Fleet Vehicle Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Fleet unit, work order, and department",
+              "units": 2.111111111111111
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, engine hours, and assignment",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Driver report, interval, prior defect, and campaign reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Tracking review and variance evidence",
+      "guidance": "Capture Fleet Vehicle Service facts for fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Fleet Vehicle Service tracked controls",
+          "items": [
+            "Driver concern and operating impact",
+            "Scheduled-maintenance status",
+            "Vehicle-system inspection and diagnostic result",
+            "Parts, labor, downtime, and vendor status",
+            "Open campaign, recall, or recurring defect",
+            "Return-to-service restriction and driver handoff"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "For Fleet Vehicle Service, preserve each open variance with its current state, accountable owner, and next dated update. Fleet Maintenance Coordinator performs period review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Safety defect or overdue critical service",
+            "Repeat failure lacks escalation",
+            "Repair exceeds authority or downtime commitment",
+            "Return-to-service review incomplete",
+            "Driver report and intake condition",
+            "Maintenance and diagnostic readings",
+            "Part, labor, and vendor trace",
+            "Qualified return-to-service and assignment record"
+          ],
+          "guidance": "Pause Fleet Vehicle Service when safety, maintenance, repeat-defect, authorization, or return-to-service concern remains unresolved. Retain the available Fleet Vehicle Service proof and route unresolved fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision scope to fleet maintenance coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Fleet Maintenance Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Fleet Maintenance Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

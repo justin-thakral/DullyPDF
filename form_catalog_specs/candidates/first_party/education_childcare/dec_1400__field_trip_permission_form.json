@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1400__field_trip_permission_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1400__field_trip_permission_form.pdf",
+  "slug": "field-trip-permission-form",
+  "title": "Field Trip Permission Form",
+  "subtitle": "Plan the trip, document transport and supervision, and route the guardian permission decision.",
+  "description": "Captures the student and guardian, trip schedule, meeting and pickup locations, transportation, activities, supervision, emergency contact, support needs, permission scope, and return handoff.",
+  "use_case": "Use when school or program staff request guardian permission for a specific trip. A material change to the itinerary, transport, supervision, or return plan requires renewed communication and review. For day-of-trip use, reconcile the live roster, departure and return schedule, transport handoffs, and authorized return. Preserve the vehicle or bus assignment, driver contact, boarding count, destination arrival, return transfer, and any in-flight trip-plan change.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "student_guardian_and_trip",
+      "title": "Student, guardian, and trip details",
+      "guidance": "Identify the student, responsible adult, named trip, and timing.",
+      "blocks": [
+        {
+          "key": "student_and_guardian",
+          "type": "fields",
+          "label": "Student, guardian, and emergency contact",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_phone_or_email",
+              "label": "Guardian phone or email",
+              "units": 1.1
+            },
+            {
+              "key": "emergency_contact_name_and_phone",
+              "label": "Emergency contact name and phone",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "trip_plan",
+          "type": "fields",
+          "label": "Trip plan and return",
+          "fields": [
+            {
+              "key": "trip_date",
+              "label": "Trip date",
+              "units": 1.15
+            },
+            {
+              "key": "destination",
+              "label": "Destination",
+              "units": 1.0
+            },
+            {
+              "key": "departure_time",
+              "label": "Departure time",
+              "units": 1.25
+            },
+            {
+              "key": "expected_return_time",
+              "label": "Expected return time",
+              "units": 1.1
+            },
+            {
+              "key": "meeting_or_pickup_location",
+              "label": "Meeting or pickup location",
+              "units": 1.2
+            },
+            {
+              "key": "transport_mode_or_provider",
+              "label": "Transport mode or provider",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "activity_and_support",
+          "type": "fields",
+          "label": "Activity, supervision, and support",
+          "fields": [
+            {
+              "key": "itinerary",
+              "label": "Itinerary",
+              "units": 1.15
+            },
+            {
+              "key": "chaperone_group",
+              "label": "Chaperone group",
+              "units": 1.0
+            },
+            {
+              "key": "planned_activity_and_supervision",
+              "label": "Planned activity and supervision",
+              "units": 1.25
+            },
+            {
+              "key": "support_or_accommodation_route",
+              "label": "Support or accommodation route",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "transport_and_return",
+          "type": "fields",
+          "label": "Transport, headcount, and authorized return",
+          "fields": [
+            {
+              "key": "transport_leg",
+              "label": "Transport leg",
+              "units": 1.15
+            },
+            {
+              "key": "headcount",
+              "label": "Headcount",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_pickup_or_return_arrangement",
+              "label": "Authorized pickup or return arrangement",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "trip_readiness",
+      "title": "Trip readiness and material-change review",
+      "guidance": "Confirm the plan that the guardian is being asked to approve.",
+      "blocks": [
+        {
+          "key": "trip_checks",
+          "type": "checklist",
+          "label": "Trip plan readiness",
+          "items": [
+            "Destination, trip date, and itinerary are current",
+            "Departure, return, meeting, and pickup details are stated",
+            "Transportation provider and each transport leg are confirmed",
+            "Activities, supervision, and chaperone plan are reviewed",
+            "Emergency contact and support route are available",
+            "A material change requires renewed guardian communication"
+          ]
+        },
+        {
+          "key": "trip_change_boundary",
+          "type": "notice",
+          "label": "Material-change boundary",
+          "guidance": "A material itinerary, transport, supervision, activity, or return change requires renewed guardian communication and authorized review."
+        }
+      ]
+    },
+    {
+      "key": "guardian_decision",
+      "title": "Guardian permission decision and signatures",
+      "guidance": "Record a clear decision for this named trip only.",
+      "blocks": [
+        {
+          "key": "permission_choice",
+          "type": "fields",
+          "label": "Guardian permission choice",
+          "fields": [
+            {
+              "key": "guardian_permission_decision",
+              "label": "Guardian permission decision",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Permit",
+                "Permit with limit",
+                "Do not permit",
+                "Need clarification"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "permission_limits",
+          "type": "fields",
+          "label": "Permission limit and follow-up",
+          "fields": [
+            {
+              "key": "approved_limitation",
+              "label": "Approved limitation",
+              "units": 1.15
+            },
+            {
+              "key": "trip_plan_question_or_condition",
+              "label": "Trip-plan question or condition",
+              "units": 1.0
+            },
+            {
+              "key": "decision_received_date_and_time",
+              "label": "Decision received date and time",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "guardian_signatures",
+          "type": "signatures",
+          "label": "Guardian permission and school receipt",
+          "fields": [
+            {
+              "key": "guardian_printed_name",
+              "label": "Guardian printed name",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_signature_and_date",
+              "label": "Guardian signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "trip_coordinator_receipt_and_date",
+              "label": "Trip coordinator receipt and date",
+              "units": 1.25
+            }
+          ],
+          "guidance": "Each signature applies only to the trip, date, transport, activity, supervision, and limit recorded above."
+        }
+      ]
+    }
+  ]
+}

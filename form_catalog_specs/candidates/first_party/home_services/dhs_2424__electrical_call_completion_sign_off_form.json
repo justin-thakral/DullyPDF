@@ -1,0 +1,369 @@
+{
+  "catalog_id": "home_services/dhs_2424__electrical_call_completion_sign_off_form",
+  "description": "For electrical call, this completion sign-off form records hazard screen, diagnostic boundary, outage plan, repair options, parts, permit needs, and price authorization. Its supporting evidence includes voltage or continuity readings, panel labels, thermal or condition photos, fault findings, and functional test.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Call opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Call site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Call contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Call service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Call due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this electrical call record to its evidence.",
+          "key": "record_routing",
+          "label": "Electrical Call Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Panel",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Breaker",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Circuit",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Device",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Symptom",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Affected loads",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture panel, breaker, circuit, device, symptom, affected loads, occupancy, access, and prior modifications for this electrical call.",
+          "key": "core_identity",
+          "label": "Electrical Call Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify panel, breaker, circuit, device, symptom, affected loads, occupancy, access, and prior modifications for this electrical call record.",
+      "key": "identity_1",
+      "title": "Service Visit Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Call when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Call measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Call evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Call result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For electrical call, record voltage or continuity readings, panel labels, thermal or condition photos, fault findings, and functional test.",
+          "key": "evidence_register",
+          "label": "Electrical Call Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Voltage or continuity readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Panel labels",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Thermal or condition photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Fault findings",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every electrical call evidence source.",
+          "key": "evidence_sources",
+          "label": "Electrical Call Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary electrical call evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Electrical Call Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "De-energize and escalate smoke, heat damage, exposed conductors, service issues, arc risk, or work beyond qualification. Route unresolved electrical call work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Electrical Call Applicable Review Boundary",
+          "type": "notice"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select completion sign-off form disposition",
+                "Accept complete",
+                "Accept with exceptions",
+                "Correction required",
+                "Reject completion"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Call decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Call scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Call authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Call review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate electrical call disposition.",
+          "key": "disposition",
+          "label": "Electrical Call Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Electrical Call Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the electrical call decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Electrical Call Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Call open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Call owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Call acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer electrical call items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Electrical Call Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Call crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Call service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Electrical Call Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Compare electrical call findings with electrical call open items and decide the electrical call customer handoff.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding and Acceptance Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Call completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Safe re-energization",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Label correction",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Customer explanation",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Permit status",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the electrical call outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Electrical Call Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Electrical Call Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For electrical call, document safe re-energization, label correction, customer explanation, permit status, repair warranty, and service record; identify each electrical call reservation and electrical call follow-up trigger, then record the electrical call instruction recipient.",
+          "height": 40,
+          "key": "acceptance_reservations",
+          "label": "Electrical Call Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Call technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Call customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Electrical Call Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the electrical call record with safe re-energization, label correction, customer explanation, permit status, repair warranty, and service record.",
+      "key": "closeout_4",
+      "title": "Warranty and Property Handoff"
+    }
+  ],
+  "slug": "electrical-call-completion-sign-off-form",
+  "source_filename": "dhs_2424__electrical_call_completion_sign_off_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Electrical Call Completion Sign-Off Form: residential electrical service call dispatch using panel, hazard screen, and voltage or continuity readings.",
+  "title": "Electrical Call Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during residential electrical service call dispatch when the electrical call record must identify panel, breaker, circuit, device, symptom, affected loads, occupancy, access, and prior modifications. Complete the applicable handoff for safe re-energization, label correction, customer explanation, permit status, repair warranty, and service record."
+}

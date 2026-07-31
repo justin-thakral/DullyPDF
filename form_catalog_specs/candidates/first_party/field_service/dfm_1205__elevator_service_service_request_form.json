@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1205__elevator_service_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1205__elevator_service_service_request_form.pdf",
+  "slug": "elevator-service-service-request-form",
+  "title": "Elevator Service Request Form",
+  "subtitle": "Elevator Service: defines need, constraints, and assignment.",
+  "description": "Elevator Service Request Form covers elevator, controller, door system, communication device, and landing. The building elevator coordinator records Elevator Service need, timing, access, and assignment. Elevator Service Request Form keeps Elevator Service exceptions visible until the building elevator coordinator handoff.",
+  "use_case": "Use Elevator Service Request Form at machine space, hoistway access point, car, and affected landings. Document elevator, controller, door system, communication device, and landing identity before Elevator Service begins. Compare elevator, controller, door system, communication device, and landing findings with stated Elevator Service criteria; route unresolved Elevator Service issues to licensed or otherwise qualified elevator service reviewer. For Elevator Service Request Form, confirm requirements for Elevator Service. Ask licensed or otherwise qualified elevator service reviewer to review Elevator Service conditions beyond the building elevator coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Request context and subject identity",
+      "guidance": "For Elevator Service, identify responsible parties, machine space, hoistway access point, car, and affected landings, and the linked elevator, controller, door system, communication device, and landing source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Elevator Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Building and unit designation",
+              "units": 1.6111111111111112
+            },
+            {
+              "key": "identity_2",
+              "label": "Controller or equipment identifier",
+              "units": 1.8888888888888888
+            },
+            {
+              "key": "identity_3",
+              "label": "Service call, permit, and maintenance-control reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Intake checks and assignment readiness",
+      "guidance": "Capture Elevator Service facts for elevator, controller, door system, communication device, and landing; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Elevator Service intake confirmations",
+          "items": [
+            "Requested or already documented: car and landing door operation",
+            "Requested or already documented: leveling, ride, noise, and vibration observation",
+            "Requested or already documented: alarm, emergency communication, and lighting response",
+            "Requested or already documented: visible controls, indicators, and operating fixtures",
+            "Requested or already documented: machine-space housekeeping and accessible component condition",
+            "Requested or already documented: out-of-service protection and landing communication"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Elevator Service request questions; have building elevator coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Entrapment or uncontrolled movement concern",
+            "Door protection or leveling failure",
+            "Emergency communication failure",
+            "Work or testing beyond technician qualification",
+            "Prior or requester-supplied: unit and controller identification photographs",
+            "Prior or requester-supplied: fault history or controller indication",
+            "Prior or requester-supplied: test and measurement record within authorized scope",
+            "Prior or requester-supplied: out-of-service notice and restoration confirmation"
+          ],
+          "guidance": "Do not assign or authorize the Elevator Service request when the unit cannot be secured, a life-safety device fails, or required qualified elevator review is unavailable. Retain information supplied with the request and route unresolved constraints to building elevator coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Building Elevator Coordinator",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

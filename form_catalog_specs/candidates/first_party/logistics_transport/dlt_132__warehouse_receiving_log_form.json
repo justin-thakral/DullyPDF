@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_132__warehouse_receiving_log_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_132__warehouse_receiving_log_form.pdf",
+  "slug": "warehouse-receiving-log-form",
+  "title": "Warehouse Receiving Log Form",
+  "subtitle": "Warehouse Receiving: preserves changes and next triggers.",
+  "description": "Warehouse Receiving Log Form covers inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status. The receiving operations coordinator records Warehouse Receiving events, owners, exceptions, and next triggers. Warehouse Receiving Log Form keeps Warehouse Receiving exceptions visible until the receiving operations coordinator handoff.",
+  "use_case": "Use Warehouse Receiving Log Form at gate, yard, receiving dock, staging lane, inspection area, and storage location. Document inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status identity before Warehouse Receiving begins. Compare inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status findings with stated Warehouse Receiving criteria; route unresolved Warehouse Receiving issues to warehouse inventory reviewer. For Warehouse Receiving Log Form, confirm requirements for Warehouse Receiving. Ask warehouse inventory reviewer to review Warehouse Receiving conditions beyond the receiving operations coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking period and subject identity",
+      "guidance": "For Warehouse Receiving, identify responsible parties, gate, yard, receiving dock, staging lane, inspection area, and storage location, and the linked inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Supplier / PO owner",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "location",
+              "label": "Dock / storage zone",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Warehouse Receiving identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Appointment, purchase order, shipment, and receipt",
+              "units": 2.6
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, driver, vehicle, trailer, and seal",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, lot, serial, pallet, quantity, and unit",
+              "units": 2.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status variance and accountable response",
+      "guidance": "Capture Warehouse Receiving facts for inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Warehouse Receiving tracked controls",
+          "items": [
+            "Arrival, gate, dock, and unload timing",
+            "Seal and trailer condition",
+            "Handling-unit and item identity",
+            "Count, damage, and temperature result",
+            "Quarantine, hold, cross-dock, or accepted status",
+            "Receipt posting, label, staging, and putaway"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Status decision and next trigger",
+      "guidance": "For Warehouse Receiving, preserve each open variance with its current state, accountable owner, and next dated update. Receiving Operations Coordinator performs period review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Unplanned or unauthorized arrival",
+            "Seal, identity, quantity, or condition mismatch",
+            "Unsafe unload or product concern",
+            "Receipt posting or putaway cannot be reconciled",
+            "Appointment and shipment document",
+            "Seal, trailer, and freight images",
+            "Count and inspection record",
+            "Receipt transaction and location confirmation"
+          ],
+          "guidance": "Pause Warehouse Receiving when arrival authority, seal, identity, condition, quantity, system receipt, or storage destination remains unresolved. Retain the available Warehouse Receiving proof and route unresolved inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status scope to receiving operations coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Receiving Operations Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Warehouse Inventory Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

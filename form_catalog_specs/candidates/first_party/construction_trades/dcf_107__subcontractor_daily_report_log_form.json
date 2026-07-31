@@ -1,0 +1,235 @@
+{
+  "catalog_id": "construction_trades/dcf_107__subcontractor_daily_report_log_form",
+  "description": "For subcontractor daily report, this log form records shift plan, trade activity, coordination dependencies, inspections, and remaining work. Its supporting evidence includes time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Daily opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Daily site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Daily contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Daily superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Daily due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this subcontractor daily report record to its evidence.",
+          "key": "record_routing",
+          "label": "Subcontractor Daily Report Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Crew roster",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Work areas",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Installed quantities",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Equipment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture crew roster, work areas, installed quantities, equipment, deliveries, and site conditions for this subcontractor daily report.",
+          "key": "core_identity",
+          "label": "Subcontractor Daily Report Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify crew roster, work areas, installed quantities, equipment, deliveries, and site conditions for this subcontractor daily report record.",
+      "key": "identity_1",
+      "title": "Log Reference and Review Owner"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Daily when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Daily measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Daily evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Daily result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For subcontractor daily report, record time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+          "key": "evidence_register",
+          "label": "Subcontractor Daily Report Findings, Measurements, and Evidence",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Time-stamped progress photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Quantity measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Delivery tickets",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Inspector observations",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every subcontractor daily report evidence source.",
+          "key": "evidence_sources",
+          "label": "Subcontractor Daily Report Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Daily dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Daily owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Daily escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep subcontractor daily report items open through verification.",
+          "key": "open_item_register",
+          "label": "Subcontractor Daily Report Open Items and Next Actions",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Daily reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved subcontractor daily report entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Subcontractor Daily Report Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Subcontractor Daily Report Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For subcontractor daily report, explain daily certification, unresolved-item carryover, next-shift plan, and project-record upload; transfer each subcontractor daily report open entry to the subcontractor daily report successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Subcontractor Daily Report Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Stop and notify supervision for unsafe conditions, concealed conflicts, blocked access, or unapproved extra work. Route unresolved subcontractor daily report work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Subcontractor Daily Report Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support subcontractor daily report findings with time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+      "key": "observation_2",
+      "title": "Recorded Findings and Actions"
+    }
+  ],
+  "slug": "subcontractor-daily-report-log-form",
+  "source_filename": "dcf_107__subcontractor_daily_report_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Subcontractor Daily Report Log Form: daily subcontractor production reporting using crew roster, shift plan, and time-stamped progress photos.",
+  "title": "Subcontractor Daily Report Log Form",
+  "use_case": "Use the log form during daily subcontractor production reporting when the subcontractor daily report record must identify crew roster, work areas, installed quantities, equipment, deliveries, and site conditions. Complete the applicable handoff for daily certification, unresolved-item carryover, next-shift plan, and project-record upload."
+}

@@ -1,0 +1,360 @@
+{
+  "catalog_id": "construction_trades/dcf_186__deficiency_notice_checklist",
+  "description": "For deficiency notice, this checklist records nonconforming condition, required correction, protection measures, response deadline, and potential consequences. Its supporting evidence includes photos, test failures, inspection record, correspondence, specification excerpt, and prior notice history.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Notice opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Notice site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Notice contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Notice superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Notice due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this deficiency notice record to its evidence.",
+          "key": "record_routing",
+          "label": "Deficiency Notice Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Contract requirement",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Affected work",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Responsible party",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture contract requirement, affected work, location, responsible party, discovery date, and related inspection for this deficiency notice.",
+          "key": "core_identity",
+          "label": "Deficiency Notice Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify contract requirement, affected work, location, responsible party, discovery date, and related inspection for this deficiency notice record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Nonconforming condition",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Required correction",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Protection measures",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Response deadline",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For deficiency notice, record nonconforming condition, required correction, protection measures, response deadline, and potential consequences.",
+          "key": "task_inputs",
+          "label": "Deficiency Notice Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the deficiency notice condition before marking.",
+          "items": [
+            "Verify nonconforming condition",
+            "Verify required correction",
+            "Verify protection measures",
+            "Verify response deadline",
+            "Verify potential consequences"
+          ],
+          "key": "task_checks",
+          "label": "Deficiency Notice Verification Points",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Reconcile unchecked deficiency notice items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Deficiency Notice Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Notice checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Notice review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Notice qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Notice check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each deficiency notice result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Deficiency Notice Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Stop or protect affected work when continued activity could conceal, compound, or create unsafe deficiency. Do not release affected deficiency notice work.",
+          "key": "stop_boundary",
+          "label": "Deficiency Notice Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Notice exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Notice correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Notice escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close deficiency notice exceptions with verification.",
+          "key": "exception_register",
+          "label": "Deficiency Notice Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Notice notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Notice notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Notice interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Notice review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Notice release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep deficiency notice controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Deficiency Notice Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Deficiency Notice Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State deficiency notice limits, assumptions, and access gaps.",
+          "height": 36,
+          "key": "limitations",
+          "label": "Deficiency Notice Limitations and Interpretation",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Deficiency Notice Correction Verification and Release Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For deficiency notice, connect the correction to photos, test failures, inspection record, correspondence, specification excerpt, and prior notice history; name the release decision and retained deficiency notice limitation.",
+          "height": 45,
+          "key": "checklist_correction_verification",
+          "label": "Deficiency Notice Correction Verification and Release Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Verify deficiency notice conditions, control exceptions, and preserve release evidence.",
+      "key": "task_2",
+      "title": "Checklist Conditions, Exception, and Release"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Notice when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Notice measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Notice evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Notice result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For deficiency notice, record photos, test failures, inspection record, correspondence, specification excerpt, and prior notice history.",
+          "key": "evidence_register",
+          "label": "Deficiency Notice Findings, Measurements, and Evidence",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Test failures",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Inspection record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Correspondence",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Specification excerpt",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every deficiency notice evidence source.",
+          "key": "evidence_sources",
+          "label": "Deficiency Notice Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support deficiency notice findings with photos, test failures, inspection record, correspondence, specification excerpt, and prior notice history.",
+      "key": "observation_4",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "deficiency-notice-checklist",
+  "source_filename": "dcf_186__deficiency_notice_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Deficiency Notice Checklist: formal construction deficiency notice and cure tracking using contract requirement, nonconforming condition, and photos.",
+  "title": "Deficiency Notice Checklist",
+  "use_case": "Use the checklist during formal construction deficiency notice and cure tracking when the deficiency notice record must identify contract requirement, affected work, location, responsible party, discovery date, and related inspection. Complete the applicable handoff for cure proposal, verified correction, cost or schedule reservation, acceptance, and notice closure."
+}

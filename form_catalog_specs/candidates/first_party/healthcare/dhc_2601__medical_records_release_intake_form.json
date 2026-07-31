@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2601__medical_records_release_intake_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2601__medical_records_release_intake_form.pdf",
+  "slug": "medical-records-release-intake-form",
+  "title": "Medical Records Release Intake Form",
+  "subtitle": "Define the records, recipient, date range, delivery, expiration, revocation, and disclosure trail.",
+  "description": "Records the patient and signing authority, releasing custodian, named recipient and endpoint, purpose, record categories, From and Through dates, exclusions, secure delivery, expiration, revocation, and receipt.",
+  "use_case": "Use when a patient or authorized representative directs a records custodian to disclose a bounded set of records. Route legal or privacy questions to the authorized records or privacy reviewer.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Medical Records Release contact and reference",
+      "guidance": "Identify patient and representative authority, recipient and secure endpoint, record categories, date range, purpose, exclusions, expiration, revocation, and disclosure proof. Record the medical records release decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Medical Records Release people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.1
+            },
+            {
+              "key": "medical_record_number",
+              "label": "Medical record number",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Medical Records Release task details",
+          "fields": [
+            {
+              "key": "record_category",
+              "label": "Record category",
+              "units": 1.15
+            },
+            {
+              "key": "date_range",
+              "label": "Date range",
+              "units": 1.0
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose",
+              "units": 1.25
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient",
+              "units": 1.1
+            },
+            {
+              "key": "secure_delivery",
+              "label": "Secure delivery",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_3",
+          "type": "fields",
+          "label": "Medical Records Release timing and routing",
+          "fields": [
+            {
+              "key": "disclosure_log",
+              "label": "Disclosure log",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_story",
+      "title": "Medical Records Release exception review and reported needs",
+      "guidance": "Preserve the person's wording and route questions without interpretation.",
+      "blocks": [
+        {
+          "key": "stated_need",
+          "type": "textarea",
+          "label": "Medical Records Release stated need or goal",
+          "fields": [
+            {
+              "key": "person_s_words_desired_outcome_and_priority",
+              "label": "Person's words, desired outcome, and priority"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "source_facts",
+          "type": "table",
+          "label": "Medical Records Release facts and questions",
+          "columns": [
+            {
+              "key": "record_category",
+              "label": "Record category",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose",
+              "units": 1.25
+            },
+            {
+              "key": "question_or_route",
+              "label": "Question or route",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "intake_readiness",
+          "type": "checklist",
+          "label": "Medical Records Release intake readiness",
+          "items": [
+            "Record category is identified for this record",
+            "Date range matches the current request or source",
+            "Purpose is ready for point-of-use staff",
+            "Recipient limits or questions are resolved",
+            "Secure delivery is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_handoff",
+      "title": "Medical Records Release receiving route and handoff",
+      "guidance": "Assign open questions and confirm where the intake goes next.",
+      "blocks": [
+        {
+          "key": "intake_route",
+          "type": "fields",
+          "label": "Medical Records Release next step",
+          "fields": [
+            {
+              "key": "receiving_person_or_team",
+              "label": "Receiving person or team",
+              "units": 1.15
+            },
+            {
+              "key": "open_question_or_missing_item",
+              "label": "Open question or missing item",
+              "units": 1.0
+            },
+            {
+              "key": "urgent_route_if_applicable",
+              "label": "Urgent route if applicable",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "intake_receipt",
+          "type": "signatures",
+          "label": "Medical Records Release intake receipt",
+          "fields": [
+            {
+              "key": "intake_coordinator_and_date",
+              "label": "Intake coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms routing, not professional review."
+        }
+      ]
+    }
+  ]
+}

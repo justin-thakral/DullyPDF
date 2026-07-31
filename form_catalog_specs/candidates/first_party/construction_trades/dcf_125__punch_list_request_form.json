@@ -1,0 +1,330 @@
+{
+  "catalog_id": "construction_trades/dcf_125__punch_list_request_form",
+  "description": "For punch list, this request form records observed deficiency, acceptance criterion, access need, correction owner, due date, and predecessor dependency. Its supporting evidence includes dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "List opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "List site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "List contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "List superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "List due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this punch list record to its evidence.",
+          "key": "record_routing",
+          "label": "Punch List Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Room or grid location",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "System",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Responsible trade",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Contract reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture room or grid location, system, responsible trade, contract reference, and turnover milestone for this punch list.",
+          "key": "core_identity",
+          "label": "Punch List Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify room or grid location, system, responsible trade, contract reference, and turnover milestone for this punch list record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Observed deficiency",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Acceptance criterion",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Access need",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "List correction lead",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For punch list, record observed deficiency, acceptance criterion, access need, correction owner, due date, and predecessor dependency.",
+          "key": "task_inputs",
+          "label": "Punch List Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Punch List Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State punch list outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Punch List Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "List work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "List owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate punch list items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Punch List Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Escalate life-safety, water-intrusion, energized-system, occupancy, or concealed-work defects immediately. Route unresolved punch list work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Punch List Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For punch list, capture observed deficiency, acceptance criterion, access need, correction owner, due date, and predecessor dependency.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Escalate life-safety, water-intrusion, energized-system, occupancy, or concealed-work defects immediately. Do not release affected punch list work.",
+          "key": "stop_boundary",
+          "label": "Punch List Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "List exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "List correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "List escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close punch list exceptions with verification.",
+          "key": "exception_register",
+          "label": "Punch List Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "List notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "List notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "List interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "List review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "List release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep punch list controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Punch List Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Escalate life-safety, water-intrusion, energized-system, occupancy, or concealed-work defects immediately. Control and route each punch list exception.",
+      "key": "exception_3",
+      "title": "Request Risk and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "List decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "List approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "List schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate punch list disposition.",
+          "key": "disposition",
+          "label": "Punch List Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Punch List Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the punch list decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Punch List Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "List requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "List coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Punch List Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the punch list next step from dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+      "key": "decision_4",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "punch-list-request-form",
+  "source_filename": "dcf_125__punch_list_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Punch List Request Form: deficiency capture, assignment, and verification using room or grid location, observed deficiency, and dated photo.",
+  "title": "Punch List Request Form",
+  "use_case": "Use the request form during deficiency capture, assignment, and verification when the punch list record must identify room or grid location, system, responsible trade, contract reference, and turnover milestone. Complete the applicable handoff for verified correction, owner acceptance, exception disposition, remaining-list reconciliation, and turnover handoff."
+}

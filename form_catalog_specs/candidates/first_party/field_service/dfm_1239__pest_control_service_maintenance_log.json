@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1239__pest_control_service_maintenance_log",
+  "source_section": "field_service",
+  "source_filename": "dfm_1239__pest_control_service_maintenance_log.pdf",
+  "slug": "pest-control-service-maintenance-log",
+  "title": "Pest Control Service Maintenance Log",
+  "subtitle": "Commercial Pest-Control Service: preserves changes and next triggers.",
+  "description": "Pest Control Service Maintenance Log covers monitored pest activity, device network, treatment area, and contributing condition. The site pest-management coordinator records Commercial Pest-Control Service events, owners, exceptions, and next triggers. Pest Control Service Maintenance Log keeps Commercial Pest-Control Service exceptions visible until the site pest-management coordinator handoff.",
+  "use_case": "Use Pest Control Service Maintenance Log at food, storage, waste, exterior, utility, and occupied monitoring zones. Document monitored pest activity, device network, treatment area, and contributing condition identity before Commercial Pest-Control Service begins. Compare monitored pest activity, device network, treatment area, and contributing condition findings with stated Commercial Pest-Control Service criteria; route unresolved Commercial Pest-Control Service issues to licensed or otherwise qualified pest-control reviewer. For Pest Control Service Maintenance Log, confirm requirements for Commercial Pest-Control Service. Ask licensed or otherwise qualified pest-control reviewer to review Commercial Pest-Control Service conditions beyond the site pest-management coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For Commercial Pest-Control Service, identify responsible parties, food, storage, waste, exterior, utility, and occupied monitoring zones, and the linked monitored pest activity, device network, treatment area, and contributing condition source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Commercial Pest-Control Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Site and service agreement",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Target pest and confirmed evidence",
+              "units": 1.8888888888888888
+            },
+            {
+              "key": "identity_3",
+              "label": "Device map, device numbers, and prior trend reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status events and next-control history",
+      "guidance": "Capture Commercial Pest-Control Service facts for monitored pest activity, device network, treatment area, and contributing condition; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Commercial Pest-Control Service tracked controls",
+          "items": [
+            "Activity type, count, direction, and freshness",
+            "Device condition, placement, and service result",
+            "Entry point, moisture, food, waste, and harborage condition",
+            "Sanitation and structural corrective-action status",
+            "Treatment material, location, amount, and restriction",
+            "Trend compared with prior service thresholds"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Reconcile the latest Commercial Pest-Control Service event before closeout. Site Pest-Management Coordinator identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Non-target exposure or accessible treatment",
+            "Activity requiring different identification or method",
+            "Food-contact or occupied-area restriction not controlled",
+            "Structural or sanitation cause remains unassigned",
+            "Annotated device and activity map",
+            "Photographs of evidence and contributing conditions",
+            "Material and service record",
+            "Corrective-action and trend history"
+          ],
+          "guidance": "Pause Commercial Pest-Control Service when treatment exposure, target identification, occupied-area restriction, or required corrective action is unresolved. Retain the available Commercial Pest-Control Service proof and route unresolved monitored pest activity, device network, treatment area, and contributing condition scope to site pest-management coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Site Pest-Management Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Licensed Or Otherwise Qualified Pest-Control Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

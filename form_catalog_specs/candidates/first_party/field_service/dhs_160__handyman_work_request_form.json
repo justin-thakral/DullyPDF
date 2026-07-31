@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_160__handyman_work_request_form",
+  "source_section": "field_service",
+  "source_filename": "dhs_160__handyman_work_request_form.pdf",
+  "slug": "handyman-work-request-form",
+  "title": "Handyman Work Request Form",
+  "subtitle": "Residential Handyman Work Request: defines need, constraints, and assignment.",
+  "description": "Handyman Work Request Form covers room, fixture, finish, assembly, small repair, and requested improvement. The handyman service coordinator records Residential Handyman Work Request need, timing, access, and assignment. Handyman Work Request Form keeps Residential Handyman Work Request exceptions visible until the handyman service coordinator handoff.",
+  "use_case": "Use Handyman Work Request Form at residence, room, work area, access path, and protected adjacent finish. Document room, fixture, finish, assembly, small repair, and requested improvement identity before Residential Handyman Work Request begins. Compare room, fixture, finish, assembly, small repair, and requested improvement findings with stated Residential Handyman Work Request criteria; route unresolved Residential Handyman Work Request issues to qualified trade reviewer when scope requires. For Handyman Work Request Form, confirm requirements for Residential Handyman Work Request. Ask qualified trade reviewer when scope requires to review Residential Handyman Work Request conditions beyond the handyman service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requester, location, and subject details",
+      "guidance": "For Residential Handyman Work Request, identify responsible parties, residence, room, work area, access path, and protected adjacent finish, and the linked room, fixture, finish, assembly, small repair, and requested improvement source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Handyman Work Request identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and request number",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Room, item, and requested result",
+              "units": 1.7777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Dimensions, material, existing condition, and timing constraint",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested scope and practical constraints",
+      "guidance": "Capture Residential Handyman Work Request facts for room, fixture, finish, assembly, small repair, and requested improvement; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Handyman Work Request intake confirmations",
+          "items": [
+            "Requested or already documented: visible damage and failure mode",
+            "Requested or already documented: mounting surface, substrate, support, and fastener context",
+            "Requested or already documented: utility, moisture, structural, and concealed-condition indicators",
+            "Requested or already documented: dimensions, fit, finish, and material match",
+            "Requested or already documented: access, occupancy, dust, noise, and protection needs",
+            "Requested or already documented: desired function and finish acceptance criteria"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Supplied evidence and assignment outcome",
+      "guidance": "Resolve open Residential Handyman Work Request questions; have handyman service coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Electrical, plumbing, gas, structural, roofing, or hazardous-material scope",
+            "Concealed damage changes the work",
+            "Requested attachment lacks suitable support",
+            "Permit or qualified trade review is required",
+            "Prior or requester-supplied: request and existing-condition photographs",
+            "Prior or requester-supplied: measurement and material record",
+            "Prior or requester-supplied: approved scope or change note",
+            "Prior or requester-supplied: requested acceptance test and walkthrough criteria"
+          ],
+          "guidance": "Do not assign or authorize the Residential Handyman Work Request when scope requiring a licensed trade, permit, structural decision, or uncontrolled concealed condition remains. Retain information supplied with the request and route unresolved constraints to handyman service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Handyman Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

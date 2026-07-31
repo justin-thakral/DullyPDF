@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1456__allergy_action_plan_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1456__allergy_action_plan_authorization_form.pdf",
+  "slug": "allergy-action-plan-authorization-form",
+  "title": "Allergy Action Plan Authorization Form",
+  "subtitle": "Capture allergen source, exposure route, current plan, and emergency supply; confirm symptom threshold and guardian update.",
+  "description": "Allergy Action Plan records allergen source, exposure route, current plan, emergency supply, symptom threshold, and guardian update. Allergy Action Plan evidence stays linked.",
+  "use_case": "Use this allergy action plan authorization decision when staff must document allergen source and exposure route. Reconcile current plan, emergency supply, symptom threshold, and guardian update before the allergy action plan handoff. Use the current clinician action-plan reference, allergen list, medication-label match, emergency-supply seal and expiration, exposure record, and guardian receipt. Unlike a medication administration record, this plan centers exposure prevention, recognized threshold signs, emergency-supply access, school response roles, and return to review. Ask the assigned allergy action plan reviewer to confirm allergen source against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Allergy Action Plan contact and reference",
+      "guidance": "Preserve the named allergen, likely exposure setting, current qualified plan, emergency supply location, symptom threshold, and guardian notification route. Keep any urgent allergy action plan issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Allergy Action Plan people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "allergen_source",
+              "label": "Allergen source",
+              "units": 1.2
+            },
+            {
+              "key": "exposure_route",
+              "label": "Exposure route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Allergy Action Plan task details",
+          "fields": [
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.15
+            },
+            {
+              "key": "emergency_supply",
+              "label": "Emergency supply",
+              "units": 1.0
+            },
+            {
+              "key": "symptom_threshold",
+              "label": "Symptom threshold",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_update",
+              "label": "Guardian update",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Allergy Action Plan decision and scope choices",
+      "guidance": "Decide each allergy action plan scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Allergy Action Plan itemized scope",
+          "fields": [
+            {
+              "key": "allergen_source",
+              "label": "Allergen source",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "exposure_route",
+              "label": "Exposure route",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "emergency_supply",
+              "label": "Emergency supply",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "symptom_threshold",
+              "label": "Symptom threshold",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "guardian_update",
+              "label": "Guardian update",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Allergy Action Plan authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Allergy Action Plan effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            },
+            {
+              "key": "revocation_or_update_route",
+              "label": "Revocation or update route",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Allergy Action Plan contact and reference",
+      "guidance": "Only recorded allergy action plan choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Allergy Action Plan limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Allergy Action Plan signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "school_or_program_reviewer_and_date",
+              "label": "School or program reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Allergy Action Plan signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Allergy Action Plan authorization boundary",
+          "guidance": "Named allergy action plan reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

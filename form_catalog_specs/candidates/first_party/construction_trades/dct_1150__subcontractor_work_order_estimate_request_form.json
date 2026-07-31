@@ -1,0 +1,267 @@
+{
+  "catalog_id": "construction_trades/dct_1150__subcontractor_work_order_estimate_request_form",
+  "description": "For subcontractor work order, this estimate request form records deliverables, inclusions, exclusions, quantities, materials, interfaces, safety duties, cleanup, and payment terms. Its supporting evidence includes scope exhibits, drawings, quote, qualification record, schedule commitment, and compliance documents.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Subcontractor opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Subcontractor site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Subcontractor contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Subcontractor superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Subcontractor due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this subcontractor work order record to its evidence.",
+          "key": "record_routing",
+          "label": "Subcontractor Work Order Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Project",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Trade package",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Work locations",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Contract references",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Schedule window",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture project, trade package, work locations, contract references, schedule window, site contacts, and insurance status for this subcontractor work order.",
+          "key": "core_identity",
+          "label": "Subcontractor Work Order Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify project, trade package, work locations, contract references, schedule window, site contacts, and insurance status for this subcontractor work order record.",
+      "key": "identity_1",
+      "title": "Estimate Assignment and Site"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Deliverables",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Inclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Quantities",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Materials",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Interfaces",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For subcontractor work order, record deliverables, inclusions, exclusions, quantities, materials, interfaces, safety duties, cleanup, and payment terms.",
+          "key": "task_inputs",
+          "label": "Subcontractor Work Order Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Subcontractor Work Order Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State subcontractor work order outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Subcontractor Work Order Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Subcontractor work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Subcontractor owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate subcontractor work order items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Subcontractor Work Order Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not mobilize without executed terms, required insurance, approved safety readiness, access, and prerequisite release. Route unresolved subcontractor work order work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Subcontractor Work Order Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For subcontractor work order, capture deliverables, inclusions, exclusions, quantities, materials, interfaces, safety duties, cleanup, and payment terms.",
+      "key": "task_2",
+      "title": "Scope Review and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Subcontractor when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Subcontractor measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Subcontractor evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Subcontractor result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For subcontractor work order, record scope exhibits, drawings, quote, qualification record, schedule commitment, and compliance documents.",
+          "key": "evidence_register",
+          "label": "Subcontractor Work Order Findings, Measurements, and Evidence",
+          "rows": 9,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Scope exhibits",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Drawings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Quote",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Qualification record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Schedule commitment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every subcontractor work order evidence source.",
+          "key": "evidence_sources",
+          "label": "Subcontractor Work Order Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary subcontractor work order evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Subcontractor Work Order Evidence Completeness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Support subcontractor work order findings with scope exhibits, drawings, quote, qualification record, schedule commitment, and compliance documents.",
+      "key": "observation_3",
+      "title": "Pricing Inputs and Site Evidence"
+    }
+  ],
+  "slug": "subcontractor-work-order-estimate-request-form",
+  "source_filename": "dct_1150__subcontractor_work_order_estimate_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Subcontractor Work Order Estimate Request Form: subcontractor work-order scoping and release using project, deliverables, and scope exhibits.",
+  "title": "Subcontractor Work Order Estimate Request Form",
+  "use_case": "Use the estimate request form during subcontractor work-order scoping and release when the subcontractor work order record must identify project, trade package, work locations, contract references, schedule window, site contacts, and insurance status. Complete the applicable handoff for authorized work order, notice to proceed, distribution, change protocol, progress reporting, and closeout duties."
+}

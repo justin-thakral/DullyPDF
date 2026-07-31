@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1246__pool_maintenance_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1246__pool_maintenance_work_order_form.pdf",
+  "slug": "pool-maintenance-work-order-form",
+  "title": "Pool Maintenance Work Order Form",
+  "subtitle": "Facility Pool Maintenance: connects authorized scope to results.",
+  "description": "Pool Maintenance Work Order Form covers pool, spa, circulation, filtration, disinfection, controls, and deck area. The aquatics facility coordinator records Facility Pool Maintenance authorized tasks, materials, results, and changes. Pool Maintenance Work Order Form keeps Facility Pool Maintenance exceptions visible until the aquatics facility coordinator handoff.",
+  "use_case": "Use Pool Maintenance Work Order Form at pool vessel, equipment room, chemical storage, deck, and user-access point. Document pool, spa, circulation, filtration, disinfection, controls, and deck area identity before Facility Pool Maintenance begins. Compare pool, spa, circulation, filtration, disinfection, controls, and deck area findings with stated Facility Pool Maintenance criteria; route unresolved Facility Pool Maintenance issues to qualified pool-operations reviewer. For Pool Maintenance Work Order Form, confirm requirements for Facility Pool Maintenance. Ask qualified pool-operations reviewer to review Facility Pool Maintenance conditions beyond the aquatics facility coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Facility work-order scope review",
+      "guidance": "Bind Facility Pool Maintenance to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Request, asset, or work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Requesting department or site contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Facility, building, or service area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Aquatics Facility Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Facility Pool Maintenance identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility and body-of-water identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Equipment, controller, and treatment-system identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Operating target, prior reading, and service interval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Facility Pool Maintenance identifier printed on pool, spa, circulation, filtration, disinfection, controls, and deck area or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized work observations and evidence",
+      "guidance": "Record authorized Facility Pool Maintenance activity; separate proposed, declined, deferred, or new Facility Pool Maintenance scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Facility Pool Maintenance task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Asset, zone, device, or component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method, part, or material",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Actual result or reading",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Technician or crew",
+              "units": 0.8
+            },
+            {
+              "key": "verified",
+              "label": "Verified by / time",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Facility Pool Maintenance work and verification points",
+          "items": [
+            "Disinfectant, pH, temperature, and clarity reading",
+            "Circulation, filter pressure, flow, and leak condition",
+            "Chemical feed, container, labeling, and storage condition",
+            "Drain cover, barrier, gate, sign, and rescue-equipment observation",
+            "Deck, handrail, ladder, lighting, and trip condition",
+            "Controller alarm, dosing response, and retest result"
+          ],
+          "guidance": "Use each Facility Pool Maintenance check to prompt documented pool, spa, circulation, filtration, disinfection, controls, and deck area execution; enter its actual Facility Pool Maintenance result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Facility Pool Maintenance parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Work exception and scope changes",
+      "guidance": "Stop Facility Pool Maintenance at any scope or cost limit; honor aquatics facility coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when water quality, chemical control, circulation, visibility, or user-protection concern remains. Protect pool, spa, circulation, filtration, disinfection, controls, and deck area; document the Facility Pool Maintenance notification and await qualified pool-operations reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Water quality or clarity outside operating criteria",
+            "Chemical leak, incompatible storage, or uncontrolled feed",
+            "Barrier, drain-cover, or rescue-equipment concern",
+            "Required closure or qualified review not implemented"
+          ],
+          "guidance": "For Facility Pool Maintenance, identify affected pool, spa, circulation, filtration, disinfection, controls, and deck area scope; ask aquatics facility coordinator to document the Facility Pool Maintenance immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected condition, scope change, added cost, and authorization response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, scope change, added cost, and authorization response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work authorization decision and site release",
+      "guidance": "Reconcile Facility Pool Maintenance to authorization; state aquatics facility coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Time-stamped water-quality readings",
+            "Instrument and reagent identification",
+            "Equipment and safety-feature photographs",
+            "Closure, correction, reopening, and notification record"
+          ],
+          "guidance": "Attach or link proof for pool, spa, circulation, filtration, disinfection, controls, and deck area; mark only Facility Pool Maintenance evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

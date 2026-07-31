@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1255__it_help_desk_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1255__it_help_desk_service_request_form.pdf",
+  "slug": "it-help-desk-service-request-form",
+  "title": "IT Help Desk Service Request Form",
+  "subtitle": "IT Help-Desk Service: defines need, constraints, and assignment.",
+  "description": "IT Help Desk Service Request Form covers user account, endpoint, application, network path, service, and business function. The service desk coordinator records IT Help-Desk Service need, timing, access, and assignment. IT Help Desk Service Request Form keeps IT Help-Desk Service exceptions visible until the service desk coordinator handoff.",
+  "use_case": "Use IT Help Desk Service Request Form at approved remote session, user workspace, equipment room, or service environment. Document user account, endpoint, application, network path, service, and business function identity before IT Help-Desk Service begins. Compare user account, endpoint, application, network path, service, and business function findings with stated IT Help-Desk Service criteria; route unresolved IT Help-Desk Service issues to authorized IT support reviewer. For IT Help Desk Service Request Form, confirm requirements for IT Help-Desk Service. Ask authorized IT support reviewer to review IT Help-Desk Service conditions beyond the service desk coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requested-service contact and source record",
+      "guidance": "For IT Help-Desk Service, identify responsible parties, approved remote session, user workspace, equipment room, or service environment, and the linked user account, endpoint, application, network path, service, and business function source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "IT Help-Desk Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Ticket and requester identity",
+              "units": 1.6111111111111112
+            },
+            {
+              "key": "identity_2",
+              "label": "Device, asset tag, hostname, account, or service identifier",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Affected application, location, and business-impact reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Intake checks and assignment readiness",
+      "guidance": "Capture IT Help-Desk Service facts for user account, endpoint, application, network path, service, and business function; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "IT Help-Desk Service intake confirmations",
+          "items": [
+            "Requested or already documented: reported behavior and reproducible steps",
+            "Requested or already documented: error text, timestamp, log, and recent-change history",
+            "Requested or already documented: device, operating system, application, and network context",
+            "Requested or already documented: account state and least-privilege requirement",
+            "Requested or already documented: backup, data-protection, and rollback readiness",
+            "Requested or already documented: post-change functional and user acceptance result"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open IT Help-Desk Service request questions; have service desk coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Requester authority cannot be verified",
+            "Sensitive data or credential exposure",
+            "Change exceeds approved access or maintenance window",
+            "Security incident indicators require separate response",
+            "Prior or requester-supplied: sanitized error and diagnostic record",
+            "Prior or requester-supplied: approved change and configuration evidence",
+            "Prior or requester-supplied: backup or rollback confirmation",
+            "Prior or requester-supplied: test result without unnecessary sensitive data"
+          ],
+          "guidance": "Do not assign or authorize the IT Help-Desk Service request when identity, authorization, security, backup, or rollback control is unresolved. Retain information supplied with the request and route unresolved constraints to service desk coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Service Desk Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,390 @@
+{
+  "catalog_id": "home_services/dhs_2442__appliance_installation_work_order_form",
+  "description": "For appliance installation, this work order form records connection requirements, code-listed parts, protection, leveling, anchoring, testing, haul-away, and customer orientation. Its supporting evidence includes delivery condition, fit measurements, connection photos, leak or electrical test, serial record, and operation check.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Appliance opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Appliance site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Appliance contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Appliance service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Appliance due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this appliance installation record to its evidence.",
+          "key": "record_routing",
+          "label": "Appliance Installation Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Appliance model",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Serial",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Dimensions",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Path",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Utilities",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture appliance model, serial, location, dimensions, path, utilities, cabinetry, ventilation, and old-unit disposition for this appliance installation.",
+          "key": "core_identity",
+          "label": "Appliance Installation Core Identifiers",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Connection requirements",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Code-listed parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Protection",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Leveling",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Anchoring",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Testing",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For appliance installation, record connection requirements, code-listed parts, protection, leveling, anchoring, testing, haul-away, and customer orientation.",
+          "key": "task_inputs",
+          "label": "Appliance Installation Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Appliance work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized appliance installation work from additions.",
+          "key": "assigned_work",
+          "label": "Appliance Installation Assigned Work and Acceptance Criteria",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Appliance arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Appliance access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Appliance added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Appliance inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop appliance installation work at recorded limits.",
+          "key": "work_window",
+          "label": "Appliance Installation Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not connect incompatible, damaged, improperly supplied, poorly vented, leaking, or code-deficient installations. Route unresolved appliance installation work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Appliance Installation Applicable Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Appliance when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Appliance measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Appliance evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Appliance result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For appliance installation, record delivery condition, fit measurements, connection photos, leak or electrical test, serial record, and operation check.",
+          "key": "evidence_register",
+          "label": "Appliance Installation Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Delivery condition",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Fit measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Connection photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Leak or electrical test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Serial record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every appliance installation evidence source.",
+          "key": "evidence_sources",
+          "label": "Appliance Installation Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary appliance installation evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Appliance Installation Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Appliance open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Appliance owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Appliance acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer appliance installation items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Appliance Installation Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Appliance completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Installed condition",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Function verification",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Customer demonstration",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Warranty registration",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the appliance installation outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Appliance Installation Final Outcome",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the appliance installation assignment, authorize its appliance installation plan, and record each field finding.",
+      "key": "identity_1",
+      "title": "Work Reference, Plan, and Field Finding"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Appliance Installation Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For appliance installation, record installed condition, function verification, customer demonstration, warranty registration, debris removal, and signoff; give the appliance installation care or operating instruction, identify appliance installation access restoration and recipient.",
+          "height": 40,
+          "key": "completion_care_notes",
+          "label": "Appliance Installation Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Appliance technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Appliance customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Appliance Installation Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the appliance installation record with installed condition, function verification, customer demonstration, warranty registration, debris removal, and signoff.",
+      "key": "closeout_4",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "appliance-installation-work-order-form",
+  "source_filename": "dhs_2442__appliance_installation_work_order_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Appliance Installation Work Order Form: residential appliance delivery and installation using appliance model, connection requirements, and delivery condition.",
+  "title": "Appliance Installation Work Order Form",
+  "use_case": "Use the work order form during residential appliance delivery and installation when the appliance installation record must identify appliance model, serial, location, dimensions, path, utilities, cabinetry, ventilation, and old-unit disposition. Complete the applicable handoff for installed condition, function verification, customer demonstration, warranty registration, debris removal, and signoff."
+}

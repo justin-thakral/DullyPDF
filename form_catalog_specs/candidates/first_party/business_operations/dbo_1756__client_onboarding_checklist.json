@@ -1,0 +1,299 @@
+{
+  "catalog_id": "business_operations/dbo_1756__client_onboarding_checklist",
+  "description": "For client onboarding, this checklist records success criteria, service boundaries, dependencies, implementation milestones, data needs, training, and communication cadence. Its supporting evidence includes executed agreement, identity and tax documents, requirements notes, approvals, configuration proof, and kickoff decisions.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Onboarding opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Onboarding site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Onboarding contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Onboarding process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Onboarding due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this client onboarding record to its evidence.",
+          "key": "record_routing",
+          "label": "Client Onboarding Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Client legal identity",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Contacts",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Services",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Locations",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Billing",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Tax status",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture client legal identity, contacts, services, locations, billing, tax status, systems access, and contract record for this client onboarding.",
+          "key": "core_identity",
+          "label": "Client Onboarding Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify client legal identity, contacts, services, locations, billing, tax status, systems access, and contract record for this client onboarding record.",
+      "key": "identity_1",
+      "title": "Process Checkpoint and Owner"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Success criteria",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Service boundaries",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Dependencies",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Implementation milestones",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Data needs",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For client onboarding, record success criteria, service boundaries, dependencies, implementation milestones, data needs, training, and communication cadence.",
+          "key": "task_inputs",
+          "label": "Client Onboarding Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the client onboarding condition before marking.",
+          "items": [
+            "Verify success criteria",
+            "Verify service boundaries",
+            "Verify dependencies",
+            "Verify implementation milestones",
+            "Verify data needs"
+          ],
+          "key": "task_checks",
+          "label": "Client Onboarding Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Onboarding checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Onboarding review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Onboarding qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Onboarding check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each client onboarding result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Client Onboarding Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not activate service with missing authority, unresolved sanctions or conflict check, unsupported commitment, or unsafe data access. Route unresolved client onboarding work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Client Onboarding Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For client onboarding, capture success criteria, service boundaries, dependencies, implementation milestones, data needs, training, and communication cadence.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Onboarding when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Onboarding measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Onboarding evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Onboarding result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For client onboarding, record executed agreement, identity and tax documents, requirements notes, approvals, configuration proof, and kickoff decisions.",
+          "key": "evidence_register",
+          "label": "Client Onboarding Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Executed agreement",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Identity",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Tax documents",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Requirements notes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Approvals",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Configuration proof",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every client onboarding evidence source.",
+          "key": "evidence_sources",
+          "label": "Client Onboarding Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked client onboarding items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Client Onboarding Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Client Onboarding Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State client onboarding limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Client Onboarding Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support client onboarding findings with executed agreement, identity and tax documents, requirements notes, approvals, configuration proof, and kickoff decisions.",
+      "key": "observation_3",
+      "title": "Checklist Finding Record"
+    }
+  ],
+  "slug": "client-onboarding-checklist",
+  "source_filename": "dbo_1756__client_onboarding_checklist.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Client Onboarding Checklist: new-client qualification and operational onboarding using client legal identity, success criteria, and executed agreement.",
+  "title": "Client Onboarding Checklist",
+  "use_case": "Use the checklist during new-client qualification and operational onboarding when the client onboarding record must identify client legal identity, contacts, services, locations, billing, tax status, systems access, and contract record. Complete the applicable handoff for readiness approval, account creation, responsibility matrix, milestone handoff, customer confirmation, and record index."
+}

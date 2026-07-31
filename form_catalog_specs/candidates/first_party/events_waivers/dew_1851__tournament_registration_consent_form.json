@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1851__tournament_registration_consent_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1851__tournament_registration_consent_form.pdf",
+  "slug": "tournament-registration-consent-form",
+  "title": "Tournament Registration Consent Form",
+  "subtitle": "Capture division placement, roster, schedule, and rules acknowledgment; confirm credential and result route.",
+  "description": "Tournament Registration records division placement, roster, schedule, rules acknowledgment, credential, and result route. Tournament Registration evidence stays linked.",
+  "use_case": "Use this tournament registration scoped consent when staff must document division placement and roster. Reconcile schedule, rules acknowledgment, credential, and result route before the tournament registration handoff. Use the entry application, eligibility source, roster and substitutes, division capacity, schedule acknowledgment, rules receipt, credential record, and placement notice. This registration places a team or entrant into a competitive division using eligibility, roster and substitutes, seeding inputs, bracket capacity, rules receipt, and credential issue. Capture team-manager authority, age or weight classification where applicable, roster lock, jersey or bib assignment, club affiliation, ranking evidence, and officials' packet readiness. Ask the assigned tournament registration reviewer to confirm division placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Tournament Registration participant details",
+      "guidance": "Confirm division eligibility, roster and substitutes, schedule availability, rules receipt, credential issuance, seeding source, payment reference, and result route.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Tournament Registration people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "division_placement",
+              "label": "Division placement",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Tournament Registration task details",
+          "fields": [
+            {
+              "key": "roster",
+              "label": "Roster",
+              "units": 1.15
+            },
+            {
+              "key": "schedule",
+              "label": "Schedule",
+              "units": 1.0
+            },
+            {
+              "key": "rules_acknowledgment",
+              "label": "Rules acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.1
+            },
+            {
+              "key": "result_route",
+              "label": "Result route",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_choices",
+      "title": "Tournament Registration exception review and voluntary choices",
+      "guidance": "Present each choice independently; do not preselect an answer.",
+      "blocks": [
+        {
+          "key": "itemized_consent",
+          "type": "fields",
+          "label": "Tournament Registration itemized consent",
+          "fields": [
+            {
+              "key": "division_placement",
+              "label": "Division placement",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "roster",
+              "label": "Roster",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "schedule",
+              "label": "Schedule",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "rules_acknowledgment",
+              "label": "Rules acknowledgment",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "result_route",
+              "label": "Result route",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consent_checks",
+          "type": "checklist",
+          "label": "Tournament Registration informed-choice checks",
+          "items": [
+            "Purpose and practical conditions are explained",
+            "Questions and access needs are addressed",
+            "Declining one choice does not decide another",
+            "Withdrawal route and practical limits are explained"
+          ]
+        },
+        {
+          "key": "consent_conditions",
+          "type": "fields",
+          "label": "Tournament Registration conditions and withdrawal",
+          "fields": [
+            {
+              "key": "choice_explained_by",
+              "label": "Choice explained by",
+              "units": 1.15
+            },
+            {
+              "key": "question_or_accessibility_need",
+              "label": "Question or accessibility need",
+              "units": 1.0
+            },
+            {
+              "key": "special_condition_or_exclusion",
+              "label": "Special condition or exclusion",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal_contact",
+              "label": "Withdrawal contact",
+              "units": 1.1
+            },
+            {
+              "key": "consent_copy_provided_date",
+              "label": "Consent copy provided date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_signoff",
+      "title": "Tournament Registration contact and reference",
+      "guidance": "Record the voluntary decision and responsible staff recipient.",
+      "blocks": [
+        {
+          "key": "consent_note",
+          "type": "textarea",
+          "label": "Tournament Registration question or limit",
+          "fields": [
+            {
+              "key": "question_explanation_declined_scope_or_participation_limit",
+              "label": "Question, explanation, declined scope, or participation limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "consent_signatures",
+          "type": "signatures",
+          "label": "Tournament Registration signatures",
+          "fields": [
+            {
+              "key": "person_giving_consent_and_date",
+              "label": "Person giving consent and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The signature applies only to choices recorded above."
+        }
+      ]
+    }
+  ]
+}

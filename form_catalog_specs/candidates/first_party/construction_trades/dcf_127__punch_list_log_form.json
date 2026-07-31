@@ -1,0 +1,235 @@
+{
+  "catalog_id": "construction_trades/dcf_127__punch_list_log_form",
+  "description": "For punch list, this log form records observed deficiency, acceptance criterion, access need, correction owner, due date, and predecessor dependency. Its supporting evidence includes dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "List opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "List site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "List contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "List superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "List due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this punch list record to its evidence.",
+          "key": "record_routing",
+          "label": "Punch List Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Room or grid location",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "System",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Responsible trade",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Contract reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture room or grid location, system, responsible trade, contract reference, and turnover milestone for this punch list.",
+          "key": "core_identity",
+          "label": "Punch List Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify room or grid location, system, responsible trade, contract reference, and turnover milestone for this punch list record.",
+      "key": "identity_1",
+      "title": "Log Reference and Review Owner"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "List when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "List measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "List evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "List result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For punch list, record dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+          "key": "evidence_register",
+          "label": "Punch List Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Dated photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Test reading",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Inspection note",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Drawing reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every punch list evidence source.",
+          "key": "evidence_sources",
+          "label": "Punch List Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "List dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "List owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "List escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep punch list items open through verification.",
+          "key": "open_item_register",
+          "label": "Punch List Open Items and Next Actions",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "List reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved punch list entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Punch List Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Punch List Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For punch list, explain verified correction, owner acceptance, exception disposition, remaining-list reconciliation, and turnover handoff; transfer each punch list open entry to the punch list successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Punch List Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Escalate life-safety, water-intrusion, energized-system, occupancy, or concealed-work defects immediately. Route unresolved punch list work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Punch List Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support punch list findings with dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+      "key": "observation_2",
+      "title": "Recorded Findings and Actions"
+    }
+  ],
+  "slug": "punch-list-log-form",
+  "source_filename": "dcf_127__punch_list_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Punch List Log Form: deficiency capture, assignment, and verification using room or grid location, observed deficiency, and dated photo.",
+  "title": "Punch List Log Form",
+  "use_case": "Use the log form during deficiency capture, assignment, and verification when the punch list record must identify room or grid location, system, responsible trade, contract reference, and turnover milestone. Complete the applicable handoff for verified correction, owner acceptance, exception disposition, remaining-list reconciliation, and turnover handoff."
+}

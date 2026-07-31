@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1412__after_school_enrollment_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1412__after_school_enrollment_checklist.pdf",
+  "slug": "after-school-enrollment-checklist",
+  "title": "After-School Enrollment Checklist",
+  "subtitle": "Capture dismissal route, weekly schedule, program capacity, and snack plan; confirm late pickup and classroom handoff.",
+  "description": "After School Enrollment records dismissal route, weekly schedule, program capacity, snack plan, late pickup, and classroom handoff. After School Enrollment evidence stays linked.",
+  "use_case": "Use this after school enrollment stage-gated verification when staff must document dismissal route and weekly schedule. Reconcile program capacity, snack plan, late pickup, and classroom handoff before the after school enrollment handoff. Useful evidence includes the enrollment request, bell schedule, weekly roster, pickup authorization, snack-plan reference, and late-pickup contact log. Ask the assigned after school enrollment reviewer to confirm dismissal route against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "After School Enrollment contact and reference",
+      "guidance": "Record bell-to-program transfer, selected weekdays, dismissal method, authorized pickup adults, snack routing, and late-pickup escalation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "After School Enrollment people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "dismissal_route",
+              "label": "Dismissal route",
+              "units": 1.1
+            },
+            {
+              "key": "weekly_schedule",
+              "label": "Weekly schedule",
+              "units": 1.2
+            },
+            {
+              "key": "program_capacity",
+              "label": "Program capacity",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "After School Enrollment task details",
+          "fields": [
+            {
+              "key": "snack_plan",
+              "label": "Snack plan",
+              "units": 1.15
+            },
+            {
+              "key": "late_pickup",
+              "label": "Late pickup",
+              "units": 1.0
+            },
+            {
+              "key": "classroom_handoff",
+              "label": "Classroom handoff",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "After School Enrollment checks and corrections",
+      "guidance": "Check current after school enrollment facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "After School Enrollment required checks",
+          "items": [
+            "Dismissal route is identified for this record",
+            "Weekly schedule matches the current request or source",
+            "Program capacity is ready for point-of-use staff",
+            "Snack plan limits or questions are resolved",
+            "Late pickup is communicated to the responsible person",
+            "Classroom handoff is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "After School Enrollment failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "After School Enrollment readiness",
+      "guidance": "Hold after school enrollment readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "After School Enrollment checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "After School Enrollment reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_teacher_or_program_coordinator_and_date",
+              "label": "Responsible teacher or program coordinator and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "After School Enrollment receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,356 @@
+{
+  "catalog_id": "business_operations/dbo_1793__office_supply_request_form",
+  "description": "For office supply, this request form records operational need, standard-item match, substitution, delivery date, unit cost, order minimum, and storage capacity. Its supporting evidence includes stock count, catalog reference, price comparison, prior usage, approval, receipt, and discrepancy documentation.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Supply opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Supply site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Supply contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Supply process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Supply due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this office supply record to its evidence.",
+          "key": "record_routing",
+          "label": "Office Supply Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Requester",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Worksite",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Supply category",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Item",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Quantity",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Current stock",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture requester, worksite, supply category, item, quantity, current stock, preferred supplier, and accounting code for this office supply.",
+          "key": "core_identity",
+          "label": "Office Supply Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify requester, worksite, supply category, item, quantity, current stock, preferred supplier, and accounting code for this office supply record.",
+      "key": "identity_1",
+      "title": "Business Request Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Operational need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Standard-item match",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Substitution",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Delivery date",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Unit cost",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For office supply, record operational need, standard-item match, substitution, delivery date, unit cost, order minimum, and storage capacity.",
+          "key": "task_inputs",
+          "label": "Office Supply Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Office Supply Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State office supply outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Office Supply Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Supply work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Supply owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate office supply items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Office Supply Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        }
+      ],
+      "guidance": "For office supply, capture operational need, standard-item match, substitution, delivery date, unit cost, order minimum, and storage capacity.",
+      "key": "task_2",
+      "title": "Requested Commitment and Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Supply decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Supply approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Supply schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate office supply disposition.",
+          "key": "disposition",
+          "label": "Office Supply Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Office Supply Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the office supply decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Office Supply Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Supply requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Supply process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Office Supply Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the office supply next step from stock count, catalog reference, price comparison, prior usage, approval, receipt, and discrepancy documentation.",
+      "key": "decision_3",
+      "title": "Sponsor Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "response_status",
+              "label": "Response status",
+              "options": [
+                "Select response status",
+                "Approved for next step",
+                "Scheduled",
+                "More information required",
+                "Declined with reason",
+                "Escalated for review"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "response_date",
+              "label": "Response date",
+              "units": 1.0
+            },
+            {
+              "key": "response_owner",
+              "label": "Responding process owner",
+              "units": 1.0
+            },
+            {
+              "key": "requester_notice",
+              "label": "Requester notice date",
+              "units": 1.0
+            },
+            {
+              "key": "notice_method",
+              "label": "Notice method",
+              "units": 1.0
+            },
+            {
+              "key": "response_record",
+              "label": "Response record location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Return the office supply response to the requester and record.",
+          "key": "request_response",
+          "label": "Office Supply Response and Notice",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question or information needed",
+              "units": 2.6
+            },
+            {
+              "key": "owner",
+              "label": "Assigned process owner",
+              "units": 1.7
+            },
+            {
+              "key": "due",
+              "label": "Due or response date",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Response or decision evidence",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Keep unresolved office supply questions visible to closure.",
+          "key": "request_followup",
+          "label": "Office Supply Open Questions and Follow-Up",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Office Supply Requester Message and Conditions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State the office supply response, conditions, next action, and contact for questions.",
+          "height": 46,
+          "key": "requester_message",
+          "label": "Office Supply Requester Message and Conditions",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close the office supply record with order reference, received quantity, storage location, backorder status, requester notification, and inventory adjustment.",
+      "key": "closeout_4",
+      "title": "Requester Notice and Next Step"
+    }
+  ],
+  "slug": "office-supply-request-form",
+  "source_filename": "dbo_1793__office_supply_request_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Office Supply Request Form: office supply replenishment and control using requester, operational need, and stock count.",
+  "title": "Office Supply Request Form",
+  "use_case": "Use the request form during office supply replenishment and control when the office supply record must identify requester, worksite, supply category, item, quantity, current stock, preferred supplier, and accounting code. Complete the applicable handoff for order reference, received quantity, storage location, backorder status, requester notification, and inventory adjustment."
+}

@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_119__camp_registration_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_119__camp_registration_review_worksheet.pdf",
+  "slug": "camp-registration-review-worksheet",
+  "title": "Camp Registration Review Worksheet",
+  "subtitle": "Capture session placement, cabin group, transportation, and activity support; confirm packing readiness and guardian orientation.",
+  "description": "Camp Registration records session placement, cabin group, transportation, activity support, packing readiness, and guardian orientation. Camp Registration evidence stays linked.",
+  "use_case": "Use this camp registration evidence-based review when staff must document session placement and cabin group. Reconcile transportation, activity support, packing readiness, and guardian orientation before the camp registration handoff. Use the placement confirmation, unit roster, bus list, optional-activity choices, support-routing receipt, orientation delivery, and guardian confirmation. This registration establishes seasonal program placement, cabin community, counselor coverage, waterfront or excursion choices, packing readiness, and multi-day guardian release. Ask the assigned camp registration reviewer to confirm session placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Camp Registration contact and reference",
+      "guidance": "Confirm session capacity, cabin placement, bus choice, packing readiness, activity support, orientation delivery, and guardian handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Camp Registration people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "session_placement",
+              "label": "Session placement",
+              "units": 1.1
+            },
+            {
+              "key": "cabin_group",
+              "label": "Cabin group",
+              "units": 1.2
+            },
+            {
+              "key": "transportation",
+              "label": "Transportation",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Camp Registration task details",
+          "fields": [
+            {
+              "key": "activity_support",
+              "label": "Activity support",
+              "units": 1.15
+            },
+            {
+              "key": "packing_readiness",
+              "label": "Packing readiness",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_orientation",
+              "label": "Guardian orientation",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "Camp Registration discussion",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "Camp Registration strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_session_placement",
+              "label": "Strength, progress, or successful support related to session placement"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Camp Registration questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_transportation",
+              "label": "Concern, missing context, or question about transportation"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "Camp Registration participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_activity_support",
+              "label": "Priority, preference, or proposed support for activity support"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "Camp Registration decision and action plan",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "Camp Registration agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "Camp Registration follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "Camp Registration review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

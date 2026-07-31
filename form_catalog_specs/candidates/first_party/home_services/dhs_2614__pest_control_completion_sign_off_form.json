@@ -1,0 +1,379 @@
+{
+  "catalog_id": "home_services/dhs_2614__pest_control_completion_sign_off_form",
+  "description": "For pest control, this completion sign-off form records inspection, treatment sites, product and method, label restrictions, preparation, reentry, exclusions, and follow-up. Its supporting evidence includes activity observations, conducive conditions, monitoring results, product lot and amount, placement map, and photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Control opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Control site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Control contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Control account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Control due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this pest control record to its evidence.",
+          "key": "record_routing",
+          "label": "Pest Control Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Target pest",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Structures",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Rooms",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Exterior zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Occupants",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Children",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture target pest, structures, rooms, exterior zones, occupants, children, animals, sensitivities, and prior activity for this pest control.",
+          "key": "core_identity",
+          "label": "Pest Control Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify target pest, structures, rooms, exterior zones, occupants, children, animals, sensitivities, and prior activity for this pest control record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Control when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Control measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Control evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Control result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For pest control, record activity observations, conducive conditions, monitoring results, product lot and amount, placement map, and photos.",
+          "key": "evidence_register",
+          "label": "Pest Control Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Activity observations",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Conducive conditions",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Monitoring results",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Product lot",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Amount",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Placement map",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every pest control evidence source.",
+          "key": "evidence_sources",
+          "label": "Pest Control Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary pest control evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Pest Control Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not treat contrary to label, in unprepared areas, near unprotected occupants, or where identification is uncertain. Route unresolved pest control work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Pest Control Applicable Review Boundary",
+          "type": "notice"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select completion sign-off form disposition",
+                "Accept complete",
+                "Accept with exceptions",
+                "Correction required",
+                "Reject completion"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Control decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Control service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Control authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Control review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate pest control disposition.",
+          "key": "disposition",
+          "label": "Pest Control Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pest Control Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the pest control decision to evidence.",
+          "height": 43,
+          "key": "decision_basis",
+          "label": "Pest Control Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Control open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Control owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Control acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer pest control items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Pest Control Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Control crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Control service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Pest Control Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Compare pest control findings with pest control open items and decide the pest control customer handoff.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding and Acceptance Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Control completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Treatment record",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Safety instructions",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Reentry acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Monitoring plan",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the pest control outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Pest Control Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pest Control Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For pest control, document treatment record, safety instructions, reentry acknowledgment, monitoring plan, corrective recommendations, and follow-up; identify each pest control reservation and pest control follow-up trigger, then record the pest control instruction recipient.",
+          "height": 40,
+          "key": "acceptance_reservations",
+          "label": "Pest Control Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Control technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Control customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Pest Control Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the pest control record with treatment record, safety instructions, reentry acknowledgment, monitoring plan, corrective recommendations, and follow-up.",
+      "key": "closeout_4",
+      "title": "Next-Service Handoff"
+    }
+  ],
+  "slug": "pest-control-completion-sign-off-form",
+  "source_filename": "dhs_2614__pest_control_completion_sign_off_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Pest Control Completion Sign-Off Form: residential pest-control service and treatment record using target pest, inspection, and activity observations.",
+  "title": "Pest Control Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during residential pest-control service and treatment record when the pest control record must identify target pest, structures, rooms, exterior zones, occupants, children, animals, sensitivities, and prior activity. Complete the applicable handoff for treatment record, safety instructions, reentry acknowledgment, monitoring plan, corrective recommendations, and follow-up."
+}

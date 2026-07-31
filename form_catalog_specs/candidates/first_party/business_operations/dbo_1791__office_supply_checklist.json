@@ -1,0 +1,294 @@
+{
+  "catalog_id": "business_operations/dbo_1791__office_supply_checklist",
+  "description": "For office supply, this checklist records operational need, standard-item match, substitution, delivery date, unit cost, order minimum, and storage capacity. Its supporting evidence includes stock count, catalog reference, price comparison, prior usage, approval, receipt, and discrepancy documentation.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Supply opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Supply site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Supply contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Supply process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Supply due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this office supply record to its evidence.",
+          "key": "record_routing",
+          "label": "Office Supply Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Requester",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Worksite",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Supply category",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Item",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Quantity",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Current stock",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture requester, worksite, supply category, item, quantity, current stock, preferred supplier, and accounting code for this office supply.",
+          "key": "core_identity",
+          "label": "Office Supply Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify requester, worksite, supply category, item, quantity, current stock, preferred supplier, and accounting code for this office supply record.",
+      "key": "identity_1",
+      "title": "Process Checkpoint and Owner"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Operational need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Standard-item match",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Substitution",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Delivery date",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Unit cost",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For office supply, record operational need, standard-item match, substitution, delivery date, unit cost, order minimum, and storage capacity.",
+          "key": "task_inputs",
+          "label": "Office Supply Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the office supply condition before marking.",
+          "items": [
+            "Verify operational need",
+            "Verify standard-item match",
+            "Verify substitution",
+            "Verify delivery date",
+            "Verify unit cost",
+            "Verify order minimum"
+          ],
+          "key": "task_checks",
+          "label": "Office Supply Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Supply checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Supply review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Supply qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Supply check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each office supply result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Office Supply Checkpoint Result",
+          "type": "fields"
+        }
+      ],
+      "guidance": "For office supply, capture operational need, standard-item match, substitution, delivery date, unit cost, order minimum, and storage capacity.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Supply when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Supply measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Supply evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Supply result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For office supply, record stock count, catalog reference, price comparison, prior usage, approval, receipt, and discrepancy documentation.",
+          "key": "evidence_register",
+          "label": "Office Supply Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Stock count",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Catalog reference",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Price comparison",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Prior usage",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Receipt",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every office supply evidence source.",
+          "key": "evidence_sources",
+          "label": "Office Supply Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked office supply items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Office Supply Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Office Supply Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State office supply limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Office Supply Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support office supply findings with stock count, catalog reference, price comparison, prior usage, approval, receipt, and discrepancy documentation.",
+      "key": "observation_3",
+      "title": "Checklist Finding Record"
+    }
+  ],
+  "slug": "office-supply-checklist",
+  "source_filename": "dbo_1791__office_supply_checklist.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Office Supply Checklist: office supply replenishment and control using requester, operational need, and stock count.",
+  "title": "Office Supply Checklist",
+  "use_case": "Use the checklist during office supply replenishment and control when the office supply record must identify requester, worksite, supply category, item, quantity, current stock, preferred supplier, and accounting code. Complete the applicable handoff for order reference, received quantity, storage location, backorder status, requester notification, and inventory adjustment."
+}

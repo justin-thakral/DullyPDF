@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2141__warranty_claim_inspection_checklist",
+  "source_section": "automotive_service",
+  "source_filename": "das_2141__warranty_claim_inspection_checklist.pdf",
+  "slug": "warranty-claim-inspection-checklist",
+  "title": "Warranty Claim Inspection Checklist",
+  "subtitle": "Automotive Warranty Claim: documents findings, limits, and disposition.",
+  "description": "Warranty Claim Inspection Checklist covers vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file. The warranty claim coordinator records Automotive Warranty Claim criteria, findings, restrictions, and follow-up. Warranty Claim Inspection Checklist keeps Automotive Warranty Claim exceptions visible until the warranty claim coordinator handoff.",
+  "use_case": "Use Warranty Claim Inspection Checklist at service facility, diagnostic bay, records system, and retained-parts area. Document vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file identity before Automotive Warranty Claim begins. Compare vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file findings with stated Automotive Warranty Claim criteria; route unresolved Automotive Warranty Claim issues to authorized warranty reviewer. For Warranty Claim Inspection Checklist, confirm requirements for Automotive Warranty Claim. Ask authorized warranty reviewer to review Automotive Warranty Claim conditions beyond the warranty claim coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Automotive Warranty Claim, identify responsible parties, service facility, diagnostic bay, records system, and retained-parts area, and the linked vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Automotive Warranty Claim identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Claim, repair order, customer, and contract",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, mileage, in-service date, and coverage reference",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Component, part, serial, prior repair, and failure code",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Automotive Warranty Claim facts for vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Automotive Warranty Claim inspection checks",
+          "items": [
+            "Reported symptom and failure chronology",
+            "Coverage term and eligibility facts",
+            "Diagnostic result and causal basis",
+            "Maintenance, modification, misuse, and prior-repair evidence",
+            "Repair estimate, part disposition, and authorization",
+            "Approval, denial, additional-information, and appeal route"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Before closing Automotive Warranty Claim, identify what failed or was not inspected, who owns correction, and when examination resumes. Warranty Claim Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Identity or eligibility incomplete",
+            "Failure cause unsupported",
+            "Required evidence or retained part missing",
+            "Repair begins before coverage authorization",
+            "Contract and eligibility record",
+            "Diagnostic and failure evidence",
+            "Maintenance and repair history",
+            "Authorized coverage decision and communication"
+          ],
+          "guidance": "Pause Automotive Warranty Claim when eligibility, diagnosis, evidence, part retention, repair authority, or coverage decision remains unresolved. Retain the available Automotive Warranty Claim proof and route unresolved vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file scope to warranty claim coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Warranty Claim Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Authorized Warranty Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

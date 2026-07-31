@@ -1,0 +1,323 @@
+{
+  "catalog_id": "construction_trades/dct_1141__remodel_scope_work_order_form",
+  "description": "For remodel scope, this work order form records demolition, new work, allowances, selections, exclusions, temporary conditions, sequence, and responsibility boundaries. Its supporting evidence includes existing-condition photos, measurements, sketches, investigation notes, product selections, and utility observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Scope opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Scope site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Scope contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Scope superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Scope due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this remodel scope record to its evidence.",
+          "key": "record_routing",
+          "label": "Remodel Scope Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Existing spaces",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Owner objectives",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Fixtures",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Finishes",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Structural interfaces",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Utilities",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture existing spaces, owner objectives, fixtures, finishes, structural interfaces, utilities, access, and occupied operations for this remodel scope.",
+          "key": "core_identity",
+          "label": "Remodel Scope Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify existing spaces, owner objectives, fixtures, finishes, structural interfaces, utilities, access, and occupied operations for this remodel scope record.",
+      "key": "identity_1",
+      "title": "Work Assignment Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Demolition",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "New work",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Allowances",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Selections",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Temporary conditions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For remodel scope, record demolition, new work, allowances, selections, exclusions, temporary conditions, sequence, and responsibility boundaries.",
+          "key": "task_inputs",
+          "label": "Remodel Scope Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Scope work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized remodel scope work from additions.",
+          "key": "assigned_work",
+          "label": "Remodel Scope Assigned Work and Acceptance Criteria",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Scope arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Scope access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Scope added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Scope inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop remodel scope work at recorded limits.",
+          "key": "work_window",
+          "label": "Remodel Scope Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Escalate concealed hazards, structural changes, code triggers, owner-supplied conflicts, or undefined existing conditions. Route unresolved remodel scope work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Remodel Scope Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For remodel scope, capture demolition, new work, allowances, selections, exclusions, temporary conditions, sequence, and responsibility boundaries.",
+      "key": "task_2",
+      "title": "Authorized Work Plan"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Scope completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Agreed scope",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Assumptions",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Budget handoff",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the remodel scope outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Remodel Scope Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Scope open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Scope owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Scope acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer remodel scope items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Remodel Scope Remaining Work and Handoff",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Remodel Scope Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For remodel scope, record agreed scope, assumptions and exclusions, budget handoff, design questions, milestone plan, and owner acknowledgment; give the remodel scope care or operating instruction, identify remodel scope access restoration and recipient.",
+          "height": 60,
+          "key": "completion_care_notes",
+          "label": "Remodel Scope Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Scope trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Scope site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Remodel Scope Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the remodel scope record with agreed scope, assumptions and exclusions, budget handoff, design questions, milestone plan, and owner acknowledgment.",
+      "key": "closeout_3",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "remodel-scope-work-order-form",
+  "source_filename": "dct_1141__remodel_scope_work_order_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Remodel Scope Work Order Form: residential or commercial remodel scope definition using existing spaces, demolition, and existing-condition photos.",
+  "title": "Remodel Scope Work Order Form",
+  "use_case": "Use the work order form during residential or commercial remodel scope definition when the remodel scope record must identify existing spaces, owner objectives, fixtures, finishes, structural interfaces, utilities, access, and occupied operations. Complete the applicable handoff for agreed scope, assumptions and exclusions, budget handoff, design questions, milestone plan, and owner acknowledgment."
+}

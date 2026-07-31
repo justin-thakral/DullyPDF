@@ -1,0 +1,323 @@
+{
+  "catalog_id": "construction_trades/dct_1149__change_order_issue_tracking_log",
+  "description": "For change order, this issue tracking log records added and deleted work, labor, material, equipment, subcontract, markup, exclusions, and time effect. Its supporting evidence includes field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Change opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Change site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Change contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Change superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Change due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this change order record to its evidence.",
+          "key": "record_routing",
+          "label": "Change Order Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Base work order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Directive",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Affected task",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Pricing basis",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain for this change order.",
+          "key": "core_identity",
+          "label": "Change Order Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain for this change order record.",
+      "key": "identity_1",
+      "title": "Issue Register Coverage"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Change when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Change measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Change evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Change result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For change order, record field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+          "key": "evidence_register",
+          "label": "Change Order Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Field directive",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Estimate sheets",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Quotes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Time records",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Schedule fragment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every change order evidence source.",
+          "key": "evidence_sources",
+          "label": "Change Order Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Change dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Change owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Change escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep change order items open through verification.",
+          "key": "open_item_register",
+          "label": "Change Order Open Items and Next Actions",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not execute discretionary changed work before written authorization within the approving party's limit. Route unresolved change order work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Change Order Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support change order findings with field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+      "key": "observation_2",
+      "title": "Investigation Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not execute discretionary changed work before written authorization within the approving party's limit. Do not release affected change order work.",
+          "key": "stop_boundary",
+          "label": "Change Order Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Change exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Change correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Change escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close change order exceptions with verification.",
+          "key": "exception_register",
+          "label": "Change Order Exception and Corrective Action",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Change notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Change notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Change interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Change review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Change release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep change order controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Change Order Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Change Order Resolution Verification Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For change order, compare the retest with field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes; preserve each change order limitation and name its change order restart or closure authority.",
+          "height": 55,
+          "key": "resolution_verification_notes",
+          "label": "Change Order Resolution Verification Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "issue_resolution_handoff_1",
+              "label": "Accepted price",
+              "units": 1.0
+            },
+            {
+              "key": "issue_resolution_handoff_2",
+              "label": "Days",
+              "units": 1.0
+            },
+            {
+              "key": "issue_resolution_handoff_3",
+              "label": "Revised work order",
+              "units": 1.0
+            },
+            {
+              "key": "issue_resolution_handoff_4",
+              "label": "Cost",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For change order, record accepted price and days, revised work order, cost and schedule posting, field release, and distribution record.",
+          "key": "issue_resolution_handoff",
+          "label": "Change Order Resolution and Record Handoff",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Do not execute discretionary changed work before written authorization within the approving party's limit. Control and route each change order exception.",
+      "key": "exception_3",
+      "title": "Controls, Corrections, and Escalation"
+    }
+  ],
+  "slug": "change-order-issue-tracking-log",
+  "source_filename": "dct_1149__change_order_issue_tracking_log.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Change Order Issue Tracking Log: trade change-order development and acceptance using base work order, added, and field directive.",
+  "title": "Change Order Issue Tracking Log",
+  "use_case": "Use the issue tracking log during trade change-order development and acceptance when the change order record must identify base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain. Complete the applicable handoff for accepted price and days, revised work order, cost and schedule posting, field release, and distribution record."
+}

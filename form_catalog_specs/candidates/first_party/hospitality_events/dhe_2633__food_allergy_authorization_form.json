@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2633__food_allergy_authorization_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2633__food_allergy_authorization_form.pdf",
+  "slug": "food-allergy-authorization-form",
+  "title": "Food Allergy Authorization Form",
+  "subtitle": "Capture guest-stated allergen, menu item, kitchen communication, and cross-contact limit; confirm manager review and service handoff.",
+  "description": "Food Allergy records guest-stated allergen, menu item, kitchen communication, cross-contact limit, manager review, and service handoff. Food Allergy evidence stays linked.",
+  "use_case": "Use this food allergy authorization decision when staff must document guest-stated allergen and menu item. Reconcile kitchen communication, cross-contact limit, manager review, and service handoff before the food allergy handoff. Use the guest statement, approved ingredient source, recipe or package review, allergy ticket, kitchen read-back, manager check, server handoff, service result, and follow-up. Ask the assigned food allergy reviewer to confirm guest-stated allergen against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Food Allergy signer details review",
+      "guidance": "Capture guest-stated allergen and reaction concern, selected menu items, ingredient review source, kitchen ticket communication, cross-contact limit, manager check, and service handoff. Keep any urgent food allergy issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Food Allergy people and reference",
+          "fields": [
+            {
+              "key": "guest_full_name",
+              "label": "Guest full name",
+              "units": 1.15
+            },
+            {
+              "key": "guest_contact",
+              "label": "Guest contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_service_area",
+              "label": "Property, venue, or service area",
+              "units": 1.25
+            },
+            {
+              "key": "event_or_service_date",
+              "label": "Event or service date",
+              "units": 1.1
+            },
+            {
+              "key": "guest_stated_allergen",
+              "label": "Guest-stated allergen",
+              "units": 1.2
+            },
+            {
+              "key": "menu_item",
+              "label": "Menu item",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Food Allergy task details",
+          "fields": [
+            {
+              "key": "kitchen_communication",
+              "label": "Kitchen communication",
+              "units": 1.15
+            },
+            {
+              "key": "cross_contact_limit",
+              "label": "Cross-contact limit",
+              "units": 1.0
+            },
+            {
+              "key": "manager_review",
+              "label": "Manager review",
+              "units": 1.25
+            },
+            {
+              "key": "service_handoff",
+              "label": "Service handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Food Allergy decision and scope choices",
+      "guidance": "Decide each food allergy scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Food Allergy itemized scope",
+          "fields": [
+            {
+              "key": "guest_stated_allergen",
+              "label": "Guest-stated allergen",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "menu_item",
+              "label": "Menu item",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "kitchen_communication",
+              "label": "Kitchen communication",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "cross_contact_limit",
+              "label": "Cross-contact limit",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "manager_review",
+              "label": "Manager review",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "service_handoff",
+              "label": "Service handoff",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Food Allergy authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Food Allergy effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_service_recipient",
+              "label": "Authorized service recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Food Allergy exception review and signer receipt",
+      "guidance": "Only recorded food allergy choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Food Allergy limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Food Allergy signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "service_or_operations_reviewer_and_date",
+              "label": "Service or operations reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Food Allergy signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Food Allergy authorization boundary",
+          "guidance": "Record guest-stated information and the approved operating response. Do not promise an allergen-free environment; route recipe, ingredient, cross-contact, or clinical questions to the qualified reviewer."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2609__new_patient_registration_tracking_log",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2609__new_patient_registration_tracking_log.pdf",
+  "slug": "new-patient-registration-tracking-log",
+  "title": "New Patient Registration Tracking Log",
+  "subtitle": "Capture demographics source, contact, representative authority, and privacy acknowledgment; confirm chart match and visit handoff.",
+  "description": "New Patient Registration records demographics source, contact, representative authority, privacy acknowledgment, chart match, and visit handoff. New Patient Registration evidence stays linked.",
+  "use_case": "Use this new patient registration time-ordered tracking when staff must document demographics source and contact. Reconcile representative authority, privacy acknowledgment, chart match, and visit handoff before the new patient registration handoff. Use registration source documents, demographic confirmation, representative authority, privacy notice receipt, duplicate-record result, communication preference, and check-in handoff. This registration centers chart creation, demographic confirmation, representative authority, communication preference, privacy receipt, duplicate-record prevention, guarantor routing, and front-desk arrival. Ask the assigned new patient registration reviewer to confirm demographics source against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "New Patient Registration contact and reference",
+      "guidance": "Verify demographics source, contact and representative authority, communication preferences, privacy acknowledgment, chart match, guarantor route, and visit handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "New Patient Registration people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.1
+            },
+            {
+              "key": "demographics_source",
+              "label": "Demographics source",
+              "units": 1.2
+            },
+            {
+              "key": "contact",
+              "label": "Contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "New Patient Registration task details",
+          "fields": [
+            {
+              "key": "representative_authority",
+              "label": "Representative authority",
+              "units": 1.15
+            },
+            {
+              "key": "privacy_acknowledgment",
+              "label": "Privacy acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "chart_match",
+              "label": "Chart match",
+              "units": 1.25
+            },
+            {
+              "key": "visit_handoff",
+              "label": "Visit handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "New Patient Registration event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "New Patient Registration events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "demographics_source",
+              "label": "Demographics source",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "chart_match",
+              "label": "Chart match",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "New Patient Registration correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "New Patient Registration current state and handoff",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "New Patient Registration status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "New Patient Registration open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "New Patient Registration log receipt",
+          "fields": [
+            {
+              "key": "department_log_custodian_and_date",
+              "label": "Department log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

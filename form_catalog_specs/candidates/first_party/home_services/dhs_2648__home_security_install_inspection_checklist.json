@@ -1,0 +1,291 @@
+{
+  "catalog_id": "home_services/dhs_2648__home_security_install_inspection_checklist",
+  "description": "For home security install, this inspection checklist records device placement, privacy preferences, power and connectivity, communication path, permits, testing, and user training. Its supporting evidence includes device serials, zone map, signal tests, camera views, network results, alarm events, and monitoring confirmation.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this home security install review to the service record.",
+          "key": "service_review_reference",
+          "label": "Home Security Install Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Premises",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Panel",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed home security install location and assets.",
+          "key": "service_context",
+          "label": "Home Security Install Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the home security install service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each home security install item after direct review.",
+          "items": [
+            "Panel, device serials, zones, and placement match the install record",
+            "Power, network, signal, alarm, and monitoring tests are recorded",
+            "Life-safety devices and communication paths report correctly",
+            "Camera views and privacy settings match customer choices",
+            "Wiring, covers, labels, premises, keys, and access are secured",
+            "User training, credentials handoff, support, and permits are reconciled"
+          ],
+          "key": "quality_checks",
+          "label": "Home Security Install Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one home security install row for each reviewed area.",
+          "key": "area_results",
+          "label": "Home Security Install Area and Task Results",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not activate with unapproved surveillance areas, failed life-safety devices, exposed wiring, or incomplete monitoring data. Route unresolved home security install work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Home Security Install Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Check completed home security install work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Recurring Service Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Install owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each home security install concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "Home Security Install Issue, Photo, and Correction Record",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Security Install Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved home security install expectations here.",
+          "height": 38,
+          "key": "customer_concern",
+          "label": "Home Security Install Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every home security install issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the home security install outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "Home Security Install Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Zone verification",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Monitoring activation",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "User credential handoff",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Training acknowledgment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For home security install, record zone verification, monitoring activation, user credential handoff, training acknowledgment, privacy settings, and support plan.",
+          "key": "quality_followup",
+          "label": "Home Security Install Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "Home Security Install Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the home security install result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Service Review and Handoff"
+    }
+  ],
+  "slug": "home-security-install-inspection-checklist",
+  "source_filename": "dhs_2648__home_security_install_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "Home Security Install Inspection Checklist: home security system installation and activation using account, device placement, and device serials.",
+  "title": "Home Security Install Inspection Checklist",
+  "use_case": "Use the inspection checklist during home security system installation and activation when the home security install record must identify account, premises, zones, panel, sensors, cameras, network, monitoring plan, users, and emergency contacts. Complete the applicable handoff for zone verification, monitoring activation, user credential handoff, training acknowledgment, privacy settings, and support plan."
+}

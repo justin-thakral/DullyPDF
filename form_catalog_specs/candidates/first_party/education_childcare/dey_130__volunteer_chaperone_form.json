@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_130__volunteer_chaperone_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_130__volunteer_chaperone_form.pdf",
+  "slug": "volunteer-chaperone-form",
+  "title": "Volunteer Chaperone Form",
+  "subtitle": "Capture trip assignment, student group, screening status, and supervision boundary; confirm emergency route and return handoff.",
+  "description": "Volunteer Chaperone records trip assignment, student group, screening status, supervision boundary, emergency route, and return handoff. Volunteer Chaperone evidence stays linked.",
+  "use_case": "Use this volunteer chaperone operational record when staff must document trip assignment and student group. Reconcile screening status, supervision boundary, emergency route, and return handoff before the volunteer chaperone handoff. Use screening evidence, assignment roster, student-group list, supervision brief, emergency card route, transport seat list, checkpoint headcounts, and return handoff. This assignment places a screened adult with a student group using ratio and supervision boundaries, bus position, checkpoint headcounts, emergency response role, prohibited tasks, and return handoff. Ask the assigned volunteer chaperone reviewer to confirm trip assignment against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Volunteer Chaperone starting details",
+      "guidance": "Assign trip, student group, screening evidence, supervision boundary, transport position, emergency route, headcount responsibility, and return handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Volunteer Chaperone people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "trip_assignment",
+              "label": "Trip assignment",
+              "units": 1.2
+            },
+            {
+              "key": "student_group",
+              "label": "Student group",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Volunteer Chaperone task details",
+          "fields": [
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "supervision_boundary",
+              "label": "Supervision boundary",
+              "units": 1.0
+            },
+            {
+              "key": "emergency_route",
+              "label": "Emergency route",
+              "units": 1.25
+            },
+            {
+              "key": "return_handoff",
+              "label": "Return handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Volunteer Chaperone exception review and activity",
+      "guidance": "Record each meaningful volunteer chaperone event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Volunteer Chaperone activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "trip_assignment",
+              "label": "Trip assignment",
+              "units": 1.1
+            },
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.25
+            },
+            {
+              "key": "emergency_route",
+              "label": "Emergency route",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Volunteer Chaperone change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 44
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Volunteer Chaperone completion",
+      "guidance": "Leave the current volunteer chaperone result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Volunteer Chaperone final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Volunteer Chaperone completion receipt",
+          "fields": [
+            {
+              "key": "responsible_teacher_or_program_staff_and_date",
+              "label": "Responsible teacher or program staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded volunteer chaperone task status."
+        }
+      ]
+    }
+  ]
+}

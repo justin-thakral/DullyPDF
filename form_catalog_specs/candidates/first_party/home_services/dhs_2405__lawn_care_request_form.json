@@ -1,0 +1,292 @@
+{
+  "catalog_id": "home_services/dhs_2405__lawn_care_request_form",
+  "description": "For lawn care, this request form records mowing height, edging, trimming, debris, treatment exclusions, seasonal needs, frequency, and pricing. Its supporting evidence includes arrival condition, measurements, route photos, weather, completed services, product record, and damage observations.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Care opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Care site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Care contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Care service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Care due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this lawn care record to its evidence.",
+          "key": "record_routing",
+          "label": "Lawn Care Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Property boundaries",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Turf zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Beds",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Trees",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Irrigation",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Gates",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture property boundaries, turf zones, beds, trees, irrigation, gates, pets, slopes, and parked assets for this lawn care.",
+          "key": "core_identity",
+          "label": "Lawn Care Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify property boundaries, turf zones, beds, trees, irrigation, gates, pets, slopes, and parked assets for this lawn care record.",
+      "key": "identity_1",
+      "title": "Customer Contact and Address"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Mowing height",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Edging",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Trimming",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Debris",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Treatment exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Seasonal needs",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For lawn care, record mowing height, edging, trimming, debris, treatment exclusions, seasonal needs, frequency, and pricing.",
+          "key": "task_inputs",
+          "label": "Lawn Care Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lawn Care Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State lawn care outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Lawn Care Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Care work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Care owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate lawn care items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Lawn Care Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        }
+      ],
+      "guidance": "For lawn care, capture mowing height, edging, trimming, debris, treatment exclusions, seasonal needs, frequency, and pricing.",
+      "key": "task_2",
+      "title": "Requested Service and Access"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Care decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Care scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Care schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate lawn care disposition.",
+          "key": "disposition",
+          "label": "Lawn Care Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lawn Care Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the lawn care decision to evidence.",
+          "height": 112,
+          "key": "decision_basis",
+          "label": "Lawn Care Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Service verification",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Gate closure",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Customer note",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Skipped-area reason",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For lawn care, record service verification, gate closure, customer note, skipped-area reason, next-visit plan, and route closeout.",
+          "key": "request_handoff",
+          "label": "Lawn Care Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Care customer confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Care service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Lawn Care Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the lawn care next step from arrival condition, measurements, route photos, weather, completed services, product record, and damage observations.",
+      "key": "decision_3",
+      "title": "Schedule Decision"
+    }
+  ],
+  "slug": "lawn-care-request-form",
+  "source_filename": "dhs_2405__lawn_care_request_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Lawn Care Request Form: lawn service assessment and route completion using property boundaries, mowing height, and arrival condition.",
+  "title": "Lawn Care Request Form",
+  "use_case": "Use the request form during lawn service assessment and route completion when the lawn care record must identify property boundaries, turf zones, beds, trees, irrigation, gates, pets, slopes, and parked assets. Complete the applicable handoff for service verification, gate closure, customer note, skipped-area reason, next-visit plan, and route closeout."
+}

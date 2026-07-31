@@ -1,0 +1,373 @@
+{
+  "catalog_id": "home_services/dhs_2409__lawn_care_completion_sign_off_form",
+  "description": "For lawn care, this completion sign-off form records mowing height, edging, trimming, debris, treatment exclusions, seasonal needs, frequency, and pricing. Its supporting evidence includes arrival condition, measurements, route photos, weather, completed services, product record, and damage observations.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Care opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Care site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Care contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Care service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Care due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this lawn care record to its evidence.",
+          "key": "record_routing",
+          "label": "Lawn Care Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Property boundaries",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Turf zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Beds",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Trees",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Irrigation",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Gates",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture property boundaries, turf zones, beds, trees, irrigation, gates, pets, slopes, and parked assets for this lawn care.",
+          "key": "core_identity",
+          "label": "Lawn Care Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify property boundaries, turf zones, beds, trees, irrigation, gates, pets, slopes, and parked assets for this lawn care record.",
+      "key": "identity_1",
+      "title": "Service Visit Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Care when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Care measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Care evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Care result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For lawn care, record arrival condition, measurements, route photos, weather, completed services, product record, and damage observations.",
+          "key": "evidence_register",
+          "label": "Lawn Care Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Arrival condition",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Route photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Weather",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Completed services",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Product record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every lawn care evidence source.",
+          "key": "evidence_sources",
+          "label": "Lawn Care Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary lawn care evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Lawn Care Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select completion sign-off form disposition",
+                "Accept complete",
+                "Accept with exceptions",
+                "Correction required",
+                "Reject completion"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Care decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Care scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Care authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Care review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate lawn care disposition.",
+          "key": "disposition",
+          "label": "Lawn Care Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lawn Care Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the lawn care decision to evidence.",
+          "height": 43,
+          "key": "decision_basis",
+          "label": "Lawn Care Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Care open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Care owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Care acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer lawn care items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Lawn Care Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Care crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Care service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Lawn Care Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Compare lawn care findings with lawn care open items and decide the lawn care customer handoff.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding and Acceptance Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Care completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Service verification",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Gate closure",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Customer note",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Skipped-area reason",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the lawn care outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Lawn Care Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lawn Care Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For lawn care, document service verification, gate closure, customer note, skipped-area reason, next-visit plan, and route closeout; identify each lawn care reservation and lawn care follow-up trigger, then record the lawn care instruction recipient.",
+          "height": 40,
+          "key": "acceptance_reservations",
+          "label": "Lawn Care Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Care technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Care customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Lawn Care Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the lawn care record with service verification, gate closure, customer note, skipped-area reason, next-visit plan, and route closeout.",
+      "key": "closeout_4",
+      "title": "Warranty and Property Handoff"
+    }
+  ],
+  "slug": "lawn-care-completion-sign-off-form",
+  "source_filename": "dhs_2409__lawn_care_completion_sign_off_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Lawn Care Completion Sign-Off Form: lawn service assessment and route completion using property boundaries, mowing height, and arrival condition.",
+  "title": "Lawn Care Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during lawn service assessment and route completion when the lawn care record must identify property boundaries, turf zones, beds, trees, irrigation, gates, pets, slopes, and parked assets. Complete the applicable handoff for service verification, gate closure, customer note, skipped-area reason, next-visit plan, and route closeout."
+}

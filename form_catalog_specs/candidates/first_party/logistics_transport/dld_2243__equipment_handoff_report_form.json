@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2243__equipment_handoff_report_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2243__equipment_handoff_report_form.pdf",
+  "slug": "equipment-handoff-report-form",
+  "title": "Equipment Handoff Report Form",
+  "subtitle": "Equipment Handoff: reconciles results, variances, and follow-up.",
+  "description": "Equipment Handoff Report Form covers equipment unit, accessory set, condition, configuration, custody, and return obligation. The equipment custody coordinator records Equipment Handoff source records, totals, variance, and distribution. Equipment Handoff Report Form keeps Equipment Handoff exceptions visible until the equipment custody coordinator handoff.",
+  "use_case": "Use Equipment Handoff Report Form at issuing location, receiving location, transport path, and return point. Document equipment unit, accessory set, condition, configuration, custody, and return obligation identity before Equipment Handoff begins. Compare equipment unit, accessory set, condition, configuration, custody, and return obligation findings with stated Equipment Handoff criteria; route unresolved Equipment Handoff issues to asset-control reviewer. For Equipment Handoff Report Form, confirm requirements for Equipment Handoff. Ask asset-control reviewer to review Equipment Handoff conditions beyond the equipment custody coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Report scope and responsible parties",
+      "guidance": "For Equipment Handoff, identify responsible parties, issuing location, receiving location, transport path, and return point, and the linked equipment unit, accessory set, condition, configuration, custody, and return obligation source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Report ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Custodian / recipient",
+              "units": 1.1666666666666667
+            },
+            {
+              "key": "location",
+              "label": "Issue / return point",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Equipment Handoff identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Handoff, project, and request number",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Asset tag, serial, model, and quantity",
+              "units": 2.111111111111111
+            },
+            {
+              "key": "identity_3",
+              "label": "Accessory, key, credential, software, and configuration identifiers",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Report lines and recipient controls",
+      "guidance": "Capture Equipment Handoff facts for equipment unit, accessory set, condition, configuration, custody, and return obligation; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Reported result lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Source record, item, or event",
+              "units": 1.2
+            },
+            {
+              "key": "expected",
+              "label": "Expected state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual result or variance",
+              "units": 1.05
+            },
+            {
+              "key": "follow_up",
+              "label": "Owner, recipient, or follow-up",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Equipment Handoff report checks",
+          "items": [
+            "Pre-handoff condition and function",
+            "Accessory and consumable count",
+            "Configuration, data, and account boundary",
+            "Recipient identity and authority",
+            "Custody date, location, and intended use",
+            "Return condition, due date, and unresolved defect"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Reconciled outcome and reviewer acknowledgment",
+      "guidance": "Resolve open Equipment Handoff conditions; have equipment custody coordinator assign the next Equipment Handoff owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Reconciliation exceptions and retained evidence",
+          "items": [
+            "Recipient not authorized",
+            "Asset, accessory, or condition mismatch",
+            "Data or credential not cleared",
+            "Unsafe or failed equipment cannot be released",
+            "Asset and serial photographs",
+            "Condition and function test",
+            "Accessory checklist and configuration record",
+            "Signed custody and return evidence"
+          ],
+          "guidance": "Pause Equipment Handoff when authority, identity, condition, data protection, accessory accounting, or custody remains unresolved. Retain the available Equipment Handoff proof and route unresolved equipment unit, accessory set, condition, configuration, custody, and return obligation scope to equipment custody coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Report status and distribution",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Report review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for distribution",
+                "Distributed with follow-up",
+                "Correction required",
+                "Returned for clarification",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Report preparer and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Equipment Custody Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Asset-Control Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

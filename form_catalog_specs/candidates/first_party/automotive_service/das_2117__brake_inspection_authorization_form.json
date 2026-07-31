@@ -1,0 +1,353 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2117__brake_inspection_authorization_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2117__brake_inspection_authorization_form.pdf",
+  "slug": "brake-inspection-authorization-form",
+  "title": "Brake Inspection Authorization Form",
+  "subtitle": "Brake Inspection And Service: bounds the decision, conditions, and expiry.",
+  "description": "Brake Inspection Authorization Form turns brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification into a customer-facing Brake Inspection And Service consent record. The brake service advisor itemizes diagnostics or services, labor, parts or materials, fees, tax, estimated total, maximum cap, and the customer / vehicle owner's signed decision. Work not listed or priced remains on hold.",
+  "use_case": "Use Brake Inspection Authorization Form at service bay, lift, wheel positions, controlled test area, and customer handoff. Verify applicable Brake Inspection And Service requirements; distinguish diagnostic or inspection authority from listed work, price each operation, and record the customer / vehicle owner's exact approval, conditions, or decline. Follow the selected contact-before-additional-work instruction whenever brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification scope or cost changes.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "authorization_request",
+      "title": "Vehicle, customer, and authorization identity",
+      "guidance": "Identify the Brake Inspection And Service customer or payer, contact method, vehicle, and service advisor.",
+      "blocks": [
+        {
+          "key": "authorization_header",
+          "type": "fields",
+          "label": "Customer and authorization details",
+          "fields": [
+            {
+              "key": "authorization_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "authorizing_party",
+              "label": "Customer / vehicle owner",
+              "units": 1.15
+            },
+            {
+              "key": "authorizing_contact",
+              "label": "Authorizing contact / phone",
+              "units": 1.1
+            },
+            {
+              "key": "service_advisor",
+              "label": "Service advisor / coordinator",
+              "units": 1.05
+            },
+            {
+              "key": "contact_preference",
+              "label": "Preferred contact method",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Phone call",
+                "Text message",
+                "Email",
+                "Fleet or payer portal"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Brake Inspection And Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Repair order and complaint",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, and vehicle configuration",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Wheel position, component, prior work, and warning indication",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Brake Inspection And Service identifier printed on brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Repair findings and authorization evidence",
+      "guidance": "Price each Brake Inspection And Service operation and keep unlisted work outside this authorization.",
+      "blocks": [
+        {
+          "key": "authorization_basis",
+          "type": "checklist",
+          "label": "Brake Inspection And Service decision checks",
+          "items": [
+            "Friction thickness and wear pattern",
+            "Rotor or drum condition and measurement",
+            "Caliper, wheel cylinder, hose, line, and leak condition",
+            "Fluid condition and reservoir level",
+            "Parking brake and warning-system response",
+            "Controlled stopping, noise, pull, and pedal result"
+          ],
+          "guidance": "Confirm the Brake Inspection And Service findings supporting each listed operation."
+        },
+        {
+          "key": "authorized_actions",
+          "type": "table",
+          "label": "Requested diagnostics, services, and repairs",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Brake inspection or service operation",
+              "units": 1.35
+            },
+            {
+              "key": "detail",
+              "label": "Part, material, or service detail",
+              "units": 1.15
+            },
+            {
+              "key": "labor",
+              "label": "Labor",
+              "units": 0.65
+            },
+            {
+              "key": "parts",
+              "label": "Parts / materials",
+              "units": 0.75
+            },
+            {
+              "key": "fees",
+              "label": "Fees / tax",
+              "units": 0.7
+            },
+            {
+              "key": "line_total",
+              "label": "Line estimate",
+              "units": 0.8
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "authorization_totals",
+          "type": "fields",
+          "label": "Estimate and authorization totals",
+          "fields": [
+            {
+              "key": "labor_total",
+              "label": "Labor subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "parts_total",
+              "label": "Parts / materials",
+              "units": 0.85
+            },
+            {
+              "key": "fees_total",
+              "label": "Fees / sublet",
+              "units": 0.75
+            },
+            {
+              "key": "tax_total",
+              "label": "Tax",
+              "units": 0.65
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.85
+            },
+            {
+              "key": "maximum_amount",
+              "label": "Maximum authorized amount",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_conditions",
+      "title": "Authorization exception and limits",
+      "guidance": "Stop Brake Inspection And Service work at the stated cap or when scope changes require customer or payer contact.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without renewed authorization",
+          "guidance": "Stop normal processing when braking capacity, hydraulic integrity, component condition, authorization, or safe verification remains unresolved. Protect brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification; record the Brake Inspection And Service notification and obtain renewed authorization from customer / vehicle owner before continuing."
+        },
+        {
+          "key": "authorization_stops",
+          "type": "checklist",
+          "label": "Conditions requiring a hold or renewed customer authorization",
+          "items": [
+            "Measurement below service criterion",
+            "Hydraulic leak or damaged line",
+            "Unsafe road test condition",
+            "Customer declines safety-related recommendation"
+          ],
+          "guidance": "Identify the affected brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification scope, preserve the stated limit, and contact customer / vehicle owner before continuing."
+        },
+        {
+          "key": "additional_work_instructions",
+          "type": "fields",
+          "label": "Additional-work instructions",
+          "fields": [
+            {
+              "key": "additional_work",
+              "label": "Additional-work instruction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contact me before any additional work",
+                "Proceed only within the maximum cap",
+                "No additional work authorized",
+                "Fleet, insurer, or payer approval required"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Contact method / number",
+              "units": 1.05
+            },
+            {
+              "key": "parts_disposition",
+              "label": "Replaced-parts disposition",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Return available replaced parts",
+                "Dispose or recycle as permitted",
+                "Retain for warranty or payer",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "authorization_expiry",
+              "label": "Authorization expiry",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "conditions_and_limits",
+          "type": "textarea",
+          "label": "Customer conditions, exclusions, declined work, and revocation instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer conditions, exclusions, declined work, and revocation instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_decision",
+      "title": "Customer authorization decision",
+      "guidance": "Record the exact Brake Inspection And Service consent, amount cap, confirmation, and customer or payer signature.",
+      "blocks": [
+        {
+          "key": "authorization_evidence",
+          "type": "checklist",
+          "label": "Estimate and findings reviewed with the customer",
+          "items": [
+            "Position-specific measurements",
+            "Component and leak photographs",
+            "Part and repair trace",
+            "Post-service brake verification"
+          ],
+          "guidance": "Attach or link proof for brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification; mark only Brake Inspection And Service evidence present in that record."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Customer authorization outcome",
+          "fields": [
+            {
+              "key": "authorization_scope",
+              "label": "Brake Inspection And Service authorization",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Diagnostics only up to stated cap",
+                "Listed services and parts",
+                "Diagnostics and listed services",
+                "Estimate or inspection only; no work",
+                "Declined"
+              ]
+            },
+            {
+              "key": "acknowledged_total",
+              "label": "Estimated total acknowledged",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_cap",
+              "label": "Maximum authorized amount",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation / PO / payer reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Customer or payer consent and service acknowledgment",
+          "fields": [
+            {
+              "key": "customer_signature",
+              "label": "Customer / vehicle owner",
+              "units": 1.2
+            },
+            {
+              "key": "customer_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "advisor_signature",
+              "label": "Service advisor / witness",
+              "units": 1.05
+            },
+            {
+              "key": "advisor_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

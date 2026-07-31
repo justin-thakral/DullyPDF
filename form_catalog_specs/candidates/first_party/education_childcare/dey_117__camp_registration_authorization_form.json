@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_117__camp_registration_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_117__camp_registration_authorization_form.pdf",
+  "slug": "camp-registration-authorization-form",
+  "title": "Camp Registration Authorization Form",
+  "subtitle": "Capture session placement, cabin group, transportation, and activity support; confirm packing readiness and guardian orientation.",
+  "description": "Camp Registration records session placement, cabin group, transportation, activity support, packing readiness, and guardian orientation. Camp Registration evidence stays linked.",
+  "use_case": "Use this camp registration authorization decision when staff must document session placement and cabin group. Reconcile transportation, activity support, packing readiness, and guardian orientation before the camp registration handoff. Use the placement confirmation, unit roster, bus list, optional-activity choices, support-routing receipt, orientation delivery, and guardian confirmation. This registration establishes seasonal program placement, cabin community, counselor coverage, waterfront or excursion choices, packing readiness, and multi-day guardian release. Ask the assigned camp registration reviewer to confirm session placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Camp Registration signer details review",
+      "guidance": "Confirm session capacity, cabin placement, bus choice, packing readiness, activity support, orientation delivery, and guardian handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Camp Registration people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "session_placement",
+              "label": "Session placement",
+              "units": 1.2
+            },
+            {
+              "key": "cabin_group",
+              "label": "Cabin group",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Camp Registration task details",
+          "fields": [
+            {
+              "key": "transportation",
+              "label": "Transportation",
+              "units": 1.15
+            },
+            {
+              "key": "activity_support",
+              "label": "Activity support",
+              "units": 1.0
+            },
+            {
+              "key": "packing_readiness",
+              "label": "Packing readiness",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_orientation",
+              "label": "Guardian orientation",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Camp Registration scope choices review",
+      "guidance": "Decide each camp registration scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Camp Registration primary scope",
+          "fields": [
+            {
+              "key": "session_placement",
+              "label": "Session placement",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "cabin_group",
+              "label": "Cabin group",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "transportation",
+              "label": "Transportation",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Camp Registration additional scope",
+          "fields": [
+            {
+              "key": "activity_support",
+              "label": "Activity support",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "packing_readiness",
+              "label": "Packing readiness",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "guardian_orientation",
+              "label": "Guardian orientation",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Camp Registration authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Camp Registration effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Camp Registration contact and reference",
+      "guidance": "Only recorded camp registration choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Camp Registration limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Camp Registration signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "school_or_program_reviewer_and_date",
+              "label": "School or program reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Camp Registration signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Camp Registration authorization boundary",
+          "guidance": "Named camp registration reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2105__oil_change_work_order_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2105__oil_change_work_order_form.pdf",
+  "slug": "oil-change-work-order-form",
+  "title": "Oil Change Work Order Form",
+  "subtitle": "Engine Oil-Change Service: connects authorized scope to results.",
+  "description": "Oil Change Work Order Form covers vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval. The maintenance service advisor records Engine Oil-Change Service authorized tasks, materials, results, and changes. Oil Change Work Order Form keeps Engine Oil-Change Service exceptions visible until the maintenance service advisor handoff.",
+  "use_case": "Use Oil Change Work Order Form at service lane, lift bay, engine compartment, and customer handoff. Document vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval identity before Engine Oil-Change Service begins. Compare vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval findings with stated Engine Oil-Change Service criteria; route unresolved Engine Oil-Change Service issues to qualified automotive maintenance reviewer. For Oil Change Work Order Form, confirm requirements for Engine Oil-Change Service. Ask qualified automotive maintenance reviewer to review Engine Oil-Change Service conditions beyond the maintenance service advisor's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Customer, provider, and approved-work evidence",
+      "guidance": "For Engine Oil-Change Service, identify responsible parties, service lane, lift bay, engine compartment, and customer handoff, and the linked vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Record date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "scope_limit",
+              "label": "Scope / amount limit",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Engine Oil-Change Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Work order and customer",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, year, make, model, and mileage",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_3",
+              "label": "Engine, oil specification, capacity, filter, and interval",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Authorized scope-change decision and tracking",
+      "guidance": "Capture Engine Oil-Change Service facts for vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Authorized work lines",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Authorized task or service",
+              "units": 1.25
+            },
+            {
+              "key": "resources",
+              "label": "Part, material, or resource",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Work performed and result",
+              "units": 1.15
+            },
+            {
+              "key": "status",
+              "label": "Change, status, or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Engine Oil-Change Service authorized-work checks",
+          "items": [
+            "Pre-service oil level and visible leak condition",
+            "Drain plug, pan, filter housing, and sealing surface",
+            "Oil and filter specification match",
+            "Measured fill quantity and final level",
+            "Leak check after operation",
+            "Maintenance indicator reset and next interval"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Scope exception, work status, and handoff",
+      "guidance": "Resolve open Engine Oil-Change Service conditions; have maintenance service advisor assign the next Engine Oil-Change Service owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scope changes, holds, and retained evidence",
+          "items": [
+            "Oil specification cannot be confirmed",
+            "Damaged drain or filter interface",
+            "Active leak requires separate repair",
+            "Final level or leak check cannot be verified",
+            "Vehicle and odometer intake",
+            "Oil and filter product trace",
+            "Drain, filter, quantity, and final-level record",
+            "Post-service leak check and interval notice"
+          ],
+          "guidance": "Pause Engine Oil-Change Service when oil specification, sealing integrity, active leak, final level, or operating verification remains unresolved. Retain the available Engine Oil-Change Service proof and route unresolved vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval scope to maintenance service advisor."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Completion status and open work",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work-order status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed within authorization",
+                "Completed with listed change",
+                "Follow-up work required",
+                "Held for approval",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer work acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Maintenance Service Advisor",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Customer, fleet, or vehicle owner",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

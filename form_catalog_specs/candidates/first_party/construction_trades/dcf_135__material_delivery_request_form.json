@@ -1,0 +1,329 @@
+{
+  "catalog_id": "construction_trades/dcf_135__material_delivery_request_form",
+  "description": "For material delivery, this request form records expected quantities, unloading plan, inspection criteria, documentation, protected storage, and installation need date. Its supporting evidence includes packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Delivery opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Delivery site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Delivery contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Delivery superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Delivery due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this material delivery record to its evidence.",
+          "key": "record_routing",
+          "label": "Material Delivery Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Purchase order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Supplier",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Carrier",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Delivery location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Product identifiers",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements for this material delivery.",
+          "key": "core_identity",
+          "label": "Material Delivery Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements for this material delivery record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Expected quantities",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Unloading plan",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Inspection criteria",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Documentation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For material delivery, record expected quantities, unloading plan, inspection criteria, documentation, protected storage, and installation need date.",
+          "key": "task_inputs",
+          "label": "Material Delivery Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Material Delivery Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State material delivery outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Material Delivery Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Delivery work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Delivery owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate material delivery items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Material Delivery Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        }
+      ],
+      "guidance": "For material delivery, capture expected quantities, unloading plan, inspection criteria, documentation, protected storage, and installation need date.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Quarantine damaged, incorrect, undocumented, contaminated, or out-of-tolerance material pending disposition. Do not release affected material delivery work.",
+          "key": "stop_boundary",
+          "label": "Material Delivery Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Delivery exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Delivery correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Delivery escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close material delivery exceptions with verification.",
+          "key": "exception_register",
+          "label": "Material Delivery Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Delivery notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Delivery notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Delivery interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Delivery review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Delivery release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep material delivery controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Material Delivery Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Quarantine damaged, incorrect, undocumented, contaminated, or out-of-tolerance material pending disposition. Control and route each material delivery exception.",
+      "key": "exception_3",
+      "title": "Request Risk and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Delivery decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Delivery approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Delivery schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate material delivery disposition.",
+          "key": "disposition",
+          "label": "Material Delivery Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Material Delivery Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the material delivery decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Material Delivery Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Delivery requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Delivery coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Material Delivery Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the material delivery next step from packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+      "key": "decision_4",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "material-delivery-request-form",
+  "source_filename": "dcf_135__material_delivery_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Material Delivery Request Form: material delivery receipt and condition control using purchase order, expected quantities, and packing slip.",
+  "title": "Material Delivery Request Form",
+  "use_case": "Use the request form during material delivery receipt and condition control when the material delivery record must identify purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements. Complete the applicable handoff for accepted quantity, shortage or damage claim, inventory location, responsible custodian, and procurement update."
+}

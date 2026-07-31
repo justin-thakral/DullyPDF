@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_116__camp_registration_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dey_116__camp_registration_checklist.pdf",
+  "slug": "camp-registration-checklist",
+  "title": "Camp Registration Checklist",
+  "subtitle": "Capture session placement, cabin group, transportation, and activity support; confirm packing readiness and guardian orientation.",
+  "description": "Camp Registration records session placement, cabin group, transportation, activity support, packing readiness, and guardian orientation. Camp Registration evidence stays linked.",
+  "use_case": "Use this camp registration stage-gated verification when staff must document session placement and cabin group. Reconcile transportation, activity support, packing readiness, and guardian orientation before the camp registration handoff. Use the placement confirmation, unit roster, bus list, optional-activity choices, support-routing receipt, orientation delivery, and guardian confirmation. This registration establishes seasonal program placement, cabin community, counselor coverage, waterfront or excursion choices, packing readiness, and multi-day guardian release. Ask the assigned camp registration reviewer to confirm session placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Camp Registration starting details",
+      "guidance": "Confirm session capacity, cabin placement, bus choice, packing readiness, activity support, orientation delivery, and guardian handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Camp Registration people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "session_placement",
+              "label": "Session placement",
+              "units": 1.1
+            },
+            {
+              "key": "cabin_group",
+              "label": "Cabin group",
+              "units": 1.2
+            },
+            {
+              "key": "transportation",
+              "label": "Transportation",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Camp Registration task details",
+          "fields": [
+            {
+              "key": "activity_support",
+              "label": "Activity support",
+              "units": 1.15
+            },
+            {
+              "key": "packing_readiness",
+              "label": "Packing readiness",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_orientation",
+              "label": "Guardian orientation",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Camp Registration exception review: checks and corrections",
+      "guidance": "Check current camp registration facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Camp Registration required checks",
+          "items": [
+            "Session placement is identified for this record",
+            "Cabin group matches the current request or source",
+            "Transportation is ready for point-of-use staff",
+            "Activity support limits or questions are resolved",
+            "Packing readiness is communicated to the responsible person",
+            "Guardian orientation is confirmed at handoff",
+            "A changed camp registration fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Camp Registration failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Camp Registration exception review and readiness",
+      "guidance": "Hold camp registration readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Camp Registration checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Camp Registration reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_teacher_or_program_coordinator_and_date",
+              "label": "Responsible teacher or program coordinator and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Camp Registration receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

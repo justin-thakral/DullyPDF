@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1447__sports_physical_packet_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1447__sports_physical_packet_checklist.pdf",
+  "slug": "sports-physical-packet-checklist",
+  "title": "Sports Physical Packet Checklist",
+  "subtitle": "Capture packet source, examination reference, signature status, and restriction; confirm submission date and roster clearance.",
+  "description": "Sports Physical Packet records packet source, examination reference, signature status, restriction, submission date, and roster clearance. Sports Physical Packet evidence stays linked.",
+  "use_case": "Use this sports physical packet stage-gated verification when staff must document packet source and examination reference. Reconcile signature status, restriction, submission date, and roster clearance before the sports physical packet handoff. Use the packet checklist, examination reference, required signatures, restriction insert, submission receipt, missing-page request, review stamp, and roster eligibility update. This packet centers document completeness: examination page, clinician signature, restriction attachment, parent page, school receipt, missing-page chase, review stamp, and roster release. Ask the assigned sports physical packet reviewer to confirm packet source against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Sports Physical Packet starting details",
+      "guidance": "Track examination reference, required packet pages, qualified signatures, restriction sheet, submission date, missing document, and roster clearance. Keep any urgent sports physical packet issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Sports Physical Packet people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "packet_source",
+              "label": "Packet source",
+              "units": 1.1
+            },
+            {
+              "key": "examination_reference",
+              "label": "Examination reference",
+              "units": 1.2
+            },
+            {
+              "key": "signature_status",
+              "label": "Signature status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Sports Physical Packet task details",
+          "fields": [
+            {
+              "key": "restriction",
+              "label": "Restriction",
+              "units": 1.15
+            },
+            {
+              "key": "submission_date",
+              "label": "Submission date",
+              "units": 1.0
+            },
+            {
+              "key": "roster_clearance",
+              "label": "Roster clearance",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Sports Physical Packet checks and corrections",
+      "guidance": "Check current sports physical packet facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Sports Physical Packet required checks",
+          "items": [
+            "Packet source is identified for this record",
+            "Examination reference matches the current request or source",
+            "Signature status is ready for point-of-use staff",
+            "Restriction limits or questions are resolved",
+            "Submission date is communicated to the responsible person",
+            "Roster clearance is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Sports Physical Packet failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Sports Physical Packet readiness and handoff",
+      "guidance": "Hold sports physical packet readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Sports Physical Packet checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Sports Physical Packet reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_teacher_or_program_coordinator_and_date",
+              "label": "Responsible teacher or program coordinator and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Sports Physical Packet receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

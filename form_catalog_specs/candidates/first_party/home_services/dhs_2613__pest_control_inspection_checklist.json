@@ -1,0 +1,291 @@
+{
+  "catalog_id": "home_services/dhs_2613__pest_control_inspection_checklist",
+  "description": "For pest control, this inspection checklist records inspection, treatment sites, product and method, label restrictions, preparation, reentry, exclusions, and follow-up. Its supporting evidence includes activity observations, conducive conditions, monitoring results, product lot and amount, placement map, and photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this pest control review to the service record.",
+          "key": "service_review_reference",
+          "label": "Pest Control Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Target pest",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Structures",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Rooms",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Exterior zones",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed pest control location and assets.",
+          "key": "service_context",
+          "label": "Pest Control Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the pest control service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each pest control item after direct review.",
+          "items": [
+            "Target activity and treated or monitored locations are reconciled",
+            "Product, method, lot, amount, and placement are recorded",
+            "Label preparation, exclusion, ventilation, and reentry controls are met",
+            "Children, animals, food, water, and sensitive areas are protected",
+            "Conducive conditions and recommended corrections are documented",
+            "Monitoring result, customer notice, and follow-up date are set"
+          ],
+          "key": "quality_checks",
+          "label": "Pest Control Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one pest control row for each reviewed area.",
+          "key": "area_results",
+          "label": "Pest Control Area and Task Results",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not treat contrary to label, in unprepared areas, near unprotected occupants, or where identification is uncertain. Route unresolved pest control work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Pest Control Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Check completed pest control work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Recurring Service Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Control owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each pest control concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "Pest Control Issue, Photo, and Correction Record",
+          "rows": 7,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pest Control Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved pest control expectations here.",
+          "height": 42,
+          "key": "customer_concern",
+          "label": "Pest Control Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every pest control issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the pest control outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "Pest Control Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Treatment record",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Safety instructions",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "Reentry acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Monitoring plan",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For pest control, record treatment record, safety instructions, reentry acknowledgment, monitoring plan, corrective recommendations, and follow-up.",
+          "key": "quality_followup",
+          "label": "Pest Control Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "Pest Control Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the pest control result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Service Review and Handoff"
+    }
+  ],
+  "slug": "pest-control-inspection-checklist",
+  "source_filename": "dhs_2613__pest_control_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "Pest Control Inspection Checklist: residential pest-control service and treatment record using target pest, inspection, and activity observations.",
+  "title": "Pest Control Inspection Checklist",
+  "use_case": "Use the inspection checklist during residential pest-control service and treatment record when the pest control record must identify target pest, structures, rooms, exterior zones, occupants, children, animals, sensitivities, and prior activity. Complete the applicable handoff for treatment record, safety instructions, reentry acknowledgment, monitoring plan, corrective recommendations, and follow-up."
+}

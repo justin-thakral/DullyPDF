@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "currentPolicyReleaseId": "catalog-20260730-002",
+  "selections": [
+    {
+      "releaseId": "catalog-20260729-001",
+      "selectionPath": "form_catalog_releases/planning/catalog-20260729-001-selection.json",
+      "selectionSha256": "19c4d9a2028e5d88816184b50e0411533dfe7437a8fd27de49316d7dd8f1f218",
+      "validationMode": "immutable-legacy-schema"
+    },
+    {
+      "releaseId": "catalog-20260730-002",
+      "selectionPath": "form_catalog_releases/planning/catalog-20260730-002-selection.json",
+      "selectionSha256": "15488c0061195cb61d04a263a33592d382eac5b9d8bb1f7557a87306bbc42721",
+      "validationMode": "current-policy"
+    }
+  ]
+}

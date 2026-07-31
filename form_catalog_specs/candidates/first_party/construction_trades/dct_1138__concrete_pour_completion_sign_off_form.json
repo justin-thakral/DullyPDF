@@ -1,0 +1,369 @@
+{
+  "catalog_id": "construction_trades/dct_1138__concrete_pour_completion_sign_off_form",
+  "description": "For concrete pour, this completion sign-off form records pre-pour inspection, batch sequence, placement rate, consolidation, testing, joints, finishing, curing, and protection. Its supporting evidence includes delivery tickets, slump, air and temperature tests, cylinder log, placement photos, and curing observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Pour opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Pour site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Pour contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Pour superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Pour due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this concrete pour record to its evidence.",
+          "key": "record_routing",
+          "label": "Concrete Pour Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Placement area",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Mix design",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Volume",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Reinforcement",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Embeds",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Forms",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture placement area, mix design, volume, reinforcement, embeds, forms, access, pump plan, weather, and finish class for this concrete pour.",
+          "key": "core_identity",
+          "label": "Concrete Pour Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify placement area, mix design, volume, reinforcement, embeds, forms, access, pump plan, weather, and finish class for this concrete pour record.",
+      "key": "identity_1",
+      "title": "Walkthrough Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Pour when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Pour measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Pour evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Pour result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For concrete pour, record delivery tickets, slump, air and temperature tests, cylinder log, placement photos, and curing observations.",
+          "key": "evidence_register",
+          "label": "Concrete Pour Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Delivery tickets",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Slump",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Air",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Temperature tests",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Cylinder log",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Placement photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every concrete pour evidence source.",
+          "key": "evidence_sources",
+          "label": "Concrete Pour Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary concrete pour evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Concrete Pour Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Hold placement for failed pre-pour review, wrong mix, unsafe access, severe weather, or out-of-limit test result. Do not release affected concrete pour work.",
+          "key": "stop_boundary",
+          "label": "Concrete Pour Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Pour exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Pour correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Pour escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close concrete pour exceptions with verification.",
+          "key": "exception_register",
+          "label": "Concrete Pour Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Pour notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Pour notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Pour interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Pour review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Pour release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep concrete pour controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Concrete Pour Escalation Record",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Pour open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Pour owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Pour acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer concrete pour items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Concrete Pour Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Compare concrete pour findings with concrete pour open items and decide the concrete pour customer handoff.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding and Conditional Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Pour completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Placed quantity",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Test sample custody",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Curing release",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Deficiency follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the concrete pour outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Concrete Pour Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Concrete Pour Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For concrete pour, document placed quantity, test sample custody, curing release, deficiency follow-up, finish acceptance, and record archive; identify each concrete pour reservation and concrete pour follow-up trigger, then record the concrete pour instruction recipient.",
+          "height": 40,
+          "key": "acceptance_reservations",
+          "label": "Concrete Pour Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Pour trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Pour site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Concrete Pour Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the concrete pour record with placed quantity, test sample custody, curing release, deficiency follow-up, finish acceptance, and record archive.",
+      "key": "closeout_4",
+      "title": "Customer Acceptance and Handoff"
+    }
+  ],
+  "slug": "concrete-pour-completion-sign-off-form",
+  "source_filename": "dct_1138__concrete_pour_completion_sign_off_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Concrete Pour Completion Sign-Off Form: concrete placement readiness and quality record using placement area, pre-pour inspection, and delivery tickets.",
+  "title": "Concrete Pour Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during concrete placement readiness and quality record when the concrete pour record must identify placement area, mix design, volume, reinforcement, embeds, forms, access, pump plan, weather, and finish class. Complete the applicable handoff for placed quantity, test sample custody, curing release, deficiency follow-up, finish acceptance, and record archive."
+}

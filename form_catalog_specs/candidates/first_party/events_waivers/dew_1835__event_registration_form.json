@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1835__event_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1835__event_registration_form.pdf",
+  "slug": "event-registration-form",
+  "title": "Event Registration Form",
+  "subtitle": "Capture event session, participant class, capacity, and credential; confirm attendance and departure reconciliation.",
+  "description": "Event records event session, participant class, capacity, credential, attendance, and departure reconciliation. Event evidence stays linked.",
+  "use_case": "Use this event registration and placement when staff must document event session and participant class. Reconcile capacity, credential, attendance, and departure reconciliation before the event handoff. Use the published schedule, capacity report, ticket or credential roster, access-zone map, attendance scan, incident log, exit count, and venue handback. This is the live production and venue record: run-of-show, gates, crowd flow, staffing posts, back-of-house coordination, public opening, egress, teardown, and venue turnover. Ask the assigned event reviewer to confirm event session against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Event contact and reference",
+      "guidance": "Record session, participant class, admission capacity, credential type, access zone, attendance, incident route, departure, and final headcount.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Event people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "event_session",
+              "label": "Event session",
+              "units": 1.2
+            },
+            {
+              "key": "participant_class",
+              "label": "Participant class",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Event task details",
+          "fields": [
+            {
+              "key": "capacity",
+              "label": "Capacity",
+              "units": 1.15
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.0
+            },
+            {
+              "key": "attendance",
+              "label": "Attendance",
+              "units": 1.25
+            },
+            {
+              "key": "departure_reconciliation",
+              "label": "Departure reconciliation",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_choices",
+      "title": "Event requested options and readiness review",
+      "guidance": "Record requested options, prerequisites, availability, and conditions without assuming an outcome.",
+      "blocks": [
+        {
+          "key": "registration_options",
+          "type": "table",
+          "label": "Event requested options",
+          "columns": [
+            {
+              "key": "requested_option_or_scope",
+              "label": "Requested option or scope",
+              "units": 1.2
+            },
+            {
+              "key": "availability_or_prerequisite",
+              "label": "Availability or prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.25
+            },
+            {
+              "key": "condition_support_or_owner",
+              "label": "Condition, support, or owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "start_readiness",
+          "type": "checklist",
+          "label": "Event registration readiness",
+          "items": [
+            "Event session is identified for this record",
+            "Participant class matches the current request or source",
+            "Capacity is ready for point-of-use staff",
+            "Credential limits or questions are resolved",
+            "Attendance is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_result",
+      "title": "Event confirmation and next steps",
+      "guidance": "Confirm the accepted scope, reference, open condition, and instructions.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Event registration result",
+          "fields": [
+            {
+              "key": "registration_outcome",
+              "label": "Registration outcome",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_admission_and_session",
+              "label": "Confirmed admission and session",
+              "units": 1.0
+            },
+            {
+              "key": "ticket_or_credential_reference",
+              "label": "Ticket or credential reference",
+              "units": 1.25
+            },
+            {
+              "key": "open_condition_and_owner",
+              "label": "Open condition and owner",
+              "units": 1.1
+            },
+            {
+              "key": "check_in_instructions_sent",
+              "label": "Check-in instructions sent",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Event registration receipt",
+          "fields": [
+            {
+              "key": "registration_coordinator_and_date",
+              "label": "Registration coordinator and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the recorded registration result and open condition."
+        }
+      ]
+    }
+  ]
+}

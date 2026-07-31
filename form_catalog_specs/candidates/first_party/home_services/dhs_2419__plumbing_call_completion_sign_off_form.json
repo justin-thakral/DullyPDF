@@ -1,0 +1,364 @@
+{
+  "catalog_id": "home_services/dhs_2419__plumbing_call_completion_sign_off_form",
+  "description": "For plumbing call, this completion sign-off form records urgency, isolation, diagnosis, repair options, parts, code or permit needs, water-damage concern, and price approval. Its supporting evidence includes leak photos, pressure or flow readings, drain observation, removed-part condition, and post-repair test.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Call opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Call site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Call contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Call service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Call due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this plumbing call record to its evidence.",
+          "key": "record_routing",
+          "label": "Plumbing Call Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Fixture or piping",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Leak location",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Shutoff access",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Water availability",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Affected rooms",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture fixture or piping, leak location, shutoff access, water availability, affected rooms, occupancy, and prior repair for this plumbing call.",
+          "key": "core_identity",
+          "label": "Plumbing Call Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify fixture or piping, leak location, shutoff access, water availability, affected rooms, occupancy, and prior repair for this plumbing call record.",
+      "key": "identity_1",
+      "title": "Service Visit Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Call when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Call measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Call evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Call result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For plumbing call, record leak photos, pressure or flow readings, drain observation, removed-part condition, and post-repair test.",
+          "key": "evidence_register",
+          "label": "Plumbing Call Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Leak photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Pressure or flow readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Drain observation",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Removed-part condition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every plumbing call evidence source.",
+          "key": "evidence_sources",
+          "label": "Plumbing Call Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary plumbing call evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Plumbing Call Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Shut off and escalate uncontrolled water, sewage exposure, gas concern, contamination, or concealed major damage. Route unresolved plumbing call work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Plumbing Call Applicable Review Boundary",
+          "type": "notice"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select completion sign-off form disposition",
+                "Accept complete",
+                "Accept with exceptions",
+                "Correction required",
+                "Reject completion"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Call decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Call scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Call authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Call review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate plumbing call disposition.",
+          "key": "disposition",
+          "label": "Plumbing Call Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Plumbing Call Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the plumbing call decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Plumbing Call Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Call open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Call owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Call acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer plumbing call items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Plumbing Call Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Call crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Call service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Plumbing Call Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Compare plumbing call findings with plumbing call open items and decide the plumbing call customer handoff.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding and Acceptance Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Call completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Leak-free test",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Restored fixtures",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Customer instructions",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Damage referral",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the plumbing call outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Plumbing Call Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Plumbing Call Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For plumbing call, document leak-free test, restored fixtures, customer instructions, damage referral, permit follow-up, and service warranty; identify each plumbing call reservation and plumbing call follow-up trigger, then record the plumbing call instruction recipient.",
+          "height": 40,
+          "key": "acceptance_reservations",
+          "label": "Plumbing Call Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Call technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Call customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Plumbing Call Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the plumbing call record with leak-free test, restored fixtures, customer instructions, damage referral, permit follow-up, and service warranty.",
+      "key": "closeout_4",
+      "title": "Warranty and Property Handoff"
+    }
+  ],
+  "slug": "plumbing-call-completion-sign-off-form",
+  "source_filename": "dhs_2419__plumbing_call_completion_sign_off_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Plumbing Call Completion Sign-Off Form: residential plumbing service call dispatch using fixture or piping, urgency, and leak photos.",
+  "title": "Plumbing Call Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during residential plumbing service call dispatch when the plumbing call record must identify fixture or piping, leak location, shutoff access, water availability, affected rooms, occupancy, and prior repair. Complete the applicable handoff for leak-free test, restored fixtures, customer instructions, damage referral, permit follow-up, and service warranty."
+}

@@ -1,0 +1,343 @@
+{
+  "catalog_id": "construction_trades/dcf_184__site_visit_review_worksheet",
+  "description": "For site visit, this review worksheet records planned observations, coordination topics, quality checkpoints, progress claims, and unresolved prior items. Its supporting evidence includes field notes, representative photos, measurements, discussion record, and referenced drawing details.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Visit opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Visit site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Visit contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Visit superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Visit due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this site visit record to its evidence.",
+          "key": "record_routing",
+          "label": "Site Visit Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Visit purpose",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Attendees",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Zones observed",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Work in progress",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Current documents",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture visit purpose, attendees, zones observed, work in progress, current documents, weather, and access limitations for this site visit.",
+          "key": "core_identity",
+          "label": "Site Visit Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify visit purpose, attendees, zones observed, work in progress, current documents, weather, and access limitations for this site visit record.",
+      "key": "identity_1",
+      "title": "Review Assignment and Question"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Planned observations",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Coordination topics",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Quality checkpoints",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Progress claims",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For site visit, record planned observations, coordination topics, quality checkpoints, progress claims, and unresolved prior items.",
+          "key": "task_inputs",
+          "label": "Site Visit Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Visit decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Visit supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Visit review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified site visit facts from judgment.",
+          "key": "review_criteria",
+          "label": "Site Visit Review Criteria and Support",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Site Visit Analysis and Alternatives",
+              "multiline": true
+            }
+          ],
+          "guidance": "Explain site visit alternatives and retained uncertainty.",
+          "height": 46,
+          "key": "analysis",
+          "label": "Site Visit Analysis and Alternatives",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Immediately report observed imminent hazards; distinguish observation from exhaustive inspection or direction. Route unresolved site visit work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Site Visit Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For site visit, capture planned observations, coordination topics, quality checkpoints, progress claims, and unresolved prior items.",
+      "key": "task_2",
+      "title": "Criteria and Analysis"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Visit when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Visit measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Visit evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Visit result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For site visit, record field notes, representative photos, measurements, discussion record, and referenced drawing details.",
+          "key": "evidence_register",
+          "label": "Site Visit Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Field notes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Representative photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Discussion record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every site visit evidence source.",
+          "key": "evidence_sources",
+          "label": "Site Visit Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Site Visit Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State site visit limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Site Visit Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support site visit findings with field notes, representative photos, measurements, discussion record, and referenced drawing details.",
+      "key": "observation_3",
+      "title": "Records Examined and Findings"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select review worksheet disposition",
+                "Recommend acceptance",
+                "Recommend conditions",
+                "Further review",
+                "Do not accept"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Visit decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Visit approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Visit authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Visit review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate site visit disposition.",
+          "key": "disposition",
+          "label": "Site Visit Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Site Visit Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the site visit decision to evidence.",
+          "height": 44,
+          "key": "decision_basis",
+          "label": "Site Visit Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Visit coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Visit manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Visit decision recipient and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Site Visit Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the site visit next step from field notes, representative photos, measurements, discussion record, and referenced drawing details.",
+      "key": "decision_4",
+      "title": "Reviewer Recommendation"
+    }
+  ],
+  "slug": "site-visit-review-worksheet",
+  "source_filename": "dcf_184__site_visit_review_worksheet.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Site Visit Review Worksheet: construction site visit observation and follow-up using visit purpose, planned observations, and field notes.",
+  "title": "Site Visit Review Worksheet",
+  "use_case": "Use the review worksheet during construction site visit observation and follow-up when the site visit record must identify visit purpose, attendees, zones observed, work in progress, current documents, weather, and access limitations. Complete the applicable handoff for observation distribution, responsible-party response, follow-up dates, closed items, and project-record filing."
+}

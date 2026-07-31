@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1833__sponsorship_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1833__sponsorship_registration_form.pdf",
+  "slug": "sponsorship-registration-form",
+  "title": "Sponsorship Registration Form",
+  "subtitle": "Capture benefit package, logo asset, placement, and announcement; confirm in-kind value and fulfillment.",
+  "description": "Sponsorship records benefit package, logo asset, placement, announcement, in-kind value, and fulfillment. Sponsorship evidence stays linked.",
+  "use_case": "Use this sponsorship registration and placement when staff must document benefit package and logo asset. Reconcile placement, announcement, in-kind value, and fulfillment before the sponsorship handoff. Use the signed commitment reference, benefit inventory, brand-asset approval, placement proof, announcement schedule, hospitality redemption, valuation record, and make-good acceptance. Ask the assigned sponsorship reviewer to confirm benefit package against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Sponsorship registrant details review",
+      "guidance": "Detail benefit package, logo file and brand approval, placement dimensions, announcement copy, hospitality inventory, in-kind valuation, and fulfillment proof.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Sponsorship people and reference",
+          "fields": [
+            {
+              "key": "organization_legal_or_public_name",
+              "label": "Organization legal or public name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_contact_name",
+              "label": "Primary contact name",
+              "units": 1.0
+            },
+            {
+              "key": "primary_contact_phone",
+              "label": "Primary contact phone",
+              "units": 1.25
+            },
+            {
+              "key": "primary_contact_email",
+              "label": "Primary contact email",
+              "units": 1.1
+            },
+            {
+              "key": "benefit_package",
+              "label": "Benefit package",
+              "units": 1.2
+            },
+            {
+              "key": "logo_asset",
+              "label": "Logo asset",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Sponsorship task details",
+          "fields": [
+            {
+              "key": "placement",
+              "label": "Placement",
+              "units": 1.15
+            },
+            {
+              "key": "announcement",
+              "label": "Announcement",
+              "units": 1.0
+            },
+            {
+              "key": "in_kind_value",
+              "label": "In-kind value",
+              "units": 1.25
+            },
+            {
+              "key": "fulfillment",
+              "label": "Fulfillment",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_choices",
+      "title": "Sponsorship requested options and readiness",
+      "guidance": "Record requested options, prerequisites, availability, and conditions without assuming an outcome.",
+      "blocks": [
+        {
+          "key": "registration_options",
+          "type": "table",
+          "label": "Sponsorship requested options",
+          "columns": [
+            {
+              "key": "requested_option_or_scope",
+              "label": "Requested option or scope",
+              "units": 1.2
+            },
+            {
+              "key": "availability_or_prerequisite",
+              "label": "Availability or prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.25
+            },
+            {
+              "key": "condition_support_or_owner",
+              "label": "Condition, support, or owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "start_readiness",
+          "type": "checklist",
+          "label": "Sponsorship registration readiness",
+          "items": [
+            "Benefit package is identified for this record",
+            "Logo asset matches the current request or source",
+            "Placement is ready for point-of-use staff",
+            "Announcement limits or questions are resolved",
+            "In-kind value is communicated to the responsible person",
+            "Fulfillment is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_result",
+      "title": "Sponsorship exception review: confirmation and next steps",
+      "guidance": "Confirm the accepted scope, reference, open condition, and instructions.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Sponsorship registration result",
+          "fields": [
+            {
+              "key": "registration_outcome",
+              "label": "Registration outcome",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_benefit_package",
+              "label": "Confirmed benefit package",
+              "units": 1.0
+            },
+            {
+              "key": "brand_asset_or_fulfillment_owner",
+              "label": "Brand-asset or fulfillment owner",
+              "units": 1.25
+            },
+            {
+              "key": "open_condition_and_owner",
+              "label": "Open condition and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Sponsorship registration receipt",
+          "fields": [
+            {
+              "key": "registration_coordinator_and_date",
+              "label": "Registration coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded registration result and open condition."
+        }
+      ]
+    }
+  ]
+}

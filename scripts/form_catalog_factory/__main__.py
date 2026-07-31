@@ -9,12 +9,15 @@ from pathlib import Path
 
 
 def parse_args() -> argparse.Namespace:
+    from .themes import DEFAULT_THEME_ID
+
     parser = argparse.ArgumentParser(description="DullyPDF high-value form factory")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     render_parser = subparsers.add_parser("render", help="Render one or more JSON specs")
     render_parser.add_argument("specs", nargs="+", help="JSON files or directories")
     render_parser.add_argument("--output-root", required=True)
+    render_parser.add_argument("--theme-id", default=DEFAULT_THEME_ID)
 
     validate_parser = subparsers.add_parser("validate-spec", help="Validate JSON specs")
     validate_parser.add_argument("specs", nargs="+", help="JSON files or directories")
@@ -25,6 +28,17 @@ def parse_args() -> argparse.Namespace:
     )
     qa_parser.add_argument("specs", nargs="+", help="JSON files or directories")
     qa_parser.add_argument("--output")
+
+    selection_qa_parser = subparsers.add_parser(
+        "qa-release-selection",
+        help="Run current content QA against one exact tracked release selection",
+    )
+    selection_qa_parser.add_argument("--selection", required=True)
+    selection_qa_parser.add_argument(
+        "--spec-root",
+        default="form_catalog_specs/candidates",
+    )
+    selection_qa_parser.add_argument("--output", required=True)
 
     seed_parser = subparsers.add_parser(
         "seed-ledger",
@@ -97,6 +111,60 @@ def parse_args() -> argparse.Namespace:
     register_parser.add_argument("--claim-root", required=True)
     register_parser.add_argument("--lease-seconds", type=float, default=900)
 
+    reopen_specs_parser = subparsers.add_parser(
+        "reopen-specs-for-revision",
+        help=(
+            "Return exact hash-bound specs to the authoring queue at an "
+            "evidence-free batch fence"
+        ),
+    )
+    reopen_specs_parser.add_argument(
+        "specs",
+        nargs="+",
+        help="Current JSON specification files or directories",
+    )
+    reopen_specs_parser.add_argument("--ledger", required=True)
+    reopen_specs_parser.add_argument("--batch-id", required=True)
+    reopen_specs_parser.add_argument("--expected-base-commit", required=True)
+    reopen_specs_parser.add_argument("--expected-renderer-commit", required=True)
+    reopen_specs_parser.add_argument("--expected-batch-version", required=True, type=int)
+    reopen_specs_parser.add_argument("--expected-state-digest", required=True)
+    reopen_specs_parser.add_argument("--reason", required=True)
+    reopen_specs_parser.add_argument("--actor", required=True)
+    reopen_specs_parser.add_argument("--idempotency-key", required=True)
+
+    publish_revision_parser = subparsers.add_parser(
+        "publish-spec-revision",
+        help="Atomically replace one rejected spec and complete its fenced claim",
+    )
+    publish_revision_parser.add_argument("--ledger", required=True)
+    publish_revision_parser.add_argument("--claim", required=True)
+    publish_revision_parser.add_argument("--draft", required=True)
+    publish_revision_parser.add_argument("--destination", required=True)
+    publish_revision_parser.add_argument("--expected-previous-sha256", required=True)
+    publish_revision_parser.add_argument("--expected-draft-sha256", required=True)
+    publish_revision_parser.add_argument("--idempotency-key", required=True)
+
+    publish_revisions_parser = subparsers.add_parser(
+        "publish-spec-revisions",
+        help="Publish a reviewed revision set through audited fenced claims",
+    )
+    publish_revisions_parser.add_argument(
+        "drafts",
+        nargs="+",
+        help="Reviewed revision JSON files or directories",
+    )
+    publish_revisions_parser.add_argument("--ledger", required=True)
+    publish_revisions_parser.add_argument("--batch-id", required=True)
+    publish_revisions_parser.add_argument("--worker-id", required=True)
+    publish_revisions_parser.add_argument("--destination-root", required=True)
+    publish_revisions_parser.add_argument("--claim-root", required=True)
+    publish_revisions_parser.add_argument(
+        "--lease-seconds",
+        type=float,
+        default=900,
+    )
+
     plan_parser = subparsers.add_parser(
         "plan-batch",
         help="Create a deterministic tracked release selection",
@@ -112,6 +180,21 @@ def parse_args() -> argparse.Namespace:
         "--local-registry",
         default="form_catalog/local_generated_forms.json",
     )
+    plan_parser.add_argument(
+        "--active-contract",
+        default="form_catalog_releases/active.json",
+        help="Current cumulative active contract whose identities are excluded",
+    )
+    plan_parser.add_argument(
+        "--frozen-selection",
+        action="append",
+        default=[],
+        help=(
+            "Prior frozen selection to exclude; repeat once for each frozen "
+            "release that may not yet be active"
+        ),
+    )
+    plan_parser.add_argument("--theme-id", default=DEFAULT_THEME_ID)
 
     build_parser = subparsers.add_parser(
         "build-release",
@@ -334,6 +417,33 @@ def discover_specs(values: list[str]) -> list[Path]:
 
 def main() -> int:
     args = parse_args()
+    if args.command == "qa-release-selection":
+        from .release_builder import validate_release_selection_specs
+
+        report = validate_release_selection_specs(
+            selection_path=args.selection,
+            spec_root=args.spec_root,
+        )
+        output = Path(args.output).expanduser().resolve()
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        print(
+            json.dumps(
+                {
+                    "output": str(output),
+                    "release_id": report["releaseId"],
+                    "count": report["count"],
+                    "passed": report["passed"],
+                    "selection_sha256": report["selectionSha256"],
+                },
+                indent=2,
+            )
+        )
+        return 0 if report["passed"] else 1
+
     if args.command == "verify-active-mapping":
         from .active_mapping import (
             build_active_mapping_evidence,
@@ -665,6 +775,57 @@ def main() -> int:
         print(json.dumps(result, indent=2))
         return 0
 
+    if args.command == "reopen-specs-for-revision":
+        from .ledger import CatalogFactoryLedger
+        from .worker_control import reopen_specs_for_revision
+
+        result = reopen_specs_for_revision(
+            CatalogFactoryLedger(args.ledger),
+            batch_id=args.batch_id,
+            spec_paths=discover_specs(args.specs),
+            expected_base_commit=args.expected_base_commit,
+            expected_renderer_commit=args.expected_renderer_commit,
+            expected_batch_version=args.expected_batch_version,
+            expected_state_digest=args.expected_state_digest,
+            reason=args.reason,
+            actor=args.actor,
+            idempotency_key=args.idempotency_key,
+        )
+        print(json.dumps(result, indent=2))
+        return 0
+
+    if args.command == "publish-spec-revision":
+        from .ledger import CatalogFactoryLedger
+        from .worker_control import publish_spec_revision
+
+        result = publish_spec_revision(
+            CatalogFactoryLedger(args.ledger),
+            claim_path=args.claim,
+            draft_path=args.draft,
+            destination_path=args.destination,
+            expected_previous_sha256=args.expected_previous_sha256,
+            expected_draft_sha256=args.expected_draft_sha256,
+            idempotency_key=args.idempotency_key,
+        )
+        print(json.dumps(result, indent=2))
+        return 0
+
+    if args.command == "publish-spec-revisions":
+        from .ledger import CatalogFactoryLedger
+        from .worker_control import publish_spec_revisions
+
+        result = publish_spec_revisions(
+            CatalogFactoryLedger(args.ledger),
+            batch_id=args.batch_id,
+            worker_id=args.worker_id,
+            draft_paths=discover_specs(args.drafts),
+            destination_root=args.destination_root,
+            claim_root=args.claim_root,
+            lease_seconds=args.lease_seconds,
+        )
+        print(json.dumps(result, indent=2))
+        return 0
+
     if args.command == "prepare-activation":
         from .activation import build_active_contract, write_active_contract
 
@@ -785,6 +946,9 @@ def main() -> int:
             target_count=args.target_count,
             frontend_catalog_path=args.catalog_data,
             local_registry_path=args.local_registry,
+            active_contract_path=args.active_contract,
+            frozen_selection_paths=args.frozen_selection,
+            theme_id=args.theme_id,
         )
         write_batch_plan(args.output, plan)
         print(
@@ -793,6 +957,9 @@ def main() -> int:
                     "output": str(Path(args.output).resolve()),
                     "release_id": plan["releaseId"],
                     "selected": len(plan["items"]),
+                    "eligible": plan["exclusions"]["eligibleCandidateCount"],
+                    "excluded": plan["exclusions"]["excludedCatalogIdCount"],
+                    "theme": plan["renderTheme"],
                     "summary": plan["summary"],
                     "catalog_defects_excluded": len(missing),
                 },
@@ -882,7 +1049,7 @@ def main() -> int:
                 / spec.source_section
                 / spec.source_filename
             )
-            render_form(spec, output)
+            render_form(spec, output, theme_id=args.theme_id)
             result["output"] = str(output)
         results.append(result)
     print(json.dumps({"count": len(results), "results": results}, indent=2))

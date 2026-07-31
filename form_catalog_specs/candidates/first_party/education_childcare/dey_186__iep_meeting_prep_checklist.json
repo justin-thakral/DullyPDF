@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_186__iep_meeting_prep_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dey_186__iep_meeting_prep_checklist.pdf",
+  "slug": "dey-186-iep-meeting-prep-checklist-30002a3d",
+  "title": "IEP Meeting Prep Checklist",
+  "subtitle": "Capture meeting notice, current plan, progress evidence, and participant role; confirm family priority and proposed action.",
+  "description": "IEP Meeting Prep records meeting notice, current plan, progress evidence, participant role, family priority, and proposed action. IEP Meeting Prep evidence stays linked.",
+  "use_case": "Use this iep meeting prep stage-gated verification when staff must document meeting notice and current plan. Reconcile progress evidence, participant role, family priority, and proposed action before the iep meeting prep handoff. Use the meeting notice, current IEP, service log, progress-monitoring data, evaluation reports, family agenda, participant list, draft proposal, and prior written notice route. For iep meeting prep review use, cite source. Match the iep meeting prep family or learner wording. Preserve the iep meeting prep amendment history and supersession date. Link the iep meeting prep source version and meeting notes. Record the iep meeting prep learner response and accessibility support. Close the iep meeting prep recipient list. Verify iep meeting prep documentary provenance. Resolve iep meeting prep amendments, superseded wording, and archival distribution for iep meeting prep. Ask the assigned iep meeting prep reviewer to confirm meeting notice against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "IEP Meeting Prep starting details review",
+      "guidance": "Assemble meeting notice, current plan, service and progress records, participant roles, family priorities, proposed actions, accommodations, and follow-up questions.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "IEP Meeting Prep people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "meeting_notice",
+              "label": "Meeting notice",
+              "units": 1.1
+            },
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.2
+            },
+            {
+              "key": "progress_evidence",
+              "label": "Progress evidence",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "IEP Meeting Prep task details",
+          "fields": [
+            {
+              "key": "participant_role",
+              "label": "Participant role",
+              "units": 1.15
+            },
+            {
+              "key": "family_priority",
+              "label": "Family priority",
+              "units": 1.0
+            },
+            {
+              "key": "proposed_action",
+              "label": "Proposed action",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "IEP Meeting Prep checks and corrections",
+      "guidance": "Check current iep meeting prep facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "IEP Meeting Prep required checks",
+          "items": [
+            "Meeting notice is identified for this record",
+            "Current plan matches the current request or source",
+            "Progress evidence is ready for point-of-use staff",
+            "Participant role limits or questions are resolved",
+            "Family priority is communicated to the responsible person",
+            "Proposed action is confirmed at handoff",
+            "A changed iep meeting prep fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "IEP Meeting Prep failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "IEP Meeting Prep readiness and handoff",
+      "guidance": "Hold iep meeting prep readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "IEP Meeting Prep checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "IEP Meeting Prep reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_teacher_or_program_coordinator_and_date",
+              "label": "Responsible teacher or program coordinator and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "IEP Meeting Prep receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

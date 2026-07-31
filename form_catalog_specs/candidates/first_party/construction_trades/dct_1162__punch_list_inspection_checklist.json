@@ -1,0 +1,327 @@
+{
+  "catalog_id": "construction_trades/dct_1162__punch_list_inspection_checklist",
+  "description": "For punch list, this inspection checklist records observed deficiency, acceptance criterion, access need, correction owner, due date, and predecessor dependency. Its supporting evidence includes dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "List opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "List site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "List contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "List superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "List due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this punch list record to its evidence.",
+          "key": "record_routing",
+          "label": "Punch List Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Room or grid location",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "System",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Responsible trade",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Contract reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture room or grid location, system, responsible trade, contract reference, and turnover milestone for this punch list.",
+          "key": "core_identity",
+          "label": "Punch List Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify room or grid location, system, responsible trade, contract reference, and turnover milestone for this punch list record.",
+      "key": "identity_1",
+      "title": "Site Reference and Inspector"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Observed deficiency",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Acceptance criterion",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Access need",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "List correction lead",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For punch list, record observed deficiency, acceptance criterion, access need, correction owner, due date, and predecessor dependency.",
+          "key": "task_inputs",
+          "label": "Punch List Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the punch list condition before marking.",
+          "items": [
+            "Verify observed deficiency",
+            "Verify acceptance criterion",
+            "Verify access need",
+            "Verify correction owner",
+            "Verify due date"
+          ],
+          "key": "task_checks",
+          "label": "Punch List Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "List checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "List review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "List qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "List check time",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the punch list criteria and inspector.",
+          "key": "checkpoint_result",
+          "label": "Punch List Inspection Reference",
+          "type": "fields"
+        },
+        {
+          "guidance": "Escalate life-safety, water-intrusion, energized-system, occupancy, or concealed-work defects immediately. Route unresolved punch list work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Punch List Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For punch list, capture observed deficiency, acceptance criterion, access need, correction owner, due date, and predecessor dependency.",
+      "key": "task_2",
+      "title": "Scope, Criteria, and Test Method"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "List when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "List measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "List evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "List result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For punch list, record dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+          "key": "evidence_register",
+          "label": "Punch List Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Dated photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Test reading",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Inspection note",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Drawing reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every punch list evidence source.",
+          "key": "evidence_sources",
+          "label": "Punch List Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Punch List Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State punch list limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Punch List Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support punch list findings with dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+      "key": "observation_3",
+      "title": "Measured Finding Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Escalate life-safety, water-intrusion, energized-system, occupancy, or concealed-work defects immediately. Do not release affected punch list work.",
+          "key": "stop_boundary",
+          "label": "Punch List Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "List exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "List correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "List escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close punch list exceptions with verification.",
+          "key": "exception_register",
+          "label": "Punch List Exception and Corrective Action",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "List notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "List notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "List interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "List review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "List release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep punch list controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Punch List Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Escalate life-safety, water-intrusion, energized-system, occupancy, or concealed-work defects immediately. Control and route each punch list exception.",
+      "key": "exception_4",
+      "title": "Defect Risk and Correction"
+    }
+  ],
+  "slug": "punch-list-inspection-checklist",
+  "source_filename": "dct_1162__punch_list_inspection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Punch List Inspection Checklist: deficiency capture, assignment, and verification using room or grid location, observed deficiency, and dated photo.",
+  "title": "Punch List Inspection Checklist",
+  "use_case": "Use the inspection checklist during deficiency capture, assignment, and verification when the punch list record must identify room or grid location, system, responsible trade, contract reference, and turnover milestone. Complete the applicable handoff for verified correction, owner acceptance, exception disposition, remaining-list reconciliation, and turnover handoff."
+}

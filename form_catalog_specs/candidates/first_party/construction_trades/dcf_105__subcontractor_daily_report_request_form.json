@@ -1,0 +1,330 @@
+{
+  "catalog_id": "construction_trades/dcf_105__subcontractor_daily_report_request_form",
+  "description": "For subcontractor daily report, this request form records shift plan, trade activity, coordination dependencies, inspections, and remaining work. Its supporting evidence includes time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Daily opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Daily site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Daily contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Daily superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Daily due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this subcontractor daily report record to its evidence.",
+          "key": "record_routing",
+          "label": "Subcontractor Daily Report Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Crew roster",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Work areas",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Installed quantities",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Equipment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture crew roster, work areas, installed quantities, equipment, deliveries, and site conditions for this subcontractor daily report.",
+          "key": "core_identity",
+          "label": "Subcontractor Daily Report Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify crew roster, work areas, installed quantities, equipment, deliveries, and site conditions for this subcontractor daily report record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Shift plan",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Trade activity",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Coordination dependencies",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Inspections",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For subcontractor daily report, record shift plan, trade activity, coordination dependencies, inspections, and remaining work.",
+          "key": "task_inputs",
+          "label": "Subcontractor Daily Report Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Subcontractor Daily Report Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State subcontractor daily report outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Subcontractor Daily Report Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Daily work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Daily owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate subcontractor daily report items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Subcontractor Daily Report Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Stop and notify supervision for unsafe conditions, concealed conflicts, blocked access, or unapproved extra work. Route unresolved subcontractor daily report work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Subcontractor Daily Report Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For subcontractor daily report, capture shift plan, trade activity, coordination dependencies, inspections, and remaining work.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Stop and notify supervision for unsafe conditions, concealed conflicts, blocked access, or unapproved extra work. Do not release affected subcontractor daily report work.",
+          "key": "stop_boundary",
+          "label": "Subcontractor Daily Report Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Daily exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Daily correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Daily escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close subcontractor daily report exceptions with verification.",
+          "key": "exception_register",
+          "label": "Subcontractor Daily Report Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Daily notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Daily notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Daily interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Daily review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Daily release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep subcontractor daily report controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Subcontractor Daily Report Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Stop and notify supervision for unsafe conditions, concealed conflicts, blocked access, or unapproved extra work. Control and route each subcontractor daily report exception.",
+      "key": "exception_3",
+      "title": "Request Risk and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Daily decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Daily approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Daily schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate subcontractor daily report disposition.",
+          "key": "disposition",
+          "label": "Subcontractor Daily Report Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Subcontractor Daily Report Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the subcontractor daily report decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Subcontractor Daily Report Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Daily requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Daily coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Subcontractor Daily Report Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the subcontractor daily report next step from time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+      "key": "decision_4",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "subcontractor-daily-report-request-form",
+  "source_filename": "dcf_105__subcontractor_daily_report_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Subcontractor Daily Report Request Form: daily subcontractor production reporting using crew roster, shift plan, and time-stamped progress photos.",
+  "title": "Subcontractor Daily Report Request Form",
+  "use_case": "Use the request form during daily subcontractor production reporting when the subcontractor daily report record must identify crew roster, work areas, installed quantities, equipment, deliveries, and site conditions. Complete the applicable handoff for daily certification, unresolved-item carryover, next-shift plan, and project-record upload."
+}

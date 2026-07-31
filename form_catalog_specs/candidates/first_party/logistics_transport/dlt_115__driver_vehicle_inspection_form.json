@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_115__driver_vehicle_inspection_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_115__driver_vehicle_inspection_form.pdf",
+  "slug": "driver-vehicle-inspection-form",
+  "title": "Driver Vehicle Inspection Form",
+  "subtitle": "Driver Vehicle Inspection: documents findings, limits, and disposition.",
+  "description": "Driver Vehicle Inspection Form covers power unit, trailer, safety equipment, visible defect, driver report, and release status. The fleet dispatch coordinator records Driver Vehicle Inspection criteria, findings, restrictions, and follow-up. Driver Vehicle Inspection Form keeps Driver Vehicle Inspection exceptions visible until the fleet dispatch coordinator handoff.",
+  "use_case": "Use Driver Vehicle Inspection Form at yard, roadside safe area, vehicle cab, exterior walkaround, and trailer. Document power unit, trailer, safety equipment, visible defect, driver report, and release status identity before Driver Vehicle Inspection begins. Compare power unit, trailer, safety equipment, visible defect, driver report, and release status findings with stated Driver Vehicle Inspection criteria; route unresolved Driver Vehicle Inspection issues to qualified vehicle maintenance reviewer. For Driver Vehicle Inspection Form, confirm requirements for Driver Vehicle Inspection. Ask qualified vehicle maintenance reviewer to review Driver Vehicle Inspection conditions beyond the fleet dispatch coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "inspection_context",
+      "title": "Carrier, vehicle, and shipment identity",
+      "guidance": "Identify the Driver Vehicle Inspection subject, inspector, location, time, and criteria.",
+      "blocks": [
+        {
+          "key": "inspection_header",
+          "type": "fields",
+          "label": "Inspection header",
+          "fields": [
+            {
+              "key": "inspection_number",
+              "label": "Vehicle inspection or shift ID",
+              "units": 1.0
+            },
+            {
+              "key": "inspection_date",
+              "label": "Inspection date",
+              "units": 0.65
+            },
+            {
+              "key": "inspector",
+              "label": "Fleet Dispatch Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "party",
+              "label": "Driver / fleet / vehicle owner",
+              "units": 1.1
+            },
+            {
+              "key": "location",
+              "label": "Vehicle / trailer inspection area",
+              "units": 1.15
+            },
+            {
+              "key": "criteria",
+              "label": "Criteria, order, policy, or procedure",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Driver Vehicle Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Inspection, route, driver, and date",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle, unit, plate, odometer, and trailer",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Prior defect, repair, and release references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Driver Vehicle Inspection identifier printed on power unit, trailer, safety equipment, visible defect, driver report, and release status or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "inspection_findings",
+      "title": "Transport findings and inspection evidence",
+      "guidance": "Capture Driver Vehicle Inspection measurements, defects, inaccessible areas, and follow-up.",
+      "blocks": [
+        {
+          "key": "inspection_points",
+          "type": "checklist",
+          "label": "Driver Vehicle Inspection points",
+          "items": [
+            "Tires, wheels, fasteners, and visible inflation",
+            "Lights, reflectors, mirrors, glazing, and wipers",
+            "Brakes, steering, suspension, coupling, and visible leaks",
+            "Horn, warning devices, emergency equipment, and restraints",
+            "Load securement, doors, landing gear, and trailer condition",
+            "Defect classification, restriction, repair, and release"
+          ],
+          "guidance": "Classify every required Driver Vehicle Inspection point for power unit, trailer, safety equipment, visible defect, driver report, and release status as checked, not inspected, inaccessible, or deficient."
+        },
+        {
+          "key": "finding_lines",
+          "type": "table",
+          "label": "Inspection findings",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Vehicle, load, document, or custody point",
+              "units": 1.25
+            },
+            {
+              "key": "expected",
+              "label": "Expected state or transport term",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed condition or reading",
+              "units": 1.1
+            },
+            {
+              "key": "result",
+              "label": "Accept, exception, hold, or N/A",
+              "units": 0.9
+            },
+            {
+              "key": "action",
+              "label": "Carrier action or restriction",
+              "units": 1.0
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "inspection_issues",
+      "title": "Deficiencies, limitations, and corrective action",
+      "guidance": "Do not pass unobserved Driver Vehicle Inspection scope; name the affected area and next action.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when a safety-critical defect, inspection limitation, repair verification, or qualified release remains unresolved. Protect power unit, trailer, safety equipment, visible defect, driver report, and release status; document the Driver Vehicle Inspection notification and await qualified vehicle maintenance reviewer direction."
+        },
+        {
+          "key": "inspection_stops",
+          "type": "checklist",
+          "label": "Findings requiring hold, restriction, or prompt review",
+          "items": [
+            "Safety-critical defect",
+            "Inspection area unsafe",
+            "Repair status cannot be verified",
+            "Vehicle released without required authority"
+          ],
+          "guidance": "For Driver Vehicle Inspection, identify affected power unit, trailer, safety equipment, visible defect, driver report, and release status scope; ask fleet dispatch coordinator to document the Driver Vehicle Inspection immediate control before continuing."
+        },
+        {
+          "key": "limitations_and_actions",
+          "type": "textarea",
+          "label": "Deficiency details, inaccessible scope, immediate action, and reinspection need",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Deficiency details, inaccessible scope, immediate action, and reinspection need",
+              "multiline": true
+            }
+          ],
+          "height": 60
+        },
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Deficiency owner and correction tracking",
+          "columns": [
+            {
+              "key": "deficiency",
+              "label": "Deficiency or affected scope",
+              "units": 1.4
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due or reinspection trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "inspection_disposition",
+      "title": "Inspection result and follow-up",
+      "guidance": "Use Driver Vehicle Inspection findings for disposition, restrictions, and reinspection.",
+      "blocks": [
+        {
+          "key": "inspection_evidence",
+          "type": "checklist",
+          "label": "Inspection records retained",
+          "items": [
+            "Vehicle and defect photographs",
+            "Driver inspection and odometer record",
+            "Repair or maintenance reference",
+            "Qualified release or out-of-service evidence"
+          ],
+          "guidance": "Attach or link proof for power unit, trailer, safety equipment, visible defect, driver report, and release status; mark only Driver Vehicle Inspection evidence present in that record."
+        },
+        {
+          "key": "inspection_result",
+          "type": "fields",
+          "label": "Disposition",
+          "fields": [
+            {
+              "key": "result",
+              "label": "Inspection result",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Acceptable",
+                "Acceptable with follow-up",
+                "Correction required",
+                "Held or restricted",
+                "Incomplete inspection"
+              ]
+            },
+            {
+              "key": "action_owner",
+              "label": "Correction or follow-up owner",
+              "units": 1.05
+            },
+            {
+              "key": "reinspection",
+              "label": "Reinspection date or trigger",
+              "units": 0.9
+            },
+            {
+              "key": "report_reference",
+              "label": "Finding or work reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Driver Vehicle Inspection disposition rationale and reinspection instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Driver Vehicle Inspection disposition rationale and reinspection instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "State why the Driver Vehicle Inspection disposition follows from observed findings and what correction or reinspection remains."
+        },
+        {
+          "key": "inspection_signoff",
+          "type": "signatures",
+          "label": "Inspection acknowledgment",
+          "fields": [
+            {
+              "key": "inspector_signature",
+              "label": "Inspector",
+              "units": 1.1
+            },
+            {
+              "key": "inspector_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "review_signature",
+              "label": "Qualified Vehicle Maintenance Reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "review_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "A signature confirms the recorded Driver Vehicle Inspection scope and result, including limitations or uninspected power unit, trailer, safety equipment, visible defect, driver report, and release status."
+        }
+      ]
+    }
+  ]
+}

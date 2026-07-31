@@ -1,0 +1,347 @@
+{
+  "catalog_id": "construction_trades/dct_1122__drywall_repair_inspection_checklist",
+  "description": "For drywall repair, this inspection checklist records cutout boundary, backing, board type, treatment, drying intervals, dust control, texture match, and painting handoff. Its supporting evidence includes moisture check, cavity photo, repair-stage photos, material record, surface flatness, and finish comparison.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Drywall opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Drywall site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Drywall contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Drywall superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Drywall due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this drywall repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Drywall Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Room",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Surface",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Substrate",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Damage dimensions",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Texture",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Finish",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture room, surface, substrate, damage dimensions, texture, finish, utilities, moisture source, and occupancy constraints for this drywall repair.",
+          "key": "core_identity",
+          "label": "Drywall Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify room, surface, substrate, damage dimensions, texture, finish, utilities, moisture source, and occupancy constraints for this drywall repair record.",
+      "key": "identity_1",
+      "title": "Site Reference and Inspector"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Cutout boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Backing",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Board type",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Treatment",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Drying intervals",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Dust control",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For drywall repair, record cutout boundary, backing, board type, treatment, drying intervals, dust control, texture match, and painting handoff.",
+          "key": "task_inputs",
+          "label": "Drywall Repair Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the drywall repair condition before marking.",
+          "items": [
+            "Verify cutout boundary",
+            "Verify backing",
+            "Verify board type",
+            "Verify treatment",
+            "Verify drying intervals",
+            "Verify dust control"
+          ],
+          "key": "task_checks",
+          "label": "Drywall Repair Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Drywall checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Drywall review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Drywall qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Drywall check time",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the drywall repair criteria and inspector.",
+          "key": "checkpoint_result",
+          "label": "Drywall Repair Inspection Reference",
+          "type": "fields"
+        }
+      ],
+      "guidance": "For drywall repair, capture cutout boundary, backing, board type, treatment, drying intervals, dust control, texture match, and painting handoff.",
+      "key": "task_2",
+      "title": "Scope, Criteria, and Test Method"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Drywall when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Drywall measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Drywall evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Drywall result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For drywall repair, record moisture check, cavity photo, repair-stage photos, material record, surface flatness, and finish comparison.",
+          "key": "evidence_register",
+          "label": "Drywall Repair Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Moisture check",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Cavity photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Repair-stage photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Material record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Surface flatness",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every drywall repair evidence source.",
+          "key": "evidence_sources",
+          "label": "Drywall Repair Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Drywall Repair Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State drywall repair limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Drywall Repair Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support drywall repair findings with moisture check, cavity photo, repair-stage photos, material record, surface flatness, and finish comparison.",
+      "key": "observation_3",
+      "title": "Measured Finding Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Stop for active moisture, suspected hazardous material, damaged wiring or piping, or unresolved structural movement. Do not release affected drywall repair work.",
+          "key": "stop_boundary",
+          "label": "Drywall Repair Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Drywall exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Drywall correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Drywall escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close drywall repair exceptions with verification.",
+          "key": "exception_register",
+          "label": "Drywall Repair Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Drywall notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Drywall notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Drywall interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Drywall review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Drywall release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep drywall repair controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Drywall Repair Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Stop for active moisture, suspected hazardous material, damaged wiring or piping, or unresolved structural movement. Control and route each drywall repair exception.",
+      "key": "exception_4",
+      "title": "Defect Risk and Correction"
+    }
+  ],
+  "slug": "drywall-repair-inspection-checklist",
+  "source_filename": "dct_1122__drywall_repair_inspection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Drywall Repair Inspection Checklist: drywall damage repair and finish restoration using room, cutout boundary, and moisture check.",
+  "title": "Drywall Repair Inspection Checklist",
+  "use_case": "Use the inspection checklist during drywall damage repair and finish restoration when the drywall repair record must identify room, surface, substrate, damage dimensions, texture, finish, utilities, moisture source, and occupancy constraints. Complete the applicable handoff for dryness and finish verification, cleaned area, paint responsibility, customer acceptance, and recurrence note."
+}

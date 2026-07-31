@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1411__after_school_enrollment_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1411__after_school_enrollment_authorization_form.pdf",
+  "slug": "after-school-enrollment-authorization-form",
+  "title": "After-School Enrollment Authorization Form",
+  "subtitle": "Capture dismissal route, weekly schedule, program capacity, and snack plan; confirm late pickup and classroom handoff.",
+  "description": "After School Enrollment records dismissal route, weekly schedule, program capacity, snack plan, late pickup, and classroom handoff. After School Enrollment evidence stays linked.",
+  "use_case": "Use this after school enrollment authorization decision when staff must document dismissal route and weekly schedule. Reconcile program capacity, snack plan, late pickup, and classroom handoff before the after school enrollment handoff. Useful evidence includes the enrollment request, bell schedule, weekly roster, pickup authorization, snack-plan reference, and late-pickup contact log. Ask the assigned after school enrollment reviewer to confirm dismissal route against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "After School Enrollment contact and reference",
+      "guidance": "Record bell-to-program transfer, selected weekdays, dismissal method, authorized pickup adults, snack routing, and late-pickup escalation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "After School Enrollment people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "dismissal_route",
+              "label": "Dismissal route",
+              "units": 1.2
+            },
+            {
+              "key": "weekly_schedule",
+              "label": "Weekly schedule",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "After School Enrollment task details",
+          "fields": [
+            {
+              "key": "program_capacity",
+              "label": "Program capacity",
+              "units": 1.15
+            },
+            {
+              "key": "snack_plan",
+              "label": "Snack plan",
+              "units": 1.0
+            },
+            {
+              "key": "late_pickup",
+              "label": "Late pickup",
+              "units": 1.25
+            },
+            {
+              "key": "classroom_handoff",
+              "label": "Classroom handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "After School Enrollment decision and scope choices",
+      "guidance": "Decide each after school enrollment scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "After School Enrollment itemized scope",
+          "fields": [
+            {
+              "key": "dismissal_route",
+              "label": "Dismissal route",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "weekly_schedule",
+              "label": "Weekly schedule",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "program_capacity",
+              "label": "Program capacity",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "snack_plan",
+              "label": "Snack plan",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "late_pickup",
+              "label": "Late pickup",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "classroom_handoff",
+              "label": "Classroom handoff",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "After School Enrollment authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "After School Enrollment effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "After School Enrollment exception review and signer receipt",
+      "guidance": "Only recorded after school enrollment choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "After School Enrollment limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "After School Enrollment signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "After School Enrollment signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "After School Enrollment authorization boundary",
+          "guidance": "Named after school enrollment reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

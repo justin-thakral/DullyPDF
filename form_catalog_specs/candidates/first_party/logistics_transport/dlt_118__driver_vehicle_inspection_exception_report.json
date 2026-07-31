@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_118__driver_vehicle_inspection_exception_report",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_118__driver_vehicle_inspection_exception_report.pdf",
+  "slug": "driver-vehicle-inspection-exception-report",
+  "title": "Driver Vehicle Inspection Exception Report",
+  "subtitle": "Driver Vehicle Inspection: preserves facts, evidence, and actions.",
+  "description": "Driver Vehicle Inspection Exception Report covers power unit, trailer, safety equipment, visible defect, driver report, and release status. The fleet dispatch coordinator records Driver Vehicle Inspection chronology, evidence, containment, and effectiveness. Driver Vehicle Inspection Exception Report keeps Driver Vehicle Inspection exceptions visible until the fleet dispatch coordinator handoff.",
+  "use_case": "Use Driver Vehicle Inspection Exception Report at yard, roadside safe area, vehicle cab, exterior walkaround, and trailer. Document power unit, trailer, safety equipment, visible defect, driver report, and release status identity before Driver Vehicle Inspection begins. Compare power unit, trailer, safety equipment, visible defect, driver report, and release status findings with stated Driver Vehicle Inspection criteria; route unresolved Driver Vehicle Inspection issues to qualified vehicle maintenance reviewer. For Driver Vehicle Inspection Exception Report, confirm requirements for Driver Vehicle Inspection. Ask qualified vehicle maintenance reviewer to review Driver Vehicle Inspection conditions beyond the fleet dispatch coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Driver Vehicle Inspection incident details",
+      "guidance": "Record when the issue was discovered, who reported it, the exact affected subject, and the initial condition.",
+      "blocks": [
+        {
+          "key": "incident_header",
+          "type": "fields",
+          "label": "Incident header",
+          "fields": [
+            {
+              "key": "incident_number",
+              "label": "Vehicle inspection or shift ID",
+              "units": 1.0
+            },
+            {
+              "key": "event_date",
+              "label": "Event or discovery date",
+              "units": 0.7
+            },
+            {
+              "key": "event_time",
+              "label": "Event or discovery time",
+              "units": 0.65
+            },
+            {
+              "key": "reported_by",
+              "label": "Fleet Dispatch Coordinator",
+              "units": 1.05
+            },
+            {
+              "key": "party",
+              "label": "Driver / fleet / vehicle owner",
+              "units": 1.1
+            },
+            {
+              "key": "location",
+              "label": "Vehicle / trailer inspection area",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Driver Vehicle Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Inspection, route, driver, and date",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle, unit, plate, odometer, and trailer",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Prior defect, repair, and release references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Driver Vehicle Inspection identifier printed on power unit, trailer, safety equipment, visible defect, driver report, and release status or its linked source record."
+        },
+        {
+          "key": "initial_account",
+          "type": "textarea",
+          "label": "Initial factual account, affected scope, and immediate containment",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Initial factual account, affected scope, and immediate containment",
+              "multiline": true
+            }
+          ],
+          "height": 70,
+          "guidance": "Separate direct observation from reported information, assumption, and unknown fact."
+        }
+      ]
+    },
+    {
+      "key": "incident_chronology",
+      "title": "Chronology, custody, and response",
+      "guidance": "Enter events in time order and identify the source of each fact and the person responsible for the response.",
+      "blocks": [
+        {
+          "key": "chronology",
+          "type": "table",
+          "label": "Incident chronology",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date and time",
+              "units": 0.8
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact, event, or custody change",
+              "units": 1.3
+            },
+            {
+              "key": "source",
+              "label": "Source, witness, record, or device",
+              "units": 1.0
+            },
+            {
+              "key": "response",
+              "label": "Immediate response or notification",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "chronology_gaps",
+          "type": "textarea",
+          "label": "Unknown times, conflicting accounts, missing custody events, and source limitations",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unknown times, conflicting accounts, missing custody events, and source limitations",
+              "multiline": true
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "incident_evidence",
+      "title": "Affected scope, evidence, and escalation",
+      "guidance": "Preserve volatile evidence, distinguish affected from unaffected scope, and keep required notifications visible.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when a safety-critical defect, inspection limitation, repair verification, or qualified release remains unresolved. Protect power unit, trailer, safety equipment, visible defect, driver report, and release status; document the Driver Vehicle Inspection notification and await qualified vehicle maintenance reviewer direction."
+        },
+        {
+          "key": "preserved_evidence",
+          "type": "checklist",
+          "label": "Evidence preserved or linked",
+          "items": [
+            "Vehicle and defect photographs",
+            "Driver inspection and odometer record",
+            "Repair or maintenance reference",
+            "Qualified release or out-of-service evidence"
+          ],
+          "guidance": "Attach or link proof for power unit, trailer, safety equipment, visible defect, driver report, and release status; mark only Driver Vehicle Inspection evidence present in that record."
+        },
+        {
+          "key": "investigation_checks",
+          "type": "checklist",
+          "label": "Driver Vehicle Inspection investigation points",
+          "items": [
+            "Tires, wheels, fasteners, and visible inflation",
+            "Lights, reflectors, mirrors, glazing, and wipers",
+            "Brakes, steering, suspension, coupling, and visible leaks",
+            "Horn, warning devices, emergency equipment, and restraints",
+            "Load securement, doors, landing gear, and trailer condition",
+            "Defect classification, restriction, repair, and release"
+          ],
+          "guidance": "Record what was checked without converting an allegation, inference, or unavailable fact into an observation."
+        },
+        {
+          "key": "severity_and_escalation",
+          "type": "checklist",
+          "label": "Severity, notification, and escalation triggers",
+          "items": [
+            "Safety-critical defect",
+            "Inspection area unsafe",
+            "Repair status cannot be verified",
+            "Vehicle released without required authority"
+          ],
+          "guidance": "For Driver Vehicle Inspection, identify affected power unit, trailer, safety equipment, visible defect, driver report, and release status scope; ask fleet dispatch coordinator to document the Driver Vehicle Inspection immediate control before continuing."
+        }
+      ]
+    },
+    {
+      "key": "incident_actions",
+      "title": "Corrective action, disposition, and review",
+      "guidance": "Track containment through disposition and an effectiveness check; do not close an incident merely because the immediate event stopped.",
+      "blocks": [
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Corrective and preventive actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action or affected-scope disposition",
+              "units": 1.3
+            },
+            {
+              "key": "basis",
+              "label": "Supported cause, requirement, or reason",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "verification",
+              "label": "Completion or effectiveness evidence",
+              "units": 1.1
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "incident_status",
+          "type": "fields",
+          "label": "Incident status",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contained; investigation open",
+                "Corrective action in progress",
+                "Affected scope held",
+                "Ready for closure review",
+                "Escalated or externally referred"
+              ]
+            },
+            {
+              "key": "lead",
+              "label": "Investigation or action lead",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            },
+            {
+              "key": "next_review",
+              "label": "Next action or effectiveness-review trigger",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "incident_review",
+          "type": "signatures",
+          "label": "Incident preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by qualified vehicle maintenance reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2223__return_merchandise_report_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2223__return_merchandise_report_form.pdf",
+  "slug": "return-merchandise-report-form",
+  "title": "Return Merchandise Report Form",
+  "subtitle": "Return Merchandise Movement: reconciles results, variances, and follow-up.",
+  "description": "Return Merchandise Report Form covers return authorization, item, reason, condition, packaging, and reverse-logistics custody. The returns coordinator records Return Merchandise Movement source records, totals, variance, and distribution. Return Merchandise Report Form keeps Return Merchandise Movement exceptions visible until the returns coordinator handoff.",
+  "use_case": "Use Return Merchandise Report Form at customer location, return dock, carrier route, quarantine zone, and disposition point. Document return authorization, item, reason, condition, packaging, and reverse-logistics custody identity before Return Merchandise Movement begins. Compare return authorization, item, reason, condition, packaging, and reverse-logistics custody findings with stated Return Merchandise Movement criteria; route unresolved Return Merchandise Movement issues to returns disposition reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Reporting period and source identity",
+      "guidance": "For Return Merchandise Movement, identify responsible parties, customer location, return dock, carrier route, quarantine zone, and disposition point, and the linked return authorization, item, reason, condition, packaging, and reverse-logistics custody source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Report ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Return owner / supplier",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "location",
+              "label": "Return / quarantine zone",
+              "units": 1.3333333333333333
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Return Merchandise Movement identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Return authorization, order, and customer",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "Item, serial, lot, quantity, and package",
+              "units": 2.2222222222222223
+            },
+            {
+              "key": "identity_3",
+              "label": "Carrier, label, tracking, and destination",
+              "units": 2.2777777777777777
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Report lines and recipient controls",
+      "guidance": "Capture Return Merchandise Movement facts for return authorization, item, reason, condition, packaging, and reverse-logistics custody; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Return Merchandise Movement report checks",
+          "items": [
+            "Return reason and authorization scope",
+            "Item identity and quantity",
+            "Condition, completeness, accessories, and packaging",
+            "Custody and tracking events",
+            "Receipt inspection and quarantine status",
+            "Refund, replacement, repair, restock, or rejection routing"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Reported result lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Source record, item, or event",
+              "units": 1.2
+            },
+            {
+              "key": "expected",
+              "label": "Expected state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual result or variance",
+              "units": 1.05
+            },
+            {
+              "key": "follow_up",
+              "label": "Owner, recipient, or follow-up",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Reconciled outcome and reviewer acknowledgment",
+      "guidance": "Resolve open Return Merchandise Movement conditions; have returns coordinator assign the next Return Merchandise Movement owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Reconciliation exceptions and retained evidence",
+          "items": [
+            "Item differs from authorization",
+            "Quantity, serial, or accessory mismatch",
+            "Unsafe, contaminated, or damaged return",
+            "Financial outcome requested before condition review",
+            "Authorization and customer communication",
+            "Item and packaging condition images",
+            "Carrier tracking and receipt evidence",
+            "Inspection and disposition decision"
+          ],
+          "guidance": "Pause Return Merchandise Movement when authorization, identity, safe handling, custody, or disposition remains unresolved. Retain the available Return Merchandise Movement proof and route unresolved return authorization, item, reason, condition, packaging, and reverse-logistics custody scope to returns coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Report status and distribution",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Report review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for distribution",
+                "Distributed with follow-up",
+                "Correction required",
+                "Returned for clarification",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Report preparer and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Returns Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Returns Disposition Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

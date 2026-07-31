@@ -1,0 +1,240 @@
+{
+  "catalog_id": "construction_trades/dcf_117__rfi_log_form",
+  "description": "For rfi, this log form records precise conflict or omission, proposed interpretation, response-needed date, and potential cost or schedule effect. Its supporting evidence includes marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "RFI opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "RFI site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "RFI contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "RFI superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "RFI due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this rfi record to its evidence.",
+          "key": "record_routing",
+          "label": "Rfi Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Drawing",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Specification",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Detail",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Submittal",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture drawing, specification, detail, submittal, location, discipline, and related change records for this rfi.",
+          "key": "core_identity",
+          "label": "Rfi Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify drawing, specification, detail, submittal, location, discipline, and related change records for this rfi record.",
+      "key": "identity_1",
+      "title": "Log Reference and Review Owner"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "RFI when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "RFI measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "RFI evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "RFI result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For rfi, record marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence.",
+          "key": "evidence_register",
+          "label": "Rfi Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Marked-up excerpt",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Field photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Coordination sketch",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Meeting note",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every rfi evidence source.",
+          "key": "evidence_sources",
+          "label": "Rfi Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "RFI dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "RFI owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "RFI escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep rfi items open through verification.",
+          "key": "open_item_register",
+          "label": "Rfi Open Items and Next Actions",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "RFI reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved rfi entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Rfi Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Rfi Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For rfi, explain authorized response, incorporated drawing note, affected-party distribution, and change-impact follow-up; transfer each rfi open entry to the rfi successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Rfi Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Hold affected work when proceeding could conceal work, create rework, violate requirements, or prejudice entitlement. Route unresolved rfi work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Rfi Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support rfi findings with marked-up excerpt, field photo, coordination sketch, meeting note, and prior correspondence.",
+      "key": "observation_2",
+      "title": "Recorded Findings and Actions"
+    }
+  ],
+  "slug": "rfi-log-form",
+  "source_filename": "dcf_117__rfi_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Rfi Log Form: request-for-information clarification and response control using drawing, precise conflict or omission, and marked-up excerpt.",
+  "title": "RFI Log Form",
+  "use_case": "Use the log form during request-for-information clarification and response control when the rfi record must identify drawing, specification, detail, submittal, location, discipline, and related change records. Complete the applicable handoff for authorized response, incorporated drawing note, affected-party distribution, and change-impact follow-up."
+}

@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2603__catering_order_authorization_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2603__catering_order_authorization_form.pdf",
+  "slug": "catering-order-authorization-form",
+  "title": "Catering Order Authorization Form",
+  "subtitle": "Capture menu line, guarantee date, production count, and delivery; confirm dietary instruction and client signoff.",
+  "description": "Catering Order records menu line, guarantee date, production count, delivery, dietary instruction, and client signoff. Catering Order evidence stays linked.",
+  "use_case": "Use this catering order authorization decision when staff must document menu line and guarantee date. Reconcile production count, delivery, dietary instruction, and client signoff before the catering order handoff. Use the signed order, menu-line worksheet, guarantee confirmation, kitchen production count, delivery ticket, dietary flag, service-equipment list, and receiving signature. Ask the assigned catering order reviewer to confirm menu line against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Catering Order signer details review",
+      "guidance": "Capture menu lines, per-person or tray quantities, guarantee date, production count, delivery address, dietary instructions, service equipment, and client signoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Catering Order people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "event_stay_or_reservation_date",
+              "label": "Event, stay, or reservation date",
+              "units": 1.1
+            },
+            {
+              "key": "menu_line",
+              "label": "Menu line",
+              "units": 1.2
+            },
+            {
+              "key": "guarantee_date",
+              "label": "Guarantee date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Catering Order task details",
+          "fields": [
+            {
+              "key": "production_count",
+              "label": "Production count",
+              "units": 1.15
+            },
+            {
+              "key": "delivery",
+              "label": "Delivery",
+              "units": 1.0
+            },
+            {
+              "key": "dietary_instruction",
+              "label": "Dietary instruction",
+              "units": 1.25
+            },
+            {
+              "key": "client_signoff",
+              "label": "Client signoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Catering Order exception review and scope choices",
+      "guidance": "Decide each catering order scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Catering Order primary scope",
+          "fields": [
+            {
+              "key": "menu_line",
+              "label": "Menu line",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "guarantee_date",
+              "label": "Guarantee date",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "production_count",
+              "label": "Production count",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Catering Order additional scope",
+          "fields": [
+            {
+              "key": "delivery",
+              "label": "Delivery",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "dietary_instruction",
+              "label": "Dietary instruction",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "client_signoff",
+              "label": "Client signoff",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Catering Order authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Catering Order effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_service_recipient",
+              "label": "Authorized service recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Catering Order decision and signer receipt",
+      "guidance": "Only recorded catering order choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Catering Order limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Catering Order signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Catering Order signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Catering Order authorization boundary",
+          "guidance": "Named catering order reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

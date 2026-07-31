@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2605__produce_traceability_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2605__produce_traceability_form.pdf",
+  "slug": "produce-traceability-form",
+  "title": "Produce Traceability Form",
+  "subtitle": "Produce Traceability: captures actual activity and handoff.",
+  "description": "Produce Traceability Form covers produce lot, growing or packing source, transformation, shipment, recipient, and trace event. The traceability coordinator records Produce Traceability activity, quantities, variance, and handoff. Produce Traceability Form keeps Produce Traceability exceptions visible until the traceability coordinator handoff.",
+  "use_case": "Use Produce Traceability Form at field, harvest, packing, storage, shipment, and receiving point. Document produce lot, growing or packing source, transformation, shipment, recipient, and trace event identity before Produce Traceability begins. Compare produce lot, growing or packing source, transformation, shipment, recipient, and trace event findings with stated Produce Traceability criteria; route unresolved Produce Traceability issues to qualified produce-record reviewer. For Produce Traceability Form, confirm requirements for Produce Traceability. Ask qualified produce-record reviewer to review Produce Traceability conditions beyond the traceability coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "operation_header",
+      "title": "Farm activity details",
+      "guidance": "Identify the Produce Traceability entry, responsible parties, and operating window.",
+      "blocks": [
+        {
+          "key": "operation_context",
+          "type": "fields",
+          "label": "Record and operating context",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Farm, lot, job, or period ID",
+              "units": 1.0
+            },
+            {
+              "key": "operation_date",
+              "label": "Date or operating period",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Farm, facility, customer, or account",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Farm, field, lot, room, booth, or site",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_person",
+              "label": "Traceability Coordinator",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Produce Traceability identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Commodity, variety, lot, and quantity",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Grower, field, harvest date, and crew",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Pack, pallet, shipment, customer, and destination",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Produce Traceability identifier printed on produce lot, growing or packing source, transformation, shipment, recipient, and trace event or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "activity_record",
+      "title": "Activity observations and production evidence",
+      "guidance": "Use one row for each harvest, packing, transformation, pallet, shipment, or custody event that changes the produce trace.",
+      "blocks": [
+        {
+          "key": "plan_and_window",
+          "type": "fields",
+          "label": "Trace event and movement window",
+          "fields": [
+            {
+              "key": "start_time",
+              "label": "Event start",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "Event completion",
+              "units": 0.65
+            },
+            {
+              "key": "planned_result",
+              "label": "Expected source lot, quantity, and destination",
+              "units": 1.2
+            },
+            {
+              "key": "procedure",
+              "label": "Trace procedure or source-record reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "activity_lines",
+          "type": "table",
+          "label": "Produce lot and custody trace",
+          "columns": [
+            {
+              "key": "event",
+              "label": "Harvest, pack, transform, or shipment event",
+              "units": 1.25
+            },
+            {
+              "key": "source",
+              "label": "Source field, lot, and quantity",
+              "units": 1.05
+            },
+            {
+              "key": "link",
+              "label": "Pack, pallet, or shipment link",
+              "units": 1.0
+            },
+            {
+              "key": "result",
+              "label": "Resulting lot, recipient, or destination",
+              "units": 1.15
+            },
+            {
+              "key": "operator",
+              "label": "Operator / date",
+              "units": 0.75
+            }
+          ],
+          "rows": 7
+        }
+      ]
+    },
+    {
+      "key": "operation_controls",
+      "title": "Operating exception and corrections",
+      "guidance": "Record Produce Traceability variances, affected scope, immediate control, and owner.",
+      "blocks": [
+        {
+          "key": "operating_checks",
+          "type": "checklist",
+          "label": "Produce Traceability operating checks",
+          "items": [
+            "Source-lot assignment",
+            "Commingling or transformation event",
+            "Pack and label accuracy",
+            "Quantity balance through movement",
+            "Shipment and recipient linkage",
+            "Trace exercise, discrepancy, and corrective action"
+          ],
+          "guidance": "Complete the Produce Traceability checks that apply to this produce lot, growing or packing source, transformation, shipment, recipient, and trace event activity; explain every unchecked required item."
+        },
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when source, lot, quantity, transformation, recipient, or affected-scope trace remains unresolved. Protect produce lot, growing or packing source, transformation, shipment, recipient, and trace event; document the Produce Traceability notification and await qualified produce-record reviewer direction."
+        },
+        {
+          "key": "operation_exceptions",
+          "type": "checklist",
+          "label": "Stop, hold, or correction triggers",
+          "items": [
+            "Lot link broken",
+            "Quantity cannot be reconciled",
+            "Label or recipient mismatch",
+            "Affected scope cannot be bounded"
+          ],
+          "guidance": "For Produce Traceability, identify affected produce lot, growing or packing source, transformation, shipment, recipient, and trace event scope; ask traceability coordinator to document the Produce Traceability immediate control before continuing."
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Broken lot link, unreconciled quantity, affected scope, and correction",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Broken lot link, unreconciled quantity, affected scope, and correction",
+              "multiline": true
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "operation_result",
+      "title": "Activity outcome and next farm action",
+      "guidance": "State the Produce Traceability outcome, restrictions, next action, and receiving owner.",
+      "blocks": [
+        {
+          "key": "result_evidence",
+          "type": "checklist",
+          "label": "Supporting records retained",
+          "items": [
+            "Source and harvest records",
+            "Packing and lot-label evidence",
+            "Shipping and receiving record",
+            "Quantity reconciliation and trace-test result"
+          ],
+          "guidance": "Attach or link proof for produce lot, growing or packing source, transformation, shipment, recipient, and trace event; mark only Produce Traceability evidence present in that record."
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Trace result and next custodian",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Traceability outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed as planned",
+                "Completed with correction",
+                "Follow-up required",
+                "Affected scope held",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "completed_at",
+              "label": "Completion date and time",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_action",
+              "label": "Remaining action or restriction",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner or receiving party",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Due date or trigger",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Produce Traceability outcome details, unresolved constraints, and receiving instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Produce Traceability outcome details, unresolved constraints, and receiving instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Document Produce Traceability outcome facts, unresolved operating limits, receiver directions, and the accountable next action."
+        },
+        {
+          "key": "operation_handoff",
+          "type": "signatures",
+          "label": "Trace preparer and receiving custodian",
+          "fields": [
+            {
+              "key": "operator_signature",
+              "label": "Operator or preparer",
+              "units": 1.1
+            },
+            {
+              "key": "operator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver, supervisor, or customer",
+              "units": 1.2
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "The Produce Traceability acknowledgment records the produce lot, growing or packing source, transformation, shipment, recipient, and trace event outcome. It cannot conceal a Produce Traceability hold, exception, or traceability coordinator restriction."
+        }
+      ]
+    }
+  ]
+}

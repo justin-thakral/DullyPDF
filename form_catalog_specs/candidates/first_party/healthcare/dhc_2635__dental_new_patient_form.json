@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2635__dental_new_patient_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2635__dental_new_patient_form.pdf",
+  "slug": "dental-new-patient-form",
+  "title": "Dental New Patient Form",
+  "subtitle": "Capture dental concern, prior records, imaging reference, and care-team review; confirm consent status and follow-up.",
+  "description": "Dental New Patient records dental concern, prior records, imaging reference, care-team review, consent status, and follow-up. Dental New Patient evidence stays linked.",
+  "use_case": "Use this dental new patient operational record when staff must document dental concern and prior records. Reconcile imaging reference, care-team review, consent status, and follow-up before the dental new patient handoff. Use the patient-stated concern, prior-dentist contact, records request, radiograph availability, appliance list, care-team intake review, appointment plan, and follow-up note. This intake centers oral-health concerns, tooth or gum location, prior dental office, radiograph transfer, appliance history, hygiene context, operatory access, and dental-team follow-up. Ask the assigned dental new patient reviewer to confirm dental concern against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Dental New Patient starting details review",
+      "guidance": "Capture dental concern in patient words, prior dentist and records, imaging availability, appliance or accessibility need, care-team review, and follow-up. Keep any urgent dental new patient issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Dental New Patient people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "patient_location_or_service_site",
+              "label": "Patient location or service site",
+              "units": 1.1
+            },
+            {
+              "key": "dental_concern",
+              "label": "Dental concern",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Dental New Patient task details",
+          "fields": [
+            {
+              "key": "prior_records",
+              "label": "Prior records",
+              "units": 1.15
+            },
+            {
+              "key": "imaging_reference",
+              "label": "Imaging reference",
+              "units": 1.0
+            },
+            {
+              "key": "care_team_review",
+              "label": "Care-team review",
+              "units": 1.25
+            },
+            {
+              "key": "consent_status",
+              "label": "Consent status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Dental New Patient exception review and activity",
+      "guidance": "Record each meaningful dental new patient event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Dental New Patient activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "dental_concern",
+              "label": "Dental concern",
+              "units": 1.1
+            },
+            {
+              "key": "imaging_reference",
+              "label": "Imaging reference",
+              "units": 1.25
+            },
+            {
+              "key": "consent_status",
+              "label": "Consent status",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Dental New Patient change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Dental New Patient decision and completion",
+      "guidance": "Leave the current dental new patient result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Dental New Patient final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Dental New Patient completion receipt",
+          "fields": [
+            {
+              "key": "responsible_care_or_administrative_staff_and_date",
+              "label": "Responsible care or administrative staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded dental new patient task status."
+        }
+      ]
+    }
+  ]
+}

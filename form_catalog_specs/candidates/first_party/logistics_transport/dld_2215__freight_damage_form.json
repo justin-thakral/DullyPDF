@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2215__freight_damage_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2215__freight_damage_form.pdf",
+  "slug": "freight-damage-form",
+  "title": "Freight Damage Form",
+  "subtitle": "Freight Damage: captures actual activity and handoff.",
+  "description": "Freight Damage Form covers freight unit, packaging, damage area, affected quantity, custody event, and mitigation action. The freight exception coordinator records Freight Damage activity, quantities, variance, and handoff. Freight Damage Form keeps Freight Damage exceptions visible until the freight exception coordinator handoff.",
+  "use_case": "Use Freight Damage Form at trailer, dock, warehouse zone, delivery location, and protected evidence area. Document freight unit, packaging, damage area, affected quantity, custody event, and mitigation action identity before Freight Damage begins. Compare freight unit, packaging, damage area, affected quantity, custody event, and mitigation action findings with stated Freight Damage criteria; route unresolved Freight Damage issues to claims or cargo-condition reviewer. For Freight Damage Form, confirm requirements for Freight Damage. Ask claims or cargo-condition reviewer to review Freight Damage conditions beyond the freight exception coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "operation_header",
+      "title": "Shipment identity and party details",
+      "guidance": "Identify the Freight Damage entry, responsible parties, and operating window.",
+      "blocks": [
+        {
+          "key": "operation_context",
+          "type": "fields",
+          "label": "Record and operating context",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Damage, shipment, or claim ID",
+              "units": 1.0
+            },
+            {
+              "key": "operation_date",
+              "label": "Date or operating period",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Cargo owner / custody party",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Trailer / dock / evidence area",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_person",
+              "label": "Freight Exception Coordinator",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Freight Damage identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Shipment, order, bill, and claim reference",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, trailer, seal, and custody identifiers",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, lot, serial, package, and affected-quantity identity",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Freight Damage identifier printed on freight unit, packaging, damage area, affected quantity, custody event, and mitigation action or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "activity_record",
+      "title": "Distribution activity and custody details",
+      "guidance": "Enter one Freight Damage row per task, item, reading, or event.",
+      "blocks": [
+        {
+          "key": "plan_and_window",
+          "type": "fields",
+          "label": "Plan and operating window",
+          "fields": [
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.65
+            },
+            {
+              "key": "planned_result",
+              "label": "Planned result or target",
+              "units": 1.2
+            },
+            {
+              "key": "procedure",
+              "label": "Procedure, order, label, or instruction reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "activity_lines",
+          "type": "table",
+          "label": "Items, custody events, quantities, and condition",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item, package, document, or event",
+              "units": 1.2
+            },
+            {
+              "key": "expected",
+              "label": "Expected quantity or state",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Received, moved, or observed",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition or variance",
+              "units": 0.95
+            },
+            {
+              "key": "custody",
+              "label": "From / to custody",
+              "units": 0.9
+            },
+            {
+              "key": "initials",
+              "label": "Initials",
+              "units": 0.65
+            }
+          ],
+          "rows": 7
+        }
+      ]
+    },
+    {
+      "key": "operation_controls",
+      "title": "Receipt variance and exception handling",
+      "guidance": "Record Freight Damage variances, affected scope, immediate control, and owner.",
+      "blocks": [
+        {
+          "key": "operating_checks",
+          "type": "checklist",
+          "label": "Freight Damage operating checks",
+          "items": [
+            "Damage type, location, extent, and discovery time",
+            "Packaging, pallet, restraint, and moisture condition",
+            "Seal, vehicle, dock, and handling context",
+            "Affected and unaffected quantity reconciliation",
+            "Salvage, quarantine, rework, or mitigation action",
+            "Notice, inspection, and evidence preservation"
+          ],
+          "guidance": "Complete the Freight Damage checks that apply to this freight unit, packaging, damage area, affected quantity, custody event, and mitigation action activity; explain every unchecked required item."
+        },
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when affected scope, evidence preservation, safe containment, notice, or authorized disposition remains unresolved. Protect freight unit, packaging, damage area, affected quantity, custody event, and mitigation action; document the Freight Damage notification and await claims or cargo-condition reviewer direction."
+        },
+        {
+          "key": "operation_exceptions",
+          "type": "checklist",
+          "label": "Stop, hold, or correction triggers",
+          "items": [
+            "Affected quantity cannot be isolated",
+            "Evidence discarded or altered",
+            "Product creates safety or contamination concern",
+            "Liability or disposition decision requested without review"
+          ],
+          "guidance": "For Freight Damage, identify affected freight unit, packaging, damage area, affected quantity, custody event, and mitigation action scope; ask freight exception coordinator to document the Freight Damage immediate control before continuing."
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Exception, change from plan, affected scope, and immediate response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Exception, change from plan, affected scope, and immediate response",
+              "multiline": true
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "operation_result",
+      "title": "Receipt evidence and custody status",
+      "guidance": "State the Freight Damage outcome, restrictions, next action, and receiving owner.",
+      "blocks": [
+        {
+          "key": "result_evidence",
+          "type": "checklist",
+          "label": "Supporting records retained",
+          "items": [
+            "Overview and close-up damage photographs",
+            "Packaging and restraint photographs",
+            "Count, value, and document evidence",
+            "Custody chronology and notification proof"
+          ],
+          "guidance": "Attach or link proof for freight unit, packaging, damage area, affected quantity, custody event, and mitigation action; mark only Freight Damage evidence present in that record."
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Operation outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Received or completed",
+                "Completed with exception",
+                "Partially completed",
+                "Held",
+                "Refused or returned"
+              ]
+            },
+            {
+              "key": "completed_at",
+              "label": "Completion date and time",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_action",
+              "label": "Remaining action or restriction",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner or receiving party",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Due date or trigger",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Freight Damage outcome details, unresolved constraints, and receiving instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Freight Damage outcome details, unresolved constraints, and receiving instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Document Freight Damage outcome facts, unresolved operating limits, receiver directions, and the accountable next action."
+        },
+        {
+          "key": "operation_handoff",
+          "type": "signatures",
+          "label": "Operator and handoff acknowledgment",
+          "fields": [
+            {
+              "key": "operator_signature",
+              "label": "Operator or preparer",
+              "units": 1.1
+            },
+            {
+              "key": "operator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver, supervisor, or customer",
+              "units": 1.2
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "The Freight Damage acknowledgment records the freight unit, packaging, damage area, affected quantity, custody event, and mitigation action outcome. It cannot conceal a Freight Damage hold, exception, or freight exception coordinator restriction."
+        }
+      ]
+    }
+  ]
+}

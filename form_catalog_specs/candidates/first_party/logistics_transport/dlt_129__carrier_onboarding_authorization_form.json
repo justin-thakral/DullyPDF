@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_129__carrier_onboarding_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_129__carrier_onboarding_authorization_form.pdf",
+  "slug": "carrier-onboarding-authorization-form",
+  "title": "Carrier Onboarding Authorization Form",
+  "subtitle": "Carrier Onboarding: bounds the decision, conditions, and expiry.",
+  "description": "Carrier Onboarding Authorization Form binds carrier organization, operating authority, insurance, contacts, equipment, controls, and approval to a named transport decision, commercial or operating limit, effective time, and the carrier procurement authority's confirmation. The carrier onboarding coordinator records the requested Carrier Onboarding action and keeps any variance outside the granted authority.",
+  "use_case": "Use Carrier Onboarding Authorization Form at carrier file, qualification system, dispatch access, and document repository. Reconcile applicable Carrier Onboarding requirements with the load, carrier, rate, claim, equipment, document, or inventory boundary that applies. Capture the carrier procurement authority's approval, counteroffer, hold, or decline, then reauthorize any change to carrier organization, operating authority, insurance, contacts, equipment, controls, and approval.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "authorization_request",
+      "title": "Carrier and shipment identity",
+      "guidance": "Identify the Carrier Onboarding request, named decision maker, contact, effective time, and subject.",
+      "blocks": [
+        {
+          "key": "authorization_header",
+          "type": "fields",
+          "label": "Request and decision-maker details",
+          "fields": [
+            {
+              "key": "authorization_number",
+              "label": "Carrier onboarding record ID",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "requesting_party",
+              "label": "Carrier / vendor account",
+              "units": 1.15
+            },
+            {
+              "key": "decision_maker",
+              "label": "Carrier procurement authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_contact",
+              "label": "Decision-maker contact",
+              "units": 1.05
+            },
+            {
+              "key": "requested_effective_time",
+              "label": "Requested effective time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Carrier Onboarding identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Carrier legal and operating names",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Authority, tax, insurance, and vendor identifiers",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Dispatch, safety, claims, billing, and after-hours contacts",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Carrier Onboarding identifier printed on carrier organization, operating authority, insurance, contacts, equipment, controls, and approval or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Requested authorization and task details",
+      "guidance": "List each Carrier Onboarding action with its quantity, amount, route, custody, or time limit.",
+      "blocks": [
+        {
+          "key": "authorization_basis",
+          "type": "checklist",
+          "label": "Carrier Onboarding authorization checks",
+          "items": [
+            "Authority and operating scope",
+            "Insurance type, limit, term, and source",
+            "Equipment and service capability",
+            "Safety, security, tracking, and cargo controls",
+            "Payment, fraud, identity, and communication verification",
+            "Approval scope, conditions, expiration, and re-review"
+          ],
+          "guidance": "Confirm the Carrier Onboarding facts supporting each listed action."
+        },
+        {
+          "key": "authorized_actions",
+          "type": "table",
+          "label": "Requested and authorized actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Driver, carrier, or inspection action",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Vehicle, route, account, or party",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Safety, service, or authority limit",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Schedule or qualification condition",
+              "units": 1.0
+            },
+            {
+              "key": "expiry",
+              "label": "Effective time or expiry",
+              "units": 0.85
+            },
+            {
+              "key": "initials",
+              "label": "Authority initials",
+              "units": 0.7
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "fields",
+          "label": "Authorization boundary",
+          "fields": [
+            {
+              "key": "primary_limit",
+              "label": "Vehicle / route / account limit",
+              "units": 1.1
+            },
+            {
+              "key": "secondary_limit",
+              "label": "Safety / qualification boundary",
+              "units": 1.1
+            },
+            {
+              "key": "effective_time",
+              "label": "Effective date and time",
+              "units": 0.95
+            },
+            {
+              "key": "expiry_reference",
+              "label": "Expiry / next review",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_conditions",
+      "title": "Authorization exception and restrictions",
+      "guidance": "Stop Carrier Onboarding at the stated boundary and obtain renewed consent for a material variance.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without renewed authorization",
+          "guidance": "Stop normal processing when carrier identity, authority, insurance, fraud control, or authorized approval remains unresolved. Protect carrier organization, operating authority, insurance, contacts, equipment, controls, and approval; record the Carrier Onboarding notification and obtain renewed authorization from carrier procurement authority before continuing."
+        },
+        {
+          "key": "authorization_stops",
+          "type": "checklist",
+          "label": "Conditions requiring a hold or renewed authorization",
+          "items": [
+            "Identity or ownership cannot be verified",
+            "Authority or insurance incomplete",
+            "Fraud or contact inconsistency",
+            "Approval requested beyond reviewer authority"
+          ],
+          "guidance": "Identify the affected carrier organization, operating authority, insurance, contacts, equipment, controls, and approval scope, preserve the stated limit, and contact carrier procurement authority before continuing."
+        },
+        {
+          "key": "authorization_variance_instructions",
+          "type": "fields",
+          "label": "Variance and contact instructions",
+          "fields": [
+            {
+              "key": "variance_instruction",
+              "label": "Variance instruction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contact decision maker before any variance",
+                "Proceed only within stated limits",
+                "Hold and request new authorization",
+                "No substitution or route change"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Decision-maker contact / method",
+              "units": 1.15
+            },
+            {
+              "key": "revocation_trigger",
+              "label": "Revocation or hold trigger",
+              "units": 1.0
+            },
+            {
+              "key": "variance_reference",
+              "label": "New-authorization reference",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "conditions_and_limits",
+          "type": "textarea",
+          "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_decision",
+      "title": "Transport authorization decision",
+      "guidance": "Record the Carrier Onboarding consent, final limit, effective time, confirmation, and signatures.",
+      "blocks": [
+        {
+          "key": "authorization_evidence",
+          "type": "checklist",
+          "label": "Evidence reviewed with the decision maker",
+          "items": [
+            "Source authority and insurance evidence",
+            "Verified contact and identity record",
+            "Capability and control questionnaire",
+            "Approval decision and expiry monitoring"
+          ],
+          "guidance": "Attach or link proof for carrier organization, operating authority, insurance, contacts, equipment, controls, and approval; mark only Carrier Onboarding evidence present in that record."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Operations authorization outcome",
+          "fields": [
+            {
+              "key": "authorization_result",
+              "label": "Operations authorization",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Listed operations authorized",
+                "Authorized with stated restrictions",
+                "Conditional release or assignment",
+                "Held pending evidence",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_limit",
+              "label": "Authorized route / service limit",
+              "units": 1.15
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation / PO / message reference",
+              "units": 1.05
+            },
+            {
+              "key": "verification_owner",
+              "label": "Verification / release owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Decision-maker consent and operator acknowledgment",
+          "fields": [
+            {
+              "key": "decision_maker_signature",
+              "label": "Authorizing authority: Carrier procurement authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_maker_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "operator_signature",
+              "label": "Fleet / operations representative",
+              "units": 1.15
+            },
+            {
+              "key": "operator_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

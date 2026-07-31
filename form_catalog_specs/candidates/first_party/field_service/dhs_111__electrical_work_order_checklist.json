@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_111__electrical_work_order_checklist",
+  "source_section": "field_service",
+  "source_filename": "dhs_111__electrical_work_order_checklist.pdf",
+  "slug": "electrical-work-order-checklist",
+  "title": "Electrical Work Order Checklist",
+  "subtitle": "Residential Electrical Work: documents findings, limits, and disposition.",
+  "description": "Electrical Work Order Checklist covers branch circuit, panel position, device, conductor, load, and affected area. The electrical service coordinator records Residential Electrical Work criteria, findings, restrictions, and follow-up. Electrical Work Order Checklist keeps Residential Electrical Work exceptions visible until the electrical service coordinator handoff.",
+  "use_case": "Use Electrical Work Order Checklist at residence, panel, circuit, room, device, and equipment connection. Document branch circuit, panel position, device, conductor, load, and affected area identity before Residential Electrical Work begins. Compare branch circuit, panel position, device, conductor, load, and affected area findings with stated Residential Electrical Work criteria; route unresolved Residential Electrical Work issues to qualified electrical reviewer. For Electrical Work Order Checklist, confirm requirements for Residential Electrical Work. Ask qualified electrical reviewer to review Residential Electrical Work conditions beyond the electrical service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Residential Electrical Work, identify responsible parties, residence, panel, circuit, room, device, and equipment connection, and the linked branch circuit, panel position, device, conductor, load, and affected area source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Electrical Work identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer and service address",
+              "units": 1.5555555555555556
+            },
+            {
+              "key": "identity_2",
+              "label": "Panel, circuit, device, and load identifier",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Reported trip, outage, heat, damage, or performance history",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Observed conditions and item decisions",
+      "guidance": "Capture Residential Electrical Work facts for branch circuit, panel position, device, conductor, load, and affected area; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Electrical Work inspection checks",
+          "items": [
+            "De-energization and absence-of-voltage control within scope",
+            "Panel, breaker, conductor, termination, and enclosure condition",
+            "Device, receptacle, switch, fixture, and grounding observation",
+            "Load, rating, labeling, and overcurrent-protection match",
+            "Heat, odor, arcing, moisture, and physical-damage signs",
+            "Post-work energization and functional test"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection disposition and reviewer acknowledgment",
+      "guidance": "Before closing Residential Electrical Work, identify what failed or was not inspected, who owns correction, and when examination resumes. Electrical Service Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Energized work not specifically controlled",
+            "Service or panel condition outside authorization",
+            "Heat, arcing, damaged conductor, or moisture concern",
+            "Required permit or qualified authority unavailable",
+            "Panel and circuit identification",
+            "Authorized meter or test readings",
+            "Repair material and labeling record",
+            "Energization and functional-test evidence"
+          ],
+          "guidance": "Pause Residential Electrical Work when energization, grounding, overcurrent, conductor, panel, or authorization concern remains. Retain the available Residential Electrical Work proof and route unresolved branch circuit, panel position, device, conductor, load, and affected area scope to electrical service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Electrical Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Electrical Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

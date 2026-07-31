@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_154__transportation_change_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_154__transportation_change_review_worksheet.pdf",
+  "slug": "transportation-change-review-worksheet",
+  "title": "Transportation Change Review Worksheet",
+  "subtitle": "Capture student route, effective day, alternate stop, and request source; confirm driver notice and arrival confirmation.",
+  "description": "Transportation Change records student route, effective day, alternate stop, request source, driver notice, and arrival confirmation. Transportation Change evidence stays linked.",
+  "use_case": "Use this transportation change evidence-based review when staff must document student route and effective day. Reconcile alternate stop, request source, driver notice, and arrival confirmation before the transportation change handoff. Use the guardian request, identity verification, original route sheet, alternate-stop map, school approval, dispatch notice, driver acknowledgment, and arrival confirmation. This request alters one student's day-specific dismissal route using guardian authentication, alternate stop or pickup person, dispatch update, driver read-back, school release, and arrival verification. Ask the assigned transportation change reviewer to confirm student route against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Transportation Change meeting details review",
+      "guidance": "Identify student, original route, effective day, alternate stop or pickup person, request source, school approval, driver notice, and arrival confirmation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Transportation Change people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "student_route",
+              "label": "Student route",
+              "units": 1.1
+            },
+            {
+              "key": "effective_day",
+              "label": "Effective day",
+              "units": 1.2
+            },
+            {
+              "key": "alternate_stop",
+              "label": "Alternate stop",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Transportation Change task details",
+          "fields": [
+            {
+              "key": "request_source",
+              "label": "Request source",
+              "units": 1.15
+            },
+            {
+              "key": "driver_notice",
+              "label": "Driver notice",
+              "units": 1.0
+            },
+            {
+              "key": "arrival_confirmation",
+              "label": "Arrival confirmation",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "Transportation Change exception review and discussion",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "Transportation Change strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_student_route",
+              "label": "Strength, progress, or successful support related to student route"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Transportation Change questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_alternate_stop",
+              "label": "Concern, missing context, or question about alternate stop"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "Transportation Change participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_request_source",
+              "label": "Priority, preference, or proposed support for request source"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "Transportation Change action plan",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "Transportation Change agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "Transportation Change follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "Transportation Change review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

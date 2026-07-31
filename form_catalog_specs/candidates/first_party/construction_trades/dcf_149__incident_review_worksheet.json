@@ -1,0 +1,348 @@
+{
+  "catalog_id": "construction_trades/dcf_149__incident_review_worksheet",
+  "description": "For incident, this review worksheet records immediate care, scene control, notification chain, evidence preservation, preliminary classification, and reporting duties. Its supporting evidence includes firsthand statements, scene photos, equipment status, training record, timeline, and corrective-action evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Incident opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Incident site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Incident contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Incident superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Incident due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this incident record to its evidence.",
+          "key": "record_routing",
+          "label": "Incident Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "People involved",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Exact location",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Activity",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Witnesses",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture people involved, exact location, activity, equipment, witnesses, environmental conditions, and emergency response for this incident.",
+          "key": "core_identity",
+          "label": "Incident Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify people involved, exact location, activity, equipment, witnesses, environmental conditions, and emergency response for this incident record.",
+      "key": "identity_1",
+      "title": "Package Reference and Reviewer"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Immediate care",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Scene control",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Notification chain",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Evidence preservation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For incident, record immediate care, scene control, notification chain, evidence preservation, preliminary classification, and reporting duties.",
+          "key": "task_inputs",
+          "label": "Incident Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Incident decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Incident supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Incident review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified incident facts from judgment.",
+          "key": "review_criteria",
+          "label": "Incident Review Criteria and Support",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Incident Analysis and Alternatives",
+              "multiline": true
+            }
+          ],
+          "guidance": "Explain incident alternatives and retained uncertainty.",
+          "height": 54,
+          "key": "analysis",
+          "label": "Incident Analysis and Alternatives",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Preserve the scene and stop related work when required for emergency response, investigation, or uncontrolled risk. Route unresolved incident work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Incident Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For incident, capture immediate care, scene control, notification chain, evidence preservation, preliminary classification, and reporting duties.",
+      "key": "task_2",
+      "title": "Review Scope and Requirements"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Incident when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Incident measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Incident evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Incident result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For incident, record firsthand statements, scene photos, equipment status, training record, timeline, and corrective-action evidence.",
+          "key": "evidence_register",
+          "label": "Incident Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Firsthand statements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Scene photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Equipment status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Training record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Timeline",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every incident evidence source.",
+          "key": "evidence_sources",
+          "label": "Incident Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Incident Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State incident limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Incident Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support incident findings with firsthand statements, scene photos, equipment status, training record, timeline, and corrective-action evidence.",
+      "key": "observation_3",
+      "title": "Evidence Comparison"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select review worksheet disposition",
+                "Recommend acceptance",
+                "Recommend conditions",
+                "Further review",
+                "Do not accept"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Incident decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Incident approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Incident authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Incident review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate incident disposition.",
+          "key": "disposition",
+          "label": "Incident Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Incident Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the incident decision to evidence.",
+          "height": 52,
+          "key": "decision_basis",
+          "label": "Incident Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Incident coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Incident manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Incident decision recipient and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Incident Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the incident next step from firsthand statements, scene photos, equipment status, training record, timeline, and corrective-action evidence.",
+      "key": "decision_4",
+      "title": "Recommended Disposition"
+    }
+  ],
+  "slug": "incident-review-worksheet",
+  "source_filename": "dcf_149__incident_review_worksheet.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Incident Review Worksheet: construction incident stabilization and fact record using people involved, immediate care, and firsthand statements.",
+  "title": "Incident Review Worksheet",
+  "use_case": "Use the review worksheet during construction incident stabilization and fact record when the incident record must identify people involved, exact location, activity, equipment, witnesses, environmental conditions, and emergency response. Complete the applicable handoff for qualified review, required notifications, corrective actions, return-to-work authority, and record retention."
+}

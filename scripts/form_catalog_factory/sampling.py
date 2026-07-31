@@ -9,6 +9,8 @@ import re
 from pathlib import Path
 from typing import Any
 
+from .themes import ThemeError, resolve_theme_provenance
+
 
 class SamplingPlanError(RuntimeError):
     """Raised when release evidence cannot produce a stable sample."""
@@ -42,6 +44,15 @@ def _canonical_hash(payload: Any) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def _resolve_render_theme(
+    *sources: tuple[str, dict[str, Any]],
+) -> dict[str, Any] | None:
+    try:
+        return resolve_theme_provenance(*sources)
+    except ThemeError as exc:
+        raise SamplingPlanError(str(exc)) from exc
+
+
 def build_sample_plan(
     *,
     selection_path: str | Path,
@@ -56,6 +67,11 @@ def build_sample_plan(
     selection = _load(selection_path, "selection plan")
     report = _load(build_report_path, "build report")
     manifest = _load(manifest_path, "release manifest")
+    render_theme = _resolve_render_theme(
+        ("selection", selection),
+        ("build report", report),
+        ("release manifest", manifest),
+    )
     items = selection.get("items")
     results = report.get("results")
     forms = manifest.get("forms")
@@ -254,7 +270,7 @@ def build_sample_plan(
                 "browserCanary": item_id in browser_ids,
             }
         )
-    return {
+    sample_plan = {
         "schemaVersion": 1,
         "releaseId": release_id,
         "sourceCommit": source_commit,
@@ -270,6 +286,9 @@ def build_sample_plan(
         "browserCatalogIds": browser_ids,
         "samples": samples,
     }
+    if render_theme is not None:
+        sample_plan["renderTheme"] = render_theme
+    return sample_plan
 
 
 def write_sample_plan(path: str | Path, payload: dict[str, Any]) -> None:

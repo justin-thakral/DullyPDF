@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_102__hvac_service_call_work_order",
+  "source_section": "field_service",
+  "source_filename": "dhs_102__hvac_service_call_work_order.pdf",
+  "slug": "hvac-service-call-work-order",
+  "title": "HVAC Service Call Work Order",
+  "subtitle": "Residential HVAC Service Call: connects authorized scope to results.",
+  "description": "HVAC Service Call Work Order covers heating or cooling unit, thermostat, duct path, condensate, and occupied comfort zone. The home-service coordinator records Residential HVAC Service Call authorized tasks, materials, results, and changes. HVAC Service Call Work Order keeps Residential HVAC Service Call exceptions visible until the home-service coordinator handoff.",
+  "use_case": "Use HVAC Service Call Work Order at residence, equipment location, thermostat zone, and exterior unit area. Document heating or cooling unit, thermostat, duct path, condensate, and occupied comfort zone identity before Residential HVAC Service Call begins. Compare heating or cooling unit, thermostat, duct path, condensate, and occupied comfort zone findings with stated Residential HVAC Service Call criteria; route unresolved Residential HVAC Service Call issues to qualified HVAC technician. For HVAC Service Call Work Order, confirm requirements for Residential HVAC Service Call. Ask qualified HVAC technician to review Residential HVAC Service Call conditions beyond the home-service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Residential work-order scope review",
+      "guidance": "Bind Residential HVAC Service Call to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "HVAC job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "HVAC customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "HVAC address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Home-Service Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential HVAC Service Call identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Equipment type, model, serial, and thermostat zone",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Reported comfort issue, onset, prior service, and access condition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential HVAC Service Call identifier printed on heating or cooling unit, thermostat, duct path, condensate, and occupied comfort zone or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized residential work details",
+      "guidance": "Record authorized Residential HVAC Service Call activity; separate proposed, declined, deferred, or new Residential HVAC Service Call scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "HVAC service or diagnostic task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Unit, thermostat, duct, drain, or zone",
+              "units": 1.1
+            },
+            {
+              "key": "method",
+              "label": "Part, setting, measurement, or method",
+              "units": 1.1
+            },
+            {
+              "key": "result",
+              "label": "Temperature, airflow, or operating result",
+              "units": 1.1
+            },
+            {
+              "key": "worker",
+              "label": "Technician",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Residential HVAC Service Call work and verification points",
+          "items": [
+            "Thermostat call, displayed temperature, and mode response",
+            "Filter, airflow, register, and return condition",
+            "Indoor and outdoor unit visual condition",
+            "Condensate, drain, water, and icing observation",
+            "Electrical, fuel, venting, noise, and odor concern",
+            "Supply-return temperature or authorized performance result"
+          ],
+          "guidance": "Use each Residential HVAC Service Call check to prompt documented heating or cooling unit, thermostat, duct path, condensate, and occupied comfort zone execution; enter its actual Residential HVAC Service Call result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Residential HVAC Service Call parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Residential work exception and changes",
+      "guidance": "Stop Residential HVAC Service Call at any scope or cost limit; honor home-service coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when a fuel, electrical, refrigerant, water, access, or safe-operation concern remains. Protect heating or cooling unit, thermostat, duct path, condensate, and occupied comfort zone; document the Residential HVAC Service Call notification and await qualified HVAC technician direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Gas odor, combustion, damaged conductor, or water damage",
+            "Refrigerant work beyond qualification",
+            "Unsafe access or occupied-area condition",
+            "System cannot be tested or restored safely"
+          ],
+          "guidance": "For Residential HVAC Service Call, identify affected heating or cooling unit, thermostat, duct path, condensate, and occupied comfort zone scope; ask home-service coordinator to document the Residential HVAC Service Call immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "New HVAC finding, added scope or cost, customer response, and safe operating status",
+          "fields": [
+            {
+              "key": "details",
+              "label": "New HVAC finding, added scope or cost, customer response, and safe operating status",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work completion and customer handoff",
+      "guidance": "Reconcile Residential HVAC Service Call to authorization; state home-service coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Equipment label and thermostat images",
+            "Symptom and diagnostic reading record",
+            "Approved repair and part trace",
+            "Customer-observed operating result"
+          ],
+          "guidance": "Attach or link proof for heating or cooling unit, thermostat, duct path, condensate, and occupied comfort zone; mark only Residential HVAC Service Call evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

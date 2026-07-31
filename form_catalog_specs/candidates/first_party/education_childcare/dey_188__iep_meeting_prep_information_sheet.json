@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_188__iep_meeting_prep_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_188__iep_meeting_prep_information_sheet.pdf",
+  "slug": "iep-meeting-prep-information-sheet",
+  "title": "IEP Meeting Prep Information Sheet",
+  "subtitle": "Capture meeting notice, current plan, progress evidence, and participant role; confirm family priority and proposed action.",
+  "description": "IEP Meeting Prep records meeting notice, current plan, progress evidence, participant role, family priority, and proposed action. IEP Meeting Prep evidence stays linked.",
+  "use_case": "Use this iep meeting prep controlled information handoff when staff must document meeting notice and current plan. Reconcile progress evidence, participant role, family priority, and proposed action before the iep meeting prep handoff. Use the meeting notice, current IEP, service log, progress-monitoring data, evaluation reports, family agenda, participant list, draft proposal, and prior written notice route. For iep meeting prep review use, cite source. Match the iep meeting prep family or learner wording. Preserve the iep meeting prep amendment history and supersession date. Link the iep meeting prep source version and meeting notes. Record the iep meeting prep learner response and accessibility support. Close the iep meeting prep recipient list. Verify iep meeting prep documentary provenance. Resolve iep meeting prep amendments, superseded wording, and archival distribution for iep meeting prep. Ask the assigned iep meeting prep reviewer to confirm meeting notice against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "IEP Meeting Prep audience details review",
+      "guidance": "Assemble meeting notice, current plan, service and progress records, participant roles, family priorities, proposed actions, accommodations, and follow-up questions.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "IEP Meeting Prep people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "meeting_notice",
+              "label": "Meeting notice",
+              "units": 1.1
+            },
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.2
+            },
+            {
+              "key": "progress_evidence",
+              "label": "Progress evidence",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "IEP Meeting Prep task details",
+          "fields": [
+            {
+              "key": "participant_role",
+              "label": "Participant role",
+              "units": 1.15
+            },
+            {
+              "key": "family_priority",
+              "label": "Family priority",
+              "units": 1.0
+            },
+            {
+              "key": "proposed_action",
+              "label": "Proposed action",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "IEP Meeting Prep current instructions",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "IEP Meeting Prep instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "IEP Meeting Prep questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "IEP Meeting Prep update route",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "IEP Meeting Prep effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "IEP Meeting Prep update boundary",
+          "guidance": "Replace outdated iep meeting prep instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

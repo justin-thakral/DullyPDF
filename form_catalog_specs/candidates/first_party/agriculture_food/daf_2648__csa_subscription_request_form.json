@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2648__csa_subscription_request_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2648__csa_subscription_request_form.pdf",
+  "slug": "csa-subscription-request-form",
+  "title": "CSA Subscription Request Form",
+  "subtitle": "Community-Supported Agriculture Subscription: defines need, constraints, and assignment.",
+  "description": "CSA Subscription Request Form covers subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication. The CSA program coordinator records Community-Supported Agriculture Subscription need, timing, access, and assignment. CSA Subscription Request Form keeps Community-Supported Agriculture Subscription exceptions visible until the CSA program coordinator handoff.",
+  "use_case": "Use CSA Subscription Request Form at farm program, packing point, pickup site, delivery route, and subscriber handoff. Document subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication identity before Community-Supported Agriculture Subscription begins. Compare subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication findings with stated Community-Supported Agriculture Subscription criteria; route unresolved Community-Supported Agriculture Subscription issues to farm subscription operations reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requester, location, and subject details",
+      "guidance": "For Community-Supported Agriculture Subscription, identify responsible parties, farm program, packing point, pickup site, delivery route, and subscriber handoff, and the linked subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Community-Supported Agriculture Subscription identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Subscriber, account, household, and contact",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_2",
+              "label": "Share type, season, frequency, and payment plan",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Pickup site, route, authorization, and preference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested result, access, and timing",
+      "guidance": "Capture Community-Supported Agriculture Subscription facts for subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Community-Supported Agriculture Subscription intake confirmations",
+          "items": [
+            "Requested or already documented: enrollment and payment status",
+            "Requested or already documented: share contents and source lot where needed",
+            "Requested or already documented: packing, hold, pickup, and authorized alternate",
+            "Requested or already documented: allergy or preference communication boundary",
+            "Requested or already documented: missed pickup, substitution, credit, and donation rule",
+            "Requested or already documented: season-end expectation, balance status, feedback route, and renewal preference"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Supplied evidence and assignment outcome",
+      "guidance": "Resolve open Community-Supported Agriculture Subscription request questions; have CSA program coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Payment or plan mismatch",
+            "Pickup authority uncertain",
+            "Substitution or allergen communication failure",
+            "Unclaimed share lacks timely disposition",
+            "Prior or requester-supplied: subscription and payment agreement",
+            "Prior or requester-supplied: distribution and pickup record",
+            "Prior or requester-supplied: substitution or credit communication",
+            "Prior or requester-supplied: balance, complaint, and season-closeout trace"
+          ],
+          "guidance": "Do not assign or authorize the Community-Supported Agriculture Subscription request when subscription terms, payment, pickup authority, communication, or share disposition remains unresolved. Retain information supplied with the request and route unresolved constraints to CSA program coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "CSA Program Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_172__student_absence_note_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_172__student_absence_note_authorization_form.pdf",
+  "slug": "student-absence-note-authorization-form",
+  "title": "Student Absence Note Authorization Form",
+  "subtitle": "Document reported absence dates, attendance coding, missed work, and the return or correction route.",
+  "description": "Keeps the student, guardian source, absence period, attendance code, missed-work route, return condition, and any record correction in one attendance-office record.",
+  "use_case": "Use when a family reports a student absence or asks the school to correct the attendance record. Do not request medical detail that the school does not need. Attendance coding and required documentation follow the school's applicable policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Student Absence Note signer details review",
+      "guidance": "Capture absence start and end dates, guardian source, attendance code, missed-work delivery, return condition, documentation status, and correction request.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Student Absence Note people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "absence_dates",
+              "label": "Absence dates",
+              "units": 1.2
+            },
+            {
+              "key": "guardian_source",
+              "label": "Guardian source",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Student Absence Note task details",
+          "fields": [
+            {
+              "key": "attendance_code",
+              "label": "Attendance code",
+              "units": 1.15
+            },
+            {
+              "key": "missed_work_route",
+              "label": "Missed-work route",
+              "units": 1.0
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.25
+            },
+            {
+              "key": "record_correction",
+              "label": "Record correction",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Student Absence Note scope choices review",
+      "guidance": "Decide each student absence note scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Student Absence Note itemized scope",
+          "fields": [
+            {
+              "key": "absence_dates",
+              "label": "Absence dates",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "guardian_source",
+              "label": "Guardian source",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "attendance_code",
+              "label": "Attendance code",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "missed_work_route",
+              "label": "Missed-work route",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "record_correction",
+              "label": "Record correction",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Student Absence Note authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Student Absence Note effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Student Absence Note signer receipt and handoff",
+      "guidance": "Only recorded student absence note choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Student Absence Note limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Student Absence Note signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "school_or_program_reviewer_and_date",
+              "label": "School or program reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Student Absence Note signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Student Absence Note authorization boundary",
+          "guidance": "Record the guardian-reported dates and reason category without requesting unnecessary medical detail. Attendance coding, documentation requirements, and record corrections must follow applicable school policy."
+        }
+      ]
+    }
+  ]
+}

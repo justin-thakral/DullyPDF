@@ -17,13 +17,14 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, Mapping
 
 from .promotion_evidence import (
     PromotionEvidenceError,
     ValidatedPromotionEvidence,
     validate_promotion_evidence,
 )
+from .themes import ThemeError, validate_theme_provenance
 
 
 SCHEMA_VERSION = 1
@@ -123,6 +124,7 @@ class ValidatedRelease:
     base_commit: str | None
     renderer_commit: str | None
     renderer_runtime: dict[str, Any]
+    render_theme: dict[str, Any] | None
     previous_release_id: str | None
     created_at: str
     manifest_path: Path
@@ -138,7 +140,7 @@ class ValidatedRelease:
         return f"releases/{self.release_id}/release-manifest.json"
 
     def summary(self) -> dict[str, Any]:
-        return {
+        summary = {
             "schemaVersion": SCHEMA_VERSION,
             "releaseId": self.release_id,
             "sourceCommit": self.source_commit,
@@ -155,6 +157,9 @@ class ValidatedRelease:
             "manifestBytes": self.manifest_bytes,
             "manifestObjectPath": self.manifest_object_path,
         }
+        if self.render_theme is not None:
+            summary["renderTheme"] = self.render_theme
+        return summary
 
 
 @dataclass(frozen=True)
@@ -218,6 +223,41 @@ def _require_integer(value: Any, location: str) -> int:
 def _require_schema_version(value: Any, location: str) -> None:
     if type(value) is not int or value != SCHEMA_VERSION:
         raise ManifestValidationError(f"{location} must equal {SCHEMA_VERSION}")
+
+
+def _validate_render_theme(value: Any, location: str) -> dict[str, Any]:
+    """Validate an immutable theme provenance object against the registry."""
+
+    try:
+        return validate_theme_provenance(value, location=location)
+    except ThemeError as exc:
+        raise ManifestValidationError(f"{location} is invalid: {exc}") from exc
+
+
+def _require_matching_render_theme(
+    *,
+    expected: dict[str, Any] | None,
+    payload: Mapping[str, Any],
+    location: str,
+) -> None:
+    """Require all themed evidence to carry the same registry provenance."""
+
+    supplied = "renderTheme" in payload
+    if expected is None and not supplied:
+        return
+    if expected is None or not supplied:
+        raise ManifestValidationError(
+            f"{location}.renderTheme must be present exactly when the release "
+            "manifest supplies renderTheme"
+        )
+    actual = _validate_render_theme(
+        payload["renderTheme"],
+        f"{location}.renderTheme",
+    )
+    if actual != expected:
+        raise ManifestValidationError(
+            f"{location}.renderTheme does not match the release manifest"
+        )
 
 
 def _require_sha256(value: Any, location: str) -> str:
@@ -540,6 +580,11 @@ def validate_release_manifest(
             "rendererCommit must equal sourceCommit for the in-tree renderer"
         )
     renderer_runtime = _validate_renderer_runtime(manifest.get("rendererRuntime"))
+    render_theme = (
+        _validate_render_theme(manifest["renderTheme"], "renderTheme")
+        if "renderTheme" in manifest
+        else None
+    )
 
     previous_raw = manifest.get("previousReleaseId")
     previous_release_id: str | None
@@ -650,6 +695,7 @@ def validate_release_manifest(
         base_commit=base_commit,
         renderer_commit=renderer_commit,
         renderer_runtime=renderer_runtime,
+        render_theme=render_theme,
         previous_release_id=previous_release_id,
         created_at=created_at,
         manifest_path=resolved_manifest,
@@ -948,7 +994,14 @@ def validate_frozen_evidence_files(
         raise ManifestValidationError(
             f"supplied build report is not valid JSON: {exc}"
         ) from exc
-    results = report.get("results") if isinstance(report, dict) else None
+    if not isinstance(report, dict):
+        raise ManifestValidationError("supplied build report must be a JSON object")
+    _require_matching_render_theme(
+        expected=release.render_theme,
+        payload=report,
+        location="build report",
+    )
+    results = report.get("results")
     if not isinstance(results, list):
         raise ManifestValidationError("supplied build report has no results array")
     result_by_id = {
@@ -1033,6 +1086,11 @@ def validate_frozen_evidence_files(
                 raise ManifestValidationError(
                     "visual-review receipt must be a JSON object"
                 )
+            _require_matching_render_theme(
+                expected=release.render_theme,
+                payload=receipt,
+                location=f"visual-review receipt {review_path}",
+            )
             review_receipts[review_path] = (review_hash, receipt)
         review_hash, receipt = review_receipts[review_path]
         if review_hash != item["review_evidence_hash"]:

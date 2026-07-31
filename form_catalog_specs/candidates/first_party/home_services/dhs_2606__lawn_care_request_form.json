@@ -1,0 +1,339 @@
+{
+  "catalog_id": "home_services/dhs_2606__lawn_care_request_form",
+  "description": "For lawn care, this request form records scheduled mowing, edging, blowing, bed work, weather adjustment, seasonal instruction, and approved extras. Its supporting evidence includes route timestamps, before-and-after photos, turf condition, irrigation damage, service completion, and product details.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Care opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Care site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Care contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Care account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Care due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this lawn care record to its evidence.",
+          "key": "record_routing",
+          "label": "Lawn Care Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Account route",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Turf sections",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Gates",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Irrigation heads",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Obstacles",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Treatment zones",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture account route, turf sections, gates, irrigation heads, obstacles, treatment zones, equipment limits, and preferences for this lawn care.",
+          "key": "core_identity",
+          "label": "Lawn Care Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify account route, turf sections, gates, irrigation heads, obstacles, treatment zones, equipment limits, and preferences for this lawn care record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Scheduled mowing",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Edging",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Blowing",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Bed work",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Weather adjustment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For lawn care, record scheduled mowing, edging, blowing, bed work, weather adjustment, seasonal instruction, and approved extras.",
+          "key": "task_inputs",
+          "label": "Lawn Care Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lawn Care Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State lawn care outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Lawn Care Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Care work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Care owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate lawn care items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Lawn Care Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        }
+      ],
+      "guidance": "For lawn care, capture scheduled mowing, edging, blowing, bed work, weather adjustment, seasonal instruction, and approved extras.",
+      "key": "task_2",
+      "title": "Requested Record Change"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Defer service for saturated ground, lightning, unsecured animals, active work zones, or conditions likely to damage turf. Do not release affected lawn care work.",
+          "key": "stop_boundary",
+          "label": "Lawn Care Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Care exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Care correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Care escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close lawn care exceptions with verification.",
+          "key": "exception_register",
+          "label": "Lawn Care Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Care notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Care notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Care interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Care review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Care release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep lawn care controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Lawn Care Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Defer service for saturated ground, lightning, unsecured animals, active work zones, or conditions likely to damage turf. Control and route each lawn care exception.",
+      "key": "exception_3",
+      "title": "Service Risk and Exception"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Care decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Care service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Care schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate lawn care disposition.",
+          "key": "disposition",
+          "label": "Lawn Care Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lawn Care Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the lawn care decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Lawn Care Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Care customer confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Care service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Lawn Care Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the lawn care next step from route timestamps, before-and-after photos, turf condition, irrigation damage, service completion, and product details.",
+      "key": "decision_4",
+      "title": "Request Decision"
+    }
+  ],
+  "slug": "dhs-2606-lawn-care-request-form",
+  "source_filename": "dhs_2606__lawn_care_request_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Lawn Care Request Form: recurring property lawn-care record using account route, scheduled mowing, and route timestamps.",
+  "title": "Lawn Care Request Form",
+  "use_case": "Use the request form during recurring property lawn-care record when the lawn care record must identify account route, turf sections, gates, irrigation heads, obstacles, treatment zones, equipment limits, and preferences. Complete the applicable handoff for property security check, skipped-zone reason, corrective visit, customer notification, and next route instruction."
+}

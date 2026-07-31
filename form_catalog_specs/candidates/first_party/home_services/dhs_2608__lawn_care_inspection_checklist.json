@@ -1,0 +1,285 @@
+{
+  "catalog_id": "home_services/dhs_2608__lawn_care_inspection_checklist",
+  "description": "For lawn care, this inspection checklist records scheduled mowing, edging, blowing, bed work, weather adjustment, seasonal instruction, and approved extras. Its supporting evidence includes route timestamps, before-and-after photos, turf condition, irrigation damage, service completion, and product details.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this lawn care review to the service record.",
+          "key": "service_review_reference",
+          "label": "Lawn Care Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Account route",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Turf sections",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Gates",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Irrigation heads",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed lawn care location and assets.",
+          "key": "service_context",
+          "label": "Lawn Care Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the lawn care service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each lawn care item after direct review.",
+          "items": [
+            "Mowing height and pattern match the property instruction",
+            "Edges, beds, sidewalks, and drive areas are clean",
+            "Gates, irrigation heads, ornaments, and obstacles are undamaged",
+            "Skipped or saturated turf zones have a recorded reason",
+            "Approved seasonal tasks and add-ons are reconciled",
+            "Clippings, equipment marks, photos, and property security are checked"
+          ],
+          "key": "quality_checks",
+          "label": "Lawn Care Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one lawn care row for each reviewed area.",
+          "key": "area_results",
+          "label": "Lawn Care Area and Task Results",
+          "rows": 6,
+          "type": "table"
+        }
+      ],
+      "guidance": "Check completed lawn care work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Recurring Service Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Care owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each lawn care concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "Lawn Care Issue, Photo, and Correction Record",
+          "rows": 8,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lawn Care Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved lawn care expectations here.",
+          "height": 46,
+          "key": "customer_concern",
+          "label": "Lawn Care Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every lawn care issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the lawn care outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "Lawn Care Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Property security check",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Skipped-zone reason",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "Corrective visit",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Customer notification",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For lawn care, record property security check, skipped-zone reason, corrective visit, customer notification, and next route instruction.",
+          "key": "quality_followup",
+          "label": "Lawn Care Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "Lawn Care Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the lawn care result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Service Review and Handoff"
+    }
+  ],
+  "slug": "dhs-2608-lawn-care-inspection-checklist",
+  "source_filename": "dhs_2608__lawn_care_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "Lawn Care Inspection Checklist: recurring property lawn-care record using account route, scheduled mowing, and route timestamps.",
+  "title": "Lawn Care Inspection Checklist",
+  "use_case": "Use the inspection checklist during recurring property lawn-care record when the lawn care record must identify account route, turf sections, gates, irrigation heads, obstacles, treatment zones, equipment limits, and preferences. Complete the applicable handoff for property security check, skipped-zone reason, corrective visit, customer notification, and next route instruction."
+}

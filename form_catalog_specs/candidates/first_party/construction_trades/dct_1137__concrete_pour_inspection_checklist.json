@@ -1,0 +1,356 @@
+{
+  "catalog_id": "construction_trades/dct_1137__concrete_pour_inspection_checklist",
+  "description": "For concrete pour, this inspection checklist records pre-pour inspection, batch sequence, placement rate, consolidation, testing, joints, finishing, curing, and protection. Its supporting evidence includes delivery tickets, slump, air and temperature tests, cylinder log, placement photos, and curing observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Pour opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Pour site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Pour contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Pour superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Pour due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this concrete pour record to its evidence.",
+          "key": "record_routing",
+          "label": "Concrete Pour Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Placement area",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Mix design",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Volume",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Reinforcement",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Embeds",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Forms",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture placement area, mix design, volume, reinforcement, embeds, forms, access, pump plan, weather, and finish class for this concrete pour.",
+          "key": "core_identity",
+          "label": "Concrete Pour Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify placement area, mix design, volume, reinforcement, embeds, forms, access, pump plan, weather, and finish class for this concrete pour record.",
+      "key": "identity_1",
+      "title": "Site Reference and Inspector"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Pre-pour inspection",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Batch sequence",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Placement rate",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Consolidation",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Testing",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Joints",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For concrete pour, record pre-pour inspection, batch sequence, placement rate, consolidation, testing, joints, finishing, curing, and protection.",
+          "key": "task_inputs",
+          "label": "Concrete Pour Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the concrete pour condition before marking.",
+          "items": [
+            "Verify pre-pour inspection",
+            "Verify batch sequence",
+            "Verify placement rate",
+            "Verify consolidation",
+            "Verify testing"
+          ],
+          "key": "task_checks",
+          "label": "Concrete Pour Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Pour checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Pour review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Pour qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Pour check time",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the concrete pour criteria and inspector.",
+          "key": "checkpoint_result",
+          "label": "Concrete Pour Inspection Reference",
+          "type": "fields"
+        },
+        {
+          "guidance": "Hold placement for failed pre-pour review, wrong mix, unsafe access, severe weather, or out-of-limit test result. Route unresolved concrete pour work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Concrete Pour Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For concrete pour, capture pre-pour inspection, batch sequence, placement rate, consolidation, testing, joints, finishing, curing, and protection.",
+      "key": "task_2",
+      "title": "Scope, Criteria, and Test Method"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Pour when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Pour measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Pour evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Pour result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For concrete pour, record delivery tickets, slump, air and temperature tests, cylinder log, placement photos, and curing observations.",
+          "key": "evidence_register",
+          "label": "Concrete Pour Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Delivery tickets",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Slump",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Air",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Temperature tests",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Cylinder log",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Placement photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every concrete pour evidence source.",
+          "key": "evidence_sources",
+          "label": "Concrete Pour Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Concrete Pour Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State concrete pour limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Concrete Pour Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support concrete pour findings with delivery tickets, slump, air and temperature tests, cylinder log, placement photos, and curing observations.",
+      "key": "observation_3",
+      "title": "Measured Finding Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select inspection checklist disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Correct and reinspect",
+                "Unsafe—do not release"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Pour decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Inspector and qualification",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Criteria or release authority",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Correction or released next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate concrete pour disposition.",
+          "key": "disposition",
+          "label": "Concrete Pour Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Concrete Pour Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the concrete pour decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Concrete Pour Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Pour qualified inspector and date",
+              "units": 1.0
+            },
+            {
+              "key": "release_authority",
+              "label": "Pour release authority and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Concrete Pour Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the concrete pour next step from delivery tickets, slump, air and temperature tests, cylinder log, placement photos, and curing observations.",
+      "key": "decision_4",
+      "title": "Release Decision"
+    }
+  ],
+  "slug": "concrete-pour-inspection-checklist",
+  "source_filename": "dct_1137__concrete_pour_inspection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Concrete Pour Inspection Checklist: concrete placement readiness and quality record using placement area, pre-pour inspection, and delivery tickets.",
+  "title": "Concrete Pour Inspection Checklist",
+  "use_case": "Use the inspection checklist during concrete placement readiness and quality record when the concrete pour record must identify placement area, mix design, volume, reinforcement, embeds, forms, access, pump plan, weather, and finish class. Complete the applicable handoff for placed quantity, test sample custody, curing release, deficiency follow-up, finish acceptance, and record archive."
+}

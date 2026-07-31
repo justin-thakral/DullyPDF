@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1824__photography_release_sign_in_log",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1824__photography_release_sign_in_log.pdf",
+  "slug": "photography-release-sign-in-log",
+  "title": "Photography Release Sign-In Log",
+  "subtitle": "Capture image or audio, capture setting, name use, and publication channel; confirm duration and withdrawal.",
+  "description": "Photography Release records image or audio, capture setting, name use, publication channel, duration, and withdrawal. Photography Release evidence stays linked.",
+  "use_case": "Use this photography release attendance and custody reconciliation when staff must document image or audio and capture setting. Reconcile name use, publication channel, duration, and withdrawal before the photography release handoff. Use the production brief, capture list, subject match, permitted-use matrix, channel inventory, editing and attribution instruction, publication record, and withdrawal log. Ask the assigned photography release reviewer to confirm image or audio against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Photography Release details",
+      "guidance": "Itemize image, video, audio, name and quotation use; bound capture setting, publication channel, audience, editing, duration, storage, and withdrawal. Record the photography release decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Photography Release people and reference",
+          "fields": [
+            {
+              "key": "person_shown_or_recorded",
+              "label": "Person shown or recorded",
+              "units": 1.15
+            },
+            {
+              "key": "person_contact",
+              "label": "Person contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "contact_for_release_questions",
+              "label": "Contact for release questions",
+              "units": 1.1
+            },
+            {
+              "key": "image_or_audio",
+              "label": "Image or audio",
+              "units": 1.2
+            },
+            {
+              "key": "capture_setting",
+              "label": "Capture setting",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Photography Release task details",
+          "fields": [
+            {
+              "key": "name_use",
+              "label": "Name use",
+              "units": 1.15
+            },
+            {
+              "key": "publication_channel",
+              "label": "Publication channel",
+              "units": 1.0
+            },
+            {
+              "key": "duration",
+              "label": "Duration",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal",
+              "label": "Withdrawal",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance_rows",
+      "title": "Photography Release roster verification review",
+      "guidance": "Track each person's release record, signer verification, scope, expiration, withdrawal, and exception owner.",
+      "blocks": [
+        {
+          "key": "sign_in_rows",
+          "type": "table",
+          "label": "Photography Release-status rows",
+          "columns": [
+            {
+              "key": "person_shown_or_recorded",
+              "label": "Person shown or recorded",
+              "units": 1.2
+            },
+            {
+              "key": "release_id_or_version",
+              "label": "Release ID or version",
+              "units": 1.1
+            },
+            {
+              "key": "scope_and_signer_verified",
+              "label": "Scope and signer verified",
+              "units": 1.25
+            },
+            {
+              "key": "expiration_or_withdrawal",
+              "label": "Expiration or withdrawal",
+              "units": 1.0
+            },
+            {
+              "key": "exception_and_owner",
+              "label": "Exception and owner",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "roster_boundary",
+          "type": "notice",
+          "label": "Photography Release roster boundary",
+          "guidance": "Do not treat attendance as permission. Route every missing, expired, limited, declined, or withdrawn release to its named owner before capture or publication."
+        }
+      ]
+    },
+    {
+      "key": "attendance_close",
+      "title": "Photography Release exception reconciliation",
+      "guidance": "Reconcile valid, limited, declined, expired, and missing release records before use.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Photography Release closing counts",
+          "fields": [
+            {
+              "key": "expected_release_records",
+              "label": "Expected release records",
+              "units": 1.15
+            },
+            {
+              "key": "verified_current_releases",
+              "label": "Verified current releases",
+              "units": 1.0
+            },
+            {
+              "key": "limited_or_declined_releases",
+              "label": "Limited or declined releases",
+              "units": 1.25
+            },
+            {
+              "key": "missing_expired_or_withdrawn_and_owner",
+              "label": "Missing, expired, or withdrawn and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "attendance_receipt",
+          "type": "signatures",
+          "label": "Photography Release log receipt",
+          "fields": [
+            {
+              "key": "event_coordinator_or_roster_custodian_and_date",
+              "label": "Event coordinator or roster custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Do not close an unreconciled entry without a named owner."
+        }
+      ]
+    }
+  ]
+}

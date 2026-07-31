@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_107__plumbing_repair_work_order",
+  "source_section": "field_service",
+  "source_filename": "dhs_107__plumbing_repair_work_order.pdf",
+  "slug": "plumbing-repair-work-order",
+  "title": "Plumbing Repair Work Order",
+  "subtitle": "Residential Plumbing Repair: connects authorized scope to results.",
+  "description": "Plumbing Repair Work Order covers fixture, supply, drain, valve, appliance connection, and affected finish. The plumbing service coordinator records Residential Plumbing Repair authorized tasks, materials, results, and changes. Plumbing Repair Work Order keeps Residential Plumbing Repair exceptions visible until the plumbing service coordinator handoff.",
+  "use_case": "Use Plumbing Repair Work Order at residence, room, fixture, shutoff point, and affected downstream area. Document fixture, supply, drain, valve, appliance connection, and affected finish identity before Residential Plumbing Repair begins. Compare fixture, supply, drain, valve, appliance connection, and affected finish findings with stated Residential Plumbing Repair criteria; route unresolved Residential Plumbing Repair issues to qualified plumbing service reviewer. For Plumbing Repair Work Order, confirm requirements for Residential Plumbing Repair. Ask qualified plumbing service reviewer to review Residential Plumbing Repair conditions beyond the plumbing service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Residential work-order scope review",
+      "guidance": "Bind Residential Plumbing Repair to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Plumbing job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Plumbing customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Plumbing address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Plumbing Service Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Plumbing Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Fixture, line, valve, appliance, or drain identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Leak or blockage onset, usage condition, and prior repair",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Plumbing Repair identifier printed on fixture, supply, drain, valve, appliance connection, and affected finish or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized residential work details",
+      "guidance": "Record authorized Residential Plumbing Repair activity; separate proposed, declined, deferred, or new Residential Plumbing Repair scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Residential Plumbing Repair task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Property area, unit, item, or component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method, part, or material",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Actual result or reading",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Technician or crew",
+              "units": 0.8
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Residential Plumbing Repair work and verification points",
+          "items": [
+            "Active leak location, rate, and affected materials",
+            "Supply pressure, shutoff, valve, and connection condition",
+            "Drain flow, backup, trap, vent, and cleanout observation",
+            "Fixture mounting, seal, and functional behavior",
+            "Water-heating or appliance connection where in scope",
+            "Post-repair leak, flow, and drainage test"
+          ],
+          "guidance": "Use each Residential Plumbing Repair check to prompt documented fixture, supply, drain, valve, appliance connection, and affected finish execution; enter its actual Residential Plumbing Repair result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Residential Plumbing Repair parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Residential work exception and changes",
+      "guidance": "Stop Residential Plumbing Repair at any scope or cost limit; honor plumbing service coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Uncontrolled water flow or contamination concern",
+            "Concealed damage or mold-like condition outside scope",
+            "Gas, electrical, structural, or utility conflict",
+            "Repair requires unavailable shutdown or authority"
+          ],
+          "guidance": "Pause Residential Plumbing Repair and notify plumbing service coordinator when water control, contamination, concealed damage, utility conflict, or safe test remains unresolved."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected condition, scope change, added cost, and authorization response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, scope change, added cost, and authorization response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work completion and customer handoff",
+      "guidance": "Reconcile Residential Plumbing Repair to authorization; state plumbing service coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Leak and affected-area photographs",
+            "Before-and-after pressure or flow evidence",
+            "Material, fitting, and repair record",
+            "Post-repair test and customer observation"
+          ],
+          "guidance": "Attach or link proof for fixture, supply, drain, valve, appliance connection, and affected finish; mark only Residential Plumbing Repair evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Residential Plumbing Repair completed-scope notes and customer instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Residential Plumbing Repair completed-scope notes and customer instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Reconcile Residential Plumbing Repair completion to authorized scope and note customer instructions, open work, or a required return visit."
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

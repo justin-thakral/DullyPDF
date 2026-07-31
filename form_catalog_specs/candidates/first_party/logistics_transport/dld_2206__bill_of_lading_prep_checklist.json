@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2206__bill_of_lading_prep_checklist",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2206__bill_of_lading_prep_checklist.pdf",
+  "slug": "bill-of-lading-prep-checklist",
+  "title": "Bill of Lading Prep Checklist",
+  "subtitle": "Bill Of Lading Preparation: documents findings, limits, and disposition.",
+  "description": "Bill of Lading Prep Checklist covers transport shipment, commodity lines, package count, weight, classification, and instructions. The shipping documentation coordinator records Bill Of Lading Preparation criteria, findings, restrictions, and follow-up. Bill of Lading Prep Checklist keeps Bill Of Lading Preparation exceptions visible until the shipping documentation coordinator handoff.",
+  "use_case": "Use Bill of Lading Prep Checklist at shipping office, origin dock, carrier handoff, and destination route. Document transport shipment, commodity lines, package count, weight, classification, and instructions identity before Bill Of Lading Preparation begins. Compare transport shipment, commodity lines, package count, weight, classification, and instructions findings with stated Bill Of Lading Preparation criteria; route unresolved Bill Of Lading Preparation issues to transport documentation reviewer. For Bill of Lading Prep Checklist, confirm requirements for Bill Of Lading Preparation. Ask transport documentation reviewer to review Bill Of Lading Preparation conditions beyond the shipping documentation coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspector, location, and subject identity",
+      "guidance": "For Bill Of Lading Preparation, identify responsible parties, shipping office, origin dock, carrier handoff, and destination route, and the linked transport shipment, commodity lines, package count, weight, classification, and instructions source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Shipment / order owner",
+              "units": 1.2222222222222223
+            },
+            {
+              "key": "location",
+              "label": "Shipping handoff",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Bill Of Lading Preparation identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Shipper, consignee, and billing references",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_2",
+              "label": "Load, order, booking, and carrier identifiers",
+              "units": 2.5
+            },
+            {
+              "key": "identity_3",
+              "label": "Commodity, package, weight, class, and special-instruction references",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Observed conditions and item decisions",
+      "guidance": "Capture Bill Of Lading Preparation facts for transport shipment, commodity lines, package count, weight, classification, and instructions; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Bill Of Lading Preparation inspection checks",
+          "items": [
+            "Party names and addresses",
+            "Commodity description and quantity",
+            "Weight and package reconciliation",
+            "Carrier, equipment, and routing data",
+            "Hazard or special-handling determination by qualified party",
+            "Document copies and tender timing"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Use observed Bill Of Lading Preparation evidence to state disposition. Keep limits visible and give Shipping Documentation Coordinator both correction and repeat-check responsibility.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Party or address inconsistency",
+            "Quantity or weight cannot be reconciled",
+            "Classification or special handling lacks qualified basis",
+            "Document issued with unapproved alteration",
+            "Source order and packing record",
+            "Weight or scale evidence",
+            "Approved instruction and classification source",
+            "Issued-document and handoff trace"
+          ],
+          "guidance": "Pause Bill Of Lading Preparation when shipment identity, commodity, weight, instruction, or required qualified documentation review remains unresolved. Retain the available Bill Of Lading Preparation proof and route unresolved transport shipment, commodity lines, package count, weight, classification, and instructions scope to shipping documentation coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Shipping Documentation Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Transport Documentation Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

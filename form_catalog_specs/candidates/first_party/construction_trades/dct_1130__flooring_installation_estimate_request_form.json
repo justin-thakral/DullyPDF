@@ -1,0 +1,272 @@
+{
+  "catalog_id": "construction_trades/dct_1130__flooring_installation_estimate_request_form",
+  "description": "For flooring installation, this estimate request form records layout, acclimation, substrate preparation, moisture limits, adhesive, expansion, sequencing, and protection. Its supporting evidence includes moisture test, flatness readings, lot record, layout approval, installation photos, and seam or lippage checks.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Flooring opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Flooring site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Flooring contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Flooring superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Flooring due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this flooring installation record to its evidence.",
+          "key": "record_routing",
+          "label": "Flooring Installation Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Room",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Substrate",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Flooring product",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Lot",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Transitions",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Moisture-sensitive areas",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes for this flooring installation.",
+          "key": "core_identity",
+          "label": "Flooring Installation Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes for this flooring installation record.",
+      "key": "identity_1",
+      "title": "Estimate Assignment and Site"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Layout",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Acclimation",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Substrate preparation",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Moisture limits",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Adhesive",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Expansion",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For flooring installation, record layout, acclimation, substrate preparation, moisture limits, adhesive, expansion, sequencing, and protection.",
+          "key": "task_inputs",
+          "label": "Flooring Installation Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Flooring Installation Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State flooring installation outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Flooring Installation Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Flooring work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Flooring owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate flooring installation items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Flooring Installation Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not install over out-of-tolerance moisture, flatness, contamination, movement, or unapproved substrate condition. Route unresolved flooring installation work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Flooring Installation Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For flooring installation, capture layout, acclimation, substrate preparation, moisture limits, adhesive, expansion, sequencing, and protection.",
+      "key": "task_2",
+      "title": "Scope Review and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Flooring when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Flooring measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Flooring evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Flooring result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For flooring installation, record moisture test, flatness readings, lot record, layout approval, installation photos, and seam or lippage checks.",
+          "key": "evidence_register",
+          "label": "Flooring Installation Findings, Measurements, and Evidence",
+          "rows": 9,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Moisture test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Flatness readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Lot record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Layout approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Installation photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every flooring installation evidence source.",
+          "key": "evidence_sources",
+          "label": "Flooring Installation Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary flooring installation evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Flooring Installation Evidence Completeness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Support flooring installation findings with moisture test, flatness readings, lot record, layout approval, installation photos, and seam or lippage checks.",
+      "key": "observation_3",
+      "title": "Pricing Inputs and Site Evidence"
+    }
+  ],
+  "slug": "flooring-installation-estimate-request-form",
+  "source_filename": "dct_1130__flooring_installation_estimate_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Flooring Installation Estimate Request Form: flooring installation readiness and acceptance using room, layout, and moisture test.",
+  "title": "Flooring Installation Estimate Request Form",
+  "use_case": "Use the estimate request form during flooring installation readiness and acceptance when the flooring installation record must identify room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes. Complete the applicable handoff for finish inspection, protection plan, care instructions, attic-stock handoff, warranty, and customer acceptance."
+}

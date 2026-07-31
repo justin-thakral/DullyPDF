@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2628__referral_request_checklist",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2628__referral_request_checklist.pdf",
+  "slug": "referral-request-checklist",
+  "title": "Referral Request Checklist",
+  "subtitle": "Capture referral source, requested service, supporting record, and receiving provider; confirm appointment and result return.",
+  "description": "Referral Request records referral source, requested service, supporting record, receiving provider, appointment, and result return. Referral Request evidence stays linked.",
+  "use_case": "Use this referral request stage-gated verification when staff must document referral source and requested service. Reconcile supporting record, receiving provider, appointment, and result return before the referral request handoff. Use the request source, reason and requested specialty, records checklist, preferred-provider directory result, capacity response, appointment notice, and closed-loop report. Ask the assigned referral request reviewer to confirm referral source against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Referral Request contact and reference",
+      "guidance": "Capture referral source, requested service and reason, urgency, supporting documents, preferred receiving provider, scheduling constraints, appointment, and result return. Keep any urgent referral request issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Referral Request people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "referral_source",
+              "label": "Referral source",
+              "units": 1.1
+            },
+            {
+              "key": "requested_service",
+              "label": "Requested service",
+              "units": 1.2
+            },
+            {
+              "key": "supporting_record",
+              "label": "Supporting record",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Referral Request task details",
+          "fields": [
+            {
+              "key": "receiving_provider",
+              "label": "Receiving provider",
+              "units": 1.15
+            },
+            {
+              "key": "appointment",
+              "label": "Appointment",
+              "units": 1.0
+            },
+            {
+              "key": "result_return",
+              "label": "Result return",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Referral Request checks and corrections",
+      "guidance": "Check current referral request facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Referral Request required checks",
+          "items": [
+            "Referral source is identified for this record",
+            "Requested service matches the current request or source",
+            "Supporting record is ready for point-of-use staff",
+            "Receiving provider limits or questions are resolved",
+            "Appointment is communicated to the responsible person",
+            "Result return is confirmed at handoff",
+            "A changed referral request fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Referral Request failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Referral Request readiness and handoff",
+      "guidance": "Hold referral request readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Referral Request checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Referral Request reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Referral Request receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

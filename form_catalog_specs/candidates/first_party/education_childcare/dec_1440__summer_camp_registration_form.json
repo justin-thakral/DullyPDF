@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1440__summer_camp_registration_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1440__summer_camp_registration_form.pdf",
+  "slug": "summer-camp-registration-form",
+  "title": "Summer Camp Registration Form",
+  "subtitle": "Capture session, unit or cabin, activity scope, and health-plan route; confirm transportation and authorized pickup.",
+  "description": "Summer Camp records session, unit or cabin, activity scope, health-plan route, transportation, and authorized pickup. Summer Camp evidence stays linked.",
+  "use_case": "Use this summer camp registration and placement when staff must document session and unit or cabin. Reconcile activity scope, health-plan route, transportation, and authorized pickup before the summer camp handoff. Use the camper roster, cabin chart, waterfront band or credential, activity selections, transport list, counselor assignment, supply checklist, and release log. Ask the assigned summer camp reviewer to confirm session against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Summer Camp registrant details review",
+      "guidance": "Connect session, unit or cabin, activity and waterfront choices, health-plan route, transportation, counselor assignment, packing needs, and pickup.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Summer Camp people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "session",
+              "label": "Session",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Summer Camp task details",
+          "fields": [
+            {
+              "key": "unit_or_cabin",
+              "label": "Unit or cabin",
+              "units": 1.15
+            },
+            {
+              "key": "activity_scope",
+              "label": "Activity scope",
+              "units": 1.0
+            },
+            {
+              "key": "health_plan_route",
+              "label": "Health-plan route",
+              "units": 1.25
+            },
+            {
+              "key": "transportation",
+              "label": "Transportation",
+              "units": 1.1
+            },
+            {
+              "key": "authorized_pickup",
+              "label": "Authorized pickup",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_choices",
+      "title": "Summer Camp requested options and readiness",
+      "guidance": "Record requested options, prerequisites, availability, and conditions without assuming an outcome.",
+      "blocks": [
+        {
+          "key": "registration_options",
+          "type": "table",
+          "label": "Summer Camp requested options",
+          "columns": [
+            {
+              "key": "requested_option_or_scope",
+              "label": "Requested option or scope",
+              "units": 1.2
+            },
+            {
+              "key": "availability_or_prerequisite",
+              "label": "Availability or prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.25
+            },
+            {
+              "key": "condition_support_or_owner",
+              "label": "Condition, support, or owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "start_readiness",
+          "type": "checklist",
+          "label": "Summer Camp registration readiness",
+          "items": [
+            "Session is identified for this record",
+            "Unit or cabin matches the current request or source",
+            "Activity scope is ready for point-of-use staff",
+            "Health-plan route limits or questions are resolved",
+            "Transportation is communicated to the responsible person",
+            "Authorized pickup is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_result",
+      "title": "Summer Camp decision: confirmation and next steps",
+      "guidance": "Confirm the accepted scope, reference, open condition, and instructions.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Summer Camp registration result",
+          "fields": [
+            {
+              "key": "registration_outcome",
+              "label": "Registration outcome",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_class_unit_club_or_session",
+              "label": "Confirmed class, unit, club, or session",
+              "units": 1.0
+            },
+            {
+              "key": "confirmed_start_or_orientation_date",
+              "label": "Confirmed start or orientation date",
+              "units": 1.25
+            },
+            {
+              "key": "open_condition_and_owner",
+              "label": "Open condition and owner",
+              "units": 1.1
+            },
+            {
+              "key": "start_or_orientation_instructions_sent",
+              "label": "Start or orientation instructions sent",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Summer Camp registration receipt",
+          "fields": [
+            {
+              "key": "registration_coordinator_and_date",
+              "label": "Registration coordinator and date",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_teacher_or_program_coordinator_and_date",
+              "label": "Responsible teacher or program coordinator and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the recorded registration result and open condition."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,289 @@
+{
+  "catalog_id": "business_operations/dbo_1781__meeting_action_item_checklist",
+  "description": "For meeting action item, this checklist records discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence. Its supporting evidence includes source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Item opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Item site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Item contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Item process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Item due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this meeting action item record to its evidence.",
+          "key": "record_routing",
+          "label": "Meeting Action Item Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Meeting purpose",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Date",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Facilitator",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Participants",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Agenda",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum for this meeting action item.",
+          "key": "core_identity",
+          "label": "Meeting Action Item Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum for this meeting action item record.",
+      "key": "identity_1",
+      "title": "Process Checkpoint and Owner"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Discussion outcome",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Decision needed",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Action deliverable",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Item owner",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Dependency",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For meeting action item, record discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence.",
+          "key": "task_inputs",
+          "label": "Meeting Action Item Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the meeting action item condition before marking.",
+          "items": [
+            "Verify discussion outcome",
+            "Verify decision needed",
+            "Verify action deliverable",
+            "Verify owner",
+            "Verify dependency",
+            "Verify due date"
+          ],
+          "key": "task_checks",
+          "label": "Meeting Action Item Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Item checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Item review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Item qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Item check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each meeting action item result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Meeting Action Item Checkpoint Result",
+          "type": "fields"
+        }
+      ],
+      "guidance": "For meeting action item, capture discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Item when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Item measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Item evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Item result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For meeting action item, record source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+          "key": "evidence_register",
+          "label": "Meeting Action Item Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Source note",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Linked document",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Decision rationale",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Owner acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Progress updates",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every meeting action item evidence source.",
+          "key": "evidence_sources",
+          "label": "Meeting Action Item Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked meeting action item items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Meeting Action Item Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Meeting Action Item Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State meeting action item limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Meeting Action Item Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support meeting action item findings with source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+      "key": "observation_3",
+      "title": "Checklist Finding Record"
+    }
+  ],
+  "slug": "meeting-action-item-checklist",
+  "source_filename": "dbo_1781__meeting_action_item_checklist.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Meeting Action Item Checklist: meeting decision and action-item control using meeting purpose, discussion outcome, and source note.",
+  "title": "Meeting Action Item Checklist",
+  "use_case": "Use the checklist during meeting decision and action-item control when the meeting action item record must identify meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum. Complete the applicable handoff for verified completion, accepted deliverable, unresolved carryover, stakeholder notification, and decision-log update."
+}

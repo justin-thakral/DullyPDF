@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2621__pesticide_application_checklist",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2621__pesticide_application_checklist.pdf",
+  "slug": "pesticide-application-checklist",
+  "title": "Pesticide Application Checklist",
+  "subtitle": "Pesticide Application: documents findings, limits, and disposition.",
+  "description": "Pesticide Application Checklist covers site, target, product, application equipment, weather condition, buffer, and reentry control. The application record owner records Pesticide Application criteria, findings, restrictions, and follow-up. Pesticide Application Checklist keeps Pesticide Application exceptions visible until the application record owner handoff.",
+  "use_case": "Use Pesticide Application Checklist at field, block, structure, treatment zone, mixing area, and buffer boundary. Document site, target, product, application equipment, weather condition, buffer, and reentry control identity before Pesticide Application begins. Compare site, target, product, application equipment, weather condition, buffer, and reentry control findings with stated Pesticide Application criteria; route unresolved Pesticide Application issues to licensed or otherwise qualified pesticide reviewer. For Pesticide Application Checklist, confirm requirements for Pesticide Application. Ask licensed or otherwise qualified pesticide reviewer to review Pesticide Application conditions beyond the application record owner's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspector, location, and subject identity",
+      "guidance": "For Pesticide Application, identify responsible parties, field, block, structure, treatment zone, mixing area, and buffer boundary, and the linked site, target, product, application equipment, weather condition, buffer, and reentry control source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Pesticide Application identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Farm, field, block, and treated area",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Target pest and treatment reason",
+              "units": 1.7777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Product, registration reference, lot, and applicator",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Observed conditions and item decisions",
+      "guidance": "Capture Pesticide Application facts for site, target, product, application equipment, weather condition, buffer, and reentry control; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "control",
+              "label": "Application record or field control",
+              "units": 1.1
+            },
+            {
+              "key": "criterion",
+              "label": "Label, permit, rate, or timing requirement",
+              "units": 1.15
+            },
+            {
+              "key": "observed",
+              "label": "Observed product, weather, or application",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Within control, exception, or not verified",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Stop, correct, contain, or notify",
+              "units": 0.95
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Pesticide Application inspection checks",
+          "items": [
+            "Authorized crop or site and target",
+            "Rate, mixture, carrier, and treated area",
+            "Weather, wind, temperature, and precipitation",
+            "Equipment, nozzle, pressure, and calibration",
+            "Buffer, sensitive area, and drift control",
+            "Start, stop, reentry, preharvest, cleanup, and posting"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection disposition and reviewer acknowledgment",
+      "guidance": "Use observed Pesticide Application evidence to state disposition. Keep limits visible and give Application Record Owner both correction and repeat-check responsibility.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Label or authorization mismatch",
+            "Weather or drift condition unsuitable",
+            "Spill, exposure, or equipment leak",
+            "Restriction cannot be communicated or controlled",
+            "Product and lot record",
+            "Calibration and mixture calculation",
+            "Weather and application log",
+            "Posting, restriction, cleanup, and incident evidence"
+          ],
+          "guidance": "Pause Pesticide Application when authorization, weather, drift, exposure, equipment integrity, or required restriction remains unresolved. Retain the available Pesticide Application proof and route unresolved site, target, product, application equipment, weather condition, buffer, and reentry control scope to application record owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Application Record Owner",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Licensed Or Otherwise Qualified Pesticide Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_120__load_tender_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_120__load_tender_form.pdf",
+  "slug": "load-tender-form",
+  "title": "Load Tender Form",
+  "subtitle": "Load Tender: captures actual activity and handoff.",
+  "description": "Load Tender Form covers offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance. The transport planning coordinator records Load Tender activity, quantities, variance, and handoff. Load Tender Form keeps Load Tender exceptions visible until the transport planning coordinator handoff.",
+  "use_case": "Use Load Tender Form at origin, destination, route, pickup window, delivery window, and equipment location. Document offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance identity before Load Tender begins. Compare offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance findings with stated Load Tender criteria; route unresolved Load Tender issues to authorized carrier-management reviewer. For Load Tender Form, confirm requirements for Load Tender. Ask authorized carrier-management reviewer to review Load Tender conditions beyond the transport planning coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "operation_header",
+      "title": "Transport record and carrier details",
+      "guidance": "Identify the Load Tender entry, responsible parties, and operating window.",
+      "blocks": [
+        {
+          "key": "operation_context",
+          "type": "fields",
+          "label": "Record and operating context",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Load tender or shipment ID",
+              "units": 1.0
+            },
+            {
+              "key": "operation_date",
+              "label": "Date or operating period",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Shipper / broker / carrier",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Origin / destination / equipment",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_person",
+              "label": "Transport Planning Coordinator",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Load Tender identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Tender, load, order, and customer",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, authority, insurance, and contact",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Equipment, commodity, quantity, weight, and handling references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Load Tender identifier printed on offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "activity_record",
+      "title": "Transport activity and task details",
+      "guidance": "Enter one Load Tender row per task, item, reading, or event.",
+      "blocks": [
+        {
+          "key": "plan_and_window",
+          "type": "fields",
+          "label": "Plan and operating window",
+          "fields": [
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.65
+            },
+            {
+              "key": "planned_result",
+              "label": "Planned result or target",
+              "units": 1.2
+            },
+            {
+              "key": "procedure",
+              "label": "Procedure, order, label, or instruction reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "activity_lines",
+          "type": "table",
+          "label": "Transport events, quantities, condition, and custody",
+          "columns": [
+            {
+              "key": "event",
+              "label": "Load, stop, document, or custody event",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition, variance, or delay",
+              "units": 1.0
+            },
+            {
+              "key": "custody",
+              "label": "Party / driver initials",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "operation_controls",
+      "title": "Transport exception and restrictions",
+      "guidance": "Record Load Tender variances, affected scope, immediate control, and owner.",
+      "blocks": [
+        {
+          "key": "operating_checks",
+          "type": "checklist",
+          "label": "Load Tender operating checks",
+          "items": [
+            "Origin and destination commitments",
+            "Commodity, count, weight, and dimensions",
+            "Equipment and capacity fit",
+            "Carrier authority and current qualification",
+            "Rate, accessorial, and instruction agreement",
+            "Acceptance, rejection, counteroffer, and dispatch handoff"
+          ],
+          "guidance": "Complete the Load Tender checks that apply to this offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance activity; explain every unchecked required item."
+        },
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when carrier, capacity, equipment, commitment, rate, or instruction authorization remains unresolved. Protect offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance; document the Load Tender notification and await authorized carrier-management reviewer direction."
+        },
+        {
+          "key": "operation_exceptions",
+          "type": "checklist",
+          "label": "Stop, hold, or correction triggers",
+          "items": [
+            "Carrier qualification incomplete",
+            "Equipment or capacity mismatch",
+            "Commitment cannot be met",
+            "Rate or instruction changed without authority"
+          ],
+          "guidance": "For Load Tender, identify affected offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance scope; ask transport planning coordinator to document the Load Tender immediate control before continuing."
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Exception, change from plan, affected scope, and immediate response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Exception, change from plan, affected scope, and immediate response",
+              "multiline": true
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "operation_result",
+      "title": "Transport status decision and next action",
+      "guidance": "State the Load Tender outcome, restrictions, next action, and receiving owner.",
+      "blocks": [
+        {
+          "key": "result_evidence",
+          "type": "checklist",
+          "label": "Supporting records retained",
+          "items": [
+            "Source order and customer commitment",
+            "Carrier qualification evidence",
+            "Rate and instruction confirmation",
+            "Tender acceptance and dispatch record"
+          ],
+          "guidance": "Attach or link proof for offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance; mark only Load Tender evidence present in that record."
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Operation outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Received or completed",
+                "Completed with exception",
+                "Partially completed",
+                "Held",
+                "Refused or returned"
+              ]
+            },
+            {
+              "key": "completed_at",
+              "label": "Completion date and time",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_action",
+              "label": "Remaining action or restriction",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner or receiving party",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Due date or trigger",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Load Tender outcome details, unresolved constraints, and receiving instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Load Tender outcome details, unresolved constraints, and receiving instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Document Load Tender outcome facts, unresolved operating limits, receiver directions, and the accountable next action."
+        },
+        {
+          "key": "operation_handoff",
+          "type": "signatures",
+          "label": "Operator and handoff acknowledgment",
+          "fields": [
+            {
+              "key": "operator_signature",
+              "label": "Operator or preparer",
+              "units": 1.1
+            },
+            {
+              "key": "operator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver, supervisor, or customer",
+              "units": 1.2
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "The Load Tender acknowledgment records the offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance outcome. It cannot conceal a Load Tender hold, exception, or transport planning coordinator restriction."
+        }
+      ]
+    }
+  ]
+}

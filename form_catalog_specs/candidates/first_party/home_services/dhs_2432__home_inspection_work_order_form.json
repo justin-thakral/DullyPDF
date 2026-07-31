@@ -1,0 +1,380 @@
+{
+  "catalog_id": "home_services/dhs_2432__home_inspection_work_order_form",
+  "description": "For home inspection, this work order form records visual inspection boundary, excluded systems, representative testing, safety limits, and client concerns. Its supporting evidence includes system observations, photos, readings, tested devices, inaccessible areas, seller disclosures, and defect locations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Home opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Home site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Home contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Home service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Home due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this home inspection record to its evidence.",
+          "key": "record_routing",
+          "label": "Home Inspection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Property",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Client",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Occupancy",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Utilities",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Weather",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture property, client, occupancy, systems, utilities, weather, access limitations, and inspection agreement for this home inspection.",
+          "key": "core_identity",
+          "label": "Home Inspection Core Identifiers",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Visual inspection boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Excluded systems",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Representative testing",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Safety limits",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For home inspection, record visual inspection boundary, excluded systems, representative testing, safety limits, and client concerns.",
+          "key": "task_inputs",
+          "label": "Home Inspection Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Home work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized home inspection work from additions.",
+          "key": "assigned_work",
+          "label": "Home Inspection Assigned Work and Acceptance Criteria",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Home arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Home access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Home added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Home inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop home inspection work at recorded limits.",
+          "key": "work_window",
+          "label": "Home Inspection Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not enter unsafe spaces or operate suspect systems; immediately communicate observed urgent safety concerns. Route unresolved home inspection work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Home Inspection Applicable Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Home when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Home measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Home evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Home result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For home inspection, record system observations, photos, readings, tested devices, inaccessible areas, seller disclosures, and defect locations.",
+          "key": "evidence_register",
+          "label": "Home Inspection Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "System observations",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Tested devices",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Inaccessible areas",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Seller disclosures",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every home inspection evidence source.",
+          "key": "evidence_sources",
+          "label": "Home Inspection Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary home inspection evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Home Inspection Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Home open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Home owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Home acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer home inspection items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Home Inspection Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Home completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Material finding summary",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Limitation record",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Recommended qualified evaluation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the home inspection outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Home Inspection Final Outcome",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the home inspection assignment, authorize its home inspection plan, and record each field finding.",
+      "key": "identity_1",
+      "title": "Work Reference, Plan, and Field Finding"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Inspection Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For home inspection, record material finding summary, limitation record, recommended qualified evaluation, report delivery, and client acknowledgment; give the home inspection care or operating instruction, identify home inspection access restoration and recipient.",
+          "height": 40,
+          "key": "completion_care_notes",
+          "label": "Home Inspection Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Home technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Home customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Home Inspection Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the home inspection record with material finding summary, limitation record, recommended qualified evaluation, report delivery, and client acknowledgment.",
+      "key": "closeout_4",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "home-inspection-work-order-form",
+  "source_filename": "dhs_2432__home_inspection_work_order_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Home Inspection Work Order Form: residential condition inspection and reporting using property, visual inspection boundary, and system observations.",
+  "title": "Home Inspection Work Order Form",
+  "use_case": "Use the work order form during residential condition inspection and reporting when the home inspection record must identify property, client, occupancy, systems, utilities, weather, access limitations, and inspection agreement. Complete the applicable handoff for material finding summary, limitation record, recommended qualified evaluation, report delivery, and client acknowledgment."
+}

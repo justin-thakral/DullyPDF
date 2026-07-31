@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1830__sponsorship_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1830__sponsorship_form.pdf",
+  "slug": "sponsorship-form",
+  "title": "Sponsorship Form",
+  "subtitle": "Capture benefit package, logo asset, placement, and announcement; confirm in-kind value and fulfillment.",
+  "description": "Sponsorship records benefit package, logo asset, placement, announcement, in-kind value, and fulfillment. Sponsorship evidence stays linked.",
+  "use_case": "Use this sponsorship operational record when staff must document benefit package and logo asset. Reconcile placement, announcement, in-kind value, and fulfillment before the sponsorship handoff. Use the signed commitment reference, benefit inventory, brand-asset approval, placement proof, announcement schedule, hospitality redemption, valuation record, and make-good acceptance. Ask the assigned sponsorship reviewer to confirm benefit package against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Sponsorship starting details review",
+      "guidance": "Detail benefit package, logo file and brand approval, placement dimensions, announcement copy, hospitality inventory, in-kind valuation, and fulfillment proof.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Sponsorship people and reference",
+          "fields": [
+            {
+              "key": "organization_legal_or_public_name",
+              "label": "Organization legal or public name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_contact_name",
+              "label": "Primary contact name",
+              "units": 1.0
+            },
+            {
+              "key": "primary_contact_phone",
+              "label": "Primary contact phone",
+              "units": 1.25
+            },
+            {
+              "key": "primary_contact_email",
+              "label": "Primary contact email",
+              "units": 1.1
+            },
+            {
+              "key": "benefit_package",
+              "label": "Benefit package",
+              "units": 1.2
+            },
+            {
+              "key": "logo_asset",
+              "label": "Logo asset",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Sponsorship task details",
+          "fields": [
+            {
+              "key": "placement",
+              "label": "Placement",
+              "units": 1.15
+            },
+            {
+              "key": "announcement",
+              "label": "Announcement",
+              "units": 1.0
+            },
+            {
+              "key": "in_kind_value",
+              "label": "In-kind value",
+              "units": 1.25
+            },
+            {
+              "key": "fulfillment",
+              "label": "Fulfillment",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Sponsorship activity review",
+      "guidance": "Record each meaningful sponsorship event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Sponsorship activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "benefit_package",
+              "label": "Benefit package",
+              "units": 1.1
+            },
+            {
+              "key": "placement",
+              "label": "Placement",
+              "units": 1.25
+            },
+            {
+              "key": "in_kind_value",
+              "label": "In-kind value",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Sponsorship change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Sponsorship exception review and completion",
+      "guidance": "Leave the current sponsorship result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Sponsorship final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Sponsorship completion receipt",
+          "fields": [
+            {
+              "key": "responsible_event_staff_and_date",
+              "label": "Responsible event staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded sponsorship task status."
+        }
+      ]
+    }
+  ]
+}

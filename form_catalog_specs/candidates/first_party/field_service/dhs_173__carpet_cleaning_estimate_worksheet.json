@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_173__carpet_cleaning_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_173__carpet_cleaning_estimate_worksheet.pdf",
+  "slug": "carpet-cleaning-estimate-worksheet",
+  "title": "Carpet Cleaning Estimate Worksheet",
+  "subtitle": "Residential Carpet Cleaning: prices observed scope, options, and exclusions.",
+  "description": "Carpet Cleaning Estimate Worksheet covers carpeted room, fiber, backing, stain, furnishing, transition, and extraction path. The carpet service coordinator records Residential Carpet Cleaning observed scope, costs, options, and terms. Carpet Cleaning Estimate Worksheet keeps Residential Carpet Cleaning exceptions visible until the carpet service coordinator handoff.",
+  "use_case": "Use Carpet Cleaning Estimate Worksheet at residence, room, stair, furniture area, entry path, and drying zone. Document carpeted room, fiber, backing, stain, furnishing, transition, and extraction path identity before Residential Carpet Cleaning begins. Compare carpeted room, fiber, backing, stain, furnishing, transition, and extraction path findings with stated Residential Carpet Cleaning criteria; route unresolved Residential Carpet Cleaning issues to cleaning quality reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Customer contact, estimator, and source record",
+      "guidance": "For Residential Carpet Cleaning, identify responsible parties, residence, room, stair, furniture area, entry path, and drying zone, and the linked carpeted room, fiber, backing, stain, furnishing, transition, and extraction path source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Estimate ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Estimate date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Customer / party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Carpet Cleaning identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and visit",
+              "units": 1.5555555555555556
+            },
+            {
+              "key": "identity_2",
+              "label": "Room, area, carpet type, and approximate size",
+              "units": 2.5
+            },
+            {
+              "key": "identity_3",
+              "label": "Stain history, prior treatment, pet condition, and requested result",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Pricing basis, allowances, and exclusions",
+      "guidance": "Capture Residential Carpet Cleaning facts for carpeted room, fiber, backing, stain, furnishing, transition, and extraction path; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Carpet Cleaning estimate checks",
+          "items": [
+            "Fiber, colorfastness, wear, seam, backing, and pre-existing damage",
+            "Stain type, location, age, and prior chemical use",
+            "Furniture, electronics, floor transition, and protected surface",
+            "Vacuum, precondition, agitation, extraction, and spot-treatment step",
+            "Moisture removal, airflow, drying, and access restriction",
+            "Post-cleaning appearance and remaining limitation"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Estimate and option lines",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Task, item, or option",
+              "units": 1.15
+            },
+            {
+              "key": "basis",
+              "label": "Quantity or condition basis",
+              "units": 1.05
+            },
+            {
+              "key": "labor",
+              "label": "Labor or time",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Part, material, or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "amount",
+              "label": "Amount or option status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Estimate assumptions and customer decision",
+      "guidance": "Resolve open Residential Carpet Cleaning conditions; have carpet service coordinator assign the next Residential Carpet Cleaning owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Pricing assumptions, exclusions, and retained evidence",
+          "items": [
+            "Unknown spill or contamination",
+            "Fiber, dye, backing, or adhesive compatibility concern",
+            "Damage or stain cannot be safely improved",
+            "Drying or access control cannot be maintained",
+            "Pre-existing condition and stain photographs",
+            "Product and spot-test record",
+            "Room and treatment completion log",
+            "Drying instruction and final walkthrough"
+          ],
+          "guidance": "Pause Residential Carpet Cleaning when contamination, compatibility, damage, drying, or safe-access concern remains. Retain the available Residential Carpet Cleaning proof and route unresolved carpeted room, fiber, backing, stain, furnishing, transition, and extraction path scope to carpet service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Estimate status and next customer action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Estimate review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for customer review",
+                "Accepted as written",
+                "Accepted with listed option",
+                "Revision required",
+                "Declined"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Estimator and customer review",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Carpet Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

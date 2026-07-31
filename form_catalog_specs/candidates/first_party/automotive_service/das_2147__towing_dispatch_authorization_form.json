@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2147__towing_dispatch_authorization_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2147__towing_dispatch_authorization_form.pdf",
+  "slug": "towing-dispatch-authorization-form",
+  "title": "Towing Dispatch Authorization Form",
+  "subtitle": "Towing Dispatch: bounds the decision, conditions, and expiry.",
+  "description": "Towing Dispatch Authorization Form turns disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery into a customer-facing Towing Dispatch consent record. The towing dispatch coordinator itemizes diagnostics or services, labor, parts or materials, fees, tax, estimated total, maximum cap, and the vehicle owner / request authority's signed decision. Work not listed or priced remains on hold.",
+  "use_case": "Use Towing Dispatch Authorization Form at roadside pickup, safe staging point, tow route, storage yard, and delivery location. Verify applicable Towing Dispatch requirements; distinguish diagnostic or inspection authority from listed work, price each operation, and record the vehicle owner / request authority's exact approval, conditions, or decline. Follow the selected contact-before-additional-work instruction whenever disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery scope or cost changes.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Authorization request and subject identity",
+      "guidance": "For Towing Dispatch, identify responsible parties, roadside pickup, safe staging point, tow route, storage yard, and delivery location, and the linked disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Authorization ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Request date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Requesting party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            },
+            {
+              "key": "basis",
+              "label": "Requested limit",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Towing Dispatch identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Dispatch, requester, account, and authority",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle VIN or plate, make, model, color, and location",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Truck, operator, equipment, destination, and custody references",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested scope, limits, and decision lines",
+      "guidance": "Capture Towing Dispatch facts for disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Requested scope and decision lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Requested scope or custody action",
+              "units": 1.2
+            },
+            {
+              "key": "basis",
+              "label": "Finding, rate, or source basis",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Limit or condition",
+              "units": 0.95
+            },
+            {
+              "key": "decision",
+              "label": "Decision or required change",
+              "units": 1.1
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Towing Dispatch authorization checks",
+          "items": [
+            "Road, traffic, weather, visibility, and scene safety",
+            "Vehicle position, damage, mobility, drivetrain, and clearance",
+            "Tow method, attachment, securement, and special equipment",
+            "Occupant, key, property, and law-enforcement context",
+            "Departure, route, storage, and destination handoff",
+            "Pre-existing and delivery condition"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Authorization conditions and final decision",
+      "guidance": "Resolve open Towing Dispatch conditions; have towing dispatch coordinator assign the next Towing Dispatch owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Decision limits, holds, and retained evidence",
+          "items": [
+            "Scene cannot be made safe",
+            "Requester lacks authority",
+            "Vehicle requires different equipment or recovery plan",
+            "Destination or custody acceptance unavailable",
+            "Scene and vehicle condition photographs",
+            "Dispatch and authority record",
+            "Attachment and securement evidence",
+            "Custody, destination, and delivery acknowledgment"
+          ],
+          "guidance": "Pause Towing Dispatch when scene safety, authority, equipment fit, securement, destination, or vehicle custody remains unresolved. Retain the available Towing Dispatch proof and route unresolved disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery scope to towing dispatch coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Authorization decision and limits",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Authorization decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved within listed limits",
+                "Approved with listed conditions",
+                "Revision required",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and authorizer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requesting party or authorized representative",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorizing authority: Qualified Towing Operations Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

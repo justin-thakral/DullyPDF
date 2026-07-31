@@ -1,0 +1,168 @@
+{
+  "catalog_id": "business_operations/dbo_1795__policy_acknowledgment_intake_form",
+  "description": "For policy acknowledgment, this intake form records required reading, training dependency, questions, disclosure or consent boundaries, acknowledgment deadline, and exceptions. Its supporting evidence includes delivery record, training completion, employee questions, accessible-format request, acknowledgment, and manager follow-up.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "policy_id",
+              "label": "Policy identifier",
+              "units": 1.0
+            },
+            {
+              "key": "version",
+              "label": "Version and effective date",
+              "units": 1.0
+            },
+            {
+              "key": "delivery",
+              "label": "Delivery channel",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the exact policy copy assigned for distribution.",
+          "key": "policy_reference",
+          "label": "Policy Assignment Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "recipient",
+              "label": "Employee or audience",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Department or location",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Language or accessible format",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the intended recipient and a usable delivery format.",
+          "key": "policy_recipient",
+          "label": "Recipient and Access Needs",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the exact policy version, recipient, language, location, and delivery channel.",
+      "key": "identity_1",
+      "title": "Policy Intake Assignment and Recipient"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "required_reading",
+              "label": "Required reading",
+              "units": 1.0
+            },
+            {
+              "key": "training",
+              "label": "Training dependency",
+              "units": 1.0
+            },
+            {
+              "key": "deadline",
+              "label": "Acknowledgment deadline",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Distribution owner",
+              "units": 1.0
+            },
+            {
+              "key": "question_contact",
+              "label": "Question contact",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Set the delivery, training, support, and deadline requirements.",
+          "key": "distribution_setup",
+          "label": "Distribution and Support Setup",
+          "type": "fields"
+        },
+        {
+          "guidance": "Use this record only to document delivery, reading, questions, training, and receipt. Route rights, consent, conflict, or policy interpretation questions for qualified review.",
+          "key": "acknowledgment_boundary",
+          "label": "Acknowledgment Is Not Consent or Waiver",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Configure required reading, training, support, deadline, and a question owner.",
+      "key": "task_2",
+      "title": "Policy Intake Setup and Support"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "status",
+              "label": "Setup status",
+              "options": [
+                "Select setup status",
+                "Ready to distribute",
+                "Training or format pending",
+                "Policy review required",
+                "Do not distribute"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "next_action",
+              "label": "Next action and owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Follow-up date",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "HR record location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Release only a complete, accessible assignment.",
+          "key": "setup_disposition",
+          "label": "Setup Disposition and Record Location",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "owner",
+              "label": "Setup owner, signature, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "setup_approval",
+          "label": "Distribution Setup Approval",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Approve only a complete, accessible distribution assignment.",
+      "key": "closeout_3",
+      "title": "Intake Disposition and Approval"
+    }
+  ],
+  "slug": "policy-acknowledgment-intake-form",
+  "source_filename": "dbo_1795__policy_acknowledgment_intake_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Policy Acknowledgment Intake Form: workplace policy distribution and acknowledgment using policy identifier, required reading, and delivery record.",
+  "title": "Policy Acknowledgment Intake Form",
+  "use_case": "Use the intake form during workplace policy distribution and acknowledgment when the policy acknowledgment record must identify policy identifier, version, effective date, audience, employee identity, location, language, and delivery channel. Complete the applicable handoff for acknowledgment timestamp, exception routing, overdue follow-up, version retention, training linkage, and HR record handoff."
+}

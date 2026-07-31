@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2104__vehicle_repair_tracking_log",
+  "source_section": "automotive_service",
+  "source_filename": "das_2104__vehicle_repair_tracking_log.pdf",
+  "slug": "vehicle-repair-tracking-log",
+  "title": "Vehicle Repair Tracking Log",
+  "subtitle": "General Vehicle Repair: preserves changes and next triggers.",
+  "description": "Vehicle Repair Tracking Log covers vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision. The service advisor records General Vehicle Repair events, owners, exceptions, and next triggers. Vehicle Repair Tracking Log keeps General Vehicle Repair exceptions visible until the service advisor handoff.",
+  "use_case": "Use Vehicle Repair Tracking Log at repair facility, service bay, test area, and customer handoff point. Document vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision identity before General Vehicle Repair begins. Compare vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision findings with stated General Vehicle Repair criteria; route unresolved General Vehicle Repair issues to qualified automotive repair reviewer. For Vehicle Repair Tracking Log, confirm requirements for General Vehicle Repair. Ask qualified automotive repair reviewer to review General Vehicle Repair conditions beyond the service advisor's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For General Vehicle Repair, identify responsible parties, repair facility, service bay, test area, and customer handoff point, and the linked vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "General Vehicle Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Repair order, customer, and contact",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, year, make, model, and mileage",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_3",
+              "label": "Reported symptom, operating condition, and prior repair",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status variance and accountable response",
+      "guidance": "Capture General Vehicle Repair facts for vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "General Vehicle Repair tracked controls",
+          "items": [
+            "Symptom verification and baseline condition",
+            "Diagnostic trouble code and test result",
+            "Affected system and root-cause basis",
+            "Approved repair and part compatibility",
+            "Post-repair function and warning-light state",
+            "Road test or stationary verification within authority"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Status decision and next trigger",
+      "guidance": "Reconcile the latest General Vehicle Repair event before closeout. Service Advisor identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Safety-critical condition",
+            "Diagnosis remains uncertain",
+            "Additional work exceeds authorization",
+            "Vehicle cannot be safely tested or released",
+            "Vehicle intake and condition photographs",
+            "Diagnostic readings and fault record",
+            "Part and repair-operation trace",
+            "Post-repair test and customer handoff"
+          ],
+          "guidance": "Pause General Vehicle Repair when a safety-critical condition, uncertain diagnosis, authorization gap, or failed verification remains. Retain the available General Vehicle Repair proof and route unresolved vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision scope to service advisor."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Service Advisor",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Automotive Repair Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

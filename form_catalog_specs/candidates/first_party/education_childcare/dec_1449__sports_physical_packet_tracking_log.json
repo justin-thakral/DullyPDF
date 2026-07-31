@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1449__sports_physical_packet_tracking_log",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1449__sports_physical_packet_tracking_log.pdf",
+  "slug": "sports-physical-packet-tracking-log",
+  "title": "Sports Physical Packet Tracking Log",
+  "subtitle": "Capture packet source, examination reference, signature status, and restriction; confirm submission date and roster clearance.",
+  "description": "Sports Physical Packet records packet source, examination reference, signature status, restriction, submission date, and roster clearance. Sports Physical Packet evidence stays linked.",
+  "use_case": "Use this sports physical packet time-ordered tracking when staff must document packet source and examination reference. Reconcile signature status, restriction, submission date, and roster clearance before the sports physical packet handoff. Use the packet checklist, examination reference, required signatures, restriction insert, submission receipt, missing-page request, review stamp, and roster eligibility update. This packet centers document completeness: examination page, clinician signature, restriction attachment, parent page, school receipt, missing-page chase, review stamp, and roster release. Ask the assigned sports physical packet reviewer to confirm packet source against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Sports Physical Packet starting details",
+      "guidance": "Track examination reference, required packet pages, qualified signatures, restriction sheet, submission date, missing document, and roster clearance. Keep any urgent sports physical packet issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Sports Physical Packet people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "packet_source",
+              "label": "Packet source",
+              "units": 1.2
+            },
+            {
+              "key": "examination_reference",
+              "label": "Examination reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Sports Physical Packet task details",
+          "fields": [
+            {
+              "key": "signature_status",
+              "label": "Signature status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "restriction",
+              "label": "Restriction",
+              "units": 1.0
+            },
+            {
+              "key": "submission_date",
+              "label": "Submission date",
+              "units": 1.25
+            },
+            {
+              "key": "roster_clearance",
+              "label": "Roster clearance",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Sports Physical Packet exception review and event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Sports Physical Packet events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "packet_source",
+              "label": "Packet source",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "submission_date",
+              "label": "Submission date",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Sports Physical Packet correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Sports Physical Packet current state and handoff",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Sports Physical Packet status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Sports Physical Packet open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Sports Physical Packet log receipt",
+          "fields": [
+            {
+              "key": "school_or_program_log_custodian_and_date",
+              "label": "School or program log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

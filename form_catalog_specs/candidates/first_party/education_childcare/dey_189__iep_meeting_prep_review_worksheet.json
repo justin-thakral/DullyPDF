@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_189__iep_meeting_prep_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_189__iep_meeting_prep_review_worksheet.pdf",
+  "slug": "iep-meeting-prep-review-worksheet",
+  "title": "IEP Meeting Prep Review Worksheet",
+  "subtitle": "Capture meeting notice, current plan, progress evidence, and participant role; confirm family priority and proposed action.",
+  "description": "IEP Meeting Prep records meeting notice, current plan, progress evidence, participant role, family priority, and proposed action. IEP Meeting Prep evidence stays linked.",
+  "use_case": "Use this iep meeting prep evidence-based review when staff must document meeting notice and current plan. Reconcile progress evidence, participant role, family priority, and proposed action before the iep meeting prep handoff. Use the meeting notice, current IEP, service log, progress-monitoring data, evaluation reports, family agenda, participant list, draft proposal, and prior written notice route. For iep meeting prep review use, cite source. Match the iep meeting prep family or learner wording. Preserve the iep meeting prep amendment history and supersession date. Link the iep meeting prep source version and meeting notes. Record the iep meeting prep learner response and accessibility support. Close the iep meeting prep recipient list. Verify iep meeting prep documentary provenance. Resolve iep meeting prep amendments, superseded wording, and archival distribution for iep meeting prep. Ask the assigned iep meeting prep reviewer to confirm meeting notice against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "IEP Meeting Prep meeting details",
+      "guidance": "Assemble meeting notice, current plan, service and progress records, participant roles, family priorities, proposed actions, accommodations, and follow-up questions.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "IEP Meeting Prep people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "meeting_notice",
+              "label": "Meeting notice",
+              "units": 1.1
+            },
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.2
+            },
+            {
+              "key": "progress_evidence",
+              "label": "Progress evidence",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "IEP Meeting Prep task details",
+          "fields": [
+            {
+              "key": "participant_role",
+              "label": "Participant role",
+              "units": 1.15
+            },
+            {
+              "key": "family_priority",
+              "label": "Family priority",
+              "units": 1.0
+            },
+            {
+              "key": "proposed_action",
+              "label": "Proposed action",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "IEP Meeting Prep discussion review",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "IEP Meeting Prep strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_meeting_notice",
+              "label": "Strength, progress, or successful support related to meeting notice"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "IEP Meeting Prep questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_progress_evidence",
+              "label": "Concern, missing context, or question about progress evidence"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "IEP Meeting Prep participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_participant_role",
+              "label": "Priority, preference, or proposed support for participant role"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "IEP Meeting Prep exception review and action plan",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "IEP Meeting Prep agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "IEP Meeting Prep follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "IEP Meeting Prep review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

@@ -94,7 +94,14 @@ def build_active_contract(
             or not isinstance(thumbnail, dict)
         ):
             raise ActivationError(f"manifest forms[{index}] has incomplete asset identity")
-        merged[(section, filename)] = {
+        key = (section, filename)
+        if key in merged:
+            raise ActivationError(
+                f"manifest forms[{index}] identity {section!r}/{filename!r} "
+                "already exists in cumulative active replacements; explicit "
+                "revision activation is not supported"
+            )
+        merged[key] = {
             "sourceSection": section,
             "filename": filename,
             "pdfPath": pdf.get("objectPath"),

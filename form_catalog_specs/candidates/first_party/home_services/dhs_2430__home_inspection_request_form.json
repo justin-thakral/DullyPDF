@@ -1,0 +1,288 @@
+{
+  "catalog_id": "home_services/dhs_2430__home_inspection_request_form",
+  "description": "For home inspection, this request form records visual inspection boundary, excluded systems, representative testing, safety limits, and client concerns. Its supporting evidence includes system observations, photos, readings, tested devices, inaccessible areas, seller disclosures, and defect locations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Home opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Home site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Home contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Home service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Home due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this home inspection record to its evidence.",
+          "key": "record_routing",
+          "label": "Home Inspection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Property",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Client",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Occupancy",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Utilities",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Weather",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture property, client, occupancy, systems, utilities, weather, access limitations, and inspection agreement for this home inspection.",
+          "key": "core_identity",
+          "label": "Home Inspection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify property, client, occupancy, systems, utilities, weather, access limitations, and inspection agreement for this home inspection record.",
+      "key": "identity_1",
+      "title": "Customer Contact and Address"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Visual inspection boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Excluded systems",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Representative testing",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Safety limits",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For home inspection, record visual inspection boundary, excluded systems, representative testing, safety limits, and client concerns.",
+          "key": "task_inputs",
+          "label": "Home Inspection Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Inspection Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State home inspection outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Home Inspection Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Home work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Home owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate home inspection items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Home Inspection Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not enter unsafe spaces or operate suspect systems; immediately communicate observed urgent safety concerns. Route unresolved home inspection work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Home Inspection Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For home inspection, capture visual inspection boundary, excluded systems, representative testing, safety limits, and client concerns.",
+      "key": "task_2",
+      "title": "Requested Service and Access"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Home decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Home scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Home schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate home inspection disposition.",
+          "key": "disposition",
+          "label": "Home Inspection Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Inspection Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the home inspection decision to evidence.",
+          "height": 116,
+          "key": "decision_basis",
+          "label": "Home Inspection Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Material finding summary",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Limitation record",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Recommended qualified evaluation",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Report delivery",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For home inspection, record material finding summary, limitation record, recommended qualified evaluation, report delivery, and client acknowledgment.",
+          "key": "request_handoff",
+          "label": "Home Inspection Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Home customer confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Home service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Home Inspection Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the home inspection next step from system observations, photos, readings, tested devices, inaccessible areas, seller disclosures, and defect locations.",
+      "key": "decision_3",
+      "title": "Schedule Decision"
+    }
+  ],
+  "slug": "home-inspection-request-form",
+  "source_filename": "dhs_2430__home_inspection_request_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Home Inspection Request Form: residential condition inspection and reporting using property, visual inspection boundary, and system observations.",
+  "title": "Home Inspection Request Form",
+  "use_case": "Use the request form during residential condition inspection and reporting when the home inspection record must identify property, client, occupancy, systems, utilities, weather, access limitations, and inspection agreement. Complete the applicable handoff for material finding summary, limitation record, recommended qualified evaluation, report delivery, and client acknowledgment."
+}

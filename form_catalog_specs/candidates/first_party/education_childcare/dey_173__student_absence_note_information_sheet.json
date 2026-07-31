@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_173__student_absence_note_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_173__student_absence_note_information_sheet.pdf",
+  "slug": "student-absence-note-information-sheet",
+  "title": "Student Absence Note Information Sheet",
+  "subtitle": "Document reported absence dates, attendance coding, missed work, and the return or correction route.",
+  "description": "Keeps the student, guardian source, absence period, attendance code, missed-work route, return condition, and any record correction in one attendance-office record.",
+  "use_case": "Use when a family reports a student absence or asks the school to correct the attendance record. Do not request medical detail that the school does not need. Attendance coding and required documentation follow the school's applicable policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Student Absence Note contact and reference",
+      "guidance": "Capture absence start and end dates, guardian source, attendance code, missed-work delivery, return condition, documentation status, and correction request.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Student Absence Note people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "absence_dates",
+              "label": "Absence dates",
+              "units": 1.1
+            },
+            {
+              "key": "guardian_source",
+              "label": "Guardian source",
+              "units": 1.2
+            },
+            {
+              "key": "attendance_code",
+              "label": "Attendance code",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Student Absence Note task details",
+          "fields": [
+            {
+              "key": "missed_work_route",
+              "label": "Missed-work route",
+              "units": 1.15
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.0
+            },
+            {
+              "key": "record_correction",
+              "label": "Record correction",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Student Absence Note current instructions review",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Student Absence Note instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Student Absence Note questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Student Absence Note update route and handoff",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Student Absence Note effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Student Absence Note update boundary",
+          "guidance": "Replace outdated student absence note instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

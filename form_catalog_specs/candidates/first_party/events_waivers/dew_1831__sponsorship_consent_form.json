@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1831__sponsorship_consent_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1831__sponsorship_consent_form.pdf",
+  "slug": "sponsorship-consent-form",
+  "title": "Sponsorship Consent Form",
+  "subtitle": "Capture benefit package, logo asset, placement, and announcement; confirm in-kind value and fulfillment.",
+  "description": "Sponsorship records benefit package, logo asset, placement, announcement, in-kind value, and fulfillment. Sponsorship evidence stays linked.",
+  "use_case": "Use this sponsorship scoped consent when staff must document benefit package and logo asset. Reconcile placement, announcement, in-kind value, and fulfillment before the sponsorship handoff. Use the signed commitment reference, benefit inventory, brand-asset approval, placement proof, announcement schedule, hospitality redemption, valuation record, and make-good acceptance. Ask the assigned sponsorship reviewer to confirm benefit package against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Sponsorship participant details",
+      "guidance": "Detail benefit package, logo file and brand approval, placement dimensions, announcement copy, hospitality inventory, in-kind valuation, and fulfillment proof.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Sponsorship people and reference",
+          "fields": [
+            {
+              "key": "organization_legal_or_public_name",
+              "label": "Organization legal or public name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_contact_name",
+              "label": "Primary contact name",
+              "units": 1.0
+            },
+            {
+              "key": "primary_contact_phone",
+              "label": "Primary contact phone",
+              "units": 1.25
+            },
+            {
+              "key": "primary_contact_email",
+              "label": "Primary contact email",
+              "units": 1.1
+            },
+            {
+              "key": "benefit_package",
+              "label": "Benefit package",
+              "units": 1.2
+            },
+            {
+              "key": "logo_asset",
+              "label": "Logo asset",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Sponsorship task details",
+          "fields": [
+            {
+              "key": "placement",
+              "label": "Placement",
+              "units": 1.15
+            },
+            {
+              "key": "announcement",
+              "label": "Announcement",
+              "units": 1.0
+            },
+            {
+              "key": "in_kind_value",
+              "label": "In-kind value",
+              "units": 1.25
+            },
+            {
+              "key": "fulfillment",
+              "label": "Fulfillment",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_choices",
+      "title": "Sponsorship exception review and voluntary choices",
+      "guidance": "Present each choice independently; do not preselect an answer.",
+      "blocks": [
+        {
+          "key": "itemized_consent",
+          "type": "fields",
+          "label": "Sponsorship itemized consent",
+          "fields": [
+            {
+              "key": "benefit_package",
+              "label": "Benefit package",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "logo_asset",
+              "label": "Logo asset",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "placement",
+              "label": "Placement",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "announcement",
+              "label": "Announcement",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "in_kind_value",
+              "label": "In-kind value",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "fulfillment",
+              "label": "Fulfillment",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consent_checks",
+          "type": "checklist",
+          "label": "Sponsorship informed-choice checks",
+          "items": [
+            "Purpose and practical conditions are explained",
+            "Questions and access needs are addressed",
+            "Declining one choice does not decide another",
+            "Withdrawal route and practical limits are explained"
+          ]
+        },
+        {
+          "key": "consent_conditions",
+          "type": "fields",
+          "label": "Sponsorship conditions and withdrawal",
+          "fields": [
+            {
+              "key": "choice_explained_by",
+              "label": "Choice explained by",
+              "units": 1.15
+            },
+            {
+              "key": "question_or_accessibility_need",
+              "label": "Question or accessibility need",
+              "units": 1.0
+            },
+            {
+              "key": "special_condition_or_exclusion",
+              "label": "Special condition or exclusion",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal_contact",
+              "label": "Withdrawal contact",
+              "units": 1.1
+            },
+            {
+              "key": "consent_copy_provided_date",
+              "label": "Consent copy provided date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_signoff",
+      "title": "Sponsorship decision and signer receipt",
+      "guidance": "Record the voluntary decision and responsible staff recipient.",
+      "blocks": [
+        {
+          "key": "consent_note",
+          "type": "textarea",
+          "label": "Sponsorship question or limit",
+          "fields": [
+            {
+              "key": "question_explanation_declined_scope_or_participation_limit",
+              "label": "Question, explanation, declined scope, or participation limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "consent_signatures",
+          "type": "signatures",
+          "label": "Sponsorship signatures",
+          "fields": [
+            {
+              "key": "person_giving_consent_and_date",
+              "label": "Person giving consent and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The signature applies only to choices recorded above."
+        }
+      ]
+    }
+  ]
+}

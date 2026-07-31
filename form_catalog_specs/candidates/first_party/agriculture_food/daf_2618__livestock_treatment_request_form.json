@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2618__livestock_treatment_request_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2618__livestock_treatment_request_form.pdf",
+  "slug": "daf-2618-livestock-treatment-request-form",
+  "title": "Livestock Treatment Request Form",
+  "subtitle": "Livestock Treatment: defines need, constraints, and assignment.",
+  "description": "Livestock Treatment Request Form covers animal or group, condition, product, dose, route, withdrawal interval, response, and disposition. The livestock care record owner records Livestock Treatment need, timing, access, and assignment. Livestock Treatment Request Form keeps Livestock Treatment exceptions visible until the livestock care record owner handoff.",
+  "use_case": "Use Livestock Treatment Request Form at pen, pasture, barn, treatment area, and product storage location. Document animal or group, condition, product, dose, route, withdrawal interval, response, and disposition identity before Livestock Treatment begins. Compare animal or group, condition, product, dose, route, withdrawal interval, response, and disposition findings with stated Livestock Treatment criteria; route unresolved Livestock Treatment issues to veterinary or otherwise qualified treatment reviewer. For Livestock Treatment Request Form, confirm requirements for Livestock Treatment. Ask veterinary or otherwise qualified treatment reviewer to review Livestock Treatment conditions beyond the livestock care record owner's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requester, location, and subject details",
+      "guidance": "For Livestock Treatment, identify responsible parties, pen, pasture, barn, treatment area, and product storage location, and the linked animal or group, condition, product, dose, route, withdrawal interval, response, and disposition source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Livestock Treatment identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Animal, group, tag, species, and production class",
+              "units": 2.6
+            },
+            {
+              "key": "identity_2",
+              "label": "Condition, observation, and treatment authorization",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Product, lot, expiration, and protocol reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested result, access, and timing",
+      "guidance": "Capture Livestock Treatment facts for animal or group, condition, product, dose, route, withdrawal interval, response, and disposition; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Livestock Treatment intake confirmations",
+          "items": [
+            "Requested or already documented: baseline signs and condition",
+            "Requested or already documented: dose calculation and administration route",
+            "Requested or already documented: administrator and treatment time",
+            "Requested or already documented: storage and product integrity",
+            "Requested or already documented: response and adverse observation",
+            "Requested or already documented: withdrawal, segregation, follow-up, and disposition"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Livestock Treatment request questions; have livestock care record owner record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Animal identity uncertain",
+            "Dose or product authorization unclear",
+            "Adverse response or worsening condition",
+            "Withdrawal or disposition cannot be established",
+            "Prior or requester-supplied: animal and group identity record",
+            "Prior or requester-supplied: product label, lot, and inventory trace",
+            "Prior or requester-supplied: dose and administration record",
+            "Prior or requester-supplied: withdrawal, follow-up, and qualified review"
+          ],
+          "guidance": "Do not assign or authorize the Livestock Treatment request when animal identity, treatment authority, dose, adverse response, withdrawal, or qualified disposition remains unresolved. Retain information supplied with the request and route unresolved constraints to livestock care record owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Livestock Care Record Owner",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

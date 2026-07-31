@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2230__driver_daily_route_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2230__driver_daily_route_form.pdf",
+  "slug": "driver-daily-route-form",
+  "title": "Driver Daily Route Form",
+  "subtitle": "Driver Daily Route: captures actual activity and handoff.",
+  "description": "Driver Daily Route Form covers driver, vehicle, stop sequence, shipment, time window, mileage, and route exception. The route dispatch coordinator records Driver Daily Route activity, quantities, variance, and handoff. Driver Daily Route Form keeps Driver Daily Route exceptions visible until the route dispatch coordinator handoff.",
+  "use_case": "Use Driver Daily Route Form at dispatch point, planned route, customer stops, safe parking, and return yard. Document driver, vehicle, stop sequence, shipment, time window, mileage, and route exception identity before Driver Daily Route begins. Compare driver, vehicle, stop sequence, shipment, time window, mileage, and route exception findings with stated Driver Daily Route criteria; route unresolved Driver Daily Route issues to transport operations reviewer. For Driver Daily Route Form, confirm requirements for Driver Daily Route. Ask transport operations reviewer to review Driver Daily Route conditions beyond the route dispatch coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Task record and responsible parties",
+      "guidance": "For Driver Daily Route, identify responsible parties, dispatch point, planned route, customer stops, safe parking, and return yard, and the linked driver, vehicle, stop sequence, shipment, time window, mileage, and route exception source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Activity record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Driver / dispatch",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Route / affected stop",
+              "units": 1.1666666666666667
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Driver Daily Route identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Route, date, driver, and dispatch",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle, trailer, and equipment identifiers",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Stop, order, piece, and time-window references",
+              "units": 2.5555555555555554
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Activity observations and operating checks",
+      "guidance": "Capture Driver Daily Route facts for driver, vehicle, stop sequence, shipment, time window, mileage, and route exception; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Activity and result lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Task, item, or service point",
+              "units": 1.25
+            },
+            {
+              "key": "required",
+              "label": "Required result or target",
+              "units": 1.05
+            },
+            {
+              "key": "actual",
+              "label": "Actual result or quantity",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Correction, status, or next action",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Driver Daily Route operating checks",
+          "items": [
+            "Driver and vehicle readiness",
+            "Planned stop sequence and commitment",
+            "Departure, arrival, service, and departure times",
+            "Mileage, fuel, and duty-status reference",
+            "Delivery, pickup, refusal, and failed-attempt result",
+            "Delay, reroute, incident, and return reconciliation"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Operating exception, outcome, and review",
+      "guidance": "Resolve open Driver Daily Route conditions; have route dispatch coordinator assign the next Driver Daily Route owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Operating exceptions, holds, and retained evidence",
+          "items": [
+            "Driver or vehicle not authorized",
+            "Hours, weather, road, or fatigue concern",
+            "Cargo or stop identity mismatch",
+            "Delay or failed stop lacks accountable routing",
+            "Dispatch plan and manifest",
+            "Time-and-location stop evidence",
+            "Customer exception and notification",
+            "Return mileage, pieces, and undelivered inventory"
+          ],
+          "guidance": "Pause Driver Daily Route when driver, vehicle, route safety, cargo custody, or unresolved stop exception prevents controlled continuation. Retain the available Driver Daily Route proof and route unresolved driver, vehicle, stop sequence, shipment, time window, mileage, and route exception scope to route dispatch coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Service outcome and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Recorded activity outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with follow-up",
+                "Partially completed",
+                "Held",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Operator and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Route Dispatch Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Transport Operations Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

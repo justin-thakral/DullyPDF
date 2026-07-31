@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1826__vendor_booth_consent_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1826__vendor_booth_consent_form.pdf",
+  "slug": "vendor-booth-consent-form",
+  "title": "Vendor Booth Consent Form",
+  "subtitle": "Capture booth number, footprint, product type, and power need; confirm load-in and credential.",
+  "description": "Vendor Booth records booth number, footprint, product type, power need, load-in, and credential. Vendor Booth evidence stays linked.",
+  "use_case": "Use this vendor booth scoped consent when staff must document booth number and footprint. Reconcile product type, power need, load-in, and credential before the vendor booth handoff. Use the exhibitor application, floorplan assignment, product description, utility order, insurance or approval route, load-in schedule, credential list, and load-out signoff. Ask the assigned vendor booth reviewer to confirm booth number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Vendor Booth participant details",
+      "guidance": "Assign booth number and footprint; record products, power and internet, load-in slot, fire-lane limit, credentials, waste plan, and load-out.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Vendor Booth people and reference",
+          "fields": [
+            {
+              "key": "organization_legal_or_public_name",
+              "label": "Organization legal or public name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_contact_name",
+              "label": "Primary contact name",
+              "units": 1.0
+            },
+            {
+              "key": "primary_contact_phone",
+              "label": "Primary contact phone",
+              "units": 1.25
+            },
+            {
+              "key": "primary_contact_email",
+              "label": "Primary contact email",
+              "units": 1.1
+            },
+            {
+              "key": "booth_number",
+              "label": "Booth number",
+              "units": 1.2
+            },
+            {
+              "key": "footprint",
+              "label": "Footprint",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Vendor Booth task details",
+          "fields": [
+            {
+              "key": "product_type",
+              "label": "Product type",
+              "units": 1.15
+            },
+            {
+              "key": "power_need",
+              "label": "Power need",
+              "units": 1.0
+            },
+            {
+              "key": "load_in",
+              "label": "Load-in",
+              "units": 1.25
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_choices",
+      "title": "Vendor Booth decision and voluntary choices",
+      "guidance": "Present each choice independently; do not preselect an answer.",
+      "blocks": [
+        {
+          "key": "itemized_consent",
+          "type": "fields",
+          "label": "Vendor Booth itemized consent",
+          "fields": [
+            {
+              "key": "booth_number",
+              "label": "Booth number",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "footprint",
+              "label": "Footprint",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "product_type",
+              "label": "Product type",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "power_need",
+              "label": "Power need",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "load_in",
+              "label": "Load-in",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consent_checks",
+          "type": "checklist",
+          "label": "Vendor Booth informed-choice checks",
+          "items": [
+            "Purpose and practical conditions are explained",
+            "Questions and access needs are addressed",
+            "Declining one choice does not decide another",
+            "Withdrawal route and practical limits are explained"
+          ]
+        },
+        {
+          "key": "consent_conditions",
+          "type": "fields",
+          "label": "Vendor Booth conditions and withdrawal",
+          "fields": [
+            {
+              "key": "choice_explained_by",
+              "label": "Choice explained by",
+              "units": 1.15
+            },
+            {
+              "key": "question_or_accessibility_need",
+              "label": "Question or accessibility need",
+              "units": 1.0
+            },
+            {
+              "key": "special_condition_or_exclusion",
+              "label": "Special condition or exclusion",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal_contact",
+              "label": "Withdrawal contact",
+              "units": 1.1
+            },
+            {
+              "key": "consent_copy_provided_date",
+              "label": "Consent copy provided date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_signoff",
+      "title": "Vendor Booth exception review and signer receipt",
+      "guidance": "Record the voluntary decision and responsible staff recipient.",
+      "blocks": [
+        {
+          "key": "consent_note",
+          "type": "textarea",
+          "label": "Vendor Booth question or limit",
+          "fields": [
+            {
+              "key": "question_explanation_declined_scope_or_participation_limit",
+              "label": "Question, explanation, declined scope, or participation limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "consent_signatures",
+          "type": "signatures",
+          "label": "Vendor Booth signatures",
+          "fields": [
+            {
+              "key": "person_giving_consent_and_date",
+              "label": "Person giving consent and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The signature applies only to choices recorded above."
+        }
+      ]
+    }
+  ]
+}

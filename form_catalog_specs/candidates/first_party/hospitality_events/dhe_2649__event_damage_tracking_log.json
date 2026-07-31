@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2649__event_damage_tracking_log",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2649__event_damage_tracking_log.pdf",
+  "slug": "event-damage-tracking-log",
+  "title": "Event Damage Tracking Log",
+  "subtitle": "Capture affected property, pre-event condition, discovery time, and containment; confirm repair evidence and settlement.",
+  "description": "Event Damage records affected property, pre-event condition, discovery time, containment, repair evidence, and settlement. Event Damage evidence stays linked.",
+  "use_case": "Use this event damage time-ordered tracking when staff must document affected property and pre-event condition. Reconcile discovery time, containment, repair evidence, and settlement before the event damage handoff. Use pre-event and post-event condition photos, inspection notes, vendor report, containment log, repair quote, invoice, insurance reference, settlement record, and venue acceptance. Ask the assigned event damage reviewer to confirm affected property against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Event Damage contact and reference",
+      "guidance": "Identify affected property, pre-event condition, discovery time, photographs, containment, vendor involvement, repair estimate, insurance route, settlement, and venue acceptance.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Event Damage people and reference",
+          "fields": [
+            {
+              "key": "operational_record_subject",
+              "label": "Operational record subject",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_contact",
+              "label": "Responsible contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_work_area",
+              "label": "Property, venue, or work area",
+              "units": 1.25
+            },
+            {
+              "key": "scheduled_or_discovery_date",
+              "label": "Scheduled or discovery date",
+              "units": 1.1
+            },
+            {
+              "key": "affected_property",
+              "label": "Affected property",
+              "units": 1.2
+            },
+            {
+              "key": "pre_event_condition",
+              "label": "Pre-event condition",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Event Damage task details",
+          "fields": [
+            {
+              "key": "discovery_time",
+              "label": "Discovery time",
+              "units": 1.15
+            },
+            {
+              "key": "containment",
+              "label": "Containment",
+              "units": 1.0
+            },
+            {
+              "key": "repair_evidence",
+              "label": "Repair evidence",
+              "units": 1.25
+            },
+            {
+              "key": "settlement",
+              "label": "Settlement",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Event Damage event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Event Damage events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "affected_property",
+              "label": "Affected property",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "repair_evidence",
+              "label": "Repair evidence",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Event Damage correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Event Damage current state",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Event Damage status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Event Damage open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Event Damage log receipt",
+          "fields": [
+            {
+              "key": "service_or_operations_log_custodian_and_date",
+              "label": "Service or operations log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

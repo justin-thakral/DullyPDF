@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2232__driver_daily_route_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2232__driver_daily_route_authorization_form.pdf",
+  "slug": "driver-daily-route-authorization-form",
+  "title": "Driver Daily Route Authorization Form",
+  "subtitle": "Driver Daily Route: bounds the decision, conditions, and expiry.",
+  "description": "Driver Daily Route Authorization Form controls driver, vehicle, stop sequence, shipment, time window, mileage, and route exception by tying each Driver Daily Route custody, document, or movement decision to the dispatch / fleet authority, a stated boundary, and an expiry. The route dispatch coordinator preserves conditions, exceptions, confirmation, and both sides of the handoff.",
+  "use_case": "Use Driver Daily Route Authorization Form at dispatch point, planned route, customer stops, safe parking, and return yard. Check applicable Driver Daily Route requirements, list the affected quantity, value, document, route, or custody action, and state its limit. Record whether the dispatch / fleet authority approves, conditions, holds, or declines the request; obtain renewed consent before changing driver, vehicle, stop sequence, shipment, time window, mileage, and route exception scope.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Authorization request and subject identity",
+      "guidance": "For Driver Daily Route, identify responsible parties, dispatch point, planned route, customer stops, safe parking, and return yard, and the linked driver, vehicle, stop sequence, shipment, time window, mileage, and route exception source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Authorization ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Request date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Requesting party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Route / affected stop",
+              "units": 1.1666666666666667
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Driver Daily Route identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Route, date, driver, and dispatch",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle, trailer, and equipment identifiers",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Stop, order, piece, and time-window references",
+              "units": 2.5555555555555554
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Decision evidence, conditions, and limits",
+      "guidance": "Capture Driver Daily Route facts for driver, vehicle, stop sequence, shipment, time window, mileage, and route exception; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Driver Daily Route authorization checks",
+          "items": [
+            "Driver and vehicle readiness",
+            "Planned stop sequence and commitment",
+            "Departure, arrival, service, and departure times",
+            "Mileage, fuel, and duty-status reference",
+            "Delivery, pickup, refusal, and failed-attempt result",
+            "Delay, reroute, incident, and return reconciliation"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Requested scope and decision lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Requested scope or custody action",
+              "units": 1.2
+            },
+            {
+              "key": "basis",
+              "label": "Finding, rate, or source basis",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Limit or condition",
+              "units": 0.95
+            },
+            {
+              "key": "decision",
+              "label": "Decision or required change",
+              "units": 1.1
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Decision evidence, expiry, and next control",
+      "guidance": "Resolve open Driver Daily Route conditions; have route dispatch coordinator assign the next Driver Daily Route owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Decision limits, holds, and retained evidence",
+          "items": [
+            "Driver or vehicle not authorized",
+            "Hours, weather, road, or fatigue concern",
+            "Cargo or stop identity mismatch",
+            "Delay or failed stop lacks accountable routing",
+            "Dispatch plan and manifest",
+            "Time-and-location stop evidence",
+            "Customer exception and notification",
+            "Return mileage, pieces, and undelivered inventory"
+          ],
+          "guidance": "Pause Driver Daily Route when driver, vehicle, route safety, cargo custody, or unresolved stop exception prevents controlled continuation. Retain the available Driver Daily Route proof and route unresolved driver, vehicle, stop sequence, shipment, time window, mileage, and route exception scope to route dispatch coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Authorization decision and limits",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Authorization decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved within listed limits",
+                "Approved with listed conditions",
+                "Revision required",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and authorizer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requesting party or authorized representative",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorizing authority: Transport Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

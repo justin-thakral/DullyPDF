@@ -1,0 +1,294 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1805__fitness_class_waiver",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1805__fitness_class_waiver.pdf",
+  "slug": "fitness-class-waiver",
+  "title": "Fitness Class Waiver",
+  "subtitle": "Capture class format, instructor, equipment, and exertion condition; confirm participant choice and session completion.",
+  "description": "Fitness Class Waiver records class format, instructor, equipment, exertion condition, participant choice, and session completion. Fitness Class Waiver evidence stays linked.",
+  "use_case": "Use this fitness class waiver risk acknowledgment when staff must document class format and instructor. Reconcile equipment, exertion condition, participant choice, and session completion before the fitness class waiver handoff. Use the class description, instructor credential reference, equipment list, disclosed exertion conditions, modification menu, participant questions, and attendance result. This acknowledgment concerns an instructor-led exercise session with cardio or resistance intensity, repetitions, studio equipment, modification choices, rest, and class completion. Ask the assigned fitness class waiver reviewer to confirm class format against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Fitness Class Waiver contact and reference",
+      "guidance": "Name class format, instructor, equipment, exertion and environment conditions, modification options, participant questions, session choice, and completion. Record the fitness class waiver decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Fitness Class Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "class_format",
+              "label": "Class format",
+              "units": 1.2
+            },
+            {
+              "key": "instructor",
+              "label": "Instructor",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Fitness Class Waiver task details",
+          "fields": [
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.15
+            },
+            {
+              "key": "exertion_condition",
+              "label": "Exertion condition",
+              "units": 1.0
+            },
+            {
+              "key": "participant_choice",
+              "label": "Participant choice",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Participate",
+                "Participate with limit",
+                "Do not participate",
+                "Pending"
+              ]
+            },
+            {
+              "key": "session_completion",
+              "label": "Session completion",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "activity_conditions",
+      "title": "Fitness Class Waiver exception review and activity terms",
+      "guidance": "Disclose the named activity conditions, alternatives, and safety route.",
+      "blocks": [
+        {
+          "key": "condition_checks",
+          "type": "checklist",
+          "label": "Fitness Class Waiver disclosed conditions",
+          "items": [
+            "Class format is identified for this record",
+            "Instructor matches the current request or source",
+            "Equipment is ready for point-of-use staff",
+            "Exertion condition limits or questions are resolved",
+            "Participant choice is communicated to the responsible person",
+            "Session completion is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "condition_details",
+          "type": "table",
+          "label": "Fitness Class Waiver condition details",
+          "columns": [
+            {
+              "key": "activity_condition",
+              "label": "Activity condition",
+              "units": 1.2
+            },
+            {
+              "key": "explanation",
+              "label": "Explanation",
+              "units": 1.1
+            },
+            {
+              "key": "alternative_or_limit",
+              "label": "Alternative or limit",
+              "units": 1.25
+            },
+            {
+              "key": "question_status",
+              "label": "Question status",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "participant_choices",
+      "title": "Fitness Class Waiver exception review and participant choices",
+      "guidance": "Preserve questions, limits, and a voluntary participation decision.",
+      "blocks": [
+        {
+          "key": "waiver_choices",
+          "type": "fields",
+          "label": "Fitness Class Waiver itemized acknowledgments",
+          "fields": [
+            {
+              "key": "class_format",
+              "label": "Class format",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Acknowledge",
+                "Question",
+                "Decline",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "instructor",
+              "label": "Instructor",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Acknowledge",
+                "Question",
+                "Decline",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Acknowledge",
+                "Question",
+                "Decline",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "exertion_condition",
+              "label": "Exertion condition",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Acknowledge",
+                "Question",
+                "Decline",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "participant_choice",
+              "label": "Participant choice",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Acknowledge",
+                "Question",
+                "Decline",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "session_completion",
+              "label": "Session completion",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Acknowledge",
+                "Question",
+                "Decline",
+                "Not applicable"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "participation_route",
+          "type": "fields",
+          "label": "Fitness Class Waiver participation and emergency route",
+          "fields": [
+            {
+              "key": "participation_decision",
+              "label": "Participation decision",
+              "units": 1.15
+            },
+            {
+              "key": "modification_or_alternative",
+              "label": "Modification or alternative",
+              "units": 1.0
+            },
+            {
+              "key": "emergency_contact",
+              "label": "Emergency contact",
+              "units": 1.25
+            },
+            {
+              "key": "question_or_participation_limit",
+              "label": "Question or participation limit",
+              "units": 1.1
+            },
+            {
+              "key": "withdrawal_route",
+              "label": "Withdrawal route",
+              "units": 1.2
+            },
+            {
+              "key": "waiver_copy_provided_date",
+              "label": "Waiver copy provided date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "waiver_signoff",
+      "title": "Fitness Class Waiver signer receipt and handoff",
+      "guidance": "Sign only after the applicable conditions and choices are complete.",
+      "blocks": [
+        {
+          "key": "waiver_signatures",
+          "type": "signatures",
+          "label": "Fitness Class Waiver signatures",
+          "fields": [
+            {
+              "key": "participant_or_guardian_and_date",
+              "label": "Participant or guardian and date",
+              "units": 1.15
+            },
+            {
+              "key": "staff_witness_or_reviewer_and_date",
+              "label": "Staff witness or reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Acknowledgment does not remove organizer safety duties or rights that cannot lawfully be waived."
+        },
+        {
+          "key": "waiver_boundary",
+          "type": "notice",
+          "label": "Fitness Class Waiver boundary",
+          "guidance": "Acknowledgment records the named activity choices and does not remove organizer safety duties or non-waivable rights."
+        }
+      ]
+    }
+  ]
+}

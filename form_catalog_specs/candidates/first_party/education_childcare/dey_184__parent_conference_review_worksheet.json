@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_184__parent_conference_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_184__parent_conference_review_worksheet.pdf",
+  "slug": "parent-conference-review-worksheet",
+  "title": "Parent Conference Review Worksheet",
+  "subtitle": "Capture conference agenda, student work, attendance context, and family question; confirm agreed action and progress follow-up.",
+  "description": "Parent Conference records conference agenda, student work, attendance context, family question, agreed action, and progress follow-up. Parent Conference evidence stays linked.",
+  "use_case": "Use this parent conference evidence-based review when staff must document conference agenda and student work. Reconcile attendance context, family question, agreed action, and progress follow-up before the parent conference handoff. Use the conference invitation, work samples, gradebook snapshot, attendance record, teacher observations, family questions, action notes, and progress-review calendar. For parent conference review use, cite source. Match the parent conference family or learner wording. Preserve the parent conference amendment history and supersession date. Link the parent conference source version and meeting notes. Record the parent conference learner response and accessibility support. Close the parent conference recipient list. Verify parent conference documentary provenance. Resolve parent conference amendments, superseded wording, and archival distribution for parent conference. Ask the assigned parent conference reviewer to confirm conference agenda against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "meeting_context",
+      "title": "Student, family, and conference context",
+      "guidance": "Bring the learner's work, family priorities, and classroom context together.",
+      "blocks": [
+        {
+          "key": "meeting_details",
+          "type": "fields",
+          "label": "Student and meeting details",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_or_family_participant",
+              "label": "Guardian or family participant",
+              "units": 1.25
+            },
+            {
+              "key": "teacher_or_staff_participant",
+              "label": "Teacher or staff participant",
+              "units": 1.1
+            },
+            {
+              "key": "conference_date_and_time",
+              "label": "Conference date and time",
+              "units": 1.2
+            },
+            {
+              "key": "interpreter_or_access_support",
+              "label": "Interpreter or access support",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "review_sources",
+          "type": "fields",
+          "label": "Agenda and learning context",
+          "fields": [
+            {
+              "key": "conference_agenda",
+              "label": "Conference agenda",
+              "units": 1.15
+            },
+            {
+              "key": "student_work_reviewed",
+              "label": "Student work reviewed",
+              "units": 1.0
+            },
+            {
+              "key": "attendance_context",
+              "label": "Attendance context",
+              "units": 1.25
+            },
+            {
+              "key": "student_input_available",
+              "label": "Student input available",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "discussion",
+      "title": "Strengths, concerns, and family input",
+      "guidance": "Record what is working, what needs attention, and the family's priorities.",
+      "blocks": [
+        {
+          "key": "strengths",
+          "type": "textarea",
+          "label": "Strengths and progress",
+          "fields": [
+            {
+              "key": "strengths_growth_successful_supports_and_examples",
+              "label": "Strengths, growth, successful supports, and examples"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "concerns",
+          "type": "textarea",
+          "label": "Questions and concerns",
+          "fields": [
+            {
+              "key": "teacher_student_or_family_question_and_relevant_context",
+              "label": "Teacher, student, or family question and relevant context"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "family_input",
+          "type": "textarea",
+          "label": "Family priorities and communication preference",
+          "fields": [
+            {
+              "key": "family_perspective_priority_support_idea_and_preferred_update_route",
+              "label": "Family perspective, priority, support idea, and preferred update route"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "goals_and_followup",
+      "title": "Goals, actions, and progress follow-up",
+      "guidance": "Turn the discussion into owned actions and a date to check progress.",
+      "blocks": [
+        {
+          "key": "agreed_actions",
+          "type": "table",
+          "label": "Agreed goals and actions",
+          "columns": [
+            {
+              "key": "agreed_action_or_goal",
+              "label": "Agreed action or goal",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "followup",
+          "type": "fields",
+          "label": "Progress and communication plan",
+          "fields": [
+            {
+              "key": "progress_follow_up_checkpoint",
+              "label": "Progress follow-up checkpoint",
+              "units": 1.15
+            },
+            {
+              "key": "family_update_method",
+              "label": "Family update method",
+              "units": 1.0
+            },
+            {
+              "key": "next_conference_or_review_date",
+              "label": "Next conference or review date",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "meeting_acknowledgment",
+          "type": "signatures",
+          "label": "Conference acknowledgment",
+          "fields": [
+            {
+              "key": "teacher_or_coordinator_and_date",
+              "label": "Teacher or coordinator and date",
+              "units": 1.15
+            },
+            {
+              "key": "family_participant_and_date",
+              "label": "Family participant and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Acknowledgment records participation, not agreement with every note."
+        }
+      ]
+    }
+  ]
+}

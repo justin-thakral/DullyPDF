@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2626__restaurant_reservation_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2626__restaurant_reservation_request_form.pdf",
+  "slug": "restaurant-reservation-request-form",
+  "title": "Restaurant Reservation Request Form",
+  "subtitle": "Capture the guest request, time, party size, seating needs, waitlist status, and confirmation.",
+  "description": "Coordinates one restaurant booking from guest contact through seating. It records the location, date and time, party size, seating preference, accessibility accommodation, occasion, waitlist position, confirmation, changes, and host receipt.",
+  "use_case": "Use when reservation staff accept, change, waitlist, or confirm a table. The request is not confirmed until its status and reservation owner are recorded. Questions about applicable accessibility or service requirements go to the restaurant's authorized manager.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Restaurant Reservation requester details",
+      "guidance": "Record guest name and contact, reservation date and time, party size, seating preference, accessibility need, occasion note, confirmation, waitlist position, and seating outcome.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Restaurant Reservation people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "guest_full_name",
+              "label": "Guest full name",
+              "units": 1.1
+            },
+            {
+              "key": "mobile_phone",
+              "label": "Mobile phone",
+              "units": 1.2
+            },
+            {
+              "key": "reservation_time",
+              "label": "Reservation time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Restaurant Reservation task details",
+          "fields": [
+            {
+              "key": "party_size",
+              "label": "Party size",
+              "units": 1.15
+            },
+            {
+              "key": "table_need",
+              "label": "Table need",
+              "units": 1.0
+            },
+            {
+              "key": "occasion",
+              "label": "Occasion",
+              "units": 1.25
+            },
+            {
+              "key": "waitlist",
+              "label": "Waitlist",
+              "units": 1.1
+            },
+            {
+              "key": "seating_acceptance",
+              "label": "Seating acceptance",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Restaurant Reservation request scope review",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Restaurant Reservation requested items",
+          "columns": [
+            {
+              "key": "requested_reservation_time",
+              "label": "Requested reservation time",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_party_size",
+              "label": "Need or party size",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_occasion",
+              "label": "Constraint or occasion",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Restaurant Reservation request checks",
+          "items": [
+            "Reservation time is identified for this record",
+            "Party size matches the current request or source",
+            "Table need is ready for point-of-use staff",
+            "Occasion limits or questions are resolved"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Restaurant Reservation decision and response",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Restaurant Reservation request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Restaurant Reservation request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

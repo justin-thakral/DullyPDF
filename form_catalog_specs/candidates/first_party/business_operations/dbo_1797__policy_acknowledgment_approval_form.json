@@ -1,0 +1,177 @@
+{
+  "catalog_id": "business_operations/dbo_1797__policy_acknowledgment_approval_form",
+  "description": "For policy acknowledgment, this approval form records required reading, training dependency, questions, disclosure or consent boundaries, acknowledgment deadline, and exceptions. Its supporting evidence includes delivery record, training completion, employee questions, accessible-format request, acknowledgment, and manager follow-up.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "policy_id",
+              "label": "Policy identifier",
+              "units": 1.0
+            },
+            {
+              "key": "version",
+              "label": "Version and effective date",
+              "units": 1.0
+            },
+            {
+              "key": "delivery",
+              "label": "Delivery channel",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the exact policy copy assigned for distribution.",
+          "key": "policy_reference",
+          "label": "Policy Assignment Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "recipient",
+              "label": "Employee or audience",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Department or location",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Language or accessible format",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the intended recipient and a usable delivery format.",
+          "key": "policy_recipient",
+          "label": "Recipient and Access Needs",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the policy version and audience proposed for distribution.",
+      "key": "identity_1",
+      "title": "Distribution Package Reference"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Resolve each failed readiness item before distribution.",
+          "items": [
+            "Policy owner approved the identified version",
+            "Audience and delivery channel are defined",
+            "Required reading and training are linked",
+            "Language and accessibility needs are supported",
+            "Questions and exception routing have named owners",
+            "Retention and overdue follow-up are configured"
+          ],
+          "key": "approval_readiness",
+          "label": "Distribution Approval Readiness",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "exception",
+              "label": "Exception or access need",
+              "units": 1.0
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution and owner",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Carry unresolved exceptions into the approval decision.",
+          "key": "approval_exceptions",
+          "label": "Distribution Exception and Resolution",
+          "type": "fields"
+        },
+        {
+          "guidance": "Use this record only to document delivery, reading, questions, training, and receipt. Route rights, consent, conflict, or policy interpretation questions for qualified review.",
+          "key": "acknowledgment_boundary",
+          "label": "Acknowledgment Is Not Consent or Waiver",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Review accessibility, training, retention, and exception controls.",
+      "key": "task_2",
+      "title": "Readiness and Exception Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select approval decision",
+                "Approved",
+                "Approved with conditions",
+                "Revise and resubmit",
+                "Do not distribute"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "approver",
+              "label": "Approver and role",
+              "units": 1.0
+            },
+            {
+              "key": "effective_date",
+              "label": "Approved effective date",
+              "units": 1.0
+            },
+            {
+              "key": "distribution_owner",
+              "label": "Distribution owner",
+              "units": 1.0
+            },
+            {
+              "key": "conditions",
+              "label": "Approval conditions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "State the approval boundary and responsible distribution owner.",
+          "key": "distribution_approval",
+          "label": "Distribution Approval Decision",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Policy request owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "approved_by",
+              "label": "Approver, signature, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "approval_signatures",
+          "label": "Policy Distribution Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Authorize distribution with explicit conditions and ownership.",
+      "key": "decision_3",
+      "title": "Approval Decision and Authorization"
+    }
+  ],
+  "slug": "policy-acknowledgment-approval-form",
+  "source_filename": "dbo_1797__policy_acknowledgment_approval_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Policy Acknowledgment Approval Form: workplace policy distribution and acknowledgment using policy identifier, required reading, and delivery record.",
+  "title": "Policy Acknowledgment Approval Form",
+  "use_case": "Use the approval form during workplace policy distribution and acknowledgment when the policy acknowledgment record must identify policy identifier, version, effective date, audience, employee identity, location, language, and delivery channel. Complete the applicable handoff for acknowledgment timestamp, exception routing, overdue follow-up, version retention, training linkage, and HR record handoff."
+}

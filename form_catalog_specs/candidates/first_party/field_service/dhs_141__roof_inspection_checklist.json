@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_141__roof_inspection_checklist",
+  "source_section": "field_service",
+  "source_filename": "dhs_141__roof_inspection_checklist.pdf",
+  "slug": "roof-inspection-checklist",
+  "title": "Roof Inspection Checklist",
+  "subtitle": "Residential Roof Inspection: documents findings, limits, and disposition.",
+  "description": "Roof Inspection Checklist covers roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area. The roof inspection coordinator records Residential Roof Inspection criteria, findings, restrictions, and follow-up. Roof Inspection Checklist keeps Residential Roof Inspection exceptions visible until the roof inspection coordinator handoff.",
+  "use_case": "Use Roof Inspection Checklist at residence, roof plane, edge, penetration, attic area, and reported leak zone. Document roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area identity before Residential Roof Inspection begins. Compare roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area findings with stated Residential Roof Inspection criteria; route unresolved Residential Roof Inspection issues to qualified roofing reviewer. For Roof Inspection Checklist, confirm requirements for Residential Roof Inspection. Ask qualified roofing reviewer to review Residential Roof Inspection conditions beyond the roof inspection coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Residential Roof Inspection, identify responsible parties, residence, roof plane, edge, penetration, attic area, and reported leak zone, and the linked roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Roof Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and inspection reference",
+              "units": 2.4444444444444446
+            },
+            {
+              "key": "identity_2",
+              "label": "Roof type, approximate age, slope, and area",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Weather event, leak history, prior repair, and access method",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Observed conditions and item decisions",
+      "guidance": "Capture Residential Roof Inspection facts for roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Roof Inspection checks",
+          "items": [
+            "Covering wear, displacement, breakage, and fastening indication",
+            "Flashing, valley, penetration, wall, and transition condition",
+            "Ridge, edge, gutter, downspout, and drainage path",
+            "Sealant, membrane, coating, and visible repair condition",
+            "Attic, deck, insulation, staining, and moisture indication",
+            "Ground or limited-access observation and unobserved scope"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection disposition and reviewer acknowledgment",
+      "guidance": "Before closing Residential Roof Inspection, identify what failed or was not inspected, who owns correction, and when examination resumes. Roof Inspection Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Unsafe slope, weather, surface, ladder, or edge condition",
+            "Active structural movement or collapse concern",
+            "Concealed moisture extent cannot be determined",
+            "Temporary protection or qualified escalation needed",
+            "Overview and defect-location photographs",
+            "Annotated roof-plane or area sketch",
+            "Moisture indication and interior correlation",
+            "Access limitation and recommendation record"
+          ],
+          "guidance": "Pause Residential Roof Inspection when safe access, weather, structural stability, water entry, or required qualified assessment remains unresolved. Retain the available Residential Roof Inspection proof and route unresolved roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area scope to roof inspection coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Roof Inspection Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Roofing Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

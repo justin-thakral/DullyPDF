@@ -1,0 +1,414 @@
+{
+  "catalog_id": "construction_trades/dcf_158__work_authorization_approval_form",
+  "description": "For work authorization, this approval form records authorized task boundary, inclusions, exclusions, budget code, schedule dates, quality hold points, and interfaces. Its supporting evidence includes approved drawings, permit status, readiness inspection, coordination record, and required training evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Authorization opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Authorization site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Authorization contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Authorization superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Authorization due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this work authorization record to its evidence.",
+          "key": "record_routing",
+          "label": "Work Authorization Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Contract package",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Work area",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Responsible crew",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Predecessor completion",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Permits",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture contract package, work area, responsible crew, predecessor completion, permits, submittals, and access window for this work authorization.",
+          "key": "core_identity",
+          "label": "Work Authorization Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify contract package, work area, responsible crew, predecessor completion, permits, submittals, and access window for this work authorization record.",
+      "key": "identity_1",
+      "title": "Proposal and Authority Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Authorized task boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Inclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Budget code",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Schedule dates",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For work authorization, record authorized task boundary, inclusions, exclusions, budget code, schedule dates, quality hold points, and interfaces.",
+          "key": "task_inputs",
+          "label": "Work Authorization Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Authorization decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Authorization supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Authorization review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified work authorization facts from judgment.",
+          "key": "review_criteria",
+          "label": "Work Authorization Review Criteria and Support",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Resolve each failed work authorization approval check.",
+          "items": [
+            "Decision statement is singular and unambiguous",
+            "Approver authority and any conflict are checked",
+            "Cost, schedule, quality, safety, and compliance effects are addressed",
+            "Alternatives and recommendation are documented",
+            "Conditions and effective period can be monitored",
+            "Implementation owner acknowledges the disposition"
+          ],
+          "key": "decision_readiness",
+          "label": "Work Authorization Decision Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not release work with missing permits, unresolved design conflicts, unsafe access, unavailable controls, or exceeded authority. Route unresolved work authorization work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Work Authorization Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For work authorization, capture authorized task boundary, inclusions, exclusions, budget code, schedule dates, quality hold points, and interfaces.",
+      "key": "task_2",
+      "title": "Decision Package"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Authorization when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Authorization measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Authorization evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Authorization result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For work authorization, record approved drawings, permit status, readiness inspection, coordination record, and required training evidence.",
+          "key": "evidence_register",
+          "label": "Work Authorization Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Approved drawings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Permit status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Readiness inspection",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Coordination record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every work authorization evidence source.",
+          "key": "evidence_sources",
+          "label": "Work Authorization Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support work authorization findings with approved drawings, permit status, readiness inspection, coordination record, and required training evidence.",
+      "key": "observation_3",
+      "title": "Supporting Record Review"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not release work with missing permits, unresolved design conflicts, unsafe access, unavailable controls, or exceeded authority. Do not release affected work authorization work.",
+          "key": "stop_boundary",
+          "label": "Work Authorization Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Authorization exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Authorization correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Authorization escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close work authorization exceptions with verification.",
+          "key": "exception_register",
+          "label": "Work Authorization Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Do not release work with missing permits, unresolved design conflicts, unsafe access, unavailable controls, or exceeded authority. Control and route each work authorization exception.",
+      "key": "exception_4",
+      "title": "Conflicts and Approval Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select approval form disposition",
+                "Approve",
+                "Approve with conditions",
+                "Revise and resubmit",
+                "Reject"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Authorization decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Authorization approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Authorization authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Authorization review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate work authorization disposition.",
+          "key": "disposition",
+          "label": "Work Authorization Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Work Authorization Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the work authorization decision to evidence.",
+          "height": 127,
+          "key": "decision_basis",
+          "label": "Work Authorization Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "approval_handoff_1",
+              "label": "Authorization signatures",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_2",
+              "label": "Release conditions",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_3",
+              "label": "Field distribution",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_4",
+              "label": "Start record",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_5",
+              "label": "Change-control linkage",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For work authorization, record authorization signatures, release conditions, field distribution, start record, and change-control linkage.",
+          "key": "approval_handoff",
+          "label": "Work Authorization Approved Record Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Authorization coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Authorization manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorization approver signature and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Work Authorization Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the work authorization next step from approved drawings, permit status, readiness inspection, coordination record, and required training evidence.",
+      "key": "decision_5",
+      "title": "Approver Disposition"
+    }
+  ],
+  "slug": "work-authorization-approval-form",
+  "source_filename": "dcf_158__work_authorization_approval_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Work Authorization Approval Form: construction work authorization and release using contract package, authorized task boundary, and approved drawings.",
+  "title": "Work Authorization Approval Form",
+  "use_case": "Use the approval form during construction work authorization and release when the work authorization record must identify contract package, work area, responsible crew, predecessor completion, permits, submittals, and access window. Complete the applicable handoff for authorization signatures, release conditions, field distribution, start record, and change-control linkage."
+}

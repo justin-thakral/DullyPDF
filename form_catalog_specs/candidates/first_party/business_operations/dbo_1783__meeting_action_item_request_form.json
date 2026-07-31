@@ -1,0 +1,356 @@
+{
+  "catalog_id": "business_operations/dbo_1783__meeting_action_item_request_form",
+  "description": "For meeting action item, this request form records discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence. Its supporting evidence includes source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Item opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Item site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Item contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Item process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Item due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this meeting action item record to its evidence.",
+          "key": "record_routing",
+          "label": "Meeting Action Item Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Meeting purpose",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Date",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Facilitator",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Participants",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Agenda",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum for this meeting action item.",
+          "key": "core_identity",
+          "label": "Meeting Action Item Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum for this meeting action item record.",
+      "key": "identity_1",
+      "title": "Business Request Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Discussion outcome",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Decision needed",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Action deliverable",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Item owner",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Dependency",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For meeting action item, record discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence.",
+          "key": "task_inputs",
+          "label": "Meeting Action Item Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Meeting Action Item Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State meeting action item outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Meeting Action Item Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Item owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate meeting action item items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Meeting Action Item Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        }
+      ],
+      "guidance": "For meeting action item, capture discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence.",
+      "key": "task_2",
+      "title": "Requested Commitment and Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Item decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Item approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Item schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate meeting action item disposition.",
+          "key": "disposition",
+          "label": "Meeting Action Item Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Meeting Action Item Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the meeting action item decision to evidence.",
+          "height": 36,
+          "key": "decision_basis",
+          "label": "Meeting Action Item Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Item requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Item process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Meeting Action Item Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the meeting action item next step from source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+      "key": "decision_3",
+      "title": "Sponsor Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "response_status",
+              "label": "Response status",
+              "options": [
+                "Select response status",
+                "Approved for next step",
+                "Scheduled",
+                "More information required",
+                "Declined with reason",
+                "Escalated for review"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "response_date",
+              "label": "Response date",
+              "units": 1.0
+            },
+            {
+              "key": "response_owner",
+              "label": "Responding process owner",
+              "units": 1.0
+            },
+            {
+              "key": "requester_notice",
+              "label": "Requester notice date",
+              "units": 1.0
+            },
+            {
+              "key": "notice_method",
+              "label": "Notice method",
+              "units": 1.0
+            },
+            {
+              "key": "response_record",
+              "label": "Response record location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Return the meeting action item response to the requester and record.",
+          "key": "request_response",
+          "label": "Meeting Action Item Response and Notice",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question or information needed",
+              "units": 2.6
+            },
+            {
+              "key": "owner",
+              "label": "Assigned process owner",
+              "units": 1.7
+            },
+            {
+              "key": "due",
+              "label": "Due or response date",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Response or decision evidence",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Keep unresolved meeting action item questions visible to closure.",
+          "key": "request_followup",
+          "label": "Meeting Action Item Open Questions and Follow-Up",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Meeting Action Item Requester Message and Conditions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State the meeting action item response, conditions, next action, and contact for questions.",
+          "height": 40,
+          "key": "requester_message",
+          "label": "Meeting Action Item Requester Message and Conditions",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close the meeting action item record with verified completion, accepted deliverable, unresolved carryover, stakeholder notification, and decision-log update.",
+      "key": "closeout_4",
+      "title": "Requester Notice and Next Step"
+    }
+  ],
+  "slug": "meeting-action-item-request-form",
+  "source_filename": "dbo_1783__meeting_action_item_request_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Meeting Action Item Request Form: meeting decision and action-item control using meeting purpose, discussion outcome, and source note.",
+  "title": "Meeting Action Item Request Form",
+  "use_case": "Use the request form during meeting decision and action-item control when the meeting action item record must identify meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum. Complete the applicable handoff for verified completion, accepted deliverable, unresolved carryover, stakeholder notification, and decision-log update."
+}

@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2119__brake_inspection_tracking_log",
+  "source_section": "automotive_service",
+  "source_filename": "das_2119__brake_inspection_tracking_log.pdf",
+  "slug": "brake-inspection-tracking-log",
+  "title": "Brake Inspection Tracking Log",
+  "subtitle": "Brake Inspection And Service: preserves changes and next triggers.",
+  "description": "Brake Inspection Tracking Log covers brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification. The brake service advisor records Brake Inspection And Service events, owners, exceptions, and next triggers. Brake Inspection Tracking Log keeps Brake Inspection And Service exceptions visible until the brake service advisor handoff.",
+  "use_case": "Use Brake Inspection Tracking Log at service bay, lift, wheel positions, controlled test area, and customer handoff. Document brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification identity before Brake Inspection And Service begins. Compare brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification findings with stated Brake Inspection And Service criteria; route unresolved Brake Inspection And Service issues to qualified brake-system reviewer. For Brake Inspection Tracking Log, confirm requirements for Brake Inspection And Service. Ask qualified brake-system reviewer to review Brake Inspection And Service conditions beyond the brake service advisor's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Brake Inspection And Service, identify responsible parties, service bay, lift, wheel positions, controlled test area, and customer handoff, and the linked brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Brake Inspection And Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Repair order and complaint",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, and vehicle configuration",
+              "units": 2.5555555555555554
+            },
+            {
+              "key": "identity_3",
+              "label": "Wheel position, component, prior work, and warning indication",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status events and next-control history",
+      "guidance": "Capture Brake Inspection And Service facts for brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Brake Inspection And Service tracked controls",
+          "items": [
+            "Friction thickness and wear pattern",
+            "Rotor or drum condition and measurement",
+            "Caliper, wheel cylinder, hose, line, and leak condition",
+            "Fluid condition and reservoir level",
+            "Parking brake and warning-system response",
+            "Controlled stopping, noise, pull, and pedal result"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Keep the Brake Inspection And Service chronology intact through handoff. State the unresolved exception, the owner selected by Brake Service Advisor, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Measurement below service criterion",
+            "Hydraulic leak or damaged line",
+            "Unsafe road test condition",
+            "Customer declines safety-related recommendation",
+            "Position-specific measurements",
+            "Component and leak photographs",
+            "Part and repair trace",
+            "Post-service brake verification"
+          ],
+          "guidance": "Pause Brake Inspection And Service when braking capacity, hydraulic integrity, component condition, authorization, or safe verification remains unresolved. Retain the available Brake Inspection And Service proof and route unresolved brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification scope to brake service advisor."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Brake Service Advisor",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Brake-System Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_168__septic_service_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_168__septic_service_estimate_worksheet.pdf",
+  "slug": "septic-service-estimate-worksheet",
+  "title": "Septic Service Estimate Worksheet",
+  "subtitle": "Residential Septic Service: prices observed scope, options, and exclusions.",
+  "description": "Septic Service Estimate Worksheet covers tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area. The septic service coordinator records Residential Septic Service observed scope, costs, options, and terms. Septic Service Estimate Worksheet keeps Residential Septic Service exceptions visible until the septic service coordinator handoff.",
+  "use_case": "Use Septic Service Estimate Worksheet at property, tank access, pump chamber, distribution area, and protected ground surface. Document tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area identity before Residential Septic Service begins. Compare tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area findings with stated Residential Septic Service criteria; route unresolved Residential Septic Service issues to qualified septic-system reviewer. For Septic Service Estimate Worksheet, confirm requirements for Residential Septic Service. Ask qualified septic-system reviewer to review Residential Septic Service conditions beyond the septic service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "estimate_context",
+      "title": "Property estimate review and customer identity",
+      "guidance": "Identify the customer, asset or property, estimator, and basis date before pricing the work.",
+      "blocks": [
+        {
+          "key": "estimate_header",
+          "type": "fields",
+          "label": "Estimate header",
+          "fields": [
+            {
+              "key": "estimate_number",
+              "label": "Septic job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "estimate_date",
+              "label": "Estimate date",
+              "units": 0.65
+            },
+            {
+              "key": "valid_until",
+              "label": "Valid until",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Septic customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Septic address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "estimator",
+              "label": "Septic Service Coordinator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Septic Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and service reference",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "System type, tank or component identifier, and access point",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Occupancy, last service, symptom, and weather history",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Septic Service identifier printed on tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "estimate_scope",
+      "title": "Pricing options and customer decision inputs",
+      "guidance": "Price the observable work and options. Keep concealed conditions and unconfirmed quantities out of fixed scope.",
+      "blocks": [
+        {
+          "key": "scope_observations",
+          "type": "checklist",
+          "label": "Residential Septic Service scope observations",
+          "items": [
+            "Access cover, riser, seal, and surface condition",
+            "Liquid level, scum, sludge, inlet, outlet, and baffle observation",
+            "Pump, float, alarm, control, and electrical indication",
+            "Backup, odor, surfacing effluent, and wet-area evidence",
+            "Vehicle, excavation, fall, biological, and confined-space boundary",
+            "Post-service level, closure, alarm, and flow observation"
+          ],
+          "guidance": "Mark what was observed or supplied as estimate input; explain anything material that could not be inspected."
+        },
+        {
+          "key": "price_lines",
+          "type": "table",
+          "label": "Scope, quantities, options, and pricing",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Task, area, or option",
+              "units": 1.25
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity, size, or hours",
+              "units": 0.9
+            },
+            {
+              "key": "rate",
+              "label": "Rate or unit price",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Material or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "total",
+              "label": "Line total",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Included, option, or excluded",
+              "units": 0.95
+            }
+          ],
+          "rows": 9
+        },
+        {
+          "key": "estimate_totals",
+          "type": "fields",
+          "label": "Estimate totals",
+          "fields": [
+            {
+              "key": "subtotal",
+              "label": "Subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "taxes",
+              "label": "Taxes",
+              "units": 0.7
+            },
+            {
+              "key": "fees",
+              "label": "Fees or disposal",
+              "units": 0.8
+            },
+            {
+              "key": "allowances",
+              "label": "Allowances",
+              "units": 0.8
+            },
+            {
+              "key": "discounts",
+              "label": "Discount or credit",
+              "units": 0.8
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "estimate_terms",
+      "title": "Estimate exception and change conditions",
+      "guidance": "State what could change the price, timing, method, or scope before the customer or responsible party decides.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when access safety, containment, backup, structural integrity, disposal, or qualified escalation remains unresolved. Protect tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area; document the Residential Septic Service notification and await qualified septic-system reviewer direction."
+        },
+        {
+          "key": "estimate_uncertainty",
+          "type": "checklist",
+          "label": "Conditions that may require a revised estimate or specialist review",
+          "items": [
+            "Unsafe opening, fall, biological, or confined-space exposure",
+            "Backup or surfacing effluent threatens occupancy",
+            "Damaged tank or component requires excavation",
+            "Electrical, structural, or regulatory work outside scope"
+          ],
+          "guidance": "For Residential Septic Service, identify affected tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area scope; ask septic service coordinator to document the Residential Septic Service immediate control before continuing."
+        },
+        {
+          "key": "assumptions_exclusions",
+          "type": "textarea",
+          "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "estimate_decision",
+      "title": "Estimate decision and selected service scope",
+      "guidance": "Record the selected option and spending limit. Approval of an estimate authorizes only the stated scope and terms.",
+      "blocks": [
+        {
+          "key": "estimate_support",
+          "type": "checklist",
+          "label": "Estimate support retained",
+          "items": [
+            "Access and component photographs",
+            "Measured level or service quantity",
+            "Waste transport or disposal record",
+            "Cover closure, alarm, and customer restriction evidence"
+          ],
+          "guidance": "Attach or link proof for tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area; mark only Residential Septic Service evidence present in that record."
+        },
+        {
+          "key": "estimate_status",
+          "type": "fields",
+          "label": "Decision and selected scope",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Estimate decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved",
+                "Approved with selected options",
+                "Revision requested",
+                "Declined",
+                "Expired"
+              ]
+            },
+            {
+              "key": "selected_scope",
+              "label": "Selected option, scope, or limit",
+              "units": 1.2
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "follow_up",
+              "label": "Scheduling or revision next step",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Residential Septic Service selected scope, exclusions, and scheduling notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Residential Septic Service selected scope, exclusions, and scheduling notes",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Explain the selected Residential Septic Service option, retained exclusion, pricing assumption, and scheduling dependency."
+        },
+        {
+          "key": "estimate_signatures",
+          "type": "signatures",
+          "label": "Estimate preparation and decision",
+          "fields": [
+            {
+              "key": "estimator_signature",
+              "label": "Estimator",
+              "units": 1.1
+            },
+            {
+              "key": "estimator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer or authorized decision maker",
+              "units": 1.25
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

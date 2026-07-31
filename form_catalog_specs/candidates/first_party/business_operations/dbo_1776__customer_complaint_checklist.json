@@ -1,0 +1,294 @@
+{
+  "catalog_id": "business_operations/dbo_1776__customer_complaint_checklist",
+  "description": "For customer complaint, this checklist records customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits. Its supporting evidence includes communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Complaint opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Complaint site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Complaint contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Complaint process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Complaint due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this customer complaint record to its evidence.",
+          "key": "record_routing",
+          "label": "Customer Complaint Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Customer account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Contact",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Product or service",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Transaction",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Channel",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture customer account, contact, product or service, transaction, channel, affected location, and prior complaint history for this customer complaint.",
+          "key": "core_identity",
+          "label": "Customer Complaint Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify customer account, contact, product or service, transaction, channel, affected location, and prior complaint history for this customer complaint record.",
+      "key": "identity_1",
+      "title": "Process Checkpoint and Owner"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Customer statement",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Desired resolution",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Urgency",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Safety or privacy screen",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Ownership",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For customer complaint, record customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits.",
+          "key": "task_inputs",
+          "label": "Customer Complaint Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the customer complaint condition before marking.",
+          "items": [
+            "Verify customer statement",
+            "Verify desired resolution",
+            "Verify urgency",
+            "Verify safety or privacy screen",
+            "Verify ownership"
+          ],
+          "key": "task_checks",
+          "label": "Customer Complaint Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Complaint checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Complaint review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Complaint qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Complaint check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each customer complaint result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Customer Complaint Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Escalate threats, injury, discrimination, fraud, privacy exposure, regulator contact, media risk, or remedy beyond authority. Route unresolved customer complaint work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Customer Complaint Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For customer complaint, capture customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Complaint when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Complaint measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Complaint evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Complaint result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For customer complaint, record communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+          "key": "evidence_register",
+          "label": "Customer Complaint Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Communications",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Order or service record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Logs",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Staff statements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Policy references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every customer complaint evidence source.",
+          "key": "evidence_sources",
+          "label": "Customer Complaint Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked customer complaint items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Customer Complaint Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer Complaint Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State customer complaint limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Customer Complaint Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support customer complaint findings with communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+      "key": "observation_3",
+      "title": "Checklist Finding Record"
+    }
+  ],
+  "slug": "customer-complaint-checklist",
+  "source_filename": "dbo_1776__customer_complaint_checklist.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Customer Complaint Checklist: customer complaint intake, investigation, and recovery using customer account, customer statement, and communications.",
+  "title": "Customer Complaint Checklist",
+  "use_case": "Use the checklist during customer complaint intake, investigation, and recovery when the customer complaint record must identify customer account, contact, product or service, transaction, channel, affected location, and prior complaint history. Complete the applicable handoff for approved response, customer confirmation, credit or corrective action, root-cause referral, trend coding, and closure."
+}

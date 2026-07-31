@@ -1,0 +1,255 @@
+{
+  "catalog_id": "construction_trades/dcf_167__project_closeout_log_form",
+  "description": "For project closeout, this log form records completion criteria, outstanding work, commissioning, record documents, owner training, and final inspections. Its supporting evidence includes test reports, certificates, as-builts, manuals, photos, punch verification, and agency approvals.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Closeout opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Closeout site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Closeout contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Closeout superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Closeout due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this project closeout record to its evidence.",
+          "key": "record_routing",
+          "label": "Project Closeout Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Contract deliverables",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Spaces",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Warranties",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Training",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Keys",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture contract deliverables, systems, spaces, warranties, training, keys, spare parts, and financial records for this project closeout.",
+          "key": "core_identity",
+          "label": "Project Closeout Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify contract deliverables, systems, spaces, warranties, training, keys, spare parts, and financial records for this project closeout record.",
+      "key": "identity_1",
+      "title": "Log Reference and Review Owner"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Closeout when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Closeout measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Closeout evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Closeout result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For project closeout, record test reports, certificates, as-builts, manuals, photos, punch verification, and agency approvals.",
+          "key": "evidence_register",
+          "label": "Project Closeout Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Test reports",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Certificates",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "As-builts",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Manuals",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Punch verification",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every project closeout evidence source.",
+          "key": "evidence_sources",
+          "label": "Project Closeout Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Closeout dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Closeout owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Closeout escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep project closeout items open through verification.",
+          "key": "open_item_register",
+          "label": "Project Closeout Open Items and Next Actions",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Closeout reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved project closeout entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Project Closeout Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Project Closeout Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For project closeout, explain owner receipt, final completion determination, warranty start, archive index, financial reconciliation, and responsibility handoff; transfer each project closeout open entry to the project closeout successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Project Closeout Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not represent final completion while life-safety, occupancy, acceptance, lien, or material exceptions remain unresolved. Route unresolved project closeout work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Project Closeout Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support project closeout findings with test reports, certificates, as-builts, manuals, photos, punch verification, and agency approvals.",
+      "key": "observation_2",
+      "title": "Recorded Findings and Actions"
+    }
+  ],
+  "slug": "project-closeout-log-form",
+  "source_filename": "dcf_167__project_closeout_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Project Closeout Log Form: construction project turnover and closeout using contract deliverables, completion criteria, and test reports.",
+  "title": "Project Closeout Log Form",
+  "use_case": "Use the log form during construction project turnover and closeout when the project closeout record must identify contract deliverables, systems, spaces, warranties, training, keys, spare parts, and financial records. Complete the applicable handoff for owner receipt, final completion determination, warranty start, archive index, financial reconciliation, and responsibility handoff."
+}

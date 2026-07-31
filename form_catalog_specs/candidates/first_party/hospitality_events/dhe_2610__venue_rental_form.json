@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2610__venue_rental_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2610__venue_rental_form.pdf",
+  "slug": "venue-rental-form",
+  "title": "Venue Rental Form",
+  "subtitle": "Capture event date, space hold, occupancy, and setup window; confirm outside vendor and venue return.",
+  "description": "Venue Rental records event date, space hold, occupancy, setup window, outside vendor, and venue return. Venue Rental evidence stays linked.",
+  "use_case": "Use this venue rental operational record when staff must document event date and space hold. Reconcile occupancy, setup window, outside vendor, and venue return before the venue rental handoff. Use the space-hold record, floorplan, occupancy source, vendor list, access schedule, condition photos, key log, post-event inspection, and damage or deposit disposition. Ask the assigned venue rental reviewer to confirm event date against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Venue Rental starting details",
+      "guidance": "Record event date, held spaces, occupancy, setup and strike windows, outside vendors, access keys, noise or use limits, condition evidence, and venue return.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Venue Rental people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "event_stay_or_reservation_date",
+              "label": "Event, stay, or reservation date",
+              "units": 1.1
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 1.2
+            },
+            {
+              "key": "space_hold",
+              "label": "Space hold",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Venue Rental task details",
+          "fields": [
+            {
+              "key": "occupancy",
+              "label": "Occupancy",
+              "units": 1.15
+            },
+            {
+              "key": "setup_window",
+              "label": "Setup window",
+              "units": 1.0
+            },
+            {
+              "key": "outside_vendor",
+              "label": "Outside vendor",
+              "units": 1.25
+            },
+            {
+              "key": "venue_return",
+              "label": "Venue return",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Venue Rental exception review and activity",
+      "guidance": "Record each meaningful venue rental event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Venue Rental activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "event_date",
+              "label": "Event date",
+              "units": 1.1
+            },
+            {
+              "key": "occupancy",
+              "label": "Occupancy",
+              "units": 1.25
+            },
+            {
+              "key": "outside_vendor",
+              "label": "Outside vendor",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Venue Rental change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Venue Rental exception review and completion",
+      "guidance": "Leave the current venue rental result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Venue Rental final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Venue Rental completion receipt",
+          "fields": [
+            {
+              "key": "responsible_service_or_operations_staff_and_date",
+              "label": "Responsible service or operations staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded venue rental task status."
+        }
+      ]
+    }
+  ]
+}

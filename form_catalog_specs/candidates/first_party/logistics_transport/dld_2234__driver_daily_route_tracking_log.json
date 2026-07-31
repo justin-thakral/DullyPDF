@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2234__driver_daily_route_tracking_log",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2234__driver_daily_route_tracking_log.pdf",
+  "slug": "driver-daily-route-tracking-log",
+  "title": "Driver Daily Route Tracking Log",
+  "subtitle": "Driver Daily Route: preserves changes and next triggers.",
+  "description": "Driver Daily Route Tracking Log covers driver, vehicle, stop sequence, shipment, time window, mileage, and route exception. The route dispatch coordinator records Driver Daily Route events, owners, exceptions, and next triggers. Driver Daily Route Tracking Log keeps Driver Daily Route exceptions visible until the route dispatch coordinator handoff.",
+  "use_case": "Use Driver Daily Route Tracking Log at dispatch point, planned route, customer stops, safe parking, and return yard. Document driver, vehicle, stop sequence, shipment, time window, mileage, and route exception identity before Driver Daily Route begins. Compare driver, vehicle, stop sequence, shipment, time window, mileage, and route exception findings with stated Driver Daily Route criteria; route unresolved Driver Daily Route issues to transport operations reviewer. For Driver Daily Route Tracking Log, confirm requirements for Driver Daily Route. Ask transport operations reviewer to review Driver Daily Route conditions beyond the route dispatch coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking period and subject identity",
+      "guidance": "For Driver Daily Route, identify responsible parties, dispatch point, planned route, customer stops, safe parking, and return yard, and the linked driver, vehicle, stop sequence, shipment, time window, mileage, and route exception source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Driver / dispatch",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Route / affected stop",
+              "units": 1.1666666666666667
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Driver Daily Route identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Route, date, driver, and dispatch",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle, trailer, and equipment identifiers",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Stop, order, piece, and time-window references",
+              "units": 2.5555555555555554
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status variance and accountable response",
+      "guidance": "Capture Driver Daily Route facts for driver, vehicle, stop sequence, shipment, time window, mileage, and route exception; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Driver Daily Route tracked controls",
+          "items": [
+            "Driver and vehicle readiness",
+            "Planned stop sequence and commitment",
+            "Departure, arrival, service, and departure times",
+            "Mileage, fuel, and duty-status reference",
+            "Delivery, pickup, refusal, and failed-attempt result",
+            "Delay, reroute, incident, and return reconciliation"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "For Driver Daily Route, preserve each open variance with its current state, accountable owner, and next dated update. Route Dispatch Coordinator performs period review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Driver or vehicle not authorized",
+            "Hours, weather, road, or fatigue concern",
+            "Cargo or stop identity mismatch",
+            "Delay or failed stop lacks accountable routing",
+            "Dispatch plan and manifest",
+            "Time-and-location stop evidence",
+            "Customer exception and notification",
+            "Return mileage, pieces, and undelivered inventory"
+          ],
+          "guidance": "Pause Driver Daily Route when driver, vehicle, route safety, cargo custody, or unresolved stop exception prevents controlled continuation. Retain the available Driver Daily Route proof and route unresolved driver, vehicle, stop sequence, shipment, time window, mileage, and route exception scope to route dispatch coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Route Dispatch Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Transport Operations Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_157__home_inspection_work_order",
+  "source_section": "field_service",
+  "source_filename": "dhs_157__home_inspection_work_order.pdf",
+  "slug": "home-inspection-work-order",
+  "title": "Home Inspection Work Order",
+  "subtitle": "Home Condition Inspection: connects authorized scope to results.",
+  "description": "Home Inspection Work Order covers visible building system, component, room, exterior area, and reported concern. The home inspection coordinator records Home Condition Inspection authorized tasks, materials, results, and changes. Home Inspection Work Order keeps Home Condition Inspection exceptions visible until the home inspection coordinator handoff.",
+  "use_case": "Use Home Inspection Work Order at residence exterior, interior, accessible attic, visible foundation, and installed systems. Document visible building system, component, room, exterior area, and reported concern identity before Home Condition Inspection begins. Compare visible building system, component, room, exterior area, and reported concern findings with stated Home Condition Inspection criteria; route unresolved Home Condition Inspection issues to qualified home-condition reviewer. For Home Inspection Work Order, confirm requirements for Home Condition Inspection. Ask qualified home-condition reviewer to review Home Condition Inspection conditions beyond the home inspection coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Residential work-order scope review",
+      "guidance": "Bind Home Condition Inspection to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Home job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Home customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Home address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Home Inspection Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Home Condition Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Client, property, and inspection number",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Occupancy, weather, utilities, and access status",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "System age or identifier when visible",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Home Condition Inspection identifier printed on visible building system, component, room, exterior area, and reported concern or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized residential work details",
+      "guidance": "Record authorized Home Condition Inspection activity; separate proposed, declined, deferred, or new Home Condition Inspection scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Home Condition Inspection task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Property area, unit, item, or component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method, part, or material",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Actual result or reading",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Technician or crew",
+              "units": 0.8
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Home Condition Inspection work and verification points",
+          "items": [
+            "Site drainage, exterior, roof, and visible structure",
+            "Interior rooms, windows, doors, stairs, and finishes",
+            "Electrical, plumbing, heating, cooling, and installed equipment",
+            "Attic, insulation, ventilation, and moisture indication",
+            "Visible foundation, crawlspace, basement, and drainage",
+            "Limitations, inaccessible areas, and specialist referral triggers"
+          ],
+          "guidance": "Use each Home Condition Inspection check to prompt documented visible building system, component, room, exterior area, and reported concern execution; enter its actual Home Condition Inspection result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Home Condition Inspection parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Residential work exception and changes",
+      "guidance": "Stop Home Condition Inspection at any scope or cost limit; honor home inspection coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when a safety hazard, access limitation, active damage, or required specialist escalation remains uncommunicated. Protect visible building system, component, room, exterior area, and reported concern; document the Home Condition Inspection notification and await qualified home-condition reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Unsafe or inaccessible area",
+            "Active electrical, fuel, structural, or water hazard",
+            "Concealed condition cannot be characterized",
+            "Specialist evaluation or immediate protection needed"
+          ],
+          "guidance": "For Home Condition Inspection, identify affected visible building system, component, room, exterior area, and reported concern scope; ask home inspection coordinator to document the Home Condition Inspection immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected condition, scope change, added cost, and authorization response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, scope change, added cost, and authorization response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work completion and customer handoff",
+      "guidance": "Reconcile Home Condition Inspection to authorization; state home inspection coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Representative and defect-location photographs",
+            "System or component identification",
+            "Operating observation and measurement where appropriate",
+            "Limitation and referral record"
+          ],
+          "guidance": "Attach or link proof for visible building system, component, room, exterior area, and reported concern; mark only Home Condition Inspection evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

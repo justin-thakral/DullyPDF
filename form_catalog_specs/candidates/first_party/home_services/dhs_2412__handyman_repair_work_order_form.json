@@ -1,0 +1,380 @@
+{
+  "catalog_id": "home_services/dhs_2412__handyman_repair_work_order_form",
+  "description": "For handyman repair, this work order form records diagnostic boundary, repair approach, parts, protection, estimated labor, exclusions, and restoration expectations. Its supporting evidence includes existing-condition photos, measurements, model data, test results, material receipts, and completed-repair photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Handyman opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Handyman site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Handyman contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Handyman service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Handyman due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this handyman repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Handyman Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Repair location",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Fixture or finish",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Reported defect",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Dimensions",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Access",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture repair location, fixture or finish, reported defect, dimensions, access, utilities, and customer-supplied materials for this handyman repair.",
+          "key": "core_identity",
+          "label": "Handyman Repair Core Identifiers",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Diagnostic boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Repair approach",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Protection",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Estimated labor",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For handyman repair, record diagnostic boundary, repair approach, parts, protection, estimated labor, exclusions, and restoration expectations.",
+          "key": "task_inputs",
+          "label": "Handyman Repair Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Handyman work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized handyman repair work from additions.",
+          "key": "assigned_work",
+          "label": "Handyman Repair Assigned Work and Acceptance Criteria",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Handyman arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Handyman access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Handyman added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Handyman inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop handyman repair work at recorded limits.",
+          "key": "work_window",
+          "label": "Handyman Repair Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Stop for structural, electrical, gas, water, hazardous-material, permit, or specialist work beyond authorization. Route unresolved handyman repair work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Handyman Repair Applicable Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Handyman when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Handyman measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Handyman evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Handyman result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For handyman repair, record existing-condition photos, measurements, model data, test results, material receipts, and completed-repair photos.",
+          "key": "evidence_register",
+          "label": "Handyman Repair Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Existing-condition photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Model data",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Test results",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Material receipts",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every handyman repair evidence source.",
+          "key": "evidence_sources",
+          "label": "Handyman Repair Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary handyman repair evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Handyman Repair Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Handyman open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Handyman owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Handyman acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer handyman repair items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Handyman Repair Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Handyman completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Functional verification",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Cleanup",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Customer acceptance",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Open referral",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the handyman repair outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Handyman Repair Final Outcome",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the handyman repair assignment, authorize its handyman repair plan, and record each field finding.",
+      "key": "identity_1",
+      "title": "Work Reference, Plan, and Field Finding"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Handyman Repair Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For handyman repair, record functional verification, cleanup, customer acceptance, open referral, material warranty, and invoice handoff; give the handyman repair care or operating instruction, identify handyman repair access restoration and recipient.",
+          "height": 40,
+          "key": "completion_care_notes",
+          "label": "Handyman Repair Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Handyman technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Handyman customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Handyman Repair Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the handyman repair record with functional verification, cleanup, customer acceptance, open referral, material warranty, and invoice handoff.",
+      "key": "closeout_4",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "handyman-repair-work-order-form",
+  "source_filename": "dhs_2412__handyman_repair_work_order_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Handyman Repair Work Order Form: small-repair intake, estimate, and work control using repair location, diagnostic boundary, and existing-condition photos.",
+  "title": "Handyman Repair Work Order Form",
+  "use_case": "Use the work order form during small-repair intake, estimate, and work control when the handyman repair record must identify repair location, fixture or finish, reported defect, dimensions, access, utilities, and customer-supplied materials. Complete the applicable handoff for functional verification, cleanup, customer acceptance, open referral, material warranty, and invoice handoff."
+}

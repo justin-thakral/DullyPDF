@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_183__parent_conference_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_183__parent_conference_information_sheet.pdf",
+  "slug": "parent-conference-information-sheet",
+  "title": "Parent Conference Information Sheet",
+  "subtitle": "Capture conference agenda, student work, attendance context, and family question; confirm agreed action and progress follow-up.",
+  "description": "Parent Conference records conference agenda, student work, attendance context, family question, agreed action, and progress follow-up. Parent Conference evidence stays linked.",
+  "use_case": "Use this parent conference controlled information handoff when staff must document conference agenda and student work. Reconcile attendance context, family question, agreed action, and progress follow-up before the parent conference handoff. Use the conference invitation, work samples, gradebook snapshot, attendance record, teacher observations, family questions, action notes, and progress-review calendar. For parent conference review use, cite source. Match the parent conference family or learner wording. Preserve the parent conference amendment history and supersession date. Link the parent conference source version and meeting notes. Record the parent conference learner response and accessibility support. Close the parent conference recipient list. Verify parent conference documentary provenance. Resolve parent conference amendments, superseded wording, and archival distribution for parent conference. Ask the assigned parent conference reviewer to confirm conference agenda against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Parent Conference audience details review",
+      "guidance": "Prepare agenda, student work samples, attendance and classroom context, family questions, agreed actions, communication preferences, and progress checkpoints.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Parent Conference people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "conference_agenda",
+              "label": "Conference agenda",
+              "units": 1.1
+            },
+            {
+              "key": "student_work",
+              "label": "Student work",
+              "units": 1.2
+            },
+            {
+              "key": "attendance_context",
+              "label": "Attendance context",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Parent Conference task details",
+          "fields": [
+            {
+              "key": "family_question",
+              "label": "Family question",
+              "units": 1.15
+            },
+            {
+              "key": "agreed_action",
+              "label": "Agreed action",
+              "units": 1.0
+            },
+            {
+              "key": "progress_follow_up",
+              "label": "Progress follow-up",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Parent Conference current instructions review",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Parent Conference instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Parent Conference questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Parent Conference update route and handoff",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Parent Conference effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Parent Conference update boundary",
+          "guidance": "Replace outdated parent conference instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

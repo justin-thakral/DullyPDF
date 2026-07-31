@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_142__roof_inspection_work_order",
+  "source_section": "field_service",
+  "source_filename": "dhs_142__roof_inspection_work_order.pdf",
+  "slug": "roof-inspection-work-order",
+  "title": "Roof Inspection Work Order",
+  "subtitle": "Residential Roof Inspection: connects authorized scope to results.",
+  "description": "Roof Inspection Work Order covers roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area. The roof inspection coordinator records Residential Roof Inspection authorized tasks, materials, results, and changes. Roof Inspection Work Order keeps Residential Roof Inspection exceptions visible until the roof inspection coordinator handoff.",
+  "use_case": "Use Roof Inspection Work Order at residence, roof plane, edge, penetration, attic area, and reported leak zone. Document roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area identity before Residential Roof Inspection begins. Compare roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area findings with stated Residential Roof Inspection criteria; route unresolved Residential Roof Inspection issues to qualified roofing reviewer. For Roof Inspection Work Order, confirm requirements for Residential Roof Inspection. Ask qualified roofing reviewer to review Residential Roof Inspection conditions beyond the roof inspection coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Residential work-order scope review",
+      "guidance": "Bind Residential Roof Inspection to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Roof job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Roof customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Roof address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Roof Inspection Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Roof Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and inspection reference",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Roof type, approximate age, slope, and area",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Weather event, leak history, prior repair, and access method",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Roof Inspection identifier printed on roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized residential work details",
+      "guidance": "Record authorized Residential Roof Inspection activity; separate proposed, declined, deferred, or new Residential Roof Inspection scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Residential Roof Inspection task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Property area, unit, item, or component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method, part, or material",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Actual result or reading",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Technician or crew",
+              "units": 0.8
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Residential Roof Inspection work and verification points",
+          "items": [
+            "Covering wear, displacement, breakage, and fastening indication",
+            "Flashing, valley, penetration, wall, and transition condition",
+            "Ridge, edge, gutter, downspout, and drainage path",
+            "Sealant, membrane, coating, and visible repair condition",
+            "Attic, deck, insulation, staining, and moisture indication",
+            "Ground or limited-access observation and unobserved scope"
+          ],
+          "guidance": "Use each Residential Roof Inspection check to prompt documented roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area execution; enter its actual Residential Roof Inspection result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Residential Roof Inspection parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Residential work exception and changes",
+      "guidance": "Stop Residential Roof Inspection at any scope or cost limit; honor roof inspection coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Unsafe slope, weather, surface, ladder, or edge condition",
+            "Active structural movement or collapse concern",
+            "Concealed moisture extent cannot be determined",
+            "Temporary protection or qualified escalation needed"
+          ],
+          "guidance": "Pause Residential Roof Inspection and notify roof inspection coordinator when safe access, weather, structural stability, water entry, or required qualified assessment remains unresolved."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected condition, scope change, added cost, and authorization response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, scope change, added cost, and authorization response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work completion and customer handoff",
+      "guidance": "Reconcile Residential Roof Inspection to authorization; state roof inspection coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Overview and defect-location photographs",
+            "Annotated roof-plane or area sketch",
+            "Moisture indication and interior correlation",
+            "Access limitation and recommendation record"
+          ],
+          "guidance": "Attach or link proof for roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area; mark only Residential Roof Inspection evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Residential Roof Inspection completed-scope notes and customer instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Residential Roof Inspection completed-scope notes and customer instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Reconcile Residential Roof Inspection completion to authorized scope and note customer instructions, open work, or a required return visit."
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

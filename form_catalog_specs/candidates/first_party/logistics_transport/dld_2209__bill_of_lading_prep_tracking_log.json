@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2209__bill_of_lading_prep_tracking_log",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2209__bill_of_lading_prep_tracking_log.pdf",
+  "slug": "bill-of-lading-prep-tracking-log",
+  "title": "Bill of Lading Prep Tracking Log",
+  "subtitle": "Bill Of Lading Preparation: preserves changes and next triggers.",
+  "description": "Bill of Lading Prep Tracking Log covers transport shipment, commodity lines, package count, weight, classification, and instructions. The shipping documentation coordinator records Bill Of Lading Preparation events, owners, exceptions, and next triggers. Bill of Lading Prep Tracking Log keeps Bill Of Lading Preparation exceptions visible until the shipping documentation coordinator handoff.",
+  "use_case": "Use Bill of Lading Prep Tracking Log at shipping office, origin dock, carrier handoff, and destination route. Document transport shipment, commodity lines, package count, weight, classification, and instructions identity before Bill Of Lading Preparation begins. Compare transport shipment, commodity lines, package count, weight, classification, and instructions findings with stated Bill Of Lading Preparation criteria; route unresolved Bill Of Lading Preparation issues to transport documentation reviewer. For Bill of Lading Prep Tracking Log, confirm requirements for Bill Of Lading Preparation. Ask transport documentation reviewer to review Bill Of Lading Preparation conditions beyond the shipping documentation coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Bill Of Lading Preparation, identify responsible parties, shipping office, origin dock, carrier handoff, and destination route, and the linked transport shipment, commodity lines, package count, weight, classification, and instructions source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Shipment / order owner",
+              "units": 1.2222222222222223
+            },
+            {
+              "key": "location",
+              "label": "Shipping handoff",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Bill Of Lading Preparation identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Shipper, consignee, and billing references",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_2",
+              "label": "Load, order, booking, and carrier identifiers",
+              "units": 2.5
+            },
+            {
+              "key": "identity_3",
+              "label": "Commodity, package, weight, class, and special-instruction references",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status events and next-control history",
+      "guidance": "Capture Bill Of Lading Preparation facts for transport shipment, commodity lines, package count, weight, classification, and instructions; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Bill Of Lading Preparation tracked controls",
+          "items": [
+            "Party names and addresses",
+            "Commodity description and quantity",
+            "Weight and package reconciliation",
+            "Carrier, equipment, and routing data",
+            "Hazard or special-handling determination by qualified party",
+            "Document copies and tender timing"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Current status outcome and next update",
+      "guidance": "Keep the Bill Of Lading Preparation chronology intact through handoff. State the unresolved exception, the owner selected by Shipping Documentation Coordinator, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Party or address inconsistency",
+            "Quantity or weight cannot be reconciled",
+            "Classification or special handling lacks qualified basis",
+            "Document issued with unapproved alteration",
+            "Source order and packing record",
+            "Weight or scale evidence",
+            "Approved instruction and classification source",
+            "Issued-document and handoff trace"
+          ],
+          "guidance": "Pause Bill Of Lading Preparation when shipment identity, commodity, weight, instruction, or required qualified documentation review remains unresolved. Retain the available Bill Of Lading Preparation proof and route unresolved transport shipment, commodity lines, package count, weight, classification, and instructions scope to shipping documentation coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Shipping Documentation Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Transport Documentation Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

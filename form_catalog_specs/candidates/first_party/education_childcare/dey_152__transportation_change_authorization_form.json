@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_152__transportation_change_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_152__transportation_change_authorization_form.pdf",
+  "slug": "transportation-change-authorization-form",
+  "title": "Transportation Change Authorization Form",
+  "subtitle": "Capture student route, effective day, alternate stop, and request source; confirm driver notice and arrival confirmation.",
+  "description": "Transportation Change records student route, effective day, alternate stop, request source, driver notice, and arrival confirmation. Transportation Change evidence stays linked.",
+  "use_case": "Use this transportation change authorization decision when staff must document student route and effective day. Reconcile alternate stop, request source, driver notice, and arrival confirmation before the transportation change handoff. Use the guardian request, identity verification, original route sheet, alternate-stop map, school approval, dispatch notice, driver acknowledgment, and arrival confirmation. This request alters one student's day-specific dismissal route using guardian authentication, alternate stop or pickup person, dispatch update, driver read-back, school release, and arrival verification. Ask the assigned transportation change reviewer to confirm student route against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Transportation Change signer details",
+      "guidance": "Identify student, original route, effective day, alternate stop or pickup person, request source, school approval, driver notice, and arrival confirmation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Transportation Change people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "student_route",
+              "label": "Student route",
+              "units": 1.2
+            },
+            {
+              "key": "effective_day",
+              "label": "Effective day",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Transportation Change task details",
+          "fields": [
+            {
+              "key": "alternate_stop",
+              "label": "Alternate stop",
+              "units": 1.15
+            },
+            {
+              "key": "request_source",
+              "label": "Request source",
+              "units": 1.0
+            },
+            {
+              "key": "driver_notice",
+              "label": "Driver notice",
+              "units": 1.25
+            },
+            {
+              "key": "arrival_confirmation",
+              "label": "Arrival confirmation",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Transportation Change exception review and scope choices",
+      "guidance": "Decide each transportation change scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Transportation Change primary scope",
+          "fields": [
+            {
+              "key": "student_route",
+              "label": "Student route",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "effective_day",
+              "label": "Effective day",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "alternate_stop",
+              "label": "Alternate stop",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Transportation Change additional scope",
+          "fields": [
+            {
+              "key": "request_source",
+              "label": "Request source",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "driver_notice",
+              "label": "Driver notice",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "arrival_confirmation",
+              "label": "Arrival confirmation",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Transportation Change authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Transportation Change effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Transportation Change exception review and signer receipt",
+      "guidance": "Only recorded transportation change choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Transportation Change limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Transportation Change signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Transportation Change signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Transportation Change authorization boundary",
+          "guidance": "Named transportation change reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

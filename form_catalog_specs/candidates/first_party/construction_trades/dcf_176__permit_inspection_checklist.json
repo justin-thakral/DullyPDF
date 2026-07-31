@@ -1,0 +1,371 @@
+{
+  "catalog_id": "construction_trades/dcf_176__permit_inspection_checklist",
+  "description": "For permit inspection, this checklist records prerequisite completion, accessibility, test readiness, correction history, required documents, and representative attendance. Its supporting evidence includes approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Permit opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Permit site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Permit contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Permit superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Permit due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this permit inspection record to its evidence.",
+          "key": "record_routing",
+          "label": "Permit Inspection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Permit number",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Authority",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Inspection type",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Approved plans",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window for this permit inspection.",
+          "key": "core_identity",
+          "label": "Permit Inspection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window for this permit inspection record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Prerequisite completion",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Accessibility",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Test readiness",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Correction history",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For permit inspection, record prerequisite completion, accessibility, test readiness, correction history, required documents, and representative attendance.",
+          "key": "task_inputs",
+          "label": "Permit Inspection Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the permit inspection condition before marking.",
+          "items": [
+            "Verify prerequisite completion",
+            "Verify accessibility",
+            "Verify test readiness",
+            "Verify correction history",
+            "Verify required documents",
+            "Verify representative attendance"
+          ],
+          "key": "task_checks",
+          "label": "Permit Inspection Verification Points",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Reconcile unchecked permit inspection items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Permit Inspection Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Permit checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Permit review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Permit qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Permit check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each permit inspection result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Permit Inspection Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not conceal or energize work before required inspection approval or documented authority direction. Do not release affected permit inspection work.",
+          "key": "stop_boundary",
+          "label": "Permit Inspection Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Permit exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Permit correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Permit escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close permit inspection exceptions with verification.",
+          "key": "exception_register",
+          "label": "Permit Inspection Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Permit notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Permit notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Permit interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Permit review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Permit release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep permit inspection controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Permit Inspection Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Permit Inspection Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State permit inspection limits, assumptions, and access gaps.",
+          "height": 36,
+          "key": "limitations",
+          "label": "Permit Inspection Limitations and Interpretation",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Permit Inspection Correction Verification and Release Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For permit inspection, connect the correction to approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof; name the release decision and retained permit inspection limitation.",
+          "height": 45,
+          "key": "checklist_correction_verification",
+          "label": "Permit Inspection Correction Verification and Release Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Verify permit inspection conditions, control exceptions, and preserve release evidence.",
+      "key": "task_2",
+      "title": "Checklist Conditions, Exception, and Release"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Permit when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Permit measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Permit evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Permit result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For permit inspection, record approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+          "key": "evidence_register",
+          "label": "Permit Inspection Findings, Measurements, and Evidence",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Approved-plan set",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Permit card",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Test results",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Product approvals",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Inspector comments",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every permit inspection evidence source.",
+          "key": "evidence_sources",
+          "label": "Permit Inspection Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support permit inspection findings with approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+      "key": "observation_4",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "permit-inspection-checklist",
+  "source_filename": "dcf_176__permit_inspection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Permit Inspection Checklist: permit inspection readiness and result control using permit number, prerequisite completion, and approved-plan set.",
+  "title": "Permit Inspection Checklist",
+  "use_case": "Use the checklist during permit inspection readiness and result control when the permit inspection record must identify permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window. Complete the applicable handoff for inspection result, correction assignment, reinspection date, approval evidence, and downstream release."
+}

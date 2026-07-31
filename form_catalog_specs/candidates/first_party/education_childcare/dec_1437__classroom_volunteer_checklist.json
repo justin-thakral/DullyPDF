@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1437__classroom_volunteer_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1437__classroom_volunteer_checklist.pdf",
+  "slug": "classroom-volunteer-checklist",
+  "title": "Classroom Volunteer Checklist",
+  "subtitle": "Capture class assignment, approved task, student boundary, and screening status; confirm supervision and badge return.",
+  "description": "Classroom Volunteer records class assignment, approved task, student boundary, screening status, supervision, and badge return. Classroom Volunteer evidence stays linked.",
+  "use_case": "Use this classroom volunteer stage-gated verification when staff must document class assignment and approved task. Reconcile student boundary, screening status, supervision, and badge return before the classroom volunteer handoff. Use the screening clearance reference, classroom calendar, task brief, confidentiality acknowledgment, supervising-teacher assignment, badge log, and departure record. Ask the assigned classroom volunteer reviewer to confirm class assignment against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Classroom Volunteer starting details",
+      "guidance": "Define classroom assignment, approved tasks, student-contact boundaries, screening status, supervising teacher, badge custody, and departure.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Classroom Volunteer people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "class_assignment",
+              "label": "Class assignment",
+              "units": 1.1
+            },
+            {
+              "key": "approved_task",
+              "label": "Approved task",
+              "units": 1.2
+            },
+            {
+              "key": "student_boundary",
+              "label": "Student boundary",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Classroom Volunteer task details",
+          "fields": [
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "supervision",
+              "label": "Supervision",
+              "units": 1.0
+            },
+            {
+              "key": "badge_return",
+              "label": "Badge return",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Classroom Volunteer exception review: checks and corrections",
+      "guidance": "Check current classroom volunteer facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Classroom Volunteer required checks",
+          "items": [
+            "Class assignment is identified for this record",
+            "Approved task matches the current request or source",
+            "Student boundary is ready for point-of-use staff",
+            "Screening status limits or questions are resolved",
+            "Supervision is communicated to the responsible person",
+            "Badge return is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Classroom Volunteer failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Classroom Volunteer readiness and handoff",
+      "guidance": "Hold classroom volunteer readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Classroom Volunteer checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Classroom Volunteer reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_teacher_or_program_coordinator_and_date",
+              "label": "Responsible teacher or program coordinator and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Classroom Volunteer receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

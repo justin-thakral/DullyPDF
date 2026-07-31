@@ -1,0 +1,318 @@
+{
+  "catalog_id": "construction_trades/dct_1171__warranty_repair_work_order_form",
+  "description": "For warranty repair, this work order form records reported defect, diagnostic plan, coverage, access, parts, repair method, collateral restoration, and scheduling. Its supporting evidence includes intake photos, installation record, diagnostic readings, removed-part findings, repair photos, and functional test.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Warranty opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Warranty site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Warranty contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Warranty superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Warranty due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this warranty repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Warranty Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Original work order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Installed component",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Completion date",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Warranty term",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture original work order, installed component, location, completion date, warranty term, customer, and prior callbacks for this warranty repair.",
+          "key": "core_identity",
+          "label": "Warranty Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify original work order, installed component, location, completion date, warranty term, customer, and prior callbacks for this warranty repair record.",
+      "key": "identity_1",
+      "title": "Work Assignment Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Reported defect",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Diagnostic plan",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Coverage",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Access",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Repair method",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For warranty repair, record reported defect, diagnostic plan, coverage, access, parts, repair method, collateral restoration, and scheduling.",
+          "key": "task_inputs",
+          "label": "Warranty Repair Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Warranty work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized warranty repair work from additions.",
+          "key": "assigned_work",
+          "label": "Warranty Repair Assigned Work and Acceptance Criteria",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Warranty arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Warranty access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Warranty added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Warranty inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop warranty repair work at recorded limits.",
+          "key": "work_window",
+          "label": "Warranty Repair Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Escalate hazards, active property damage, repeated failure, disputed responsibility, or work outside trade qualification. Route unresolved warranty repair work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Warranty Repair Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For warranty repair, capture reported defect, diagnostic plan, coverage, access, parts, repair method, collateral restoration, and scheduling.",
+      "key": "task_2",
+      "title": "Authorized Work Plan"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Warranty completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Repair verification",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Customer acceptance",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Coverage disposition",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Recurrence action",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the warranty repair outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Warranty Repair Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Warranty open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Warranty owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Warranty acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer warranty repair items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Warranty Repair Remaining Work and Handoff",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Warranty Repair Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For warranty repair, record repair verification, customer acceptance, coverage disposition, recurrence action, costs, and warranty-record update; give the warranty repair care or operating instruction, identify warranty repair access restoration and recipient.",
+          "height": 60,
+          "key": "completion_care_notes",
+          "label": "Warranty Repair Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Warranty trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Warranty site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Warranty Repair Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the warranty repair record with repair verification, customer acceptance, coverage disposition, recurrence action, costs, and warranty-record update.",
+      "key": "closeout_3",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "warranty-repair-work-order-form",
+  "source_filename": "dct_1171__warranty_repair_work_order_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Warranty Repair Work Order Form: trade warranty repair dispatch and verification using original work order, reported defect, and intake photos.",
+  "title": "Warranty Repair Work Order Form",
+  "use_case": "Use the work order form during trade warranty repair dispatch and verification when the warranty repair record must identify original work order, installed component, location, completion date, warranty term, customer, and prior callbacks. Complete the applicable handoff for repair verification, customer acceptance, coverage disposition, recurrence action, costs, and warranty-record update."
+}

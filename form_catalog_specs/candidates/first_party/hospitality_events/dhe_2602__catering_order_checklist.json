@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2602__catering_order_checklist",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2602__catering_order_checklist.pdf",
+  "slug": "catering-order-checklist",
+  "title": "Catering Order Checklist",
+  "subtitle": "Capture menu line, guarantee date, production count, and delivery; confirm dietary instruction and client signoff.",
+  "description": "Catering Order records menu line, guarantee date, production count, delivery, dietary instruction, and client signoff. Catering Order evidence stays linked.",
+  "use_case": "Use this catering order stage-gated verification when staff must document menu line and guarantee date. Reconcile production count, delivery, dietary instruction, and client signoff before the catering order handoff. Use the signed order, menu-line worksheet, guarantee confirmation, kitchen production count, delivery ticket, dietary flag, service-equipment list, and receiving signature. Ask the assigned catering order reviewer to confirm menu line against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Catering Order starting details review",
+      "guidance": "Capture menu lines, per-person or tray quantities, guarantee date, production count, delivery address, dietary instructions, service equipment, and client signoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Catering Order people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "menu_line",
+              "label": "Menu line",
+              "units": 1.1
+            },
+            {
+              "key": "guarantee_date",
+              "label": "Guarantee date",
+              "units": 1.2
+            },
+            {
+              "key": "production_count",
+              "label": "Production count",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Catering Order task details",
+          "fields": [
+            {
+              "key": "delivery",
+              "label": "Delivery",
+              "units": 1.15
+            },
+            {
+              "key": "dietary_instruction",
+              "label": "Dietary instruction",
+              "units": 1.0
+            },
+            {
+              "key": "client_signoff",
+              "label": "Client signoff",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Catering Order checks and corrections review",
+      "guidance": "Check current catering order facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Catering Order required checks",
+          "items": [
+            "Menu line is identified for this record",
+            "Guarantee date matches the current request or source",
+            "Production count is ready for point-of-use staff",
+            "Delivery limits or questions are resolved",
+            "Dietary instruction is communicated to the responsible person",
+            "Client signoff is confirmed at handoff",
+            "A changed catering order fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Catering Order failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Catering Order exception review and readiness",
+      "guidance": "Hold catering order readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Catering Order checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Catering Order reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "service_lead_or_responsible_manager_and_date",
+              "label": "Service lead or responsible manager and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Catering Order receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

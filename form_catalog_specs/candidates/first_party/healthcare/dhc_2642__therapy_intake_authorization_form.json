@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2642__therapy_intake_authorization_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2642__therapy_intake_authorization_form.pdf",
+  "slug": "therapy-intake-authorization-form",
+  "title": "Therapy Intake Authorization Form",
+  "subtitle": "Capture presenting concern, patient goal, referral, and accessibility; confirm clinician review and care handoff.",
+  "description": "Therapy Intake records presenting concern, patient goal, referral, accessibility, clinician review, and care handoff. Therapy Intake evidence stays linked.",
+  "use_case": "Use this therapy intake authorization decision when staff must document presenting concern and patient goal. Reconcile referral, accessibility, clinician review, and care handoff before the therapy intake handoff. Use the patient narrative, referral documents, accessibility request, urgent-concern routing, clinician questions, modality preference, scheduling handoff, and receipt confirmation. This intake preserves the person's presenting narrative, counseling goals, referral context, communication access, urgent routing, clinician questions, modality preference, and first-session handoff. Keep self-described stressors, strengths, supports, prior service context, language preference, sensory or mobility access, immediate resource needs, screening provenance, and intake disposition visible. Ask the assigned therapy intake reviewer to confirm presenting concern against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Therapy Intake signer details",
+      "guidance": "Capture presenting concern in patient words, desired outcome, referral context, accessibility and communication needs, clinician review questions, and care handoff. Keep any urgent therapy intake issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Therapy Intake people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "patient_location_or_service_site",
+              "label": "Patient location or service site",
+              "units": 1.1
+            },
+            {
+              "key": "presenting_concern",
+              "label": "Presenting concern",
+              "units": 1.2
+            },
+            {
+              "key": "patient_goal",
+              "label": "Patient goal",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Therapy Intake task details",
+          "fields": [
+            {
+              "key": "referral",
+              "label": "Referral",
+              "units": 1.15
+            },
+            {
+              "key": "accessibility",
+              "label": "Accessibility",
+              "units": 1.0
+            },
+            {
+              "key": "clinician_review",
+              "label": "Clinician review",
+              "units": 1.25
+            },
+            {
+              "key": "care_handoff",
+              "label": "Care handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Therapy Intake exception review and scope choices",
+      "guidance": "Decide each therapy intake scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Therapy Intake itemized scope",
+          "fields": [
+            {
+              "key": "presenting_concern",
+              "label": "Presenting concern",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "patient_goal",
+              "label": "Patient goal",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "referral",
+              "label": "Referral",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "accessibility",
+              "label": "Accessibility",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "clinician_review",
+              "label": "Clinician review",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "care_handoff",
+              "label": "Care handoff",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Therapy Intake authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Therapy Intake effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_care_recipient",
+              "label": "Authorized care recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Therapy Intake contact and reference",
+      "guidance": "Only recorded therapy intake choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Therapy Intake limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Therapy Intake signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Therapy Intake signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Therapy Intake authorization boundary",
+          "guidance": "Named therapy intake reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

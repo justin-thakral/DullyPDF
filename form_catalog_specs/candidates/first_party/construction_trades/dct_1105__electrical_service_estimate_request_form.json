@@ -1,0 +1,346 @@
+{
+  "catalog_id": "construction_trades/dct_1105__electrical_service_estimate_request_form",
+  "description": "For electrical service, this estimate request form records reported condition, troubleshooting boundary, isolation plan, parts, outage window, permits, and testing. Its supporting evidence includes meter readings, one-line reference, fault observations, thermal image, device condition, and test results.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Electrical opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Electrical site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Electrical contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Electrical superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Electrical due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this electrical service record to its evidence.",
+          "key": "record_routing",
+          "label": "Electrical Service Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Panel",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Circuit",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Voltage",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Load",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Disconnect",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Equipment served",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture panel, circuit, voltage, load, disconnect, equipment served, labels, and occupancy impact for this electrical service.",
+          "key": "core_identity",
+          "label": "Electrical Service Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify panel, circuit, voltage, load, disconnect, equipment served, labels, and occupancy impact for this electrical service record.",
+      "key": "identity_1",
+      "title": "Estimate Assignment and Site"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Reported condition",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Troubleshooting boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Isolation plan",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Outage window",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For electrical service, record reported condition, troubleshooting boundary, isolation plan, parts, outage window, permits, and testing.",
+          "key": "task_inputs",
+          "label": "Electrical Service Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Electrical Service Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State electrical service outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Electrical Service Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Electrical work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Electrical owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate electrical service items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Electrical Service Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "De-energize and escalate exposed live parts, arc-flash concerns, damaged service conductors, or work beyond qualification. Route unresolved electrical service work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Electrical Service Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For electrical service, capture reported condition, troubleshooting boundary, isolation plan, parts, outage window, permits, and testing.",
+      "key": "task_2",
+      "title": "Scope Review and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Electrical when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Electrical measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Electrical evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Electrical result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For electrical service, record meter readings, one-line reference, fault observations, thermal image, device condition, and test results.",
+          "key": "evidence_register",
+          "label": "Electrical Service Findings, Measurements, and Evidence",
+          "rows": 9,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Meter readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "One-line reference",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Fault observations",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Thermal image",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Device condition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every electrical service evidence source.",
+          "key": "evidence_sources",
+          "label": "Electrical Service Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary electrical service evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Electrical Service Evidence Completeness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Support electrical service findings with meter readings, one-line reference, fault observations, thermal image, device condition, and test results.",
+      "key": "observation_3",
+      "title": "Pricing Inputs and Site Evidence"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate request form disposition",
+                "Ready to estimate",
+                "Site visit required",
+                "Clarification required",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Electrical decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Electrical approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Electrical schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate electrical service disposition.",
+          "key": "disposition",
+          "label": "Electrical Service Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Electrical Service Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the electrical service decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Electrical Service Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Electrical requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Electrical coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Electrical Service Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the electrical service next step from meter readings, one-line reference, fault observations, thermal image, device condition, and test results.",
+      "key": "decision_4",
+      "title": "Estimate Readiness"
+    }
+  ],
+  "slug": "electrical-service-estimate-request-form",
+  "source_filename": "dct_1105__electrical_service_estimate_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Electrical Service Estimate Request Form: electrical service diagnosis and controlled repair using panel, reported condition, and meter readings.",
+  "title": "Electrical Service Estimate Request Form",
+  "use_case": "Use the estimate request form during electrical service diagnosis and controlled repair when the electrical service record must identify panel, circuit, voltage, load, disconnect, equipment served, labels, and occupancy impact. Complete the applicable handoff for functional test, label update, energized release, customer explanation, permit result, and service record."
+}

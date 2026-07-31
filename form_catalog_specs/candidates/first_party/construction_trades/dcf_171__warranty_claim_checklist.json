@@ -1,0 +1,290 @@
+{
+  "catalog_id": "construction_trades/dcf_171__warranty_claim_checklist",
+  "description": "For warranty claim, this checklist records reported symptom, occurrence pattern, operating conditions, urgency, access, coverage question, and requested remedy. Its supporting evidence includes customer report, dated photos, startup record, maintenance history, diagnostic readings, and installer notes.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Claim opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Claim site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Claim contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Claim superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Claim due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this warranty claim record to its evidence.",
+          "key": "record_routing",
+          "label": "Warranty Claim Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Installed asset",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Serial or model",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Installer",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Completion date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture installed asset, serial or model, location, installer, completion date, warranty terms, and prior service for this warranty claim.",
+          "key": "core_identity",
+          "label": "Warranty Claim Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify installed asset, serial or model, location, installer, completion date, warranty terms, and prior service for this warranty claim record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Reported symptom",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Occurrence pattern",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Operating conditions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Urgency",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Access",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For warranty claim, record reported symptom, occurrence pattern, operating conditions, urgency, access, coverage question, and requested remedy.",
+          "key": "task_inputs",
+          "label": "Warranty Claim Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the warranty claim condition before marking.",
+          "items": [
+            "Verify reported symptom",
+            "Verify occurrence pattern",
+            "Verify operating conditions",
+            "Verify urgency",
+            "Verify access",
+            "Verify coverage question"
+          ],
+          "key": "task_checks",
+          "label": "Warranty Claim Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Claim checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Claim review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Claim qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Claim check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each warranty claim result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Warranty Claim Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Escalate active leakage, electrical hazard, structural movement, unsafe operation, or disputed coverage before repair. Route unresolved warranty claim work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Warranty Claim Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For warranty claim, capture reported symptom, occurrence pattern, operating conditions, urgency, access, coverage question, and requested remedy.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Claim when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Claim measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Claim evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Claim result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For warranty claim, record customer report, dated photos, startup record, maintenance history, diagnostic readings, and installer notes.",
+          "key": "evidence_register",
+          "label": "Warranty Claim Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Customer report",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Dated photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Startup record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Maintenance history",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Diagnostic readings",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every warranty claim evidence source.",
+          "key": "evidence_sources",
+          "label": "Warranty Claim Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked warranty claim items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Warranty Claim Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Warranty Claim Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State warranty claim limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Warranty Claim Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support warranty claim findings with customer report, dated photos, startup record, maintenance history, diagnostic readings, and installer notes.",
+      "key": "observation_3",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "warranty-claim-checklist",
+  "source_filename": "dcf_171__warranty_claim_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Warranty Claim Checklist: construction warranty claim intake and disposition using installed asset, reported symptom, and customer report.",
+  "title": "Warranty Claim Checklist",
+  "use_case": "Use the checklist during construction warranty claim intake and disposition when the warranty claim record must identify installed asset, serial or model, location, installer, completion date, warranty terms, and prior service. Complete the applicable handoff for coverage decision, repair record, parts disposition, customer verification, recurrence monitoring, and warranty history."
+}

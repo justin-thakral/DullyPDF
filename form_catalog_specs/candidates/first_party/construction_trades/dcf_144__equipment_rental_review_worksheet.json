@@ -1,0 +1,348 @@
+{
+  "catalog_id": "construction_trades/dcf_144__equipment_rental_review_worksheet",
+  "description": "For equipment rental, this review worksheet records task need, site constraints, utilization period, fuel or charging plan, inspection, and off-rent criteria. Its supporting evidence includes delivery condition, meter photos, inspection sheet, damage record, service tickets, and operator acknowledgment.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Rental opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Rental site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Rental contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Rental superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Rental due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this equipment rental record to its evidence.",
+          "key": "record_routing",
+          "label": "Equipment Rental Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Equipment class",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Capacity",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Attachments",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Operator qualification",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Delivery window",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture equipment class, capacity, attachments, operator qualification, delivery window, meter, and rental agreement for this equipment rental.",
+          "key": "core_identity",
+          "label": "Equipment Rental Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify equipment class, capacity, attachments, operator qualification, delivery window, meter, and rental agreement for this equipment rental record.",
+      "key": "identity_1",
+      "title": "Review Assignment and Question"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Task need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Site constraints",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Utilization period",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Fuel or charging plan",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For equipment rental, record task need, site constraints, utilization period, fuel or charging plan, inspection, and off-rent criteria.",
+          "key": "task_inputs",
+          "label": "Equipment Rental Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Rental decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Rental supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Rental review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified equipment rental facts from judgment.",
+          "key": "review_criteria",
+          "label": "Equipment Rental Review Criteria and Support",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Equipment Rental Analysis and Alternatives",
+              "multiline": true
+            }
+          ],
+          "guidance": "Explain equipment rental alternatives and retained uncertainty.",
+          "height": 54,
+          "key": "analysis",
+          "label": "Equipment Rental Analysis and Alternatives",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Remove from service for missing safeguards, leaks, damage, overdue inspection, or unsuitable capacity. Route unresolved equipment rental work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Equipment Rental Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For equipment rental, capture task need, site constraints, utilization period, fuel or charging plan, inspection, and off-rent criteria.",
+      "key": "task_2",
+      "title": "Criteria and Analysis"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Rental when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Rental measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Rental evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Rental result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For equipment rental, record delivery condition, meter photos, inspection sheet, damage record, service tickets, and operator acknowledgment.",
+          "key": "evidence_register",
+          "label": "Equipment Rental Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Delivery condition",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Meter photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Inspection sheet",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Damage record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Service tickets",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every equipment rental evidence source.",
+          "key": "evidence_sources",
+          "label": "Equipment Rental Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Equipment Rental Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State equipment rental limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Equipment Rental Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support equipment rental findings with delivery condition, meter photos, inspection sheet, damage record, service tickets, and operator acknowledgment.",
+      "key": "observation_3",
+      "title": "Records Examined and Findings"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select review worksheet disposition",
+                "Recommend acceptance",
+                "Recommend conditions",
+                "Further review",
+                "Do not accept"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Rental decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Rental approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Rental authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Rental review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate equipment rental disposition.",
+          "key": "disposition",
+          "label": "Equipment Rental Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Equipment Rental Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the equipment rental decision to evidence.",
+          "height": 52,
+          "key": "decision_basis",
+          "label": "Equipment Rental Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Rental coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Rental manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Rental decision recipient and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Equipment Rental Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the equipment rental next step from delivery condition, meter photos, inspection sheet, damage record, service tickets, and operator acknowledgment.",
+      "key": "decision_4",
+      "title": "Reviewer Recommendation"
+    }
+  ],
+  "slug": "equipment-rental-review-worksheet",
+  "source_filename": "dcf_144__equipment_rental_review_worksheet.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Equipment Rental Review Worksheet: rental equipment request, custody, and return using equipment class, task need, and delivery condition.",
+  "title": "Equipment Rental Review Worksheet",
+  "use_case": "Use the review worksheet during rental equipment request, custody, and return when the equipment rental record must identify equipment class, capacity, attachments, operator qualification, delivery window, meter, and rental agreement. Complete the applicable handoff for off-rent confirmation, final meter, fuel level, damage allocation, pickup receipt, and cost-code reconciliation."
+}

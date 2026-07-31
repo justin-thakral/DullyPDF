@@ -1,0 +1,325 @@
+{
+  "catalog_id": "business_operations/dbo_1780__meeting_action_item_intake_form",
+  "description": "For meeting action item, this intake form records discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence. Its supporting evidence includes source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Item opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Item site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Item contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Item process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Item due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this meeting action item record to its evidence.",
+          "key": "record_routing",
+          "label": "Meeting Action Item Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Meeting purpose",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Date",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Facilitator",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Participants",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Agenda",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum for this meeting action item.",
+          "key": "core_identity",
+          "label": "Meeting Action Item Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum for this meeting action item record.",
+      "key": "identity_1",
+      "title": "Intake Contact and Ownership"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Discussion outcome",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Decision needed",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Action deliverable",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Item owner",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Dependency",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For meeting action item, record discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence.",
+          "key": "task_inputs",
+          "label": "Meeting Action Item Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Meeting Action Item Desired Outcome and Service Fit",
+              "multiline": true
+            }
+          ],
+          "guidance": "State meeting action item outcomes, dependencies, timing, and sensitive-data limits.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Meeting Action Item Desired Outcome and Service Fit",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Route each unresolved meeting action item qualification item.",
+          "items": [
+            "Identity, authority, and primary contacts are verified",
+            "Desired outcome and service fit are understood",
+            "Sensitive information is limited to a stated purpose",
+            "Conflicts, dependencies, and risk screens are complete",
+            "Commitments remain within policy and capacity",
+            "Intake disposition and retention path are explicit"
+          ],
+          "key": "qualification_readiness",
+          "label": "Meeting Action Item Qualification Readiness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "For meeting action item, capture discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence.",
+      "key": "task_2",
+      "title": "Qualification Inputs"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Escalate unowned, overdue, blocked, contradictory, sensitive, or authority-dependent actions to the meeting sponsor. Do not release affected meeting action item work.",
+          "key": "stop_boundary",
+          "label": "Meeting Action Item Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Item exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Item correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Item escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close meeting action item exceptions with verification.",
+          "key": "exception_register",
+          "label": "Meeting Action Item Exception and Corrective Action",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Item notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Item notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Item interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Item review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Item release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep meeting action item controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Meeting Action Item Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Escalate unowned, overdue, blocked, contradictory, sensitive, or authority-dependent actions to the meeting sponsor. Control and route each meeting action item exception.",
+      "key": "exception_3",
+      "title": "Intake Risk and Referrals"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select intake form disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Qualified review",
+                "Hold",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Item decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Item approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Item schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate meeting action item disposition.",
+          "key": "disposition",
+          "label": "Meeting Action Item Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Meeting Action Item Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the meeting action item decision to evidence.",
+          "height": 36,
+          "key": "decision_basis",
+          "label": "Meeting Action Item Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Item requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Item process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Meeting Action Item Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the meeting action item next step from source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+      "key": "decision_4",
+      "title": "Intake Decision"
+    }
+  ],
+  "slug": "meeting-action-item-intake-form",
+  "source_filename": "dbo_1780__meeting_action_item_intake_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Meeting Action Item Intake Form: meeting decision and action-item control using meeting purpose, discussion outcome, and source note.",
+  "title": "Meeting Action Item Intake Form",
+  "use_case": "Use the intake form during meeting decision and action-item control when the meeting action item record must identify meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum. Complete the applicable handoff for verified completion, accepted deliverable, unresolved carryover, stakeholder notification, and decision-log update."
+}

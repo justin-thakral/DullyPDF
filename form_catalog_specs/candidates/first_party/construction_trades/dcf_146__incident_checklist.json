@@ -1,0 +1,346 @@
+{
+  "catalog_id": "construction_trades/dcf_146__incident_checklist",
+  "description": "For incident, this checklist records immediate care, scene control, notification chain, evidence preservation, preliminary classification, and reporting duties. Its supporting evidence includes firsthand statements, scene photos, equipment status, training record, timeline, and corrective-action evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "incident_number",
+              "label": "Incident number",
+              "units": 1.0
+            },
+            {
+              "key": "event_time",
+              "label": "Event date and time",
+              "units": 1.0
+            },
+            {
+              "key": "exact_location",
+              "label": "Exact location",
+              "units": 1.0
+            },
+            {
+              "key": "reported_by",
+              "label": "Reported by and contact",
+              "units": 1.0
+            },
+            {
+              "key": "supervisor",
+              "label": "Supervisor or incident lead",
+              "units": 1.0
+            },
+            {
+              "key": "record_started",
+              "label": "Record started date and time",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the incident number on every linked record.",
+          "key": "incident_reference",
+          "label": "Incident Event Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "people",
+              "label": "People involved",
+              "units": 1.0
+            },
+            {
+              "key": "activity",
+              "label": "Activity underway",
+              "units": 1.0
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment or material",
+              "units": 1.0
+            },
+            {
+              "key": "witnesses",
+              "label": "Witnesses",
+              "units": 1.0
+            },
+            {
+              "key": "conditions",
+              "label": "Environmental conditions",
+              "units": 1.0
+            },
+            {
+              "key": "emergency_response",
+              "label": "Emergency response",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture initial facts without assigning blame.",
+          "key": "incident_context",
+          "label": "People, Activity, and Initial Response",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Record who was involved, when and where the event occurred, and who owns the response.",
+      "key": "identity_1",
+      "title": "Incident Event and Response Reference"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Record the responder and time for each completed step.",
+          "items": [
+            "Emergency care and emergency-service needs are addressed",
+            "The scene is secured and uncontrolled hazards are isolated",
+            "Supervisor and required emergency contacts are notified",
+            "Evidence is protected without disturbing necessary response",
+            "Witnesses and involved people are identified for follow-up",
+            "Reporting deadlines and required external notices are identified"
+          ],
+          "key": "stabilization_steps",
+          "label": "Immediate Care and Scene Control",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "care",
+              "label": "Care provided or declined",
+              "units": 1.0
+            },
+            {
+              "key": "scene_control",
+              "label": "Scene control owner and time",
+              "units": 1.0
+            },
+            {
+              "key": "notifications",
+              "label": "Initial notices and times",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "work_status",
+              "label": "Affected work status",
+              "options": [
+                "Select affected work status",
+                "Stopped",
+                "Restricted",
+                "Unaffected",
+                "Released by authority"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "external_notice",
+              "label": "External notice or report number",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Do not infer cause from emergency-response actions.",
+          "key": "response_status",
+          "label": "Response and Work Status",
+          "type": "fields"
+        },
+        {
+          "guidance": "Separate firsthand observation, attributed statement, and later analysis. Preserve the scene when response or investigation requires it.",
+          "key": "incident_fact_boundary",
+          "label": "Objective Fact Record",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Document immediate care, scene control, notifications, evidence protection, and affected-work status.",
+      "key": "task_2",
+      "title": "Immediate Care and Scene-Control Checklist"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "time",
+              "label": "Time",
+              "units": 1.2
+            },
+            {
+              "key": "source",
+              "label": "Person or source",
+              "units": 1.8
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact or statement",
+              "units": 2.8
+            },
+            {
+              "key": "action",
+              "label": "Response or action",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Add entries in event order; retain later corrections.",
+          "key": "incident_chronology",
+          "label": "Incident Chronology",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Evidence item",
+              "units": 2.2
+            },
+            {
+              "key": "source",
+              "label": "Source or custodian",
+              "units": 2.0
+            },
+            {
+              "key": "captured",
+              "label": "Captured date and time",
+              "units": 1.8
+            },
+            {
+              "key": "location",
+              "label": "Secure location",
+              "units": 1.7
+            },
+            {
+              "key": "status",
+              "label": "Status or limit",
+              "units": 1.6
+            }
+          ],
+          "guidance": "Preserve originals, custody, access limits, and source attribution.",
+          "key": "incident_evidence",
+          "label": "Statement, Photo, and Record Register",
+          "rows": 3,
+          "type": "table"
+        }
+      ],
+      "guidance": "Preserve attributed statements, event chronology, photos, equipment facts, and source custody.",
+      "key": "observation_3",
+      "title": "Incident Fact Verification Record"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Notice or corrective action",
+              "units": 2.5
+            },
+            {
+              "key": "owner",
+              "label": "Incident owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Verification or record",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Close each incident action with retrievable verification.",
+          "key": "incident_followup",
+          "label": "Notification, Correction, and Follow-Up",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "classification",
+              "label": "Preliminary event type",
+              "options": [
+                "Select preliminary event type",
+                "Injury or illness",
+                "Property damage",
+                "Equipment event",
+                "Environmental event",
+                "Near miss",
+                "Other or undetermined"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "investigation_owner",
+              "label": "Investigation owner",
+              "units": 1.0
+            },
+            {
+              "key": "required_notices",
+              "label": "Required notices completed",
+              "units": 1.0
+            },
+            {
+              "key": "release_authority",
+              "label": "Work-release authority",
+              "units": 1.0
+            },
+            {
+              "key": "release_time",
+              "label": "Release date and time",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "Retained record location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "A preliminary type is not a final cause finding.",
+          "key": "incident_disposition",
+          "label": "Investigation and Work-Release Status",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "reporter",
+              "label": "Reporter, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Supervisor or investigator, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "incident_acknowledgment",
+          "label": "Report and Review Acknowledgments",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Assign required notices and corrective actions, then record investigation ownership and work-release authority.",
+      "key": "closeout_4",
+      "title": "Required Follow-Up and Work Release"
+    }
+  ],
+  "slug": "incident-checklist",
+  "source_filename": "dcf_146__incident_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Incident Checklist: construction incident stabilization and fact record using people involved, immediate care, and firsthand statements.",
+  "title": "Incident Checklist",
+  "use_case": "Use the checklist during construction incident stabilization and fact record when the incident record must identify people involved, exact location, activity, equipment, witnesses, environmental conditions, and emergency response. Complete the applicable handoff for qualified review, required notifications, corrective actions, return-to-work authority, and record retention."
+}

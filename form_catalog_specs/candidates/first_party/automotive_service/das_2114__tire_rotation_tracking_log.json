@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2114__tire_rotation_tracking_log",
+  "source_section": "automotive_service",
+  "source_filename": "das_2114__tire_rotation_tracking_log.pdf",
+  "slug": "tire-rotation-tracking-log",
+  "title": "Tire Rotation Tracking Log",
+  "subtitle": "Tire Rotation Service: preserves changes and next triggers.",
+  "description": "Tire Rotation Tracking Log covers vehicle, tire position, size, condition, pressure, wheel, fastener, and rotation pattern. The tire service advisor records Tire Rotation Service events, owners, exceptions, and next triggers. Tire Rotation Tracking Log keeps Tire Rotation Service exceptions visible until the tire service advisor handoff.",
+  "use_case": "Use Tire Rotation Tracking Log at service bay, lift, wheel positions, inflation point, and customer handoff. Document vehicle, tire position, size, condition, pressure, wheel, fastener, and rotation pattern identity before Tire Rotation Service begins. Compare vehicle, tire position, size, condition, pressure, wheel, fastener, and rotation pattern findings with stated Tire Rotation Service criteria; route unresolved Tire Rotation Service issues to qualified tire service reviewer. For Tire Rotation Tracking Log, confirm requirements for Tire Rotation Service. Ask qualified tire service reviewer to review Tire Rotation Service conditions beyond the tire service advisor's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Tire Rotation Service, identify responsible parties, service bay, lift, wheel positions, inflation point, and customer handoff, and the linked vehicle, tire position, size, condition, pressure, wheel, fastener, and rotation pattern source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Tire Rotation Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Work order and customer",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, and drivetrain",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_3",
+              "label": "Tire brand, size, position, DOT or unit identity when needed",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Tracking review and variance evidence",
+      "guidance": "Capture Tire Rotation Service facts for vehicle, tire position, size, condition, pressure, wheel, fastener, and rotation pattern; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Tire Rotation Service tracked controls",
+          "items": [
+            "Tread depth and wear pattern by position",
+            "Pressure and specified target",
+            "Sidewall, bead, puncture, and visible damage",
+            "Wheel, hub, stud, nut, and mounting surface",
+            "Rotation pattern and directional or staggered restriction",
+            "Fastener tightening evidence and warning-system reset"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Current status outcome and next update",
+      "guidance": "Keep the Tire Rotation Service chronology intact through handoff. State the unresolved exception, the owner selected by Tire Service Advisor, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Unsafe tire damage or tread",
+            "Size or pattern prevents planned rotation",
+            "Stud, nut, wheel, or hub damage",
+            "Specified fastening or pressure verification incomplete",
+            "Position-by-position tread and pressure readings",
+            "Tire and wheel condition photographs",
+            "Rotation pattern and fastener record",
+            "Post-service warning and road-observation result"
+          ],
+          "guidance": "Pause Tire Rotation Service when tire roadworthiness, fitment, wheel attachment, inflation, or required verification remains unresolved. Retain the available Tire Rotation Service proof and route unresolved vehicle, tire position, size, condition, pressure, wheel, fastener, and rotation pattern scope to tire service advisor."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Tire Service Advisor",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Tire Service Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

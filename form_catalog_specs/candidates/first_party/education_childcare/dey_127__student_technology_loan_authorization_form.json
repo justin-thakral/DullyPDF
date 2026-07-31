@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_127__student_technology_loan_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_127__student_technology_loan_authorization_form.pdf",
+  "slug": "student-technology-loan-authorization-form",
+  "title": "Student Technology Loan Authorization Form",
+  "subtitle": "Capture device serial, charger, acceptable use, and connectivity support; confirm repair route and end-of-term return.",
+  "description": "Student Technology Loan records device serial, charger, acceptable use, connectivity support, repair route, and end-of-term return. Student Technology Loan evidence stays linked.",
+  "use_case": "Use this student technology loan authorization decision when staff must document device serial and charger. Reconcile acceptable use, connectivity support, repair route, and end-of-term return before the student technology loan handoff. Use the asset inventory, serial scan, charger and case count, acceptable-use agreement, connectivity request, help-desk ticket, repair estimate, and return inspection. Ask the assigned student technology loan reviewer to confirm device serial against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Student Technology Loan signer details",
+      "guidance": "Match device serial to charger and accessories; record acceptable-use receipt, connectivity need, filtering or access route, repair ticket, and end-of-term return.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Student Technology Loan people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "device_serial",
+              "label": "Device serial",
+              "units": 1.2
+            },
+            {
+              "key": "charger",
+              "label": "Charger",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Student Technology Loan task details",
+          "fields": [
+            {
+              "key": "acceptable_use",
+              "label": "Acceptable use",
+              "units": 1.15
+            },
+            {
+              "key": "connectivity_support",
+              "label": "Connectivity support",
+              "units": 1.0
+            },
+            {
+              "key": "repair_route",
+              "label": "Repair route",
+              "units": 1.25
+            },
+            {
+              "key": "end_of_term_return",
+              "label": "End-of-term return",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Student Technology Loan exception review and scope choices",
+      "guidance": "Decide each student technology loan scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Student Technology Loan primary scope",
+          "fields": [
+            {
+              "key": "device_serial",
+              "label": "Device serial",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "charger",
+              "label": "Charger",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "acceptable_use",
+              "label": "Acceptable use",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Student Technology Loan additional scope",
+          "fields": [
+            {
+              "key": "connectivity_support",
+              "label": "Connectivity support",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "repair_route",
+              "label": "Repair route",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "end_of_term_return",
+              "label": "End-of-term return",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Student Technology Loan authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Student Technology Loan effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Student Technology Loan contact and reference",
+      "guidance": "Only recorded student technology loan choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Student Technology Loan limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Student Technology Loan signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Student Technology Loan signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Student Technology Loan authorization boundary",
+          "guidance": "Named student technology loan reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

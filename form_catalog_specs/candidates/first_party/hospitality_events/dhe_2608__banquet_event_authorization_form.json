@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2608__banquet_event_authorization_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2608__banquet_event_authorization_form.pdf",
+  "slug": "banquet-event-authorization-form",
+  "title": "Banquet Event Authorization Form",
+  "subtitle": "Capture function space, guest count, setup, and banquet timing; confirm service owner and event acceptance.",
+  "description": "Banquet Event records function space, guest count, setup, banquet timing, service owner, and event acceptance. Banquet Event evidence stays linked.",
+  "use_case": "Use this banquet event authorization decision when staff must document function space and guest count. Reconcile setup, banquet timing, service owner, and event acceptance before the banquet event handoff. Use the function sheet, banquet-event order, floorplan, guaranteed count, menu schedule, audiovisual order, staffing assignment, captain report, and client signoff. Ask the assigned banquet event reviewer to confirm function space against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Banquet Event signer details review",
+      "guidance": "Connect function space, guaranteed guest count, room setup, banquet-event order timing, meal courses, service captain, audiovisual needs, and client acceptance.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Banquet Event people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "event_stay_or_reservation_date",
+              "label": "Event, stay, or reservation date",
+              "units": 1.1
+            },
+            {
+              "key": "function_space",
+              "label": "Function space",
+              "units": 1.2
+            },
+            {
+              "key": "guest_count",
+              "label": "Guest count",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Banquet Event task details",
+          "fields": [
+            {
+              "key": "setup",
+              "label": "Setup",
+              "units": 1.15
+            },
+            {
+              "key": "banquet_timing",
+              "label": "Banquet timing",
+              "units": 1.0
+            },
+            {
+              "key": "service_owner",
+              "label": "Service owner",
+              "units": 1.25
+            },
+            {
+              "key": "event_acceptance",
+              "label": "Event acceptance",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Banquet Event scope choices review",
+      "guidance": "Decide each banquet event scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Banquet Event itemized scope",
+          "fields": [
+            {
+              "key": "function_space",
+              "label": "Function space",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "guest_count",
+              "label": "Guest count",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "setup",
+              "label": "Setup",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "banquet_timing",
+              "label": "Banquet timing",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "service_owner",
+              "label": "Service owner",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "event_acceptance",
+              "label": "Event acceptance",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Banquet Event authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Banquet Event effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_service_recipient",
+              "label": "Authorized service recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Banquet Event exception review and signer receipt",
+      "guidance": "Only recorded banquet event choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Banquet Event limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Banquet Event signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Banquet Event signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Banquet Event authorization boundary",
+          "guidance": "Named banquet event reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1443__summer_camp_registration_request_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1443__summer_camp_registration_request_form.pdf",
+  "slug": "summer-camp-registration-request-form",
+  "title": "Summer Camp Registration Request Form",
+  "subtitle": "Capture session placement, unit assignment, activity choices, and support route; confirm supplies and guardian handoff.",
+  "description": "Summer Camp Registration records session placement, unit assignment, activity choices, support route, supplies, and guardian handoff. Summer Camp Registration evidence stays linked.",
+  "use_case": "Use this summer camp registration request intake when staff must document session placement and unit assignment. Reconcile activity choices, support route, supplies, and guardian handoff before the summer camp registration handoff. Use the application, session-capacity report, unit list, bus choice, activity permissions, support-route receipt, payment reference, packing notice, and placement confirmation. Ask the assigned summer camp registration reviewer to confirm session placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Summer Camp Registration contact and reference",
+      "guidance": "Confirm session placement, unit assignment, optional activities, support routing, supplies, fee reference, orientation, transportation, and guardian handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Summer Camp Registration people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "session_placement",
+              "label": "Session placement",
+              "units": 1.2
+            },
+            {
+              "key": "unit_assignment",
+              "label": "Unit assignment",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Summer Camp Registration task details",
+          "fields": [
+            {
+              "key": "activity_choices",
+              "label": "Activity choices",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Include",
+                "Include with limit",
+                "Do not include",
+                "Pending"
+              ]
+            },
+            {
+              "key": "support_route",
+              "label": "Support route",
+              "units": 1.0
+            },
+            {
+              "key": "supplies",
+              "label": "Supplies",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_handoff",
+              "label": "Guardian handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Summer Camp Registration request scope review",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Summer Camp Registration requested items",
+          "columns": [
+            {
+              "key": "requested_session_placement",
+              "label": "Requested session placement",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_unit_assignment",
+              "label": "Need or unit assignment",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_support_route",
+              "label": "Constraint or support route",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Summer Camp Registration request checks",
+          "items": [
+            "Session placement is identified for this record",
+            "Unit assignment matches the current request or source",
+            "Activity choices is ready for point-of-use staff",
+            "Support route limits or questions are resolved"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Summer Camp Registration exception review and response",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Summer Camp Registration request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Summer Camp Registration request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

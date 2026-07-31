@@ -1,0 +1,339 @@
+{
+  "catalog_id": "home_services/dhs_2616__moving_estimate_request_form",
+  "description": "For moving estimate, this request form records revised services, labor and vehicle basis, materials, specialty handling, valuation, storage, discounts, and exclusions. Its supporting evidence includes inventory delta, access confirmation, specialty photos, rate basis, third-party quote, and customer change request.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Moving opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Moving site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Moving contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Moving account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Moving due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this moving estimate record to its evidence.",
+          "key": "record_routing",
+          "label": "Moving Estimate Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Customer account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Survey version",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Origin",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Destination constraints",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Inventory revisions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture customer account, survey version, origin and destination constraints, inventory revisions, dates, and access reservations for this moving estimate.",
+          "key": "core_identity",
+          "label": "Moving Estimate Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify customer account, survey version, origin and destination constraints, inventory revisions, dates, and access reservations for this moving estimate record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Revised services",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Labor",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Vehicle basis",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Materials",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Specialty handling",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Valuation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For moving estimate, record revised services, labor and vehicle basis, materials, specialty handling, valuation, storage, discounts, and exclusions.",
+          "key": "task_inputs",
+          "label": "Moving Estimate Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Moving Estimate Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State moving estimate outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Moving Estimate Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Moving work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Moving owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate moving estimate items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Moving Estimate Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        }
+      ],
+      "guidance": "For moving estimate, capture revised services, labor and vehicle basis, materials, specialty handling, valuation, storage, discounts, and exclusions.",
+      "key": "task_2",
+      "title": "Requested Record Change"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Reprice and obtain acknowledgment when dates, inventory, access, destination, valuation, or services materially change. Do not release affected moving estimate work.",
+          "key": "stop_boundary",
+          "label": "Moving Estimate Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Moving exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Moving correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Moving escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close moving estimate exceptions with verification.",
+          "key": "exception_register",
+          "label": "Moving Estimate Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Moving notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Moving notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Moving interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Moving review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Moving release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep moving estimate controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Moving Estimate Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Reprice and obtain acknowledgment when dates, inventory, access, destination, valuation, or services materially change. Control and route each moving estimate exception.",
+      "key": "exception_3",
+      "title": "Service Risk and Exception"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Moving decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Moving service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Moving schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate moving estimate disposition.",
+          "key": "disposition",
+          "label": "Moving Estimate Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Moving Estimate Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the moving estimate decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Moving Estimate Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Moving customer confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Moving service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Moving Estimate Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the moving estimate next step from inventory delta, access confirmation, specialty photos, rate basis, third-party quote, and customer change request.",
+      "key": "decision_4",
+      "title": "Request Decision"
+    }
+  ],
+  "slug": "dhs-2616-moving-estimate-request-form",
+  "source_filename": "dhs_2616__moving_estimate_request_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Moving Estimate Request Form: moving estimate revision and decision record using customer account, revised services, and inventory delta.",
+  "title": "Moving Estimate Request Form",
+  "use_case": "Use the request form during moving estimate revision and decision record when the moving estimate record must identify customer account, survey version, origin and destination constraints, inventory revisions, dates, and access reservations. Complete the applicable handoff for selected option, estimate version, deposit status, schedule lock, move-file handoff, and open prerequisites."
+}

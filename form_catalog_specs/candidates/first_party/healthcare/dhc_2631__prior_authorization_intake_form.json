@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2631__prior_authorization_intake_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2631__prior_authorization_intake_form.pdf",
+  "slug": "dhc-2631-prior-authorization-intake-form",
+  "title": "Prior Authorization Intake Form",
+  "subtitle": "Capture service request, medical-necessity reference, payer route, and decision period; confirm denial reason and appeal.",
+  "description": "Prior Authorization records service request, medical-necessity reference, payer route, decision period, denial reason, and appeal. Prior Authorization evidence stays linked.",
+  "use_case": "Use this prior authorization structured intake when staff must document service request and medical-necessity reference. Reconcile payer route, decision period, denial reason, and appeal before the prior authorization handoff. Use the payer form or portal record, procedure or service details, medical-necessity support, submission proof, pending-request log, approval terms, denial letter, and appeal receipt. This workflow follows the payer decision itself through portal submission, pending status, information request, approval scope, units or date limits, denial rationale, peer review, resubmission, and appeal. Record authorization number, certified quantity, approved site, validity window, case reviewer, fax or portal transaction, determination letter, reconsideration appointment, and escalation deadline. Ask the assigned prior authorization reviewer to confirm service request against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Prior Authorization starting details",
+      "guidance": "Track service request, medical-necessity evidence, payer portal or call reference, decision period, approval scope, denial reason, resubmission, and appeal deadline. Keep any urgent prior authorization issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Prior Authorization people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "ordering_or_referring_professional",
+              "label": "Ordering or referring professional",
+              "units": 1.1
+            },
+            {
+              "key": "service_request",
+              "label": "Service request",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Prior Authorization task details",
+          "fields": [
+            {
+              "key": "medical_necessity_reference",
+              "label": "Medical-necessity reference",
+              "units": 1.15
+            },
+            {
+              "key": "payer_route",
+              "label": "Payer route",
+              "units": 1.0
+            },
+            {
+              "key": "decision_period",
+              "label": "Decision period",
+              "units": 1.25
+            },
+            {
+              "key": "denial_reason",
+              "label": "Denial reason",
+              "units": 1.1
+            },
+            {
+              "key": "appeal",
+              "label": "Appeal",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_story",
+      "title": "Prior Authorization reported needs review",
+      "guidance": "Preserve the person's wording and route questions without interpretation.",
+      "blocks": [
+        {
+          "key": "stated_need",
+          "type": "textarea",
+          "label": "Prior Authorization stated need or goal",
+          "fields": [
+            {
+              "key": "person_s_words_desired_outcome_and_priority",
+              "label": "Person's words, desired outcome, and priority"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "source_facts",
+          "type": "table",
+          "label": "Prior Authorization facts and questions",
+          "columns": [
+            {
+              "key": "service_request",
+              "label": "Service request",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "payer_route",
+              "label": "Payer route",
+              "units": 1.25
+            },
+            {
+              "key": "question_or_route",
+              "label": "Question or route",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "intake_readiness",
+          "type": "checklist",
+          "label": "Prior Authorization intake readiness",
+          "items": [
+            "Service request is identified for this record",
+            "Medical-necessity reference matches the current request or source",
+            "Payer route is ready for point-of-use staff",
+            "Decision period limits or questions are resolved",
+            "Denial reason is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_handoff",
+      "title": "Prior Authorization receiving route and handoff",
+      "guidance": "Assign open questions and confirm where the intake goes next.",
+      "blocks": [
+        {
+          "key": "intake_route",
+          "type": "fields",
+          "label": "Prior Authorization next step",
+          "fields": [
+            {
+              "key": "receiving_person_or_team",
+              "label": "Receiving person or team",
+              "units": 1.15
+            },
+            {
+              "key": "open_question_or_missing_item",
+              "label": "Open question or missing item",
+              "units": 1.0
+            },
+            {
+              "key": "urgent_route_if_applicable",
+              "label": "Urgent route if applicable",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "intake_receipt",
+          "type": "signatures",
+          "label": "Prior Authorization intake receipt",
+          "fields": [
+            {
+              "key": "intake_coordinator_and_date",
+              "label": "Intake coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms routing, not professional review."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+{
+  "catalog_id": "construction_trades/dcf_161__bid_walkthrough_checklist",
+  "description": "For bid walkthrough, this checklist records observable conditions, scope interfaces, measurement needs, protection, logistics, assumptions, and questions. Its supporting evidence includes annotated plans, measurements, photos, attendee notes, hazardous-material disclosures, and addendum references.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Walkthrough opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Walkthrough site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Walkthrough contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Walkthrough superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Walkthrough due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this bid walkthrough record to its evidence.",
+          "key": "record_routing",
+          "label": "Bid Walkthrough Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Bid package",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Site zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Existing systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Access routes",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Working hours",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture bid package, site zones, existing systems, access routes, working hours, utilities, and owner-furnished information for this bid walkthrough.",
+          "key": "core_identity",
+          "label": "Bid Walkthrough Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify bid package, site zones, existing systems, access routes, working hours, utilities, and owner-furnished information for this bid walkthrough record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Observable conditions",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Scope interfaces",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Measurement needs",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Protection",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Logistics",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For bid walkthrough, record observable conditions, scope interfaces, measurement needs, protection, logistics, assumptions, and questions.",
+          "key": "task_inputs",
+          "label": "Bid Walkthrough Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the bid walkthrough condition before marking.",
+          "items": [
+            "Verify observable conditions",
+            "Verify scope interfaces",
+            "Verify measurement needs",
+            "Verify protection",
+            "Verify logistics",
+            "Verify assumptions"
+          ],
+          "key": "task_checks",
+          "label": "Bid Walkthrough Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Walkthrough checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Walkthrough review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Walkthrough qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Walkthrough check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each bid walkthrough result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Bid Walkthrough Checkpoint Result",
+          "type": "fields"
+        }
+      ],
+      "guidance": "For bid walkthrough, capture observable conditions, scope interfaces, measurement needs, protection, logistics, assumptions, and questions.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Walkthrough when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Walkthrough measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Walkthrough evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Walkthrough result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For bid walkthrough, record annotated plans, measurements, photos, attendee notes, hazardous-material disclosures, and addendum references.",
+          "key": "evidence_register",
+          "label": "Bid Walkthrough Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Annotated plans",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Attendee notes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Hazardous-material disclosures",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every bid walkthrough evidence source.",
+          "key": "evidence_sources",
+          "label": "Bid Walkthrough Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked bid walkthrough items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Bid Walkthrough Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Bid Walkthrough Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State bid walkthrough limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Bid Walkthrough Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support bid walkthrough findings with annotated plans, measurements, photos, attendee notes, hazardous-material disclosures, and addendum references.",
+      "key": "observation_3",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "bid-walkthrough-checklist",
+  "source_filename": "dcf_161__bid_walkthrough_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Bid Walkthrough Checklist: pre-bid site walkthrough and constraint capture using bid package, observable conditions, and annotated plans.",
+  "title": "Bid Walkthrough Checklist",
+  "use_case": "Use the checklist during pre-bid site walkthrough and constraint capture when the bid walkthrough record must identify bid package, site zones, existing systems, access routes, working hours, utilities, and owner-furnished information. Complete the applicable handoff for bid assumptions, RFI list, estimate handoff, risk allowance, addendum tracking, and acknowledgment record."
+}

@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1849__equipment_rental_sign_in_log",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1849__equipment_rental_sign_in_log.pdf",
+  "slug": "equipment-rental-sign-in-log",
+  "title": "Equipment Rental Sign-In Log",
+  "subtitle": "Capture asset number, component count, approved use, and condition photo; confirm custody and return.",
+  "description": "Equipment Rental records asset number, component count, approved use, condition photo, custody, and return. Equipment Rental evidence stays linked.",
+  "use_case": "Use this equipment rental attendance and custody reconciliation when staff must document asset number and component count. Reconcile approved use, condition photo, custody, and return before the equipment rental handoff. Use the rental agreement reference, asset inventory, accessory checklist, condition photos, pickup receipt, custody transfer, damage ticket, return timestamp, and deposit disposition. This rental follows a portable asset by inventory class, serial identifier, accessory kit, pickup inspection, borrower custody, deposit disposition, damage charge, and physical return. Ask the assigned equipment rental reviewer to confirm asset number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Equipment Rental details",
+      "guidance": "List asset and component count, approved use, pickup condition photographs, custodian, deposit reference, damage route, return time, and final condition.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Equipment Rental people and reference",
+          "fields": [
+            {
+              "key": "renter_or_responsible_party",
+              "label": "Renter or responsible party",
+              "units": 1.15
+            },
+            {
+              "key": "renter_phone",
+              "label": "Renter phone",
+              "units": 1.0
+            },
+            {
+              "key": "renter_email",
+              "label": "Renter email",
+              "units": 1.25
+            },
+            {
+              "key": "asset_number",
+              "label": "Asset number",
+              "units": 1.1
+            },
+            {
+              "key": "component_count",
+              "label": "Component count",
+              "units": 1.2
+            },
+            {
+              "key": "approved_use",
+              "label": "Approved use",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Equipment Rental task details",
+          "fields": [
+            {
+              "key": "condition_photo",
+              "label": "Condition photo",
+              "units": 1.15
+            },
+            {
+              "key": "custody",
+              "label": "Custody",
+              "units": 1.0
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance_rows",
+      "title": "Equipment Rental renter identity, custody, and return",
+      "guidance": "Match the renter to the accepted reservation, issued access or item, starting condition, and completed return.",
+      "blocks": [
+        {
+          "key": "sign_in_rows",
+          "type": "table",
+          "label": "Equipment Rental custody rows",
+          "columns": [
+            {
+              "key": "renter_and_rental",
+              "label": "Renter and rental",
+              "units": 1.2
+            },
+            {
+              "key": "identity_and_handoff",
+              "label": "Identity and handoff",
+              "units": 1.1
+            },
+            {
+              "key": "access_item_or_condition",
+              "label": "Access, item, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "return_and_final_condition",
+              "label": "Return and final condition",
+              "units": 1.0
+            },
+            {
+              "key": "exception_and_owner",
+              "label": "Exception and owner",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "roster_boundary",
+          "type": "notice",
+          "label": "Equipment Rental roster boundary",
+          "guidance": "Route any unmatched renter, access method, item, condition, or return before closing the custody log."
+        }
+      ]
+    },
+    {
+      "key": "attendance_close",
+      "title": "Equipment Rental return outcome and custody reconciliation",
+      "guidance": "Reconcile issued access or items, returns, condition, and unresolved custody.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Equipment Rental closing counts",
+          "fields": [
+            {
+              "key": "expected_rental_count",
+              "label": "Expected rental count",
+              "units": 1.15
+            },
+            {
+              "key": "access_or_items_issued",
+              "label": "Access or items issued",
+              "units": 1.0
+            },
+            {
+              "key": "returns_completed",
+              "label": "Returns completed",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_custody_and_owner",
+              "label": "Unresolved custody and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "attendance_receipt",
+          "type": "signatures",
+          "label": "Equipment Rental log receipt",
+          "fields": [
+            {
+              "key": "event_coordinator_or_roster_custodian_and_date",
+              "label": "Event coordinator or roster custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Do not close an unreconciled entry without a named owner."
+        }
+      ]
+    }
+  ]
+}

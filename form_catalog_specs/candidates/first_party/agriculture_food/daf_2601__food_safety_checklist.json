@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2601__food_safety_checklist",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2601__food_safety_checklist.pdf",
+  "slug": "food-safety-checklist",
+  "title": "Food Safety Checklist",
+  "subtitle": "Food Safety Control: documents findings, limits, and disposition.",
+  "description": "Food Safety Checklist covers food lot, process step, sanitation control, monitoring point, and corrective action. The food-safety record owner records Food Safety Control criteria, findings, restrictions, and follow-up. Food Safety Checklist keeps Food Safety Control exceptions visible until the food-safety record owner handoff.",
+  "use_case": "Use Food Safety Checklist at receiving, storage, preparation, processing, packing, and service area. Document food lot, process step, sanitation control, monitoring point, and corrective action identity before Food Safety Control begins. Compare food lot, process step, sanitation control, monitoring point, and corrective action findings with stated Food Safety Control criteria; route unresolved Food Safety Control issues to qualified food-safety reviewer. For Food Safety Checklist, confirm requirements for Food Safety Control. Ask qualified food-safety reviewer to review Food Safety Control conditions beyond the food-safety record owner's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspector, location, and subject identity",
+      "guidance": "For Food Safety Control, identify responsible parties, receiving, storage, preparation, processing, packing, and service area, and the linked food lot, process step, sanitation control, monitoring point, and corrective action source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Food Safety Control identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility, process, shift, and record",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Product, lot, batch, and supplier",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_3",
+              "label": "Control point, limit, method, and monitoring device",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Food Safety Control facts for food lot, process step, sanitation control, monitoring point, and corrective action; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Food Safety Control inspection checks",
+          "items": [
+            "Time and temperature control",
+            "Cross-contact and allergen control",
+            "Sanitation and food-contact condition",
+            "Employee hygiene and illness routing",
+            "Pest, waste, water, and facility condition",
+            "Corrective action and affected-product disposition"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "control",
+              "label": "Process step or control point",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Required limit or practice",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed time, temperature, or condition",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Meets, exception, or not observed",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Correction or product disposition",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Use observed Food Safety Control evidence to state disposition. Keep limits visible and give Food-Safety Record Owner both correction and repeat-check responsibility.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Control limit missed",
+            "Product identity or trace incomplete",
+            "Contamination or allergen concern",
+            "Qualified disposition unavailable",
+            "Monitoring and calibration record",
+            "Lot and supplier trace",
+            "Sanitation or inspection evidence",
+            "Hold, correction, verification, and release decision"
+          ],
+          "guidance": "Pause Food Safety Control when product control, traceability, contamination, corrective action, or qualified disposition remains unresolved. Retain the available Food Safety Control proof and route unresolved food lot, process step, sanitation control, monitoring point, and corrective action scope to food-safety record owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Food-Safety Record Owner",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Food-Safety Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

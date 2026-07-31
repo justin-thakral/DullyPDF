@@ -1,0 +1,385 @@
+{
+  "catalog_id": "construction_trades/dct_1146__change_order_work_order_form",
+  "description": "For change order, this work order form records added and deleted work, labor, material, equipment, subcontract, markup, exclusions, and time effect. Its supporting evidence includes field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Change opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Change site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Change contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Change superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Change due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this change order record to its evidence.",
+          "key": "record_routing",
+          "label": "Change Order Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Base work order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Directive",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Affected task",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Pricing basis",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain for this change order.",
+          "key": "core_identity",
+          "label": "Change Order Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain for this change order record.",
+      "key": "identity_1",
+      "title": "Work Assignment Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Added",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Deleted work",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Labor",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Material",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Subcontract",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For change order, record added and deleted work, labor, material, equipment, subcontract, markup, exclusions, and time effect.",
+          "key": "task_inputs",
+          "label": "Change Order Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Change work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized change order work from additions.",
+          "key": "assigned_work",
+          "label": "Change Order Assigned Work and Acceptance Criteria",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Change arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Change access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Change added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Change inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop change order work at recorded limits.",
+          "key": "work_window",
+          "label": "Change Order Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not execute discretionary changed work before written authorization within the approving party's limit. Do not release affected change order work.",
+          "key": "stop_boundary",
+          "label": "Change Order Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Change exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Change correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Change escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close change order exceptions with verification.",
+          "key": "exception_register",
+          "label": "Change Order Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Change notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Change notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Change interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Change review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Change release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep change order controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Change Order Escalation Record",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Change open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Change owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Change acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer change order items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Change Order Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Authorize change order work, record change order field controls, and transfer every remaining change order item.",
+      "key": "task_2",
+      "title": "Authorized Work, Exception, and Handoff"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Change completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Accepted price",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Days",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Revised work order",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Cost",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the change order outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Change Order Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Change Order Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For change order, record accepted price and days, revised work order, cost and schedule posting, field release, and distribution record; give the change order care or operating instruction, identify change order access restoration and recipient.",
+          "height": 40,
+          "key": "completion_care_notes",
+          "label": "Change Order Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Change trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Change site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Change Order Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the change order record with accepted price and days, revised work order, cost and schedule posting, field release, and distribution record.",
+      "key": "closeout_4",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "change-order-work-order-form",
+  "source_filename": "dct_1146__change_order_work_order_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Change Order Work Order Form: trade change-order development and acceptance using base work order, added, and field directive.",
+  "title": "Change Order Work Order Form",
+  "use_case": "Use the work order form during trade change-order development and acceptance when the change order record must identify base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain. Complete the applicable handoff for accepted price and days, revised work order, cost and schedule posting, field release, and distribution record."
+}

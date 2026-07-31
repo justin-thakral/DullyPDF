@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_125__student_technology_loan_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_125__student_technology_loan_form.pdf",
+  "slug": "student-technology-loan-form",
+  "title": "Student Technology Loan Form",
+  "subtitle": "Capture device serial, charger, acceptable use, and connectivity support; confirm repair route and end-of-term return.",
+  "description": "Student Technology Loan records device serial, charger, acceptable use, connectivity support, repair route, and end-of-term return. Student Technology Loan evidence stays linked.",
+  "use_case": "Use this student technology loan operational record when staff must document device serial and charger. Reconcile acceptable use, connectivity support, repair route, and end-of-term return before the student technology loan handoff. Use the asset inventory, serial scan, charger and case count, acceptable-use agreement, connectivity request, help-desk ticket, repair estimate, and return inspection. Ask the assigned student technology loan reviewer to confirm device serial against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Student Technology Loan contact and reference",
+      "guidance": "Match device serial to charger and accessories; record acceptable-use receipt, connectivity need, filtering or access route, repair ticket, and end-of-term return.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Student Technology Loan people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "device_serial",
+              "label": "Device serial",
+              "units": 1.2
+            },
+            {
+              "key": "charger",
+              "label": "Charger",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Student Technology Loan task details",
+          "fields": [
+            {
+              "key": "acceptable_use",
+              "label": "Acceptable use",
+              "units": 1.15
+            },
+            {
+              "key": "connectivity_support",
+              "label": "Connectivity support",
+              "units": 1.0
+            },
+            {
+              "key": "repair_route",
+              "label": "Repair route",
+              "units": 1.25
+            },
+            {
+              "key": "end_of_term_return",
+              "label": "End-of-term return",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Student Technology Loan exception review and activity",
+      "guidance": "Record each meaningful student technology loan event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Student Technology Loan activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "device_serial",
+              "label": "Device serial",
+              "units": 1.1
+            },
+            {
+              "key": "acceptable_use",
+              "label": "Acceptable use",
+              "units": 1.25
+            },
+            {
+              "key": "repair_route",
+              "label": "Repair route",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Student Technology Loan change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Student Technology Loan completion and handoff",
+      "guidance": "Leave the current student technology loan result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Student Technology Loan final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Student Technology Loan completion receipt",
+          "fields": [
+            {
+              "key": "responsible_teacher_or_program_staff_and_date",
+              "label": "Responsible teacher or program staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded student technology loan task status."
+        }
+      ]
+    }
+  ]
+}

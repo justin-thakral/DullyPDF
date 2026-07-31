@@ -1,0 +1,336 @@
+{
+  "catalog_id": "business_operations/dbo_1785__employee_equipment_intake_form",
+  "description": "For employee equipment, this intake form records business need, standard configuration, exception, data classification, shipping, access, support, and return trigger. Its supporting evidence includes manager approval, asset tag, serial, configuration record, security controls, delivery receipt, and condition photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Equipment opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Equipment site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Equipment contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Equipment process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Equipment due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this employee equipment record to its evidence.",
+          "key": "record_routing",
+          "label": "Employee Equipment Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Employee",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Manager",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Role",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Device or asset",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Accessories",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture employee, manager, role, location, device or asset, accessories, software, cost center, and employment event for this employee equipment.",
+          "key": "core_identity",
+          "label": "Employee Equipment Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify employee, manager, role, location, device or asset, accessories, software, cost center, and employment event for this employee equipment record.",
+      "key": "identity_1",
+      "title": "Intake Contact and Ownership"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Business need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Standard configuration",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Exception",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Data classification",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Shipping",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Access",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For employee equipment, record business need, standard configuration, exception, data classification, shipping, access, support, and return trigger.",
+          "key": "task_inputs",
+          "label": "Employee Equipment Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Employee Equipment Desired Outcome and Service Fit",
+              "multiline": true
+            }
+          ],
+          "guidance": "State employee equipment outcomes, dependencies, timing, and sensitive-data limits.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Employee Equipment Desired Outcome and Service Fit",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Route each unresolved employee equipment qualification item.",
+          "items": [
+            "Identity, authority, and primary contacts are verified",
+            "Desired outcome and service fit are understood",
+            "Sensitive information is limited to a stated purpose",
+            "Conflicts, dependencies, and risk screens are complete",
+            "Commitments remain within policy and capacity",
+            "Intake disposition and retention path are explicit"
+          ],
+          "key": "qualification_readiness",
+          "label": "Employee Equipment Qualification Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not issue unsupported, unapproved, unencrypted, export-restricted, or improperly licensed equipment. Route unresolved employee equipment work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Employee Equipment Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For employee equipment, capture business need, standard configuration, exception, data classification, shipping, access, support, and return trigger.",
+      "key": "task_2",
+      "title": "Qualification Inputs"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not issue unsupported, unapproved, unencrypted, export-restricted, or improperly licensed equipment. Do not release affected employee equipment work.",
+          "key": "stop_boundary",
+          "label": "Employee Equipment Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Equipment exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Equipment correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Equipment escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close employee equipment exceptions with verification.",
+          "key": "exception_register",
+          "label": "Employee Equipment Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Equipment notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Equipment notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Equipment interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Equipment review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Equipment release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep employee equipment controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Employee Equipment Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Do not issue unsupported, unapproved, unencrypted, export-restricted, or improperly licensed equipment. Control and route each employee equipment exception.",
+      "key": "exception_3",
+      "title": "Intake Risk and Referrals"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select intake form disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Qualified review",
+                "Hold",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Equipment decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Equipment approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Equipment schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate employee equipment disposition.",
+          "key": "disposition",
+          "label": "Employee Equipment Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Employee Equipment Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the employee equipment decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Employee Equipment Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Equipment requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Equipment process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Employee Equipment Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the employee equipment next step from manager approval, asset tag, serial, configuration record, security controls, delivery receipt, and condition photos.",
+      "key": "decision_4",
+      "title": "Intake Decision"
+    }
+  ],
+  "slug": "employee-equipment-intake-form",
+  "source_filename": "dbo_1785__employee_equipment_intake_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Employee Equipment Intake Form: employee equipment request, custody, and return using employee, business need, and manager approval.",
+  "title": "Employee Equipment Intake Form",
+  "use_case": "Use the intake form during employee equipment request, custody, and return when the employee equipment record must identify employee, manager, role, location, device or asset, accessories, software, cost center, and employment event. Complete the applicable handoff for custody acknowledgment, inventory update, support handoff, return due date, recovered condition, and access deprovisioning."
+}

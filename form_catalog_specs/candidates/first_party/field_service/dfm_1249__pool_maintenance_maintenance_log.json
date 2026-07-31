@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1249__pool_maintenance_maintenance_log",
+  "source_section": "field_service",
+  "source_filename": "dfm_1249__pool_maintenance_maintenance_log.pdf",
+  "slug": "pool-maintenance-maintenance-log",
+  "title": "Pool Maintenance Log",
+  "subtitle": "Facility Pool Maintenance: preserves changes and next triggers.",
+  "description": "Pool Maintenance Log covers pool, spa, circulation, filtration, disinfection, controls, and deck area. The aquatics facility coordinator records Facility Pool Maintenance events, owners, exceptions, and next triggers. Pool Maintenance Log keeps Facility Pool Maintenance exceptions visible until the aquatics facility coordinator handoff.",
+  "use_case": "Use Pool Maintenance Log at pool vessel, equipment room, chemical storage, deck, and user-access point. Document pool, spa, circulation, filtration, disinfection, controls, and deck area identity before Facility Pool Maintenance begins. Compare pool, spa, circulation, filtration, disinfection, controls, and deck area findings with stated Facility Pool Maintenance criteria; route unresolved Facility Pool Maintenance issues to qualified pool-operations reviewer. For Pool Maintenance Log, confirm requirements for Facility Pool Maintenance. Ask qualified pool-operations reviewer to review Facility Pool Maintenance conditions beyond the aquatics facility coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking period and subject identity",
+      "guidance": "For Facility Pool Maintenance, identify responsible parties, pool vessel, equipment room, chemical storage, deck, and user-access point, and the linked pool, spa, circulation, filtration, disinfection, controls, and deck area source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Facility Pool Maintenance identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility and body-of-water identifier",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Equipment, controller, and treatment-system identifier",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Operating target, prior reading, and service interval",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Tracking review and variance evidence",
+      "guidance": "Capture Facility Pool Maintenance facts for pool, spa, circulation, filtration, disinfection, controls, and deck area; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Facility Pool Maintenance tracked controls",
+          "items": [
+            "Disinfectant, pH, temperature, and clarity reading",
+            "Circulation, filter pressure, flow, and leak condition",
+            "Chemical feed, container, labeling, and storage condition",
+            "Drain cover, barrier, gate, sign, and rescue-equipment observation",
+            "Deck, handrail, ladder, lighting, and trip condition",
+            "Controller alarm, dosing response, and retest result"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "For Facility Pool Maintenance, preserve each open variance with its current state, accountable owner, and next dated update. Aquatics Facility Coordinator performs period review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Water quality or clarity outside operating criteria",
+            "Chemical leak, incompatible storage, or uncontrolled feed",
+            "Barrier, drain-cover, or rescue-equipment concern",
+            "Required closure or qualified review not implemented",
+            "Time-stamped water-quality readings",
+            "Instrument and reagent identification",
+            "Equipment and safety-feature photographs",
+            "Closure, correction, reopening, and notification record"
+          ],
+          "guidance": "Pause Facility Pool Maintenance when water quality, chemical control, circulation, visibility, or user-protection concern remains. Retain the available Facility Pool Maintenance proof and route unresolved pool, spa, circulation, filtration, disinfection, controls, and deck area scope to aquatics facility coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Aquatics Facility Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Pool-Operations Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

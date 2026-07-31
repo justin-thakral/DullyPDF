@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1417__childcare_incident_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1417__childcare_incident_checklist.pdf",
+  "slug": "childcare-incident-checklist",
+  "title": "Childcare Incident Checklist",
+  "subtitle": "Capture room headcount, care transition, observed condition, and immediate comfort; confirm guardian notice and center review.",
+  "description": "Childcare Incident records room headcount, care transition, observed condition, immediate comfort, guardian notice, and center review. Childcare Incident evidence stays linked.",
+  "use_case": "Use this childcare incident stage-gated verification when staff must document room headcount and care transition. Reconcile observed condition, immediate comfort, guardian notice, and center review before the childcare incident handoff. Use the room attendance sheet, staffing ratio record, care-transition timestamp, objective observation, first-aid supply record, guardian call log, and director review. Ask the assigned childcare incident reviewer to confirm room headcount against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Childcare Incident contact and reference",
+      "guidance": "Reconcile room headcount and care transitions; document observed condition, comfort provided, guardian notice, staff response, and center-level review.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Childcare Incident people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "reporting_person_and_role",
+              "label": "Reporting person and role",
+              "units": 1.0
+            },
+            {
+              "key": "date_and_time_first_reported",
+              "label": "Date and time first reported",
+              "units": 1.25
+            },
+            {
+              "key": "room_headcount",
+              "label": "Room headcount",
+              "units": 1.1
+            },
+            {
+              "key": "care_transition",
+              "label": "Care transition",
+              "units": 1.2
+            },
+            {
+              "key": "observed_condition",
+              "label": "Observed condition",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Childcare Incident task details",
+          "fields": [
+            {
+              "key": "immediate_comfort",
+              "label": "Immediate comfort",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_notice",
+              "label": "Guardian notice",
+              "units": 1.0
+            },
+            {
+              "key": "center_review",
+              "label": "Center review",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Childcare Incident checks and corrections",
+      "guidance": "Check current childcare incident facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Childcare Incident required checks",
+          "items": [
+            "Room headcount is identified for this record",
+            "Care transition matches the current request or source",
+            "Observed condition is ready for point-of-use staff",
+            "Immediate comfort limits or questions are resolved",
+            "Guardian notice is communicated to the responsible person",
+            "Center review is confirmed at handoff",
+            "A changed childcare incident fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Childcare Incident failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Childcare Incident exception review and readiness",
+      "guidance": "Hold childcare incident readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Childcare Incident checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Childcare Incident reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Childcare Incident receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_137__inventory_count_log_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_137__inventory_count_log_form.pdf",
+  "slug": "inventory-count-log-form",
+  "title": "Inventory Count Log Form",
+  "subtitle": "Warehouse Inventory Count: preserves changes and next triggers.",
+  "description": "Inventory Count Log Form covers item, lot, serial, location, system quantity, physical quantity, and variance. The inventory control coordinator records Warehouse Inventory Count events, owners, exceptions, and next triggers. Inventory Count Log Form keeps Warehouse Inventory Count exceptions visible until the inventory control coordinator handoff.",
+  "use_case": "Use Inventory Count Log Form at warehouse zone, bin, staging location, quarantine area, and system record. Document item, lot, serial, location, system quantity, physical quantity, and variance identity before Warehouse Inventory Count begins. Compare item, lot, serial, location, system quantity, physical quantity, and variance findings with stated Warehouse Inventory Count criteria; route unresolved Warehouse Inventory Count issues to authorized inventory reviewer. For Inventory Count Log Form, confirm requirements for Warehouse Inventory Count. Ask authorized inventory reviewer to review Warehouse Inventory Count conditions beyond the inventory control coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For Warehouse Inventory Count, identify responsible parties, warehouse zone, bin, staging location, quarantine area, and system record, and the linked item, lot, serial, location, system quantity, physical quantity, and variance source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Inventory owner / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Warehouse zone / bin",
+              "units": 1.1111111111111112
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Warehouse Inventory Count identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Count event, zone, and team",
+              "units": 1.5
+            },
+            {
+              "key": "identity_2",
+              "label": "Item, lot, serial, unit, and location",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_3",
+              "label": "System snapshot, freeze time, and prior transaction reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status events and next-control history",
+      "guidance": "Capture Warehouse Inventory Count facts for item, lot, serial, location, system quantity, physical quantity, and variance; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Warehouse Inventory Count tracked controls",
+          "items": [
+            "Location and label identity",
+            "Sealed or controlled count status",
+            "First and independent recount",
+            "System and physical quantity",
+            "Recent receipt, pick, transfer, or adjustment",
+            "Variance cause, hold, approval, and posting"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Reconcile the latest Warehouse Inventory Count event before closeout. Inventory Control Coordinator identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Location or item identity uncertain",
+            "Count disturbed during control period",
+            "Variance cause unsupported",
+            "Adjustment posted without authority",
+            "Frozen system snapshot",
+            "Count sheets and independent recount",
+            "Transaction research and variance evidence",
+            "Approved adjustment and after-state"
+          ],
+          "guidance": "Pause Warehouse Inventory Count when identity, count integrity, variance basis, approval, or verified posting remains unresolved. Retain the available Warehouse Inventory Count proof and route unresolved item, lot, serial, location, system quantity, physical quantity, and variance scope to inventory control coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Inventory Control Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Authorized Inventory Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

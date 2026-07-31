@@ -1,0 +1,338 @@
+{
+  "catalog_id": "home_services/dhs_2632__home_inspection_estimate_worksheet",
+  "description": "For home inspection, this estimate worksheet records finding classification, clarification questions, safety urgency, further-evaluation needs, and decision responsibility. Its supporting evidence includes report excerpts, location photos, available repair records, specialist response, estimates, and verification documents.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Home opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Home site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Home contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Home account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Home due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this home inspection record to its evidence.",
+          "key": "record_routing",
+          "label": "Home Inspection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Inspection report",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Property systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Client priorities",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Seller response",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture inspection report, property systems, client priorities, seller response, specialist referrals, and transaction milestones for this home inspection.",
+          "key": "core_identity",
+          "label": "Home Inspection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify inspection report, property systems, client priorities, seller response, specialist referrals, and transaction milestones for this home inspection record.",
+      "key": "identity_1",
+      "title": "Account and Estimate Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Finding classification",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Clarification questions",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Safety urgency",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Further-evaluation needs",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For home inspection, record finding classification, clarification questions, safety urgency, further-evaluation needs, and decision responsibility.",
+          "key": "task_inputs",
+          "label": "Home Inspection Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Inspection Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State home inspection outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Home Inspection Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Home work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Home owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate home inspection items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Home Inspection Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not treat the worksheet as engineering, code, legal, or repair certification; route specialist issues for review. Route unresolved home inspection work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Home Inspection Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For home inspection, capture finding classification, clarification questions, safety urgency, further-evaluation needs, and decision responsibility.",
+      "key": "task_2",
+      "title": "Quantities, Rates, and Assumptions"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Home when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Home measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Home evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Home result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For home inspection, record report excerpts, location photos, available repair records, specialist response, estimates, and verification documents.",
+          "key": "evidence_register",
+          "label": "Home Inspection Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Report excerpts",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Location photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Available repair records",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Specialist response",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Estimates",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every home inspection evidence source.",
+          "key": "evidence_sources",
+          "label": "Home Inspection Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Inspection Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State home inspection limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Home Inspection Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support home inspection findings with report excerpts, location photos, available repair records, specialist response, estimates, and verification documents.",
+      "key": "observation_3",
+      "title": "Pricing Evidence and Options"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate worksheet disposition",
+                "Approve estimate",
+                "Approve with option",
+                "Revise basis",
+                "Decline to price"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Home decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Home service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Home authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Home review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate home inspection disposition.",
+          "key": "disposition",
+          "label": "Home Inspection Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Inspection Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the home inspection decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Home Inspection Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Home crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Home service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Home Inspection Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the home inspection next step from report excerpts, location photos, available repair records, specialist response, estimates, and verification documents.",
+      "key": "decision_4",
+      "title": "Pricing Outcome"
+    }
+  ],
+  "slug": "dhs-2632-home-inspection-estimate-worksheet",
+  "source_filename": "dhs_2632__home_inspection_estimate_worksheet.pdf",
+  "source_section": "home_services",
+  "subtitle": "Home Inspection Estimate Worksheet: home inspection finding review record using inspection report, finding classification, and report excerpts.",
+  "title": "Home Inspection Estimate Worksheet",
+  "use_case": "Use the estimate worksheet during home inspection finding review record when the home inspection record must identify inspection report, property systems, client priorities, seller response, specialist referrals, and transaction milestones. Complete the applicable handoff for client decision log, referral status, unresolved-risk acknowledgment, document package, and transaction handoff."
+}

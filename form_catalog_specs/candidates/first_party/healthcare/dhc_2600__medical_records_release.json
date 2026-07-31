@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2600__medical_records_release",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2600__medical_records_release.pdf",
+  "slug": "medical-records-release",
+  "title": "Medical Records Release",
+  "subtitle": "Define the records, recipient, date range, delivery, expiration, revocation, and disclosure trail.",
+  "description": "Records the patient and signing authority, releasing custodian, named recipient and endpoint, purpose, record categories, From and Through dates, exclusions, secure delivery, expiration, revocation, and receipt.",
+  "use_case": "Use when a patient or authorized representative directs a records custodian to disclose a bounded set of records. Route legal or privacy questions to the authorized records or privacy reviewer.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "people_and_recipient",
+      "title": "Patient, representative, and recipient",
+      "guidance": "Identify the patient, signing authority, releasing source, and recipient.",
+      "blocks": [
+        {
+          "key": "required_details_1",
+          "type": "fields",
+          "label": "Patient identity and contact",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_number",
+              "label": "Medical record number",
+              "units": 1.25
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "required_details_2",
+          "type": "fields",
+          "label": "Representative, custodian, and recipient",
+          "fields": [
+            {
+              "key": "authorized_representative_name",
+              "label": "Authorized representative name",
+              "units": 1.15
+            },
+            {
+              "key": "representative_authority",
+              "label": "Representative authority",
+              "units": 1.0
+            },
+            {
+              "key": "releasing_provider_or_records_custodian",
+              "label": "Releasing provider or records custodian",
+              "units": 1.25
+            },
+            {
+              "key": "recipient_organization_or_person",
+              "label": "Recipient organization or person",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "required_details_3",
+          "type": "fields",
+          "label": "Delivery endpoint, purpose, and start date",
+          "fields": [
+            {
+              "key": "recipient_secure_endpoint",
+              "label": "Recipient secure endpoint",
+              "units": 1.15
+            },
+            {
+              "key": "recipient_phone_or_email",
+              "label": "Recipient phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "purpose_of_disclosure",
+              "label": "Purpose of disclosure",
+              "units": 1.25
+            },
+            {
+              "key": "from_date",
+              "label": "From date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "required_details_4",
+          "type": "fields",
+          "label": "End date, expiration, revocation, and category",
+          "fields": [
+            {
+              "key": "through_date",
+              "label": "Through date",
+              "units": 1.15
+            },
+            {
+              "key": "authorization_expiration_date_or_event",
+              "label": "Authorization expiration date or event",
+              "units": 1.0
+            },
+            {
+              "key": "revocation_received_date_if_applicable",
+              "label": "Revocation received date if applicable",
+              "units": 1.25
+            },
+            {
+              "key": "record_category",
+              "label": "Record category",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "required_details_5",
+          "type": "fields",
+          "label": "Special exclusions and secure delivery",
+          "fields": [
+            {
+              "key": "special_record_category_or_exclusion",
+              "label": "Special record category or exclusion",
+              "units": 1.15
+            },
+            {
+              "key": "secure_delivery_method",
+              "label": "Secure delivery method",
+              "units": 1.0
+            },
+            {
+              "key": "requested_date_range",
+              "label": "Requested date range",
+              "units": 1.25
+            },
+            {
+              "key": "disclosure_log_or_receipt_reference",
+              "label": "Disclosure log or receipt reference",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "records_scope_and_delivery",
+      "title": "Records scope, purpose, and delivery",
+      "guidance": "Define only the records, dates, purpose, recipient, and delivery authorized.",
+      "blocks": [
+        {
+          "key": "scope_checks",
+          "type": "checklist",
+          "label": "Scope and delivery checks",
+          "items": [
+            "The requested record categories are identified",
+            "From and Through dates bound the request",
+            "The disclosure purpose is stated",
+            "The recipient and secure endpoint are confirmed",
+            "The secure delivery method is selected"
+          ]
+        },
+        {
+          "key": "record_categories",
+          "type": "checklist",
+          "label": "Record categories requested",
+          "items": [
+            "Visit notes or encounter summaries",
+            "Laboratory results",
+            "Imaging reports",
+            "Medication or immunization records",
+            "Billing or claims records",
+            "Other category described in the scope field",
+            "Exclude any category named in the special-exclusion field"
+          ]
+        },
+        {
+          "key": "additional_scope",
+          "type": "textarea",
+          "label": "Additional records or scope instructions",
+          "fields": [
+            {
+              "key": "describe_another_record_category_provider_encounter_or_date_limit",
+              "label": "Describe another record category, provider, encounter, or date limit"
+            }
+          ],
+          "height": 44
+        }
+      ]
+    },
+    {
+      "key": "limits_and_revocation",
+      "title": "Exclusions, sensitive categories, and revocation",
+      "guidance": "Review exclusions and revocation before any specially protected release.",
+      "blocks": [
+        {
+          "key": "sensitive_category_review",
+          "type": "checklist",
+          "label": "Sensitive categories requiring separate review",
+          "items": [
+            "Psychotherapy notes or separately protected mental-health records are requested",
+            "Substance use disorder records may require separate authorization",
+            "HIV, communicable disease, or other specially protected records are requested",
+            "Genetic testing information is requested",
+            "Minor or adolescent confidentiality limits may apply",
+            "Another category needs separate legal or policy review"
+          ]
+        },
+        {
+          "key": "authorization_limits",
+          "type": "fields",
+          "label": "Authorization limits and revocation routing",
+          "fields": [
+            {
+              "key": "separate_authorization_status",
+              "label": "Separate authorization status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "restriction_or_exclusion_source",
+              "label": "Restriction or exclusion source",
+              "units": 1.0
+            },
+            {
+              "key": "revocation_contact_or_office",
+              "label": "Revocation contact or office",
+              "units": 1.25
+            },
+            {
+              "key": "revocation_effective_date_and_time",
+              "label": "Revocation effective date and time",
+              "units": 1.1
+            },
+            {
+              "key": "release_stopped_or_limited_by",
+              "label": "Release stopped or limited by",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "excluded_material",
+          "type": "textarea",
+          "label": "Excluded records or special instructions",
+          "fields": [
+            {
+              "key": "describe_excluded_record_types_dates_providers_or_sensitive_categories",
+              "label": "Describe excluded record types, dates, providers, or sensitive categories"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "protected_records_boundary",
+          "type": "notice",
+          "label": "Protected-records and revocation boundary",
+          "guidance": "Apply current law and organizational policy before releasing specially protected records. Record a revocation promptly; it does not undo a disclosure already completed in reliance on this authorization."
+        }
+      ]
+    },
+    {
+      "key": "authorization_and_receipt",
+      "title": "Authorization, signature, and receipt",
+      "guidance": "Record the authorization decision, signature, copy, and internal receipt.",
+      "blocks": [
+        {
+          "key": "authorization_receipt",
+          "type": "fields",
+          "label": "Authorization decision and internal receipt",
+          "fields": [
+            {
+              "key": "authorization_decision",
+              "label": "Authorization decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorized",
+                "Authorized with limits",
+                "More information needed",
+                "Not authorized"
+              ]
+            },
+            {
+              "key": "signer_identity_verified_by",
+              "label": "Signer identity verified by",
+              "units": 1.0
+            },
+            {
+              "key": "signer_authority_verification_source",
+              "label": "Signer authority verification source",
+              "units": 1.25
+            },
+            {
+              "key": "authorization_accepted_date",
+              "label": "Authorization accepted date",
+              "units": 1.1
+            },
+            {
+              "key": "copy_provided_or_offered_date",
+              "label": "Copy provided or offered date",
+              "units": 1.2
+            },
+            {
+              "key": "internal_receipt_number",
+              "label": "Internal receipt number",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Authorization signatures",
+          "fields": [
+            {
+              "key": "patient_or_authorized_representative_signature_and_date",
+              "label": "Patient or authorized representative signature and date",
+              "units": 1.15
+            },
+            {
+              "key": "printed_name_of_signer",
+              "label": "Printed name of signer",
+              "units": 1.0
+            },
+            {
+              "key": "relationship_or_authority_if_representative",
+              "label": "Relationship or authority if representative",
+              "units": 1.25
+            },
+            {
+              "key": "records_or_privacy_reviewer_and_date",
+              "label": "Records or privacy reviewer and date",
+              "units": 1.1
+            }
+          ],
+          "guidance": "Each medical records release signature confirms the named role, decision, and date."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Authorization boundary",
+          "guidance": "The signature authorizes only the scope recorded above. Minimum-necessary, redisclosure, payment, treatment, and eligibility rules depend on applicable law and policy."
+        }
+      ]
+    }
+  ]
+}

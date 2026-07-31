@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2632__food_allergy_checklist",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2632__food_allergy_checklist.pdf",
+  "slug": "food-allergy-checklist",
+  "title": "Food Allergy Checklist",
+  "subtitle": "Capture guest-stated allergen, menu item, kitchen communication, and cross-contact limit; confirm manager review and service handoff.",
+  "description": "Food Allergy records guest-stated allergen, menu item, kitchen communication, cross-contact limit, manager review, and service handoff. Food Allergy evidence stays linked.",
+  "use_case": "Use this food allergy stage-gated verification when staff must document guest-stated allergen and menu item. Reconcile kitchen communication, cross-contact limit, manager review, and service handoff before the food allergy handoff. Use the guest statement, approved ingredient source, recipe or package review, allergy ticket, kitchen read-back, manager check, server handoff, service result, and follow-up. Ask the assigned food allergy reviewer to confirm guest-stated allergen against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "guest_and_order",
+      "title": "Guest, order, and allergen details",
+      "guidance": "Record the guest's wording and the exact meal or service reference.",
+      "blocks": [
+        {
+          "key": "guest_details",
+          "type": "fields",
+          "label": "Guest and service reference",
+          "fields": [
+            {
+              "key": "guest_full_name",
+              "label": "Guest full name",
+              "units": 1.15
+            },
+            {
+              "key": "guest_or_responsible_contact",
+              "label": "Guest or responsible contact",
+              "units": 1.0
+            },
+            {
+              "key": "meal_event_or_service_date",
+              "label": "Meal, event, or service date",
+              "units": 1.25
+            },
+            {
+              "key": "table_room_or_order_reference",
+              "label": "Table, room, or order reference",
+              "units": 1.1
+            },
+            {
+              "key": "server_or_service_lead",
+              "label": "Server or service lead",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "allergy_details",
+          "type": "fields",
+          "label": "Allergen and menu details",
+          "fields": [
+            {
+              "key": "guest_stated_allergen",
+              "label": "Guest-stated allergen",
+              "units": 1.15
+            },
+            {
+              "key": "guest_stated_reaction_concern",
+              "label": "Guest-stated reaction concern",
+              "units": 1.0
+            },
+            {
+              "key": "selected_menu_item",
+              "label": "Selected menu item",
+              "units": 1.25
+            },
+            {
+              "key": "current_ingredient_source",
+              "label": "Current ingredient source",
+              "units": 1.1
+            },
+            {
+              "key": "kitchen_lead",
+              "label": "Kitchen lead",
+              "units": 1.2
+            },
+            {
+              "key": "manager_review_owner",
+              "label": "Manager review owner",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "kitchen_checks",
+      "title": "Kitchen and cross-contact checks",
+      "guidance": "Check the current recipe, preparation controls, and service read-back.",
+      "blocks": [
+        {
+          "key": "allergy_checks",
+          "type": "checklist",
+          "label": "Culinary and service checks",
+          "items": [
+            "Guest statement is read back without adding a diagnosis",
+            "Menu item matches the current recipe or package source",
+            "Every ingredient and planned substitution is reviewed",
+            "Preparation area, tools, gloves, and fryer limits are checked",
+            "Cross-contact limits are communicated without a guarantee",
+            "Allergy flag appears on the kitchen ticket or approved system",
+            "Kitchen lead repeats the instruction to the service lead",
+            "Manager reviews unresolved ingredient or cross-contact questions",
+            "Guest is told any limitation before the order is accepted",
+            "Final plate or service handoff is confirmed by name or reference"
+          ]
+        },
+        {
+          "key": "limits_substitution",
+          "type": "textarea",
+          "label": "Ingredient limit or approved substitution",
+          "fields": [
+            {
+              "key": "source_checked_substitution_cross_contact_limit_and_guest_communication",
+              "label": "Source checked, substitution, cross-contact limit, and guest communication"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "service_handoff",
+      "title": "Service handoff and outcome",
+      "guidance": "Identify who accepted the instruction and what the guest was told.",
+      "blocks": [
+        {
+          "key": "handoff",
+          "type": "fields",
+          "label": "Kitchen-to-service handoff",
+          "fields": [
+            {
+              "key": "kitchen_read_back_time",
+              "label": "Kitchen read-back time",
+              "units": 1.15
+            },
+            {
+              "key": "service_handoff_lead",
+              "label": "Service handoff lead",
+              "units": 1.0
+            },
+            {
+              "key": "guest_limitation_communicated_at",
+              "label": "Guest limitation communicated at",
+              "units": 1.25
+            },
+            {
+              "key": "meal_or_service_outcome",
+              "label": "Meal or service outcome",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_if_needed",
+              "label": "Follow-up owner if needed",
+              "units": 1.2
+            },
+            {
+              "key": "incident_or_correction_reference",
+              "label": "Incident or correction reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "manager_receipt",
+          "type": "signatures",
+          "label": "Manager and service receipt",
+          "fields": [
+            {
+              "key": "manager_reviewer_and_date",
+              "label": "Manager reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "service_lead_and_date",
+              "label": "Service lead and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the operating handoff and stated limits."
+        },
+        {
+          "key": "allergy_boundary",
+          "type": "notice",
+          "label": "Allergy communication boundary",
+          "guidance": "Do not promise an allergen-free environment. Stop and ask the authorized culinary or safety reviewer when an ingredient or cross-contact question remains."
+        }
+      ]
+    }
+  ]
+}

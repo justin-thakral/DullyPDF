@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_165__scholarship_application_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_165__scholarship_application_form.pdf",
+  "slug": "scholarship-application-form",
+  "title": "Scholarship Application Form",
+  "subtitle": "Capture award cycle, eligibility source, application evidence, and review rubric; confirm conflict disclosure and award notice.",
+  "description": "Scholarship Application records award cycle, eligibility source, application evidence, review rubric, conflict disclosure, and award notice. Scholarship Application evidence stays linked.",
+  "use_case": "Use this scholarship application operational record when staff must document award cycle and eligibility source. Reconcile application evidence, review rubric, conflict disclosure, and award notice before the scholarship application handoff. Use the program rules, eligibility documents, transcript or work evidence, rubric scores, reviewer conflict statement, award ledger, decision notice, and acceptance receipt. Ask the assigned scholarship application reviewer to confirm award cycle against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Scholarship Application starting details review",
+      "guidance": "Identify award cycle, eligibility source, application materials, rubric evidence, reviewer conflict disclosure, decision rationale, and award notification.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Scholarship Application people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_team",
+              "label": "Grade or team",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "award_cycle",
+              "label": "Award cycle",
+              "units": 1.2
+            },
+            {
+              "key": "eligibility_source",
+              "label": "Eligibility source",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Scholarship Application task details",
+          "fields": [
+            {
+              "key": "application_evidence",
+              "label": "Application evidence",
+              "units": 1.15
+            },
+            {
+              "key": "review_rubric",
+              "label": "Review rubric",
+              "units": 1.0
+            },
+            {
+              "key": "conflict_disclosure",
+              "label": "Conflict disclosure",
+              "units": 1.25
+            },
+            {
+              "key": "award_notice",
+              "label": "Award notice",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Scholarship Application activity",
+      "guidance": "Record each meaningful scholarship application event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Scholarship Application activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "award_cycle",
+              "label": "Award cycle",
+              "units": 1.1
+            },
+            {
+              "key": "application_evidence",
+              "label": "Application evidence",
+              "units": 1.25
+            },
+            {
+              "key": "conflict_disclosure",
+              "label": "Conflict disclosure",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Scholarship Application change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Scholarship Application completion",
+      "guidance": "Leave the current scholarship application result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Scholarship Application final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Scholarship Application completion receipt",
+          "fields": [
+            {
+              "key": "responsible_teacher_or_program_staff_and_date",
+              "label": "Responsible teacher or program staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded scholarship application task status."
+        }
+      ]
+    }
+  ]
+}

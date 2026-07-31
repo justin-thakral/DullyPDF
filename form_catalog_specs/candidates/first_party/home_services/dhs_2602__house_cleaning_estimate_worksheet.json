@@ -1,0 +1,347 @@
+{
+  "catalog_id": "home_services/dhs_2602__house_cleaning_estimate_worksheet",
+  "description": "For house cleaning, this estimate worksheet records scheduled task set, rotation items, customer exceptions, team assignment, products, time window, and add-on approval. Its supporting evidence includes arrival exceptions, completed-zone checks, quality observations, supply exceptions, photos, and customer messages.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Cleaning opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Cleaning site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Cleaning contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Cleaning account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Cleaning due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this house cleaning record to its evidence.",
+          "key": "record_routing",
+          "label": "House Cleaning Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Service zone",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Room sequence",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Surface restrictions",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Pets",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Keys or codes",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture account, service zone, room sequence, surface restrictions, pets, keys or codes, preferences, and recurring notes for this house cleaning.",
+          "key": "core_identity",
+          "label": "House Cleaning Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify account, service zone, room sequence, surface restrictions, pets, keys or codes, preferences, and recurring notes for this house cleaning record.",
+      "key": "identity_1",
+      "title": "Account and Estimate Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Scheduled task set",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Rotation items",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Customer exceptions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Team assignment",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Products",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For house cleaning, record scheduled task set, rotation items, customer exceptions, team assignment, products, time window, and add-on approval.",
+          "key": "task_inputs",
+          "label": "House Cleaning Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "House Cleaning Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State house cleaning outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "House Cleaning Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Cleaning work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Cleaning owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate house cleaning items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "House Cleaning Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "For house cleaning, capture scheduled task set, rotation items, customer exceptions, team assignment, products, time window, and add-on approval.",
+      "key": "task_2",
+      "title": "Quantities, Rates, and Assumptions"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Cleaning when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Cleaning measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Cleaning evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Cleaning result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For house cleaning, record arrival exceptions, completed-zone checks, quality observations, supply exceptions, photos, and customer messages.",
+          "key": "evidence_register",
+          "label": "House Cleaning Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Arrival exceptions",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Completed-zone checks",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Quality observations",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Supply exceptions",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every house cleaning evidence source.",
+          "key": "evidence_sources",
+          "label": "House Cleaning Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "House Cleaning Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State house cleaning limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "House Cleaning Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support house cleaning findings with arrival exceptions, completed-zone checks, quality observations, supply exceptions, photos, and customer messages.",
+      "key": "observation_3",
+      "title": "Pricing Evidence and Options"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate worksheet disposition",
+                "Approve estimate",
+                "Approve with option",
+                "Revise basis",
+                "Decline to price"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Cleaning decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Cleaning service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Cleaning authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Cleaning review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate house cleaning disposition.",
+          "key": "disposition",
+          "label": "House Cleaning Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "House Cleaning Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the house cleaning decision to evidence.",
+          "height": 43,
+          "key": "decision_basis",
+          "label": "House Cleaning Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Cleaning crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Cleaning service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "House Cleaning Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the house cleaning next step from arrival exceptions, completed-zone checks, quality observations, supply exceptions, photos, and customer messages.",
+      "key": "decision_4",
+      "title": "Pricing Outcome"
+    }
+  ],
+  "slug": "dhs-2602-house-cleaning-estimate-worksheet",
+  "source_filename": "dhs_2602__house_cleaning_estimate_worksheet.pdf",
+  "source_section": "home_services",
+  "subtitle": "House Cleaning Estimate Worksheet: recurring house-cleaning service record using account, scheduled task set, and arrival exceptions.",
+  "title": "House Cleaning Estimate Worksheet",
+  "use_case": "Use the estimate worksheet during recurring house-cleaning service record when the house cleaning record must identify account, service zone, room sequence, surface restrictions, pets, keys or codes, preferences, and recurring notes. Complete the applicable handoff for quality review, secured-property confirmation, missed-task recovery, preference update, and next-service handoff."
+}

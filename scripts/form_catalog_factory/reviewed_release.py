@@ -26,6 +26,7 @@ from .release_builder import (
     release_runtime_source_paths,
 )
 from .spec_qa import validate_spec_content
+from .themes import ThemeError, resolve_theme_provenance
 
 
 VISUAL_REVIEW_SCHEMA_VERSION = 1
@@ -112,6 +113,34 @@ def _require_timestamp(value: Any, location: str) -> str:
     return normalized
 
 
+def _resolve_render_theme(
+    *sources: tuple[str, Mapping[str, Any]],
+) -> dict[str, Any] | None:
+    """Resolve an all-absent historical theme or one exact shared provenance."""
+
+    try:
+        return resolve_theme_provenance(*sources)
+    except ThemeError as exc:
+        raise ReviewedReleaseError(str(exc)) from exc
+
+
+def _require_render_theme(
+    *,
+    payload: Mapping[str, Any],
+    label: str,
+    expected: dict[str, Any] | None,
+) -> None:
+    """Apply the historical-or-themed binding rule to one later artifact."""
+
+    synthetic: dict[str, Any] = {}
+    if expected is not None:
+        synthetic["renderTheme"] = expected
+    _resolve_render_theme(
+        ("bound release inputs", synthetic),
+        (label, payload),
+    )
+
+
 def _resolve_contained_path(root: Path, relative: Any, location: str) -> Path:
     if not isinstance(relative, str) or not relative.strip():
         raise ReviewedReleaseError(f"{location} must be a non-empty relative path")
@@ -160,6 +189,7 @@ def build_visual_review_template(
     results = report.get("results")
     if not release_id or not source_commit or not isinstance(results, list) or not results:
         raise ReviewedReleaseError("Build report identity or results are incomplete")
+    render_theme = _resolve_render_theme(("build report", report))
 
     items: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -191,7 +221,7 @@ def build_visual_review_template(
             }
         )
 
-    return {
+    template = {
         "schemaVersion": VISUAL_REVIEW_SCHEMA_VERSION,
         "reportType": VISUAL_REVIEW_REPORT_TYPE,
         "releaseId": release_id,
@@ -203,6 +233,9 @@ def build_visual_review_template(
         "passed": False,
         "items": items,
     }
+    if render_theme is not None:
+        template["renderTheme"] = render_theme
+    return template
 
 
 def write_visual_review_template(
@@ -625,6 +658,7 @@ def _validate_release_manifest(
     source_commit: str,
     base_commit: str,
     renderer_commit: str,
+    render_theme: dict[str, Any] | None,
     selection_items: Mapping[str, Mapping[str, Any]],
     build_results: Mapping[str, Mapping[str, Any]],
 ) -> tuple[Path, str]:
@@ -664,10 +698,17 @@ def _validate_release_manifest(
         "createdAt",
         "forms",
     }
+    if "renderTheme" in manifest:
+        required_root_keys.add("renderTheme")
     if set(manifest) != required_root_keys:
         raise ReviewedReleaseError(
             "Release manifest does not contain the exact v1 release mapping"
         )
+    _require_render_theme(
+        payload=manifest,
+        label="release manifest",
+        expected=render_theme,
+    )
     if (
         manifest.get("schemaVersion") != 1
         or manifest.get("releaseId") != batch_id
@@ -713,6 +754,7 @@ def _validate_visual_reviews(
     release_id: str,
     source_commit: str,
     build_report_sha256: str,
+    render_theme: dict[str, Any] | None,
     build_results: Mapping[str, Mapping[str, Any]],
 ) -> dict[str, dict[str, Any]]:
     paths = sorted({Path(path).expanduser().resolve() for path in review_paths})
@@ -732,6 +774,11 @@ def _validate_visual_reviews(
             raise ReviewedReleaseError(
                 f"Visual-review receipt {receipt_path} is not a passing v1 receipt"
             )
+        _require_render_theme(
+            payload=receipt,
+            label=f"visual-review receipt {receipt_path}",
+            expected=render_theme,
+        )
         if (
             receipt.get("releaseId") != release_id
             or receipt.get("sourceCommit") != source_commit
@@ -946,6 +993,10 @@ def reconcile_reviewed_release(
         build_report_path,
         "build report",
     )
+    render_theme = _resolve_render_theme(
+        ("selection", selection),
+        ("build report", build_report),
+    )
     source_commit, build_results = _validate_build_results(
         selection=selection,
         selection_path=selection_source,
@@ -966,6 +1017,7 @@ def reconcile_reviewed_release(
         source_commit=source_commit,
         base_commit=batch.base_commit,
         renderer_commit=batch.renderer_commit,
+        render_theme=render_theme,
         selection_items=selection_items,
         build_results=build_results,
     )
@@ -974,6 +1026,7 @@ def reconcile_reviewed_release(
         release_id=batch_id,
         source_commit=source_commit,
         build_report_sha256=report_hash,
+        render_theme=render_theme,
         build_results=build_results,
     )
 
@@ -1079,7 +1132,7 @@ def reconcile_reviewed_release(
         if was_approved:
             unchanged.append(catalog_id)
 
-    return {
+    result = {
         "batch_id": batch_id,
         "source_commit": source_commit,
         "selection_count": len(selection_items),
@@ -1099,3 +1152,6 @@ def reconcile_reviewed_release(
         "unchanged": unchanged,
         "stage": Stage.REVIEW_APPROVED.value,
     }
+    if render_theme is not None:
+        result["renderTheme"] = render_theme
+    return result

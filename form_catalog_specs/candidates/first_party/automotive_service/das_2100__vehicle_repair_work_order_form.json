@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2100__vehicle_repair_work_order_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2100__vehicle_repair_work_order_form.pdf",
+  "slug": "vehicle-repair-work-order-form",
+  "title": "Vehicle Repair Work Order Form",
+  "subtitle": "General Vehicle Repair: connects authorized scope to results.",
+  "description": "Vehicle Repair Work Order Form covers vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision. The service advisor records General Vehicle Repair authorized tasks, materials, results, and changes. Vehicle Repair Work Order Form keeps General Vehicle Repair exceptions visible until the service advisor handoff.",
+  "use_case": "Use Vehicle Repair Work Order Form at repair facility, service bay, test area, and customer handoff point. Document vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision identity before General Vehicle Repair begins. Compare vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision findings with stated General Vehicle Repair criteria; route unresolved General Vehicle Repair issues to qualified automotive repair reviewer. For Vehicle Repair Work Order Form, confirm requirements for General Vehicle Repair. Ask qualified automotive repair reviewer to review General Vehicle Repair conditions beyond the service advisor's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Vehicle repair-order details",
+      "guidance": "Bind General Vehicle Repair to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Customer, fleet, insurer, or payer",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shop, bay, roadside, or site",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Service Advisor",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "General Vehicle Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Repair order, customer, and contact",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, year, make, model, and mileage",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Reported symptom, operating condition, and prior repair",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the General Vehicle Repair identifier printed on vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision or its linked source record."
+        },
+        {
+          "key": "vehicle_work_context",
+          "type": "fields",
+          "label": "Vehicle work context",
+          "fields": [
+            {
+              "key": "odometer_in",
+              "label": "Odometer or operating hours in",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Vehicle findings and repair evidence",
+      "guidance": "Record authorized General Vehicle Repair activity; separate proposed, declined, deferred, or new General Vehicle Repair scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "General Vehicle Repair labor or diagnostic step",
+              "units": 1.25
+            },
+            {
+              "key": "component",
+              "label": "System, component, or position",
+              "units": 1.0
+            },
+            {
+              "key": "part",
+              "label": "Part, fluid, material, or sublet",
+              "units": 1.1
+            },
+            {
+              "key": "qty",
+              "label": "Qty / hours",
+              "units": 0.65
+            },
+            {
+              "key": "result",
+              "label": "Performed result or note",
+              "units": 1.1
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "General Vehicle Repair work and verification points",
+          "items": [
+            "Symptom verification and baseline condition",
+            "Diagnostic trouble code and test result",
+            "Affected system and root-cause basis",
+            "Approved repair and part compatibility",
+            "Post-repair function and warning-light state",
+            "Road test or stationary verification within authority"
+          ],
+          "guidance": "Use each General Vehicle Repair check to prompt documented vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision execution; enter its actual General Vehicle Repair result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "General Vehicle Repair parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Repair exception and added-work limits",
+      "guidance": "Stop General Vehicle Repair at any scope or cost limit; honor service advisor access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when a safety-critical condition, uncertain diagnosis, authorization gap, or failed verification remains. Protect vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision; document the General Vehicle Repair notification and await qualified automotive repair reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Safety-critical condition",
+            "Diagnosis remains uncertain",
+            "Additional work exceeds authorization",
+            "Vehicle cannot be safely tested or released"
+          ],
+          "guidance": "For General Vehicle Repair, identify affected vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision scope; ask service advisor to document the General Vehicle Repair immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Added work, revised diagnosis, cost change, and customer response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Added work, revised diagnosis, cost change, and customer response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Vehicle release decision and completion",
+      "guidance": "Reconcile General Vehicle Repair to authorization; state service advisor limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Vehicle intake and condition photographs",
+            "Diagnostic readings and fault record",
+            "Part and repair-operation trace",
+            "Post-repair test and customer handoff"
+          ],
+          "guidance": "Attach or link proof for vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision; mark only General Vehicle Repair evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

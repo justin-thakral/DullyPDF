@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1812__field_trip_waiver_checklist",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1812__field_trip_waiver_checklist.pdf",
+  "slug": "field-trip-waiver-checklist",
+  "title": "Field Trip Waiver Checklist",
+  "subtitle": "Capture trip destination, transport, activity condition, and supervision; confirm guardian choice and return.",
+  "description": "Field Trip Waiver records trip destination, transport, activity condition, supervision, guardian choice, and return. Field Trip Waiver evidence stays linked.",
+  "use_case": "Use this field trip waiver stage-gated verification when staff must document trip destination and transport. Reconcile activity condition, supervision, guardian choice, and return before the field trip waiver handoff. Use the itinerary, transportation plan, disclosed activity conditions, supervision roster, accessible alternative, participant questions, guardian choice, and return headcount. This acknowledgment concerns an excursion with bus or walking travel, off-site terrain, destination activities, chaperone supervision, group movement, and school return. Ask the assigned field trip waiver reviewer to confirm trip destination against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Field Trip Waiver contact and reference",
+      "guidance": "Disclose destination, transport conditions, walking or activity demands, supervision, available alternative, guardian choice, emergency route, and return. Record the field trip waiver decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Field Trip Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "trip_destination",
+              "label": "Trip destination",
+              "units": 1.1
+            },
+            {
+              "key": "transport",
+              "label": "Transport",
+              "units": 1.2
+            },
+            {
+              "key": "activity_condition",
+              "label": "Activity condition",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Field Trip Waiver task details",
+          "fields": [
+            {
+              "key": "supervision",
+              "label": "Supervision",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_choice",
+              "label": "Guardian choice",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Approve",
+                "Approve with limit",
+                "Do not approve",
+                "Pending"
+              ]
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Field Trip Waiver checks and corrections",
+      "guidance": "Check current field trip waiver facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Field Trip Waiver required checks",
+          "items": [
+            "Trip destination is identified for this record",
+            "Transport matches the current request or source",
+            "Activity condition is ready for point-of-use staff",
+            "Supervision limits or questions are resolved",
+            "Guardian choice is communicated to the responsible person",
+            "Return is confirmed at handoff",
+            "A changed field trip waiver fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Field Trip Waiver failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Field Trip Waiver decision and readiness",
+      "guidance": "Hold field trip waiver readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Field Trip Waiver checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Field Trip Waiver reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Field Trip Waiver receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

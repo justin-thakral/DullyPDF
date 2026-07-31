@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2606__new_patient_registration_intake_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2606__new_patient_registration_intake_form.pdf",
+  "slug": "new-patient-registration-intake-form",
+  "title": "New Patient Registration Intake Form",
+  "subtitle": "Capture demographics source, contact, representative authority, and privacy acknowledgment; confirm chart match and visit handoff.",
+  "description": "New Patient Registration records demographics source, contact, representative authority, privacy acknowledgment, chart match, and visit handoff. New Patient Registration evidence stays linked.",
+  "use_case": "Use this new patient registration structured intake when staff must document demographics source and contact. Reconcile representative authority, privacy acknowledgment, chart match, and visit handoff before the new patient registration handoff. Use registration source documents, demographic confirmation, representative authority, privacy notice receipt, duplicate-record result, communication preference, and check-in handoff. This registration centers chart creation, demographic confirmation, representative authority, communication preference, privacy receipt, duplicate-record prevention, guarantor routing, and front-desk arrival. Ask the assigned new patient registration reviewer to confirm demographics source against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "New Patient Registration contact and reference",
+      "guidance": "Verify demographics source, contact and representative authority, communication preferences, privacy acknowledgment, chart match, guarantor route, and visit handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "New Patient Registration people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.1
+            },
+            {
+              "key": "demographics_source",
+              "label": "Demographics source",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "New Patient Registration task details",
+          "fields": [
+            {
+              "key": "contact",
+              "label": "Contact",
+              "units": 1.15
+            },
+            {
+              "key": "representative_authority",
+              "label": "Representative authority",
+              "units": 1.0
+            },
+            {
+              "key": "privacy_acknowledgment",
+              "label": "Privacy acknowledgment",
+              "units": 1.25
+            },
+            {
+              "key": "chart_match",
+              "label": "Chart match",
+              "units": 1.1
+            },
+            {
+              "key": "visit_handoff",
+              "label": "Visit handoff",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_story",
+      "title": "New Patient Registration reported needs review",
+      "guidance": "Preserve the person's wording and route questions without interpretation.",
+      "blocks": [
+        {
+          "key": "stated_need",
+          "type": "textarea",
+          "label": "New Patient Registration stated need or goal",
+          "fields": [
+            {
+              "key": "person_s_words_desired_outcome_and_priority",
+              "label": "Person's words, desired outcome, and priority"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "source_facts",
+          "type": "table",
+          "label": "New Patient Registration facts and questions",
+          "columns": [
+            {
+              "key": "demographics_source",
+              "label": "Demographics source",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "representative_authority",
+              "label": "Representative authority",
+              "units": 1.25
+            },
+            {
+              "key": "question_or_route",
+              "label": "Question or route",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "intake_readiness",
+          "type": "checklist",
+          "label": "New Patient Registration intake readiness",
+          "items": [
+            "Demographics source is identified for this record",
+            "Contact matches the current request or source",
+            "Representative authority is ready for point-of-use staff",
+            "Privacy acknowledgment limits or questions are resolved",
+            "Chart match is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_handoff",
+      "title": "New Patient Registration receiving route",
+      "guidance": "Assign open questions and confirm where the intake goes next.",
+      "blocks": [
+        {
+          "key": "intake_route",
+          "type": "fields",
+          "label": "New Patient Registration next step",
+          "fields": [
+            {
+              "key": "receiving_person_or_team",
+              "label": "Receiving person or team",
+              "units": 1.15
+            },
+            {
+              "key": "open_question_or_missing_item",
+              "label": "Open question or missing item",
+              "units": 1.0
+            },
+            {
+              "key": "urgent_route_if_applicable",
+              "label": "Urgent route if applicable",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "intake_receipt",
+          "type": "signatures",
+          "label": "New Patient Registration intake receipt",
+          "fields": [
+            {
+              "key": "intake_coordinator_and_date",
+              "label": "Intake coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms routing, not professional review."
+        }
+      ]
+    }
+  ]
+}

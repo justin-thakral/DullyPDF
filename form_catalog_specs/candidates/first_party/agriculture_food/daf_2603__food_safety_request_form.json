@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2603__food_safety_request_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2603__food_safety_request_form.pdf",
+  "slug": "daf-2603-food-safety-request-form",
+  "title": "Food Safety Request Form",
+  "subtitle": "Food Safety Control: defines need, constraints, and assignment.",
+  "description": "Food Safety Request Form covers food lot, process step, sanitation control, monitoring point, and corrective action. The food-safety record owner records Food Safety Control need, timing, access, and assignment. Food Safety Request Form keeps Food Safety Control exceptions visible until the food-safety record owner handoff.",
+  "use_case": "Use Food Safety Request Form at receiving, storage, preparation, processing, packing, and service area. Document food lot, process step, sanitation control, monitoring point, and corrective action identity before Food Safety Control begins. Compare food lot, process step, sanitation control, monitoring point, and corrective action findings with stated Food Safety Control criteria; route unresolved Food Safety Control issues to qualified food-safety reviewer. For Food Safety Request Form, confirm requirements for Food Safety Control. Ask qualified food-safety reviewer to review Food Safety Control conditions beyond the food-safety record owner's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requester, location, and subject details",
+      "guidance": "For Food Safety Control, identify responsible parties, receiving, storage, preparation, processing, packing, and service area, and the linked food lot, process step, sanitation control, monitoring point, and corrective action source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Food Safety Control identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility, process, shift, and record",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Product, lot, batch, and supplier",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_3",
+              "label": "Control point, limit, method, and monitoring device",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested result, access, and timing",
+      "guidance": "Capture Food Safety Control facts for food lot, process step, sanitation control, monitoring point, and corrective action; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Food Safety Control intake confirmations",
+          "items": [
+            "Requested or already documented: time and temperature control",
+            "Requested or already documented: cross-contact and allergen control",
+            "Requested or already documented: sanitation and food-contact condition",
+            "Requested or already documented: employee hygiene and illness routing",
+            "Requested or already documented: pest, waste, water, and facility condition",
+            "Requested or already documented: corrective action and affected-product disposition"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Food Safety Control request questions; have food-safety record owner record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Control limit missed",
+            "Product identity or trace incomplete",
+            "Contamination or allergen concern",
+            "Qualified disposition unavailable",
+            "Prior or requester-supplied: monitoring and calibration record",
+            "Prior or requester-supplied: lot and supplier trace",
+            "Prior or requester-supplied: sanitation or inspection evidence",
+            "Prior or requester-supplied: hold, correction, verification, and release decision"
+          ],
+          "guidance": "Do not assign or authorize the Food Safety Control request when product control, traceability, contamination, corrective action, or qualified disposition remains unresolved. Retain information supplied with the request and route unresolved constraints to food-safety record owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Food-Safety Record Owner",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2629__irrigation_tracking_log",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2629__irrigation_tracking_log.pdf",
+  "slug": "irrigation-tracking-log",
+  "title": "Irrigation Tracking Log",
+  "subtitle": "Farm Irrigation: preserves changes and next triggers.",
+  "description": "Irrigation Tracking Log covers field or block, water source, pump, distribution zone, schedule, reading, and crop response. The irrigation coordinator records Farm Irrigation events, owners, exceptions, and next triggers. Irrigation Tracking Log keeps Farm Irrigation exceptions visible until the irrigation coordinator handoff.",
+  "use_case": "Use Irrigation Tracking Log at water source, pump station, mainline, valve zone, field, and runoff boundary. Document field or block, water source, pump, distribution zone, schedule, reading, and crop response identity before Farm Irrigation begins. Compare field or block, water source, pump, distribution zone, schedule, reading, and crop response findings with stated Farm Irrigation criteria; route unresolved Farm Irrigation issues to farm water-system reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking period and subject identity",
+      "guidance": "For Farm Irrigation, identify responsible parties, water source, pump station, mainline, valve zone, field, and runoff boundary, and the linked field or block, water source, pump, distribution zone, schedule, reading, and crop response source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Farm Irrigation identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Farm, field, block, and crop",
+              "units": 1.5555555555555556
+            },
+            {
+              "key": "identity_2",
+              "label": "Water source, permit or allocation reference, and pump",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Zone, valve, line, meter, and controller",
+              "units": 2.2222222222222223
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status variance and accountable response",
+      "guidance": "Capture Farm Irrigation facts for field or block, water source, pump, distribution zone, schedule, reading, and crop response; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Farm Irrigation tracked controls",
+          "items": [
+            "Soil or crop water need",
+            "Flow, pressure, meter, and runtime",
+            "Leak, blockage, emitter, sprinkler, and uniformity",
+            "Weather, rainfall, and forecast adjustment",
+            "Runoff, erosion, ponding, and neighboring impact",
+            "Completed volume, interruption, and follow-up"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "For Farm Irrigation, preserve each open variance with its current state, accountable owner, and next dated update. Irrigation Coordinator performs period review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Water source or allocation unavailable",
+            "Major leak or equipment failure",
+            "Runoff, erosion, or neighboring impact",
+            "Reading or delivered volume cannot be reconciled",
+            "Meter and runtime record",
+            "Pressure or flow readings",
+            "Leak and distribution photographs",
+            "Schedule change and field-response evidence"
+          ],
+          "guidance": "Pause Farm Irrigation when water authority, supply, equipment, delivered volume, runoff, or field-impact concern remains unresolved. Retain the available Farm Irrigation proof and route unresolved field or block, water source, pump, distribution zone, schedule, reading, and crop response scope to irrigation coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Irrigation Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Farm Water-System Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

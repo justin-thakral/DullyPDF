@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_144__emergency_contact_update_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_144__emergency_contact_update_review_worksheet.pdf",
+  "slug": "emergency-contact-update-review-worksheet",
+  "title": "Emergency Contact Update Review Worksheet",
+  "subtitle": "Capture contact priority, relationship, phone route, and release authority; confirm effective date and prior record supersession.",
+  "description": "Emergency Contact Update records contact priority, relationship, phone route, release authority, effective date, and prior record supersession. Emergency Contact Update evidence stays linked.",
+  "use_case": "Use this emergency contact update evidence-based review when staff must document contact priority and relationship. Reconcile phone route, release authority, effective date, and prior record supersession before the emergency contact update handoff. Use identity-verification evidence, the prior contact snapshot, custody or release restriction reference, confirmation message, effective-date audit, and supersession log. Ask the assigned emergency contact update reviewer to confirm contact priority against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Emergency Contact Update contact and reference",
+      "guidance": "Preserve contact priority, relationship, phone and alternate route, release authority, effective date, identity verification, and superseded-record handling.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Emergency Contact Update people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "reporting_person_and_role",
+              "label": "Reporting person and role",
+              "units": 1.0
+            },
+            {
+              "key": "date_and_time_first_reported",
+              "label": "Date and time first reported",
+              "units": 1.25
+            },
+            {
+              "key": "contact_priority",
+              "label": "Contact priority",
+              "units": 1.1
+            },
+            {
+              "key": "relationship",
+              "label": "Relationship",
+              "units": 1.2
+            },
+            {
+              "key": "phone_route",
+              "label": "Phone route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Emergency Contact Update task details",
+          "fields": [
+            {
+              "key": "release_authority",
+              "label": "Release authority",
+              "units": 1.15
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.0
+            },
+            {
+              "key": "prior_record_supersession",
+              "label": "Prior record supersession",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "Emergency Contact Update exception review and discussion",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "Emergency Contact Update strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_contact_priority",
+              "label": "Strength, progress, or successful support related to contact priority"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Emergency Contact Update questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_phone_route",
+              "label": "Concern, missing context, or question about phone route"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "Emergency Contact Update participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_release_authority",
+              "label": "Priority, preference, or proposed support for release authority"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "Emergency Contact Update decision and action plan",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "Emergency Contact Update agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "Emergency Contact Update follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "Emergency Contact Update review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1265__security_system_service_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1265__security_system_service_service_request_form.pdf",
+  "slug": "security-system-service-service-request-form",
+  "title": "Security System Service Request Form",
+  "subtitle": "Security System Service: defines need, constraints, and assignment.",
+  "description": "Security System Service Request Form covers alarm panel, access-control device, sensor, camera, credential path, and monitoring interface. The site security coordinator records Security System Service need, timing, access, and assignment. Security System Service Request Form keeps Security System Service exceptions visible until the site security coordinator handoff.",
+  "use_case": "Use Security System Service Request Form at controlled premises, panel, door, zone, camera view, and monitoring point. Document alarm panel, access-control device, sensor, camera, credential path, and monitoring interface identity before Security System Service begins. Compare alarm panel, access-control device, sensor, camera, credential path, and monitoring interface findings with stated Security System Service criteria; route unresolved Security System Service issues to authorized security-system reviewer. For Security System Service Request Form, confirm requirements for Security System Service. Ask authorized security-system reviewer to review Security System Service conditions beyond the site security coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requester, location, and subject details",
+      "guidance": "For Security System Service, identify responsible parties, controlled premises, panel, door, zone, camera view, and monitoring point, and the linked alarm panel, access-control device, sensor, camera, credential path, and monitoring interface source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Security System Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Site and service ticket",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "Panel, door, zone, camera, or device identifier",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Scope, test window, account, and credential ID",
+              "units": 2.5555555555555554
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Intake checks and assignment readiness",
+      "guidance": "Capture Security System Service facts for alarm panel, access-control device, sensor, camera, credential path, and monitoring interface; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Security System Service intake confirmations",
+          "items": [
+            "Requested or already documented: panel, controller, power, communication, and trouble status",
+            "Requested or already documented: door, lock, reader, request-to-exit, and contact response",
+            "Requested or already documented: sensor, alarm, notification, and monitoring transmission",
+            "Requested or already documented: camera view, recording, timestamp, retention, and obstruction state",
+            "Requested or already documented: credential permission and least-access behavior",
+            "Requested or already documented: test bypass, restoration, event history, and user acceptance"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Security System Service request questions; have site security coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Premises left unprotected or bypassed",
+            "Credential or recording privacy boundary exceeded",
+            "Life-safety interface affected",
+            "Monitoring or critical device cannot be restored",
+            "Prior or requester-supplied: device and zone test record",
+            "Prior or requester-supplied: sanitized event or alarm history",
+            "Prior or requester-supplied: before-and-after configuration evidence",
+            "Prior or requester-supplied: monitoring notification and full restoration confirmation"
+          ],
+          "guidance": "Do not assign or authorize the Security System Service request when protection, monitoring, credential, privacy, or life-safety interface control is unresolved. Retain information supplied with the request and route unresolved constraints to site security coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Site Security Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "catalog_id": "construction_trades/dct_1157__jobsite_safety_inspection_checklist",
+  "description": "For jobsite safety, this inspection checklist records task hazards, competent-person controls, PPE, access protection, emergency contacts, and weather limits. Its supporting evidence includes pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Safety opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Safety site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Safety contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Safety superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Safety due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this jobsite safety record to its evidence.",
+          "key": "record_routing",
+          "label": "Jobsite Safety Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Work zone",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Crew",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Task sequence",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Tools",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Mobile equipment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces for this jobsite safety.",
+          "key": "core_identity",
+          "label": "Jobsite Safety Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces for this jobsite safety record.",
+      "key": "identity_1",
+      "title": "Site Reference and Inspector"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Task hazards",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Competent-person controls",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "PPE",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Access protection",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For jobsite safety, record task hazards, competent-person controls, PPE, access protection, emergency contacts, and weather limits.",
+          "key": "task_inputs",
+          "label": "Jobsite Safety Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the jobsite safety condition before marking.",
+          "items": [
+            "Verify energy-isolation, lockout and tagout, and zero-energy confirmation",
+            "Inspect scaffold tags, guardrails, ladder setup, anchorage, and fall-arrest rescue plan",
+            "Confirm trench protective system, spoil setback, atmospheric test, and competent-person release",
+            "Control silica, welding fumes, hot work, combustion exhaust, and respiratory exposure",
+            "Establish barricades, spotters, swing-radius exclusion, traffic control, and pedestrian detours",
+            "Locate emergency eyewash, extinguishers, first aid, muster point, and rescue contacts"
+          ],
+          "key": "task_checks",
+          "label": "Jobsite Safety Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Safety checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Safety review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Safety qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Safety check time",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the jobsite safety criteria and inspector.",
+          "key": "checkpoint_result",
+          "label": "Jobsite Safety Inspection Reference",
+          "type": "fields"
+        },
+        {
+          "guidance": "Stop work for uncontrolled energy, fall exposure, excavation instability, missing protection, or imminent danger. Route unresolved jobsite safety work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Jobsite Safety Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For jobsite safety, capture task hazards, competent-person controls, PPE, access protection, emergency contacts, and weather limits.",
+      "key": "task_2",
+      "title": "Scope, Criteria, and Test Method"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Safety when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Safety measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Safety evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Safety result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For jobsite safety, record pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+          "key": "evidence_register",
+          "label": "Jobsite Safety Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Pre-task briefing record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Inspection observations",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Control photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Permits",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every jobsite safety evidence source.",
+          "key": "evidence_sources",
+          "label": "Jobsite Safety Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Jobsite Safety Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State jobsite safety limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Jobsite Safety Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support jobsite safety findings with pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+      "key": "observation_3",
+      "title": "Measured Finding Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select inspection checklist disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Correct and reinspect",
+                "Unsafe—do not release"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Safety decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Inspector and qualification",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Criteria or release authority",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Correction or released next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate jobsite safety disposition.",
+          "key": "disposition",
+          "label": "Jobsite Safety Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Jobsite Safety Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the jobsite safety decision to evidence.",
+          "height": 42,
+          "key": "decision_basis",
+          "label": "Jobsite Safety Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Safety qualified inspector and date",
+              "units": 1.0
+            },
+            {
+              "key": "release_authority",
+              "label": "Safety release authority and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Jobsite Safety Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the jobsite safety next step from pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+      "key": "decision_4",
+      "title": "Release Decision"
+    }
+  ],
+  "slug": "jobsite-safety-inspection-checklist",
+  "source_filename": "dct_1157__jobsite_safety_inspection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Jobsite Safety Inspection Checklist: jobsite hazard assessment and control verification using work zone, task hazards, and pre-task briefing record.",
+  "title": "Jobsite Safety Inspection Checklist",
+  "use_case": "Use the inspection checklist during jobsite hazard assessment and control verification when the jobsite safety record must identify work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces. Complete the applicable handoff for competent-person release, corrective-action closure, crew acknowledgment, and next-review trigger."
+}

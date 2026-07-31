@@ -1,0 +1,240 @@
+{
+  "catalog_id": "construction_trades/dcf_132__progress_payment_log_form",
+  "description": "For progress payment, this log form records earned-value basis, percent complete, authorized changes, deductions, lien requirements, and forecast balance. Its supporting evidence includes quantity backup, site photos, delivery proof, stored-material inventory, payroll record, and inspection status.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Payment opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Payment site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Payment contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Payment superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Payment due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this progress payment record to its evidence.",
+          "key": "record_routing",
+          "label": "Progress Payment Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Schedule of values",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Pay period",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Contract modifications",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Retainage",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture schedule of values, pay period, contract modifications, retainage, stored materials, and prior certificates for this progress payment.",
+          "key": "core_identity",
+          "label": "Progress Payment Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify schedule of values, pay period, contract modifications, retainage, stored materials, and prior certificates for this progress payment record.",
+      "key": "identity_1",
+      "title": "Log Coverage and Custodian"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Payment when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Payment measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Payment evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Payment result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For progress payment, record quantity backup, site photos, delivery proof, stored-material inventory, payroll record, and inspection status.",
+          "key": "evidence_register",
+          "label": "Progress Payment Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Quantity backup",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Site photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Delivery proof",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Stored-material inventory",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Payroll record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every progress payment evidence source.",
+          "key": "evidence_sources",
+          "label": "Progress Payment Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Payment dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Payment owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Payment escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep progress payment items open through verification.",
+          "key": "open_item_register",
+          "label": "Progress Payment Open Items and Next Actions",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Payment reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved progress payment entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Progress Payment Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Progress Payment Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For progress payment, explain certified amount, exception ledger, accounting handoff, updated continuation sheet, and payment record; transfer each progress payment open entry to the progress payment successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Progress Payment Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Hold unsupported, duplicated, disputed, nonconforming, or contractually ineligible amounts for qualified review. Route unresolved progress payment work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Progress Payment Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support progress payment findings with quantity backup, site photos, delivery proof, stored-material inventory, payroll record, and inspection status.",
+      "key": "observation_2",
+      "title": "Dated Events and Supporting Facts"
+    }
+  ],
+  "slug": "progress-payment-log-form",
+  "source_filename": "dcf_132__progress_payment_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Progress Payment Log Form: progress-payment application review using schedule of values, earned-value basis, and quantity backup.",
+  "title": "Progress Payment Log Form",
+  "use_case": "Use the log form during progress-payment application review when the progress payment record must identify schedule of values, pay period, contract modifications, retainage, stored materials, and prior certificates. Complete the applicable handoff for certified amount, exception ledger, accounting handoff, updated continuation sheet, and payment record."
+}

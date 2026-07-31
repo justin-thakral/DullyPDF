@@ -1,0 +1,240 @@
+{
+  "catalog_id": "construction_trades/dcf_182__site_visit_log_form",
+  "description": "For site visit, this log form records planned observations, coordination topics, quality checkpoints, progress claims, and unresolved prior items. Its supporting evidence includes field notes, representative photos, measurements, discussion record, and referenced drawing details.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Visit opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Visit site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Visit contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Visit superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Visit due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this site visit record to its evidence.",
+          "key": "record_routing",
+          "label": "Site Visit Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Visit purpose",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Attendees",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Zones observed",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Work in progress",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Current documents",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture visit purpose, attendees, zones observed, work in progress, current documents, weather, and access limitations for this site visit.",
+          "key": "core_identity",
+          "label": "Site Visit Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify visit purpose, attendees, zones observed, work in progress, current documents, weather, and access limitations for this site visit record.",
+      "key": "identity_1",
+      "title": "Log Coverage and Custodian"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Visit when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Visit measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Visit evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Visit result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For site visit, record field notes, representative photos, measurements, discussion record, and referenced drawing details.",
+          "key": "evidence_register",
+          "label": "Site Visit Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Field notes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Representative photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Discussion record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every site visit evidence source.",
+          "key": "evidence_sources",
+          "label": "Site Visit Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Visit dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Visit owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Visit escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep site visit items open through verification.",
+          "key": "open_item_register",
+          "label": "Site Visit Open Items and Next Actions",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Visit reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved site visit entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Site Visit Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Site Visit Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For site visit, explain observation distribution, responsible-party response, follow-up dates, closed items, and project-record filing; transfer each site visit open entry to the site visit successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Site Visit Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Immediately report observed imminent hazards; distinguish observation from exhaustive inspection or direction. Route unresolved site visit work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Site Visit Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support site visit findings with field notes, representative photos, measurements, discussion record, and referenced drawing details.",
+      "key": "observation_2",
+      "title": "Dated Events and Supporting Facts"
+    }
+  ],
+  "slug": "site-visit-log-form",
+  "source_filename": "dcf_182__site_visit_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Site Visit Log Form: construction site visit observation and follow-up using visit purpose, planned observations, and field notes.",
+  "title": "Site Visit Log Form",
+  "use_case": "Use the log form during construction site visit observation and follow-up when the site visit record must identify visit purpose, attendees, zones observed, work in progress, current documents, weather, and access limitations. Complete the applicable handoff for observation distribution, responsible-party response, follow-up dates, closed items, and project-record filing."
+}

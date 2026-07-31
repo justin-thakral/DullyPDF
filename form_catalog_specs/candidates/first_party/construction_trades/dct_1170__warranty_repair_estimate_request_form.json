@@ -1,0 +1,267 @@
+{
+  "catalog_id": "construction_trades/dct_1170__warranty_repair_estimate_request_form",
+  "description": "For warranty repair, this estimate request form records reported defect, diagnostic plan, coverage, access, parts, repair method, collateral restoration, and scheduling. Its supporting evidence includes intake photos, installation record, diagnostic readings, removed-part findings, repair photos, and functional test.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Warranty opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Warranty site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Warranty contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Warranty superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Warranty due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this warranty repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Warranty Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Original work order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Installed component",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Completion date",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Warranty term",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture original work order, installed component, location, completion date, warranty term, customer, and prior callbacks for this warranty repair.",
+          "key": "core_identity",
+          "label": "Warranty Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify original work order, installed component, location, completion date, warranty term, customer, and prior callbacks for this warranty repair record.",
+      "key": "identity_1",
+      "title": "Estimate Assignment and Site"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Reported defect",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Diagnostic plan",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Coverage",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Access",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Repair method",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For warranty repair, record reported defect, diagnostic plan, coverage, access, parts, repair method, collateral restoration, and scheduling.",
+          "key": "task_inputs",
+          "label": "Warranty Repair Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Warranty Repair Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State warranty repair outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Warranty Repair Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Warranty work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Warranty owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate warranty repair items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Warranty Repair Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Escalate hazards, active property damage, repeated failure, disputed responsibility, or work outside trade qualification. Route unresolved warranty repair work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Warranty Repair Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For warranty repair, capture reported defect, diagnostic plan, coverage, access, parts, repair method, collateral restoration, and scheduling.",
+      "key": "task_2",
+      "title": "Scope Review and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Warranty when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Warranty measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Warranty evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Warranty result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For warranty repair, record intake photos, installation record, diagnostic readings, removed-part findings, repair photos, and functional test.",
+          "key": "evidence_register",
+          "label": "Warranty Repair Findings, Measurements, and Evidence",
+          "rows": 9,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Intake photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Installation record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Diagnostic readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Removed-part findings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Repair photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every warranty repair evidence source.",
+          "key": "evidence_sources",
+          "label": "Warranty Repair Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary warranty repair evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Warranty Repair Evidence Completeness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Support warranty repair findings with intake photos, installation record, diagnostic readings, removed-part findings, repair photos, and functional test.",
+      "key": "observation_3",
+      "title": "Pricing Inputs and Site Evidence"
+    }
+  ],
+  "slug": "warranty-repair-estimate-request-form",
+  "source_filename": "dct_1170__warranty_repair_estimate_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Warranty Repair Estimate Request Form: trade warranty repair dispatch and verification using original work order, reported defect, and intake photos.",
+  "title": "Warranty Repair Estimate Request Form",
+  "use_case": "Use the estimate request form during trade warranty repair dispatch and verification when the warranty repair record must identify original work order, installed component, location, completion date, warranty term, customer, and prior callbacks. Complete the applicable handoff for repair verification, customer acceptance, coverage disposition, recurrence action, costs, and warranty-record update."
+}

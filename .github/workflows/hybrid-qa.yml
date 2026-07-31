@@ -165,6 +165,7 @@ jobs:
               - 'frontend/src/**/*.cjs'
             form_catalog_factory:
               - 'scripts/form_catalog_factory/**'
+              - 'scripts/ci/validate_form_catalog_spec_sources.sh'
               - 'scripts/form-catalog-gcs-transport.py'
               - 'scripts/validate-form-catalog-release.py'
               - 'backend/requirements.txt'
@@ -228,8 +229,8 @@ jobs:
       - name: Validate tracked form specifications
         run: |
           set -euo pipefail
-          backend/.venv/bin/python -m scripts.form_catalog_factory validate-spec form_catalog_specs/candidates
-          backend/.venv/bin/python -m scripts.form_catalog_factory qa-spec form_catalog_specs/candidates
+          FORM_CATALOG_QA_REPORT_ROOT="$RUNNER_TEMP/form-catalog-selection-qa" \
+            bash scripts/ci/validate_form_catalog_spec_sources.sh
 
       - name: Validate release script syntax
         run: |

@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2143__warranty_claim_estimate_worksheet",
+  "source_section": "automotive_service",
+  "source_filename": "das_2143__warranty_claim_estimate_worksheet.pdf",
+  "slug": "warranty-claim-estimate-worksheet",
+  "title": "Warranty Claim Estimate Worksheet",
+  "subtitle": "Automotive Warranty Claim: prices observed scope, options, and exclusions.",
+  "description": "Warranty Claim Estimate Worksheet covers vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file. The warranty claim coordinator records Automotive Warranty Claim observed scope, costs, options, and terms. Warranty Claim Estimate Worksheet keeps Automotive Warranty Claim exceptions visible until the warranty claim coordinator handoff.",
+  "use_case": "Use Warranty Claim Estimate Worksheet at service facility, diagnostic bay, records system, and retained-parts area. Document vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file identity before Automotive Warranty Claim begins. Compare vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file findings with stated Automotive Warranty Claim criteria; route unresolved Automotive Warranty Claim issues to authorized warranty reviewer. For Warranty Claim Estimate Worksheet, confirm requirements for Automotive Warranty Claim. Ask authorized warranty reviewer to review Automotive Warranty Claim conditions beyond the warranty claim coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "estimate_context",
+      "title": "Vehicle, customer, and estimate identity",
+      "guidance": "Identify the customer, asset or property, estimator, and basis date before pricing the work.",
+      "blocks": [
+        {
+          "key": "estimate_header",
+          "type": "fields",
+          "label": "Estimate header",
+          "fields": [
+            {
+              "key": "estimate_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "estimate_date",
+              "label": "Estimate date",
+              "units": 0.65
+            },
+            {
+              "key": "valid_until",
+              "label": "Valid until",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Customer, fleet, insurer, or payer",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shop, bay, roadside, or site",
+              "units": 1.1
+            },
+            {
+              "key": "estimator",
+              "label": "Warranty Claim Coordinator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Automotive Warranty Claim identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Claim, repair order, customer, and contract",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, mileage, in-service date, and coverage reference",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Component, part, serial, prior repair, and failure code",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Automotive Warranty Claim identifier printed on vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "estimate_scope",
+      "title": "Vehicle findings and pricing evidence",
+      "guidance": "Price the observable work and options. Keep concealed conditions and unconfirmed quantities out of fixed scope.",
+      "blocks": [
+        {
+          "key": "scope_observations",
+          "type": "checklist",
+          "label": "Automotive Warranty Claim scope observations",
+          "items": [
+            "Reported symptom and failure chronology",
+            "Coverage term and eligibility facts",
+            "Diagnostic result and causal basis",
+            "Maintenance, modification, misuse, and prior-repair evidence",
+            "Repair estimate, part disposition, and authorization",
+            "Approval, denial, additional-information, and appeal route"
+          ],
+          "guidance": "Mark what was observed or supplied as estimate input; explain anything material that could not be inspected."
+        },
+        {
+          "key": "price_lines",
+          "type": "table",
+          "label": "Scope, quantities, options, and pricing",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Operation, diagnostic, or option",
+              "units": 1.25
+            },
+            {
+              "key": "labor",
+              "label": "Labor hours / amount",
+              "units": 0.85
+            },
+            {
+              "key": "parts",
+              "label": "Parts or materials amount",
+              "units": 0.95
+            },
+            {
+              "key": "fees",
+              "label": "Sublet, fee, tax, or allowance",
+              "units": 0.95
+            },
+            {
+              "key": "total",
+              "label": "Line total",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Required, option, or declined",
+              "units": 0.95
+            }
+          ],
+          "rows": 9
+        },
+        {
+          "key": "estimate_totals",
+          "type": "fields",
+          "label": "Estimate totals",
+          "fields": [
+            {
+              "key": "subtotal",
+              "label": "Subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "taxes",
+              "label": "Taxes",
+              "units": 0.7
+            },
+            {
+              "key": "fees",
+              "label": "Fees or disposal",
+              "units": 0.8
+            },
+            {
+              "key": "allowances",
+              "label": "Allowances",
+              "units": 0.8
+            },
+            {
+              "key": "discounts",
+              "label": "Discount or credit",
+              "units": 0.8
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "estimate_terms",
+      "title": "Estimate exception and change conditions",
+      "guidance": "State what could change the price, timing, method, or scope before the customer or responsible party decides.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when eligibility, diagnosis, evidence, part retention, repair authority, or coverage decision remains unresolved. Protect vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file; document the Automotive Warranty Claim notification and await authorized warranty reviewer direction."
+        },
+        {
+          "key": "estimate_uncertainty",
+          "type": "checklist",
+          "label": "Conditions that may require a revised estimate or specialist review",
+          "items": [
+            "Identity or eligibility incomplete",
+            "Failure cause unsupported",
+            "Required evidence or retained part missing",
+            "Repair begins before coverage authorization"
+          ],
+          "guidance": "For Automotive Warranty Claim, identify affected vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file scope; ask warranty claim coordinator to document the Automotive Warranty Claim immediate control before continuing."
+        },
+        {
+          "key": "assumptions_exclusions",
+          "type": "textarea",
+          "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "estimate_decision",
+      "title": "Estimate decision and selected repair scope",
+      "guidance": "Record the selected option and spending limit. Approval of an estimate authorizes only the stated scope and terms.",
+      "blocks": [
+        {
+          "key": "estimate_support",
+          "type": "checklist",
+          "label": "Estimate support retained",
+          "items": [
+            "Contract and eligibility record",
+            "Diagnostic and failure evidence",
+            "Maintenance and repair history",
+            "Authorized coverage decision and communication"
+          ],
+          "guidance": "Attach or link proof for vehicle, covered component allegation, symptom chronology, diagnosis, repair history, evidence, and coverage decision file; mark only Automotive Warranty Claim evidence present in that record."
+        },
+        {
+          "key": "estimate_status",
+          "type": "fields",
+          "label": "Decision and selected scope",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Estimate decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved",
+                "Approved with selected options",
+                "Revision requested",
+                "Declined",
+                "Expired"
+              ]
+            },
+            {
+              "key": "selected_scope",
+              "label": "Selected option, scope, or limit",
+              "units": 1.2
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "follow_up",
+              "label": "Scheduling or revision next step",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Automotive Warranty Claim selected scope, exclusions, and scheduling notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Automotive Warranty Claim selected scope, exclusions, and scheduling notes",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Explain the selected Automotive Warranty Claim option, retained exclusion, pricing assumption, and scheduling dependency."
+        },
+        {
+          "key": "estimate_signatures",
+          "type": "signatures",
+          "label": "Estimate preparation and decision",
+          "fields": [
+            {
+              "key": "estimator_signature",
+              "label": "Estimator",
+              "units": 1.1
+            },
+            {
+              "key": "estimator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer or authorized decision maker",
+              "units": 1.25
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

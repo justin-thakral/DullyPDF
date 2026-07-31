@@ -1,0 +1,353 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2122__collision_repair_authorization_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2122__collision_repair_authorization_form.pdf",
+  "slug": "collision-repair-authorization-form",
+  "title": "Collision Repair Authorization Form",
+  "subtitle": "Collision Repair: bounds the decision, conditions, and expiry.",
+  "description": "Collision Repair Authorization Form turns damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need into a customer-facing Collision Repair consent record. The collision repair coordinator itemizes diagnostics or services, labor, parts or materials, fees, tax, estimated total, maximum cap, and the vehicle owner / insurer contact's signed decision. Work not listed or priced remains on hold.",
+  "use_case": "Use Collision Repair Authorization Form at intake area, body bay, frame or measurement area, refinish area, and delivery point. Verify applicable Collision Repair requirements; distinguish diagnostic or inspection authority from listed work, price each operation, and record the vehicle owner / insurer contact's exact approval, conditions, or decline. Follow the selected contact-before-additional-work instruction whenever damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need scope or cost changes.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "authorization_request",
+      "title": "Vehicle, customer, and authorization identity",
+      "guidance": "Identify the Collision Repair customer or payer, contact method, vehicle, and service advisor.",
+      "blocks": [
+        {
+          "key": "authorization_header",
+          "type": "fields",
+          "label": "Customer and authorization details",
+          "fields": [
+            {
+              "key": "authorization_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "authorizing_party",
+              "label": "Vehicle owner / insurer contact",
+              "units": 1.15
+            },
+            {
+              "key": "authorizing_contact",
+              "label": "Authorizing contact / phone",
+              "units": 1.1
+            },
+            {
+              "key": "service_advisor",
+              "label": "Service advisor / coordinator",
+              "units": 1.05
+            },
+            {
+              "key": "contact_preference",
+              "label": "Preferred contact method",
+              "units": 0.95,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Phone call",
+                "Text message",
+                "Email",
+                "Fleet or payer portal"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Collision Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Repair order, owner, insurer, and claim",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, and impact location",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Estimate, supplement, part, procedure, and calibration references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Collision Repair identifier printed on damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Repair findings and authorization evidence",
+      "guidance": "Price each Collision Repair operation and keep unlisted work outside this authorization.",
+      "blocks": [
+        {
+          "key": "authorization_basis",
+          "type": "checklist",
+          "label": "Collision Repair decision checks",
+          "items": [
+            "Visible and hidden-damage mapping",
+            "Body, structural, suspension, restraint, and glass concern",
+            "Measurement and repair-method basis",
+            "Part type, fit, corrosion protection, and refinish process",
+            "Scan, calibration, alignment, and system verification",
+            "Quality, appearance, function, and final safety review"
+          ],
+          "guidance": "Confirm the Collision Repair findings supporting each listed operation."
+        },
+        {
+          "key": "authorized_actions",
+          "type": "table",
+          "label": "Requested diagnostics, services, and repairs",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Repair, part, refinish, or calibration",
+              "units": 1.35
+            },
+            {
+              "key": "detail",
+              "label": "Part, material, or service detail",
+              "units": 1.15
+            },
+            {
+              "key": "labor",
+              "label": "Labor",
+              "units": 0.65
+            },
+            {
+              "key": "parts",
+              "label": "Parts / materials",
+              "units": 0.75
+            },
+            {
+              "key": "fees",
+              "label": "Fees / tax",
+              "units": 0.7
+            },
+            {
+              "key": "line_total",
+              "label": "Line estimate",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "authorization_totals",
+          "type": "fields",
+          "label": "Estimate and authorization totals",
+          "fields": [
+            {
+              "key": "labor_total",
+              "label": "Labor subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "parts_total",
+              "label": "Parts / materials",
+              "units": 0.85
+            },
+            {
+              "key": "fees_total",
+              "label": "Fees / sublet",
+              "units": 0.75
+            },
+            {
+              "key": "tax_total",
+              "label": "Tax",
+              "units": 0.65
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.85
+            },
+            {
+              "key": "maximum_amount",
+              "label": "Maximum authorized amount",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_conditions",
+      "title": "Authorization exception and limits",
+      "guidance": "Stop Collision Repair work at the stated cap or when scope changes require customer or payer contact.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without renewed authorization",
+          "guidance": "Stop normal processing when structural, restraint, repair-method, calibration, alignment, or final safety verification remains unresolved. Protect damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need; record the Collision Repair notification and obtain renewed authorization from vehicle owner / insurer contact before continuing."
+        },
+        {
+          "key": "authorization_stops",
+          "type": "checklist",
+          "label": "Conditions requiring a hold or renewed customer authorization",
+          "items": [
+            "Hidden damage changes approved scope",
+            "Structural or restraint procedure unavailable",
+            "Calibration or measurement fails",
+            "Vehicle released before safety-related verification"
+          ],
+          "guidance": "Identify the affected damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need scope, preserve the stated limit, and contact vehicle owner / insurer contact before continuing."
+        },
+        {
+          "key": "additional_work_instructions",
+          "type": "fields",
+          "label": "Additional-work instructions",
+          "fields": [
+            {
+              "key": "additional_work",
+              "label": "Additional-work instruction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contact me before any additional work",
+                "Proceed only within the maximum cap",
+                "No additional work authorized",
+                "Fleet, insurer, or payer approval required"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Contact method / number",
+              "units": 1.05
+            },
+            {
+              "key": "parts_disposition",
+              "label": "Replaced-parts disposition",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Return available replaced parts",
+                "Dispose or recycle as permitted",
+                "Retain for warranty or payer",
+                "Not applicable"
+              ]
+            },
+            {
+              "key": "authorization_expiry",
+              "label": "Authorization expiry",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "conditions_and_limits",
+          "type": "textarea",
+          "label": "Customer conditions, exclusions, declined work, and revocation instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer conditions, exclusions, declined work, and revocation instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_decision",
+      "title": "Customer authorization decision",
+      "guidance": "Record the exact Collision Repair consent, amount cap, confirmation, and customer or payer signature.",
+      "blocks": [
+        {
+          "key": "authorization_evidence",
+          "type": "checklist",
+          "label": "Estimate and findings reviewed with the customer",
+          "items": [
+            "Intake and disassembly photographs",
+            "Measurement and repair-procedure record",
+            "Part, weld, refinish, and corrosion-protection trace",
+            "Scan, calibration, alignment, and final inspection evidence"
+          ],
+          "guidance": "Attach or link proof for damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need; mark only Collision Repair evidence present in that record."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Customer authorization outcome",
+          "fields": [
+            {
+              "key": "authorization_scope",
+              "label": "Collision Repair authorization",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Diagnostics only up to stated cap",
+                "Listed services and parts",
+                "Diagnostics and listed services",
+                "Estimate or inspection only; no work",
+                "Declined"
+              ]
+            },
+            {
+              "key": "acknowledged_total",
+              "label": "Estimated total acknowledged",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_cap",
+              "label": "Maximum authorized amount",
+              "units": 1.0
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation / PO / payer reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Customer or payer consent and service acknowledgment",
+          "fields": [
+            {
+              "key": "customer_signature",
+              "label": "Vehicle owner / insurer contact",
+              "units": 1.2
+            },
+            {
+              "key": "customer_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "advisor_signature",
+              "label": "Service advisor / witness",
+              "units": 1.05
+            },
+            {
+              "key": "advisor_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

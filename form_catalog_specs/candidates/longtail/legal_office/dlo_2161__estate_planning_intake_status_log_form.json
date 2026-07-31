@@ -1,0 +1,312 @@
+{
+  "catalog_id": "legal_office/dlo_2161__estate_planning_intake_status_log_form",
+  "description": "Use this Estate Planning Intake Status Log Form for its named administrative intake job while preserving source attribution, qualified review, stop conditions, and secure record custody.",
+  "risk_tier": "C",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "intake_number",
+              "label": "Administrative intake number",
+              "units": 1.0
+            },
+            {
+              "key": "client_name",
+              "label": "Prospective client's full legal name",
+              "units": 1.0
+            },
+            {
+              "key": "domicile",
+              "label": "Current state or country of domicile",
+              "units": 1.0
+            },
+            {
+              "key": "intake_date",
+              "label": "Intake date and local time",
+              "units": 1.0
+            },
+            {
+              "key": "safe_contact",
+              "label": "Safe contact method",
+              "units": 1.0
+            },
+            {
+              "key": "intake_owner",
+              "label": "Intake owner",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use a stable intake number and do not imply that an attorney-client relationship exists.",
+          "key": "intake_identity",
+          "label": "Estate Planning Intake Status Intake Identity",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "participants",
+              "label": "Participants and stated roles",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "private_interview",
+              "label": "Private interview available",
+              "options": [
+                "Yes",
+                "No",
+                "Not yet requested"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "language_access",
+              "label": "Language support",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "conflict_status",
+              "label": "Conflict-screen status",
+              "options": [
+                "Pending",
+                "Clear to consult",
+                "Attorney review",
+                "Stop"
+              ],
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "engagement_status",
+              "label": "Relationship status",
+              "options": [
+                "Prospective only",
+                "Consultation scheduled",
+                "Engaged separately",
+                "Declined"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Collect only what the current administrative purpose requires.",
+          "key": "participation_boundary",
+          "label": "Estate Planning Intake Status Participation and Privacy",
+          "type": "fields"
+        },
+        {
+          "guidance": "This intake form does not create representation, legal advice, a testamentary instrument, a power, a transfer, or authority to act.",
+          "key": "legal_boundary",
+          "label": "Administrative Record Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Establish the prospective-client, privacy, conflict, and administrative record boundary.",
+      "key": "identity_boundary",
+      "title": "Estate Planning Intake Status Identity and Routing"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "period_start",
+              "label": "Log period start",
+              "units": 1.0
+            },
+            {
+              "key": "current_stage",
+              "label": "Current administrative stage",
+              "units": 1.0
+            },
+            {
+              "key": "assigned_attorney",
+              "label": "Assigned attorney or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "next_appointment",
+              "label": "Next appointment date",
+              "units": 1.0
+            },
+            {
+              "key": "client_notice_limit",
+              "label": "Client contact and notice limits",
+              "units": 1.0
+            }
+          ],
+          "key": "status_scope",
+          "label": "Status Log Scope",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.4
+            },
+            {
+              "key": "event",
+              "label": "Outreach, record, appointment, or review event",
+              "units": 2.4
+            },
+            {
+              "key": "source",
+              "label": "Author or source",
+              "units": 1.5
+            },
+            {
+              "key": "next_action",
+              "label": "Next action, owner, and due point",
+              "units": 2.3
+            },
+            {
+              "key": "status",
+              "label": "Status or block",
+              "units": 1.5
+            }
+          ],
+          "guidance": "A workflow status does not establish legal sufficiency, advice, execution validity, filing, or funding.",
+          "key": "status_entries",
+          "label": "Dated Intake Status Entries",
+          "rows": 9,
+          "type": "table"
+        },
+        {
+          "columns": [
+            {
+              "key": "dependency",
+              "label": "Blocked item or question",
+              "units": 2.4
+            },
+            {
+              "key": "control",
+              "label": "Interim control",
+              "units": 1.9
+            },
+            {
+              "key": "reviewer",
+              "label": "Attorney or specialist",
+              "units": 1.6
+            },
+            {
+              "key": "due",
+              "label": "Escalation date",
+              "units": 1.4
+            },
+            {
+              "key": "outcome",
+              "label": "Authorized outcome",
+              "units": 1.9
+            }
+          ],
+          "key": "dependency_log",
+          "label": "Blocked Item and Qualified-Review Dependency",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Maintain a dated preparation history of outreach, requested records, appointments, review dependencies, and next actions.",
+      "key": "status_chronology",
+      "title": "Estate Planning Intake Status Observations and Evidence"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Escalate incapacity, hospitalization, exploitation, deadline, transaction, family dispute, lost original, imminent travel, or signing pressure instead of merely logging it.",
+          "key": "status_stop",
+          "label": "Urgent Stop and Attorney Review",
+          "type": "notice"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "disposition",
+              "label": "Disposition",
+              "options": [
+                "Advance",
+                "Await client",
+                "Await record",
+                "Await attorney",
+                "Escalate",
+                "Pause",
+                "Close"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorizing reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 1.0
+            },
+            {
+              "key": "conditions",
+              "label": "Conditions before next stage",
+              "units": 1.0
+            },
+            {
+              "key": "client_notice",
+              "label": "Client notice date and method",
+              "units": 1.0
+            },
+            {
+              "key": "secure_location",
+              "label": "Secure record location",
+              "units": 1.0
+            }
+          ],
+          "key": "stage_disposition",
+          "label": "Authorized Stage Disposition",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Open obligation or retained warning",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Current owner",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "recipient",
+              "label": "Receiving person and evidence",
+              "units": 2.2
+            }
+          ],
+          "key": "open_handoff",
+          "label": "Open Obligation and Handoff",
+          "rows": 11,
+          "type": "table"
+        }
+      ],
+      "guidance": "Reconcile open obligations, client status notice, secure records, and authority for the next stage.",
+      "key": "status_closeout",
+      "title": "Estate Planning Intake Status Completion and Handoff"
+    }
+  ],
+  "slug": "estate-planning-intake-status-log-form",
+  "source_filename": "dlo_2161__estate_planning_intake_status_log_form.pdf",
+  "source_section": "legal_office",
+  "subtitle": "A bounded Tier-C estate planning intake status record with direct inputs, attorney-review routing, and privacy safeguards.",
+  "title": "Estate Planning Intake Status Log Form",
+  "use_case": "Use before or during attorney-supervised estate-planning intake. The form does not create representation, legal advice, or a legally operative instrument."
+}

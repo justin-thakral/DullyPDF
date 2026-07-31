@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2633__cold_storage_request_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2633__cold_storage_request_form.pdf",
+  "slug": "cold-storage-request-form",
+  "title": "Cold Storage Request Form",
+  "subtitle": "Cold Storage Control: defines need, constraints, and assignment.",
+  "description": "Cold Storage Request Form covers storage room, zone, product lot, monitoring device, door event, alarm, and disposition. The cold-storage operations owner records Cold Storage Control need, timing, access, and assignment. Cold Storage Request Form keeps Cold Storage Control exceptions visible until the cold-storage operations owner handoff.",
+  "use_case": "Use Cold Storage Request Form at cooler, freezer, cold room, loading interface, and affected product zone. Document storage room, zone, product lot, monitoring device, door event, alarm, and disposition identity before Cold Storage Control begins. Compare storage room, zone, product lot, monitoring device, door event, alarm, and disposition findings with stated Cold Storage Control criteria; route unresolved Cold Storage Control issues to qualified product-condition reviewer. For Cold Storage Request Form, confirm requirements for Cold Storage Control. Ask qualified product-condition reviewer to review Cold Storage Control conditions beyond the cold-storage operations owner's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Request context and subject identity",
+      "guidance": "For Cold Storage Control, identify responsible parties, cooler, freezer, cold room, loading interface, and affected product zone, and the linked storage room, zone, product lot, monitoring device, door event, alarm, and disposition source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Cold Storage Control identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility, room, zone, and unit",
+              "units": 1.6666666666666667
+            },
+            {
+              "key": "identity_2",
+              "label": "Product, lot, quantity, and storage requirement",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Logger, sensor, probe, calibration, and alarm",
+              "units": 2.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Intake checks and assignment readiness",
+      "guidance": "Capture Cold Storage Control facts for storage room, zone, product lot, monitoring device, door event, alarm, and disposition; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Cold Storage Control intake confirmations",
+          "items": [
+            "Requested or already documented: air and representative product temperature",
+            "Requested or already documented: door, seal, traffic, and loading event",
+            "Requested or already documented: evaporator, fan, airflow, frost, and drain condition",
+            "Requested or already documented: alarm, setpoint, sensor, and communication status",
+            "Requested or already documented: excursion start, duration, affected scope, and containment",
+            "Requested or already documented: qualified hold, release, rework, transfer, or disposal"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request routing and requester follow-up",
+      "guidance": "Resolve open Cold Storage Control request questions; have cold-storage operations owner record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Temperature excursion duration uncertain",
+            "Device or calibration unreliable",
+            "Affected lots cannot be bounded",
+            "Product moved or released without qualified disposition",
+            "Prior or requester-supplied: time-stamped logger and manual readings",
+            "Prior or requester-supplied: device and calibration identity",
+            "Prior or requester-supplied: door, equipment, and product-location evidence",
+            "Prior or requester-supplied: excursion review and product disposition"
+          ],
+          "guidance": "Do not assign or authorize the Cold Storage Control request when temperature history, device reliability, affected scope, containment, or qualified product disposition remains unresolved. Retain information supplied with the request and route unresolved constraints to cold-storage operations owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Cold-Storage Operations Owner",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

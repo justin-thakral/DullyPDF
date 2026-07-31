@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2623__pesticide_application_request_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2623__pesticide_application_request_form.pdf",
+  "slug": "daf-2623-pesticide-application-request-form",
+  "title": "Pesticide Application Request Form",
+  "subtitle": "Pesticide Application: defines need, constraints, and assignment.",
+  "description": "Pesticide Application Request Form covers site, target, product, application equipment, weather condition, buffer, and reentry control. The application record owner records Pesticide Application need, timing, access, and assignment. Pesticide Application Request Form keeps Pesticide Application exceptions visible until the application record owner handoff.",
+  "use_case": "Use Pesticide Application Request Form at field, block, structure, treatment zone, mixing area, and buffer boundary. Document site, target, product, application equipment, weather condition, buffer, and reentry control identity before Pesticide Application begins. Compare site, target, product, application equipment, weather condition, buffer, and reentry control findings with stated Pesticide Application criteria; route unresolved Pesticide Application issues to licensed or otherwise qualified pesticide reviewer. For Pesticide Application Request Form, confirm requirements for Pesticide Application. Ask licensed or otherwise qualified pesticide reviewer to review Pesticide Application conditions beyond the application record owner's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Request context and subject identity",
+      "guidance": "For Pesticide Application, identify responsible parties, field, block, structure, treatment zone, mixing area, and buffer boundary, and the linked site, target, product, application equipment, weather condition, buffer, and reentry control source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Pesticide Application identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Farm, field, block, and treated area",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Target pest and treatment reason",
+              "units": 1.7777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Product, registration reference, lot, and applicator",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested result, access, and timing",
+      "guidance": "Capture Pesticide Application facts for site, target, product, application equipment, weather condition, buffer, and reentry control; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Pesticide Application intake confirmations",
+          "items": [
+            "Requested or already documented: authorized crop or site and target",
+            "Requested or already documented: rate, mixture, carrier, and treated area",
+            "Requested or already documented: weather, wind, temperature, and precipitation",
+            "Requested or already documented: equipment, nozzle, pressure, and calibration",
+            "Requested or already documented: buffer, sensitive area, and drift control",
+            "Requested or already documented: start, stop, reentry, preharvest, cleanup, and posting"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Pesticide Application request questions; have application record owner record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Label or authorization mismatch",
+            "Weather or drift condition unsuitable",
+            "Spill, exposure, or equipment leak",
+            "Restriction cannot be communicated or controlled",
+            "Prior or requester-supplied: product and lot record",
+            "Prior or requester-supplied: calibration and mixture calculation",
+            "Prior or requester-supplied: weather and application log",
+            "Prior or requester-supplied: posting, restriction, cleanup, and incident evidence"
+          ],
+          "guidance": "Do not assign or authorize the Pesticide Application request when authorization, weather, drift, exposure, equipment integrity, or required restriction remains unresolved. Retain information supplied with the request and route unresolved constraints to application record owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Application Record Owner",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

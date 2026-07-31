@@ -1,0 +1,368 @@
+{
+  "catalog_id": "legal_office/dlo_2157__estate_planning_intake_checklist_form",
+  "description": "Use this Estate Planning Intake Checklist Form for its named administrative intake job while preserving source attribution, qualified review, stop conditions, and secure record custody.",
+  "risk_tier": "C",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "intake_number",
+              "label": "Administrative intake number",
+              "units": 1.0
+            },
+            {
+              "key": "client_name",
+              "label": "Prospective client's full legal name",
+              "units": 1.0
+            },
+            {
+              "key": "domicile",
+              "label": "Current state or country of domicile",
+              "units": 1.0
+            },
+            {
+              "key": "intake_date",
+              "label": "Intake date and local time",
+              "units": 1.0
+            },
+            {
+              "key": "safe_contact",
+              "label": "Safe contact method",
+              "units": 1.0
+            },
+            {
+              "key": "intake_owner",
+              "label": "Intake owner",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use a stable intake number and do not imply that an attorney-client relationship exists.",
+          "key": "intake_identity",
+          "label": "Estate Planning Readiness Intake Identity",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "participants",
+              "label": "Participants and stated roles",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "private_interview",
+              "label": "Private interview available",
+              "options": [
+                "Yes",
+                "No",
+                "Not yet requested"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "language_access",
+              "label": "Language support",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "conflict_status",
+              "label": "Conflict-screen status",
+              "options": [
+                "Pending",
+                "Clear to consult",
+                "Attorney review",
+                "Stop"
+              ],
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "engagement_status",
+              "label": "Relationship status",
+              "options": [
+                "Prospective only",
+                "Consultation scheduled",
+                "Engaged separately",
+                "Declined"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Collect only what the current administrative purpose requires.",
+          "key": "participation_boundary",
+          "label": "Estate Planning Readiness Participation and Privacy",
+          "type": "fields"
+        },
+        {
+          "guidance": "This intake form does not create representation, legal advice, a testamentary instrument, a power, a transfer, or authority to act.",
+          "key": "legal_boundary",
+          "label": "Administrative Record Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Establish the prospective-client, privacy, conflict, and administrative record boundary.",
+      "key": "identity_boundary",
+      "title": "Estate Planning Readiness Identity and Routing"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "person",
+              "label": "Name or stable reference",
+              "units": 1.8
+            },
+            {
+              "key": "relationship",
+              "label": "Relationship as reported",
+              "units": 1.8
+            },
+            {
+              "key": "possible_role",
+              "label": "Potential role or concern",
+              "units": 2.0
+            },
+            {
+              "key": "question",
+              "label": "Open attorney-review question",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Do not infer legal status, capacity, parentage, dependency, or fiduciary suitability.",
+          "key": "people_roles",
+          "label": "People, Relationships, and Potential Roles",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "columns": [
+            {
+              "key": "category",
+              "label": "Category",
+              "units": 1.6
+            },
+            {
+              "key": "reported_form",
+              "label": "Reported owner or beneficiary form",
+              "units": 2.2
+            },
+            {
+              "key": "location",
+              "label": "Jurisdiction or custodian",
+              "units": 1.7
+            },
+            {
+              "key": "review_issue",
+              "label": "Document or qualified-review issue",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Use categories and approximate bands; never collect passwords or unnecessary account numbers.",
+          "key": "asset_categories",
+          "label": "Assets, Debts, Benefits, and Ownership Categories",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "incapacity_goal",
+              "label": "Incapacity support priority",
+              "units": 1.0
+            },
+            {
+              "key": "benefit_goal",
+              "label": "Intended beneficiaries",
+              "units": 1.0
+            },
+            {
+              "key": "fiduciary_goal",
+              "label": "Fiduciary or agent preferences",
+              "units": 1.0
+            },
+            {
+              "key": "property_goal",
+              "label": "Property or legacy priority",
+              "units": 1.0
+            },
+            {
+              "key": "timing_event",
+              "label": "Timing event or deadline",
+              "units": 1.0
+            },
+            {
+              "key": "existing_plan",
+              "label": "Existing plans and change reason",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Attribute each answer to the prospective client and reserve legal options for attorney review.",
+          "key": "goal_inputs",
+          "label": "Prospective Client Goal Inputs",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Record the direct family, fiduciary, document, asset-category, and goal inputs needed for attorney review.",
+      "key": "readiness_details",
+      "title": "Estate Planning Readiness Working Details"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "A licensed estate-planning attorney must determine applicable law, conflicts, capacity, execution formalities, tax issues, and appropriate instruments.",
+          "key": "attorney_review",
+          "label": "Attorney Review Required",
+          "type": "notice"
+        },
+        {
+          "guidance": "A checked item means intake information is present, not legally sufficient.",
+          "items": [
+            "Identity, domicile, safe contact, and privacy needs are recorded",
+            "Family and support relationships are attributed rather than inferred",
+            "Existing wills, trusts, directives, powers, and beneficiary forms are inventoried",
+            "Potential fiduciaries and alternates are identified without suitability conclusions",
+            "Asset, debt, insurance, retirement, business, and digital categories are recorded",
+            "Missing records and specialist referrals have an owner and due point"
+          ],
+          "key": "readiness_checks",
+          "label": "Readiness Checklist",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Conflict, coercion, capacity, deadline, or gap",
+              "units": 2.4
+            },
+            {
+              "key": "control",
+              "label": "Protected interim action",
+              "units": 2.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Attorney or specialist",
+              "units": 1.7
+            },
+            {
+              "key": "next_step",
+              "label": "Decision needed and due point",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Pause interpretive or execution activity until the named qualified reviewer responds.",
+          "key": "stop_questions",
+          "label": "Stop Issue and Qualified-Review Register",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Identify stop issues and route legal, tax, benefits, title, valuation, or capacity questions.",
+      "key": "readiness_review",
+      "title": "Estate Planning Readiness Exceptions and Escalation"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "status",
+              "label": "Status",
+              "options": [
+                "Ready for attorney consultation",
+                "Ready with listed gaps",
+                "Attorney review before scheduling",
+                "Pause intake"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "attorney",
+              "label": "Assigned attorney or reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "consult_date",
+              "label": "Consultation or review date",
+              "units": 1.0
+            },
+            {
+              "key": "client_notice",
+              "label": "Client status notice",
+              "units": 1.0
+            },
+            {
+              "key": "secure_location",
+              "label": "Secure record location",
+              "units": 1.0
+            }
+          ],
+          "key": "readiness_outcome",
+          "label": "Readiness Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Missing fact, record, or question",
+              "units": 2.3
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "recipient",
+              "label": "Receiving reviewer and evidence",
+              "units": 2.2
+            }
+          ],
+          "key": "missing_item_handoff",
+          "label": "Missing Item and Handoff",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by, role, signature, and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Attorney or authorized reviewer, signature, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "readiness_signatures",
+          "label": "Preparation and Review Acknowledgments",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Reconcile missing information, client notice, record security, and the attorney consultation path.",
+      "key": "readiness_handoff",
+      "title": "Estate Planning Readiness Completion and Handoff"
+    }
+  ],
+  "slug": "estate-planning-intake-checklist-form",
+  "source_filename": "dlo_2157__estate_planning_intake_checklist_form.pdf",
+  "source_section": "legal_office",
+  "subtitle": "A bounded Tier-C estate planning readiness record with direct inputs, attorney-review routing, and privacy safeguards.",
+  "title": "Estate Planning Intake Checklist Form",
+  "use_case": "Use before or during attorney-supervised estate-planning intake. The form does not create representation, legal advice, or a legally operative instrument."
+}

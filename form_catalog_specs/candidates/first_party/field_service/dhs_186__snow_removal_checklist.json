@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_186__snow_removal_checklist",
+  "source_section": "field_service",
+  "source_filename": "dhs_186__snow_removal_checklist.pdf",
+  "slug": "snow-removal-checklist",
+  "title": "Snow Removal Checklist",
+  "subtitle": "Residential Snow Removal: documents findings, limits, and disposition.",
+  "description": "Snow Removal Checklist covers drive, walk, step, entrance, snow storage area, drainage point, and treatment zone. The snow service coordinator records Residential Snow Removal criteria, findings, restrictions, and follow-up. Snow Removal Checklist keeps Residential Snow Removal exceptions visible until the snow service coordinator handoff.",
+  "use_case": "Use Snow Removal Checklist at residence access, drive, walkway, steps, curb, and designated snow-storage area. Document drive, walk, step, entrance, snow storage area, drainage point, and treatment zone identity before Residential Snow Removal begins. Compare drive, walk, step, entrance, snow storage area, drainage point, and treatment zone findings with stated Residential Snow Removal criteria; route unresolved Residential Snow Removal issues to winter operations reviewer. For Snow Removal Checklist, confirm requirements for Residential Snow Removal. Ask winter operations reviewer to review Residential Snow Removal conditions beyond the snow service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspection scope and subject identity",
+      "guidance": "For Residential Snow Removal, identify responsible parties, residence access, drive, walkway, steps, curb, and designated snow-storage area, and the linked drive, walk, step, entrance, snow storage area, drainage point, and treatment zone source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Snow Removal identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, route, and visit",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Service trigger, depth, timing, and priority area",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Surface type, marker, obstacle, drainage, and product restriction",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Residential Snow Removal facts for drive, walk, step, entrance, snow storage area, drainage point, and treatment zone; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Snow Removal inspection checks",
+          "items": [
+            "Snow depth, ice condition, and precipitation stage",
+            "Vehicle, pedestrian, emergency, and delivery access",
+            "Surface edge, marker, drain, hydrant, and hidden-obstacle location",
+            "Plowed or shoveled width and snow placement",
+            "Deicer or abrasive type, amount, and restricted area",
+            "Refreeze, drifting, residual ice, and return trigger"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "List each unresolved Residential Snow Removal finding with its restriction, correction owner, and reinspection trigger. Snow Service Coordinator records reviewer disposition.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Visibility, lightning, extreme condition, or unsafe equipment operation",
+            "Hidden obstacle or unmarked edge",
+            "Blocked drain, hydrant, road, or neighboring property",
+            "Refreeze or continuing storm defeats completed condition",
+            "Arrival and completion condition photographs",
+            "Depth, weather, and visit timestamp",
+            "Material application and zone record",
+            "Residual risk and customer notice"
+          ],
+          "guidance": "Pause Residential Snow Removal when safe operation, access, snow placement, drainage, hidden obstacle, or residual ice remains uncontrolled. Retain the available Residential Snow Removal proof and route unresolved drive, walk, step, entrance, snow storage area, drainage point, and treatment zone scope to snow service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Snow Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Winter Operations Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

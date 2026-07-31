@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_123__tutoring_intake_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_123__tutoring_intake_information_sheet.pdf",
+  "slug": "tutoring-intake-information-sheet",
+  "title": "Tutoring Intake Information Sheet",
+  "subtitle": "Capture learner goal, source work, session schedule, and support need; confirm tutor match and progress checkpoint.",
+  "description": "Tutoring Intake records learner goal, source work, session schedule, support need, tutor match, and progress checkpoint. Tutoring Intake evidence stays linked.",
+  "use_case": "Use this tutoring intake controlled information handoff when staff must document learner goal and source work. Reconcile session schedule, support need, tutor match, and progress checkpoint before the tutoring intake handoff. Use the intake request, learner work sample, teacher referral if provided, availability calendar, tutor-match rationale, support-route acknowledgment, and first-session plan. For tutoring intake review use, cite source. Match the tutoring intake family or learner wording. Preserve the tutoring intake amendment history and supersession date. Link the tutoring intake source version and meeting notes. Record the tutoring intake learner response and accessibility support. Close the tutoring intake recipient list. Verify tutoring intake documentary provenance. Resolve tutoring intake amendments, superseded wording, and archival distribution for tutoring intake. Ask the assigned tutoring intake reviewer to confirm learner goal against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Tutoring Intake audience details",
+      "guidance": "Preserve learner goal, source assignment or assessment, preferred schedule, support need, tutor match factors, session plan, and initial progress checkpoint.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Tutoring Intake people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "learner_goal",
+              "label": "Learner goal",
+              "units": 1.1
+            },
+            {
+              "key": "source_work",
+              "label": "Source work",
+              "units": 1.2
+            },
+            {
+              "key": "session_schedule",
+              "label": "Session schedule",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Tutoring Intake task details",
+          "fields": [
+            {
+              "key": "support_need",
+              "label": "Support need",
+              "units": 1.15
+            },
+            {
+              "key": "tutor_match",
+              "label": "Tutor match",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Tutoring Intake current instructions",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Tutoring Intake instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Tutoring Intake questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Tutoring Intake update route and handoff",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Tutoring Intake effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Tutoring Intake update boundary",
+          "guidance": "Replace outdated tutoring intake instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

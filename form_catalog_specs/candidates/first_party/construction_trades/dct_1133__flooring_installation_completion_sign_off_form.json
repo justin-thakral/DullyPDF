@@ -1,0 +1,297 @@
+{
+  "catalog_id": "construction_trades/dct_1133__flooring_installation_completion_sign_off_form",
+  "description": "For flooring installation, this completion sign-off form records layout, acclimation, substrate preparation, moisture limits, adhesive, expansion, sequencing, and protection. Its supporting evidence includes moisture test, flatness readings, lot record, layout approval, installation photos, and seam or lippage checks.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Flooring opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Flooring site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Flooring contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Flooring superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Flooring due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this flooring installation record to its evidence.",
+          "key": "record_routing",
+          "label": "Flooring Installation Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Room",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Substrate",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Flooring product",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Lot",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Transitions",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Moisture-sensitive areas",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes for this flooring installation.",
+          "key": "core_identity",
+          "label": "Flooring Installation Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes for this flooring installation record.",
+      "key": "identity_1",
+      "title": "Walkthrough Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Flooring when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Flooring measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Flooring evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Flooring result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For flooring installation, record moisture test, flatness readings, lot record, layout approval, installation photos, and seam or lippage checks.",
+          "key": "evidence_register",
+          "label": "Flooring Installation Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Moisture test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Flatness readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Lot record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Layout approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Installation photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every flooring installation evidence source.",
+          "key": "evidence_sources",
+          "label": "Flooring Installation Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary flooring installation evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Flooring Installation Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not install over out-of-tolerance moisture, flatness, contamination, movement, or unapproved substrate condition. Route unresolved flooring installation work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Flooring Installation Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support flooring installation findings with moisture test, flatness readings, lot record, layout approval, installation photos, and seam or lippage checks.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Flooring completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Finish inspection",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Protection plan",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Care instructions",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Attic-stock handoff",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the flooring installation outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Flooring Installation Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Flooring open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Flooring owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Flooring acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer flooring installation items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Flooring Installation Remaining Work and Handoff",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Flooring Installation Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For flooring installation, document finish inspection, protection plan, care instructions, attic-stock handoff, warranty, and customer acceptance; identify each flooring installation reservation and flooring installation follow-up trigger, then record the flooring installation instruction recipient.",
+          "height": 48,
+          "key": "acceptance_reservations",
+          "label": "Flooring Installation Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Flooring trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Flooring site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Flooring Installation Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the flooring installation record with finish inspection, protection plan, care instructions, attic-stock handoff, warranty, and customer acceptance.",
+      "key": "closeout_3",
+      "title": "Customer Acceptance and Handoff"
+    }
+  ],
+  "slug": "flooring-installation-completion-sign-off-form",
+  "source_filename": "dct_1133__flooring_installation_completion_sign_off_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Flooring Installation Completion Sign-Off Form: flooring installation readiness and acceptance using room, layout, and moisture test.",
+  "title": "Flooring Installation Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during flooring installation readiness and acceptance when the flooring installation record must identify room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes. Complete the applicable handoff for finish inspection, protection plan, care instructions, attic-stock handoff, warranty, and customer acceptance."
+}

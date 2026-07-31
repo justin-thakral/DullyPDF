@@ -1,0 +1,420 @@
+{
+  "catalog_id": "construction_trades/dcf_168__project_closeout_approval_form",
+  "description": "For project closeout, this approval form records completion criteria, outstanding work, commissioning, record documents, owner training, and final inspections. Its supporting evidence includes test reports, certificates, as-builts, manuals, photos, punch verification, and agency approvals.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Closeout opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Closeout site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Closeout contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Closeout superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Closeout due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this project closeout record to its evidence.",
+          "key": "record_routing",
+          "label": "Project Closeout Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Contract deliverables",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Spaces",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Warranties",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Training",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Keys",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture contract deliverables, systems, spaces, warranties, training, keys, spare parts, and financial records for this project closeout.",
+          "key": "core_identity",
+          "label": "Project Closeout Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify contract deliverables, systems, spaces, warranties, training, keys, spare parts, and financial records for this project closeout record.",
+      "key": "identity_1",
+      "title": "Proposal and Authority Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Completion criteria",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Outstanding work",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Commissioning",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Record documents",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For project closeout, record completion criteria, outstanding work, commissioning, record documents, owner training, and final inspections.",
+          "key": "task_inputs",
+          "label": "Project Closeout Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Closeout decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Closeout supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Closeout review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified project closeout facts from judgment.",
+          "key": "review_criteria",
+          "label": "Project Closeout Review Criteria and Support",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Resolve each failed project closeout approval check.",
+          "items": [
+            "Decision statement is singular and unambiguous",
+            "Approver authority and any conflict are checked",
+            "Cost, schedule, quality, safety, and compliance effects are addressed",
+            "Alternatives and recommendation are documented",
+            "Conditions and effective period can be monitored",
+            "Implementation owner acknowledges the disposition"
+          ],
+          "key": "decision_readiness",
+          "label": "Project Closeout Decision Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not represent final completion while life-safety, occupancy, acceptance, lien, or material exceptions remain unresolved. Route unresolved project closeout work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Project Closeout Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For project closeout, capture completion criteria, outstanding work, commissioning, record documents, owner training, and final inspections.",
+      "key": "task_2",
+      "title": "Decision Package"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Closeout when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Closeout measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Closeout evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Closeout result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For project closeout, record test reports, certificates, as-builts, manuals, photos, punch verification, and agency approvals.",
+          "key": "evidence_register",
+          "label": "Project Closeout Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Test reports",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Certificates",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "As-builts",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Manuals",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Punch verification",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every project closeout evidence source.",
+          "key": "evidence_sources",
+          "label": "Project Closeout Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support project closeout findings with test reports, certificates, as-builts, manuals, photos, punch verification, and agency approvals.",
+      "key": "observation_3",
+      "title": "Supporting Record Review"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not represent final completion while life-safety, occupancy, acceptance, lien, or material exceptions remain unresolved. Do not release affected project closeout work.",
+          "key": "stop_boundary",
+          "label": "Project Closeout Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Closeout exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Closeout correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Closeout escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close project closeout exceptions with verification.",
+          "key": "exception_register",
+          "label": "Project Closeout Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        }
+      ],
+      "guidance": "Do not represent final completion while life-safety, occupancy, acceptance, lien, or material exceptions remain unresolved. Control and route each project closeout exception.",
+      "key": "exception_4",
+      "title": "Conflicts and Approval Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select approval form disposition",
+                "Approve",
+                "Approve with conditions",
+                "Revise and resubmit",
+                "Reject"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Closeout decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Closeout approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Closeout authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Closeout review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate project closeout disposition.",
+          "key": "disposition",
+          "label": "Project Closeout Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Project Closeout Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the project closeout decision to evidence.",
+          "height": 48,
+          "key": "decision_basis",
+          "label": "Project Closeout Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Closeout item",
+              "units": 2.2
+            },
+            {
+              "key": "recipient",
+              "label": "Recipient and owner",
+              "units": 1.8
+            },
+            {
+              "key": "evidence",
+              "label": "Acceptance evidence",
+              "units": 2.2
+            },
+            {
+              "key": "handoff",
+              "label": "Handoff date and reference",
+              "units": 1.8
+            }
+          ],
+          "guidance": "Transfer approved closeout items with named custody and evidence.",
+          "key": "release_handoff",
+          "label": "Project Closeout Release and Handoff",
+          "rows": 9,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Closeout coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Closeout manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Closeout approver signature and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Project Closeout Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the project closeout next step from test reports, certificates, as-builts, manuals, photos, punch verification, and agency approvals.",
+      "key": "decision_5",
+      "title": "Approver Disposition"
+    }
+  ],
+  "slug": "project-closeout-approval-form",
+  "source_filename": "dcf_168__project_closeout_approval_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Project Closeout Approval Form: construction project turnover and closeout using contract deliverables, completion criteria, and test reports.",
+  "title": "Project Closeout Approval Form",
+  "use_case": "Use the approval form during construction project turnover and closeout when the project closeout record must identify contract deliverables, systems, spaces, warranties, training, keys, spare parts, and financial records. Complete the applicable handoff for owner receipt, final completion determination, warranty start, archive index, financial reconciliation, and responsibility handoff."
+}

@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2617__guest_incident_checklist",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2617__guest_incident_checklist.pdf",
+  "slug": "guest-incident-checklist",
+  "title": "Guest Incident Checklist",
+  "subtitle": "Capture guest account, scene condition, witness, and immediate response; confirm evidence custody and follow-up.",
+  "description": "Guest Incident records guest account, scene condition, witness, immediate response, evidence custody, and follow-up. Guest Incident evidence stays linked.",
+  "use_case": "Use this guest incident stage-gated verification when staff must document guest account and scene condition. Reconcile witness, immediate response, evidence custody, and follow-up before the guest incident handoff. Use the guest statement, witness contacts, scene photographs, camera-footage custody reference, first-response log, security report, property action, claim route, and follow-up call. Ask the assigned guest incident reviewer to confirm guest account against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "guest_and_scene",
+      "title": "Guest and incident scene",
+      "guidance": "Record exact timing, location, people present, and the guest's account.",
+      "blocks": [
+        {
+          "key": "guest",
+          "type": "fields",
+          "label": "Guest and booking reference",
+          "fields": [
+            {
+              "key": "guest_full_name",
+              "label": "Guest full name",
+              "units": 1.15
+            },
+            {
+              "key": "guest_contact",
+              "label": "Guest contact",
+              "units": 1.0
+            },
+            {
+              "key": "reservation_room_or_event_reference",
+              "label": "Reservation, room, or event reference",
+              "units": 1.25
+            },
+            {
+              "key": "preferred_follow_up_method",
+              "label": "Preferred follow-up method",
+              "units": 1.1
+            },
+            {
+              "key": "reporting_staff_member",
+              "label": "Reporting staff member",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "scene",
+          "type": "fields",
+          "label": "Incident time and scene",
+          "fields": [
+            {
+              "key": "incident_date_and_time",
+              "label": "Incident date and time",
+              "units": 1.15
+            },
+            {
+              "key": "exact_location",
+              "label": "Exact location",
+              "units": 1.0
+            },
+            {
+              "key": "scene_condition",
+              "label": "Scene condition",
+              "units": 1.25
+            },
+            {
+              "key": "witness_name_and_contact",
+              "label": "Witness name and contact",
+              "units": 1.1
+            },
+            {
+              "key": "manager_or_security_notified",
+              "label": "Manager or security notified",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "response_checks",
+      "title": "Immediate response and evidence",
+      "guidance": "Check actions actually completed; keep observations separate from conclusions.",
+      "blocks": [
+        {
+          "key": "incident_checks",
+          "type": "checklist",
+          "label": "Response and preservation checks",
+          "items": [
+            "Immediate danger or continuing hazard is assessed",
+            "Emergency, first-aid, or other assistance is offered as applicable",
+            "Area is controlled without destroying relevant evidence",
+            "Manager or security response time is recorded",
+            "Guest account is preserved in the guest's words",
+            "Witness contact and objective observations are recorded",
+            "Photographs or video references preserve source and custody",
+            "Affected property or service is identified for correction",
+            "Guest received the follow-up contact and expected timing"
+          ]
+        },
+        {
+          "key": "guest_account",
+          "type": "textarea",
+          "label": "Guest account and objective observations",
+          "fields": [
+            {
+              "key": "guest_account_observed_condition_witness_statement_and_time",
+              "label": "Guest account, observed condition, witness statement, and time"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "immediate_response",
+          "type": "textarea",
+          "label": "Immediate care, security, or property response",
+          "fields": [
+            {
+              "key": "immediate_response_assistance_offered_action_owner_and_time",
+              "label": "Immediate response, assistance offered, action owner, and time"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "followup",
+      "title": "Evidence custody and guest follow-up",
+      "guidance": "Assign evidence, property action, and the next guest contact.",
+      "blocks": [
+        {
+          "key": "followup_details",
+          "type": "fields",
+          "label": "Follow-up ownership",
+          "fields": [
+            {
+              "key": "evidence_or_photo_custody_reference",
+              "label": "Evidence or photo custody reference",
+              "units": 1.15
+            },
+            {
+              "key": "property_or_service_correction",
+              "label": "Property or service correction",
+              "units": 1.0
+            },
+            {
+              "key": "guest_follow_up_owner",
+              "label": "Guest follow-up owner",
+              "units": 1.25
+            },
+            {
+              "key": "next_contact_date_and_time",
+              "label": "Next contact date and time",
+              "units": 1.1
+            },
+            {
+              "key": "claim_or_restricted_record_route",
+              "label": "Claim or restricted-record route",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "incident_receipt",
+          "type": "signatures",
+          "label": "Report and manager receipt",
+          "fields": [
+            {
+              "key": "reporting_staff_member_and_date",
+              "label": "Reporting staff member and date",
+              "units": 1.15
+            },
+            {
+              "key": "manager_on_duty_and_date",
+              "label": "Manager on duty and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt records factual handoff and does not assign fault."
+        }
+      ]
+    }
+  ]
+}

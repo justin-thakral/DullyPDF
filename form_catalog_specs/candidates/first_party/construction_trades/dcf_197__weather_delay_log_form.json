@@ -1,0 +1,245 @@
+{
+  "catalog_id": "construction_trades/dcf_197__weather_delay_log_form",
+  "description": "For weather delay, this log form records observed conditions, workability thresholds, lost or redirected activity, protection measures, and forecast outlook. Its supporting evidence includes on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Delay opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Delay site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Delay contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Delay superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Delay due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this weather delay record to its evidence.",
+          "key": "record_routing",
+          "label": "Weather Delay Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Date",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Site",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Scheduled activities",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Contractual weather basis",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Crew",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture date, site, scheduled activities, contractual weather basis, crew, equipment, and affected milestones for this weather delay.",
+          "key": "core_identity",
+          "label": "Weather Delay Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify date, site, scheduled activities, contractual weather basis, crew, equipment, and affected milestones for this weather delay record.",
+      "key": "identity_1",
+      "title": "Log Reference and Review Owner"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Delay when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Delay measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Delay evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Delay result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For weather delay, record on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record.",
+          "key": "evidence_register",
+          "label": "Weather Delay Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "On-site readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Weather source",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Daily reports",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Schedule fragment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every weather delay evidence source.",
+          "key": "evidence_sources",
+          "label": "Weather Delay Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Delay dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Delay owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Delay escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep weather delay items open through verification.",
+          "key": "open_item_register",
+          "label": "Weather Delay Open Items and Next Actions",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Delay reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved weather delay entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Weather Delay Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Weather Delay Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For weather delay, explain verified impact, notice status, schedule analysis, mitigation assignment, recovery plan, and claim-record linkage; transfer each weather delay open entry to the weather delay successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Weather Delay Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Stop exposed or unsafe operations when wind, lightning, heat, cold, precipitation, or ground conditions exceed controls. Route unresolved weather delay work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Weather Delay Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support weather delay findings with on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record.",
+      "key": "observation_2",
+      "title": "Recorded Findings and Actions"
+    }
+  ],
+  "slug": "weather-delay-log-form",
+  "source_filename": "dcf_197__weather_delay_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Weather Delay Log Form: weather-impact documentation and recovery planning using date, observed conditions, and on-site readings.",
+  "title": "Weather Delay Log Form",
+  "use_case": "Use the log form during weather-impact documentation and recovery planning when the weather delay record must identify date, site, scheduled activities, contractual weather basis, crew, equipment, and affected milestones. Complete the applicable handoff for verified impact, notice status, schedule analysis, mitigation assignment, recovery plan, and claim-record linkage."
+}

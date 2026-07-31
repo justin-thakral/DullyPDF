@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_165__septic_service_form",
+  "source_section": "field_service",
+  "source_filename": "dhs_165__septic_service_form.pdf",
+  "slug": "septic-service-form",
+  "title": "Septic Service Form",
+  "subtitle": "Residential Septic Service: captures actual activity and handoff.",
+  "description": "Septic Service Form covers tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area. The septic service coordinator records Residential Septic Service activity, quantities, variance, and handoff. Septic Service Form keeps Residential Septic Service exceptions visible until the septic service coordinator handoff.",
+  "use_case": "Use Septic Service Form at property, tank access, pump chamber, distribution area, and protected ground surface. Document tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area identity before Residential Septic Service begins. Compare tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area findings with stated Residential Septic Service criteria; route unresolved Residential Septic Service issues to qualified septic-system reviewer. For Septic Service Form, confirm requirements for Residential Septic Service. Ask qualified septic-system reviewer to review Residential Septic Service conditions beyond the septic service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "operation_header",
+      "title": "Customer and asset identity",
+      "guidance": "Identify the Residential Septic Service entry, responsible parties, and operating window.",
+      "blocks": [
+        {
+          "key": "operation_context",
+          "type": "fields",
+          "label": "Record and operating context",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Septic job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "operation_date",
+              "label": "Date or operating period",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Septic customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Septic address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_person",
+              "label": "Septic Service Coordinator",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Septic Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and service reference",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "System type, tank or component identifier, and access point",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Occupancy, last service, symptom, and weather history",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Septic Service identifier printed on tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "activity_record",
+      "title": "Service observation and activity evidence",
+      "guidance": "Enter one Residential Septic Service row per task, item, reading, or event.",
+      "blocks": [
+        {
+          "key": "plan_and_window",
+          "type": "fields",
+          "label": "Plan and operating window",
+          "fields": [
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.65
+            },
+            {
+              "key": "planned_result",
+              "label": "Planned result or target",
+              "units": 1.2
+            },
+            {
+              "key": "procedure",
+              "label": "Procedure, order, label, or instruction reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "activity_lines",
+          "type": "table",
+          "label": "Service actions, materials, readings, and results",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Service action or task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Area, unit, or component",
+              "units": 1.0
+            },
+            {
+              "key": "part",
+              "label": "Part, material, or method",
+              "units": 1.0
+            },
+            {
+              "key": "result",
+              "label": "Reading or actual result",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Performed by",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "operation_controls",
+      "title": "Service variance and exception handling",
+      "guidance": "Record Residential Septic Service variances, affected scope, immediate control, and owner.",
+      "blocks": [
+        {
+          "key": "operating_checks",
+          "type": "checklist",
+          "label": "Residential Septic Service operating checks",
+          "items": [
+            "Access cover, riser, seal, and surface condition",
+            "Liquid level, scum, sludge, inlet, outlet, and baffle observation",
+            "Pump, float, alarm, control, and electrical indication",
+            "Backup, odor, surfacing effluent, and wet-area evidence",
+            "Vehicle, excavation, fall, biological, and confined-space boundary",
+            "Post-service level, closure, alarm, and flow observation"
+          ],
+          "guidance": "Complete the Residential Septic Service checks that apply to this tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area activity; explain every unchecked required item."
+        },
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when access safety, containment, backup, structural integrity, disposal, or qualified escalation remains unresolved. Protect tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area; document the Residential Septic Service notification and await qualified septic-system reviewer direction."
+        },
+        {
+          "key": "operation_exceptions",
+          "type": "checklist",
+          "label": "Stop, hold, or correction triggers",
+          "items": [
+            "Unsafe opening, fall, biological, or confined-space exposure",
+            "Backup or surfacing effluent threatens occupancy",
+            "Damaged tank or component requires excavation",
+            "Electrical, structural, or regulatory work outside scope"
+          ],
+          "guidance": "For Residential Septic Service, identify affected tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area scope; ask septic service coordinator to document the Residential Septic Service immediate control before continuing."
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Exception, change from plan, affected scope, and immediate response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Exception, change from plan, affected scope, and immediate response",
+              "multiline": true
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "operation_result",
+      "title": "Service outcome and customer handoff",
+      "guidance": "State the Residential Septic Service outcome, restrictions, next action, and receiving owner.",
+      "blocks": [
+        {
+          "key": "result_evidence",
+          "type": "checklist",
+          "label": "Supporting records retained",
+          "items": [
+            "Access and component photographs",
+            "Measured level or service quantity",
+            "Waste transport or disposal record",
+            "Cover closure, alarm, and customer restriction evidence"
+          ],
+          "guidance": "Attach or link proof for tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area; mark only Residential Septic Service evidence present in that record."
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Operation outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Service completed",
+                "Completed with limitation",
+                "Additional work proposed",
+                "Temporarily restored",
+                "Stopped or not completed"
+              ]
+            },
+            {
+              "key": "completed_at",
+              "label": "Completion date and time",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_action",
+              "label": "Remaining action or restriction",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner or receiving party",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Due date or trigger",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Residential Septic Service outcome details, unresolved constraints, and receiving instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Residential Septic Service outcome details, unresolved constraints, and receiving instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Document Residential Septic Service outcome facts, unresolved operating limits, receiver directions, and the accountable next action."
+        },
+        {
+          "key": "operation_handoff",
+          "type": "signatures",
+          "label": "Operator and handoff acknowledgment",
+          "fields": [
+            {
+              "key": "operator_signature",
+              "label": "Operator or preparer",
+              "units": 1.1
+            },
+            {
+              "key": "operator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver, supervisor, or customer",
+              "units": 1.2
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "The Residential Septic Service acknowledgment records the tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area outcome. It cannot conceal a Residential Septic Service hold, exception, or septic service coordinator restriction."
+        }
+      ]
+    }
+  ]
+}

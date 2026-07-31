@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2241__equipment_handoff_checklist",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2241__equipment_handoff_checklist.pdf",
+  "slug": "equipment-handoff-checklist",
+  "title": "Equipment Handoff Checklist",
+  "subtitle": "Equipment Handoff: documents findings, limits, and disposition.",
+  "description": "Equipment Handoff Checklist covers equipment unit, accessory set, condition, configuration, custody, and return obligation. The equipment custody coordinator records Equipment Handoff criteria, findings, restrictions, and follow-up. Equipment Handoff Checklist keeps Equipment Handoff exceptions visible until the equipment custody coordinator handoff.",
+  "use_case": "Use Equipment Handoff Checklist at issuing location, receiving location, transport path, and return point. Document equipment unit, accessory set, condition, configuration, custody, and return obligation identity before Equipment Handoff begins. Compare equipment unit, accessory set, condition, configuration, custody, and return obligation findings with stated Equipment Handoff criteria; route unresolved Equipment Handoff issues to asset-control reviewer. For Equipment Handoff Checklist, confirm requirements for Equipment Handoff. Ask asset-control reviewer to review Equipment Handoff conditions beyond the equipment custody coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspection scope and subject identity",
+      "guidance": "For Equipment Handoff, identify responsible parties, issuing location, receiving location, transport path, and return point, and the linked equipment unit, accessory set, condition, configuration, custody, and return obligation source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Custodian / recipient",
+              "units": 1.1666666666666667
+            },
+            {
+              "key": "location",
+              "label": "Issue / return point",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Equipment Handoff identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Handoff, project, and request number",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Asset tag, serial, model, and quantity",
+              "units": 2.111111111111111
+            },
+            {
+              "key": "identity_3",
+              "label": "Accessory, key, credential, software, and configuration identifiers",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist points, conditions, and actions",
+      "guidance": "Capture Equipment Handoff facts for equipment unit, accessory set, condition, configuration, custody, and return obligation; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Equipment Handoff inspection checks",
+          "items": [
+            "Pre-handoff condition and function",
+            "Accessory and consumable count",
+            "Configuration, data, and account boundary",
+            "Recipient identity and authority",
+            "Custody date, location, and intended use",
+            "Return condition, due date, and unresolved defect"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection disposition and reviewer acknowledgment",
+      "guidance": "List each unresolved Equipment Handoff finding with its restriction, correction owner, and reinspection trigger. Equipment Custody Coordinator records reviewer disposition.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Recipient not authorized",
+            "Asset, accessory, or condition mismatch",
+            "Data or credential not cleared",
+            "Unsafe or failed equipment cannot be released",
+            "Asset and serial photographs",
+            "Condition and function test",
+            "Accessory checklist and configuration record",
+            "Signed custody and return evidence"
+          ],
+          "guidance": "Pause Equipment Handoff when authority, identity, condition, data protection, accessory accounting, or custody remains unresolved. Retain the available Equipment Handoff proof and route unresolved equipment unit, accessory set, condition, configuration, custody, and return obligation scope to equipment custody coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Equipment Custody Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Asset-Control Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

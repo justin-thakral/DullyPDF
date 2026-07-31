@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2134__used_car_inspection_tracking_log",
+  "source_section": "automotive_service",
+  "source_filename": "das_2134__used_car_inspection_tracking_log.pdf",
+  "slug": "used-car-inspection-tracking-log",
+  "title": "Used Car Inspection Tracking Log",
+  "subtitle": "Used Vehicle Inspection: preserves changes and next triggers.",
+  "description": "Used Car Inspection Tracking Log covers vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input. The vehicle inspection coordinator records Used Vehicle Inspection events, owners, exceptions, and next triggers. Used Car Inspection Tracking Log keeps Used Vehicle Inspection exceptions visible until the vehicle inspection coordinator handoff.",
+  "use_case": "Use Used Car Inspection Tracking Log at inspection facility, lift bay, controlled test route, and document review area. Document vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input identity before Used Vehicle Inspection begins. Compare vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input findings with stated Used Vehicle Inspection criteria; route unresolved Used Vehicle Inspection issues to qualified independent automotive reviewer. For Used Car Inspection Tracking Log, confirm requirements for Used Vehicle Inspection. Ask qualified independent automotive reviewer to review Used Vehicle Inspection conditions beyond the vehicle inspection coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking period and subject identity",
+      "guidance": "For Used Vehicle Inspection, identify responsible parties, inspection facility, lift bay, controlled test route, and document review area, and the linked vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Used Vehicle Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Inspection, client, and seller",
+              "units": 1.6666666666666667
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, year, make, model, and mileage",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_3",
+              "label": "History, title, service-record, and listing references",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status events and next-control history",
+      "guidance": "Capture Used Vehicle Inspection facts for vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Used Vehicle Inspection tracked controls",
+          "items": [
+            "Identity and displayed-mileage consistency",
+            "Body, glass, structure, paint, and prior-repair indicators",
+            "Engine, transmission, cooling, fuel, and exhaust operation",
+            "Brakes, steering, suspension, tires, and wheels",
+            "Electrical, controls, safety features, and accessories",
+            "Road test, scan, leaks, measurements, and inspection limitations"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Status decision and next trigger",
+      "guidance": "For Used Vehicle Inspection, preserve each open variance with its current state, accountable owner, and next dated update. Vehicle Inspection Coordinator performs period review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "VIN or history inconsistency",
+            "Unsafe road-test condition",
+            "Material area inaccessible",
+            "Finding presented as guarantee or valuation without basis",
+            "VIN and odometer evidence",
+            "Condition and defect photographs",
+            "Scan and measurement record",
+            "Limitations and prioritized finding summary"
+          ],
+          "guidance": "Pause Used Vehicle Inspection when identity, safe testing, access limitation, material defect, or communication boundary remains unresolved. Retain the available Used Vehicle Inspection proof and route unresolved vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input scope to vehicle inspection coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Vehicle Inspection Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Independent Automotive Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

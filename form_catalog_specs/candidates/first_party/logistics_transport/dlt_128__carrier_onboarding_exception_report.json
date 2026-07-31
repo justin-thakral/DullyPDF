@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_128__carrier_onboarding_exception_report",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_128__carrier_onboarding_exception_report.pdf",
+  "slug": "carrier-onboarding-exception-report",
+  "title": "Carrier Onboarding Exception Report",
+  "subtitle": "Carrier Onboarding: preserves facts, evidence, and actions.",
+  "description": "Carrier Onboarding Exception Report covers carrier organization, operating authority, insurance, contacts, equipment, controls, and approval. The carrier onboarding coordinator records Carrier Onboarding chronology, evidence, containment, and effectiveness. Carrier Onboarding Exception Report keeps Carrier Onboarding exceptions visible until the carrier onboarding coordinator handoff.",
+  "use_case": "Use Carrier Onboarding Exception Report at carrier file, qualification system, dispatch access, and document repository. Document carrier organization, operating authority, insurance, contacts, equipment, controls, and approval identity before Carrier Onboarding begins. Compare carrier organization, operating authority, insurance, contacts, equipment, controls, and approval findings with stated Carrier Onboarding criteria; route unresolved Carrier Onboarding issues to authorized carrier-compliance reviewer. For Carrier Onboarding Exception Report, confirm requirements for Carrier Onboarding. Ask authorized carrier-compliance reviewer to review Carrier Onboarding conditions beyond the carrier onboarding coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Carrier Onboarding incident details",
+      "guidance": "Record when the issue was discovered, who reported it, the exact affected subject, and the initial condition.",
+      "blocks": [
+        {
+          "key": "incident_header",
+          "type": "fields",
+          "label": "Incident header",
+          "fields": [
+            {
+              "key": "incident_number",
+              "label": "Carrier onboarding record ID",
+              "units": 1.0
+            },
+            {
+              "key": "event_date",
+              "label": "Event or discovery date",
+              "units": 0.7
+            },
+            {
+              "key": "event_time",
+              "label": "Event or discovery time",
+              "units": 0.65
+            },
+            {
+              "key": "reported_by",
+              "label": "Carrier Onboarding Coordinator",
+              "units": 1.05
+            },
+            {
+              "key": "party",
+              "label": "Carrier / vendor account",
+              "units": 1.1
+            },
+            {
+              "key": "location",
+              "label": "Qualification file / dispatch access",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Carrier Onboarding identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Carrier legal and operating names",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Authority, tax, insurance, and vendor identifiers",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Dispatch, safety, claims, billing, and after-hours contacts",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Carrier Onboarding identifier printed on carrier organization, operating authority, insurance, contacts, equipment, controls, and approval or its linked source record."
+        },
+        {
+          "key": "initial_account",
+          "type": "textarea",
+          "label": "Initial factual account, affected scope, and immediate containment",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Initial factual account, affected scope, and immediate containment",
+              "multiline": true
+            }
+          ],
+          "height": 70,
+          "guidance": "Separate direct observation from reported information, assumption, and unknown fact."
+        }
+      ]
+    },
+    {
+      "key": "incident_chronology",
+      "title": "Chronology, custody, and response",
+      "guidance": "Enter events in time order and identify the source of each fact and the person responsible for the response.",
+      "blocks": [
+        {
+          "key": "chronology",
+          "type": "table",
+          "label": "Incident chronology",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date and time",
+              "units": 0.8
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact, event, or custody change",
+              "units": 1.3
+            },
+            {
+              "key": "source",
+              "label": "Source, witness, record, or device",
+              "units": 1.0
+            },
+            {
+              "key": "response",
+              "label": "Immediate response or notification",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "chronology_gaps",
+          "type": "textarea",
+          "label": "Unknown times, conflicting accounts, missing custody events, and source limitations",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unknown times, conflicting accounts, missing custody events, and source limitations",
+              "multiline": true
+            }
+          ],
+          "height": 52
+        }
+      ]
+    },
+    {
+      "key": "incident_evidence",
+      "title": "Affected scope, evidence, and escalation",
+      "guidance": "Preserve volatile evidence, distinguish affected from unaffected scope, and keep required notifications visible.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when carrier identity, authority, insurance, fraud control, or authorized approval remains unresolved. Protect carrier organization, operating authority, insurance, contacts, equipment, controls, and approval; document the Carrier Onboarding notification and await authorized carrier-compliance reviewer direction."
+        },
+        {
+          "key": "preserved_evidence",
+          "type": "checklist",
+          "label": "Evidence preserved or linked",
+          "items": [
+            "Source authority and insurance evidence",
+            "Verified contact and identity record",
+            "Capability and control questionnaire",
+            "Approval decision and expiry monitoring"
+          ],
+          "guidance": "Attach or link proof for carrier organization, operating authority, insurance, contacts, equipment, controls, and approval; mark only Carrier Onboarding evidence present in that record."
+        },
+        {
+          "key": "investigation_checks",
+          "type": "checklist",
+          "label": "Carrier Onboarding investigation points",
+          "items": [
+            "Authority and operating scope",
+            "Insurance type, limit, term, and source",
+            "Equipment and service capability",
+            "Safety, security, tracking, and cargo controls",
+            "Payment, fraud, identity, and communication verification",
+            "Approval scope, conditions, expiration, and re-review"
+          ],
+          "guidance": "Record what was checked without converting an allegation, inference, or unavailable fact into an observation."
+        },
+        {
+          "key": "severity_and_escalation",
+          "type": "checklist",
+          "label": "Severity, notification, and escalation triggers",
+          "items": [
+            "Identity or ownership cannot be verified",
+            "Authority or insurance incomplete",
+            "Fraud or contact inconsistency",
+            "Approval requested beyond reviewer authority"
+          ],
+          "guidance": "For Carrier Onboarding, identify affected carrier organization, operating authority, insurance, contacts, equipment, controls, and approval scope; ask carrier onboarding coordinator to document the Carrier Onboarding immediate control before continuing."
+        }
+      ]
+    },
+    {
+      "key": "incident_actions",
+      "title": "Corrective action, disposition, and review",
+      "guidance": "Track containment through disposition and an effectiveness check; do not close an incident merely because the immediate event stopped.",
+      "blocks": [
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Corrective and preventive actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action or affected-scope disposition",
+              "units": 1.3
+            },
+            {
+              "key": "basis",
+              "label": "Supported cause, requirement, or reason",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "verification",
+              "label": "Completion or effectiveness evidence",
+              "units": 1.1
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "incident_status",
+          "type": "fields",
+          "label": "Incident status",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contained; investigation open",
+                "Corrective action in progress",
+                "Affected scope held",
+                "Ready for closure review",
+                "Escalated or externally referred"
+              ]
+            },
+            {
+              "key": "lead",
+              "label": "Investigation or action lead",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            },
+            {
+              "key": "next_review",
+              "label": "Next action or effectiveness-review trigger",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "incident_review",
+          "type": "signatures",
+          "label": "Incident preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by authorized carrier-compliance reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

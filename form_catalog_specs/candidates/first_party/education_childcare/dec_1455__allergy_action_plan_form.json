@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1455__allergy_action_plan_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1455__allergy_action_plan_form.pdf",
+  "slug": "allergy-action-plan-form",
+  "title": "Allergy Action Plan Form",
+  "subtitle": "Capture allergen source, exposure route, current plan, and emergency supply; confirm symptom threshold and guardian update.",
+  "description": "Allergy Action Plan records allergen source, exposure route, current plan, emergency supply, symptom threshold, and guardian update. Allergy Action Plan evidence stays linked.",
+  "use_case": "Use this allergy action plan operational record when staff must document allergen source and exposure route. Reconcile current plan, emergency supply, symptom threshold, and guardian update before the allergy action plan handoff. Use the current clinician action-plan reference, allergen list, medication-label match, emergency-supply seal and expiration, exposure record, and guardian receipt. Unlike a medication administration record, this plan centers exposure prevention, recognized threshold signs, emergency-supply access, school response roles, and return to review. Ask the assigned allergy action plan reviewer to confirm allergen source against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Allergy Action Plan starting details",
+      "guidance": "Preserve the named allergen, likely exposure setting, current qualified plan, emergency supply location, symptom threshold, and guardian notification route. Keep any urgent allergy action plan issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Allergy Action Plan people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "allergen_source",
+              "label": "Allergen source",
+              "units": 1.2
+            },
+            {
+              "key": "exposure_route",
+              "label": "Exposure route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Allergy Action Plan task details",
+          "fields": [
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.15
+            },
+            {
+              "key": "emergency_supply",
+              "label": "Emergency supply",
+              "units": 1.0
+            },
+            {
+              "key": "symptom_threshold",
+              "label": "Symptom threshold",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_update",
+              "label": "Guardian update",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Allergy Action Plan exception review and activity",
+      "guidance": "Record each meaningful allergy action plan event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Allergy Action Plan activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "allergen_source",
+              "label": "Allergen source",
+              "units": 1.1
+            },
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.25
+            },
+            {
+              "key": "symptom_threshold",
+              "label": "Symptom threshold",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Allergy Action Plan change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 44
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Allergy Action Plan completion and handoff",
+      "guidance": "Leave the current allergy action plan result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Allergy Action Plan final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Allergy Action Plan completion receipt",
+          "fields": [
+            {
+              "key": "responsible_teacher_or_program_staff_and_date",
+              "label": "Responsible teacher or program staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded allergy action plan task status."
+        }
+      ]
+    }
+  ]
+}

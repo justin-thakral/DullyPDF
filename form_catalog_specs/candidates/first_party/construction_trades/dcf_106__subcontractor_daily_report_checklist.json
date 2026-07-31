@@ -1,0 +1,354 @@
+{
+  "catalog_id": "construction_trades/dcf_106__subcontractor_daily_report_checklist",
+  "description": "For subcontractor daily report, this checklist records shift plan, trade activity, coordination dependencies, inspections, and remaining work. Its supporting evidence includes time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Daily opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Daily site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Daily contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Daily superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Daily due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this subcontractor daily report record to its evidence.",
+          "key": "record_routing",
+          "label": "Subcontractor Daily Report Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Crew roster",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Work areas",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Installed quantities",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Equipment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture crew roster, work areas, installed quantities, equipment, deliveries, and site conditions for this subcontractor daily report.",
+          "key": "core_identity",
+          "label": "Subcontractor Daily Report Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify crew roster, work areas, installed quantities, equipment, deliveries, and site conditions for this subcontractor daily report record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Shift plan",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Trade activity",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Coordination dependencies",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Inspections",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For subcontractor daily report, record shift plan, trade activity, coordination dependencies, inspections, and remaining work.",
+          "key": "task_inputs",
+          "label": "Subcontractor Daily Report Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the subcontractor daily report condition before marking.",
+          "items": [
+            "Verify shift plan",
+            "Verify trade activity",
+            "Verify coordination dependencies",
+            "Verify inspections",
+            "Verify remaining work"
+          ],
+          "key": "task_checks",
+          "label": "Subcontractor Daily Report Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Daily checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Daily review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Daily qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Daily check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each subcontractor daily report result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Subcontractor Daily Report Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Stop and notify supervision for unsafe conditions, concealed conflicts, blocked access, or unapproved extra work. Route unresolved subcontractor daily report work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Subcontractor Daily Report Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For subcontractor daily report, capture shift plan, trade activity, coordination dependencies, inspections, and remaining work.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Stop and notify supervision for unsafe conditions, concealed conflicts, blocked access, or unapproved extra work. Do not release affected subcontractor daily report work.",
+          "key": "stop_boundary",
+          "label": "Subcontractor Daily Report Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Daily exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Daily correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Daily escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close subcontractor daily report exceptions with verification.",
+          "key": "exception_register",
+          "label": "Subcontractor Daily Report Exception and Corrective Action",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Daily notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Daily notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Daily interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Daily review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Daily release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep subcontractor daily report controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Subcontractor Daily Report Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Stop and notify supervision for unsafe conditions, concealed conflicts, blocked access, or unapproved extra work. Control and route each subcontractor daily report exception.",
+      "key": "exception_3",
+      "title": "Checklist Exception and Controls"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Daily when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Daily measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Daily evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Daily result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For subcontractor daily report, record time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+          "key": "evidence_register",
+          "label": "Subcontractor Daily Report Findings, Measurements, and Evidence",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Time-stamped progress photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Quantity measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Delivery tickets",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Inspector observations",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every subcontractor daily report evidence source.",
+          "key": "evidence_sources",
+          "label": "Subcontractor Daily Report Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked subcontractor daily report items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Subcontractor Daily Report Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Subcontractor Daily Report Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State subcontractor daily report limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Subcontractor Daily Report Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support subcontractor daily report findings with time-stamped progress photos, quantity measurements, delivery tickets, and inspector observations.",
+      "key": "observation_4",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "subcontractor-daily-report-checklist",
+  "source_filename": "dcf_106__subcontractor_daily_report_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Subcontractor Daily Report Checklist: daily subcontractor production reporting using crew roster, shift plan, and time-stamped progress photos.",
+  "title": "Subcontractor Daily Report Checklist",
+  "use_case": "Use the checklist during daily subcontractor production reporting when the subcontractor daily report record must identify crew roster, work areas, installed quantities, equipment, deliveries, and site conditions. Complete the applicable handoff for daily certification, unresolved-item carryover, next-shift plan, and project-record upload."
+}

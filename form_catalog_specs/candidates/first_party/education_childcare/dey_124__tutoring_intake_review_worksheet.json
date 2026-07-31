@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_124__tutoring_intake_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_124__tutoring_intake_review_worksheet.pdf",
+  "slug": "tutoring-intake-review-worksheet",
+  "title": "Tutoring Intake Review Worksheet",
+  "subtitle": "Capture learner goal, source work, session schedule, and support need; confirm tutor match and progress checkpoint.",
+  "description": "Tutoring Intake records learner goal, source work, session schedule, support need, tutor match, and progress checkpoint. Tutoring Intake evidence stays linked.",
+  "use_case": "Use this tutoring intake evidence-based review when staff must document learner goal and source work. Reconcile session schedule, support need, tutor match, and progress checkpoint before the tutoring intake handoff. Use the intake request, learner work sample, teacher referral if provided, availability calendar, tutor-match rationale, support-route acknowledgment, and first-session plan. For tutoring intake review use, cite source. Match the tutoring intake family or learner wording. Preserve the tutoring intake amendment history and supersession date. Link the tutoring intake source version and meeting notes. Record the tutoring intake learner response and accessibility support. Close the tutoring intake recipient list. Verify tutoring intake documentary provenance. Resolve tutoring intake amendments, superseded wording, and archival distribution for tutoring intake. Ask the assigned tutoring intake reviewer to confirm learner goal against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Tutoring Intake contact and reference",
+      "guidance": "Preserve learner goal, source assignment or assessment, preferred schedule, support need, tutor match factors, session plan, and initial progress checkpoint.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Tutoring Intake people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "learner_goal",
+              "label": "Learner goal",
+              "units": 1.1
+            },
+            {
+              "key": "source_work",
+              "label": "Source work",
+              "units": 1.2
+            },
+            {
+              "key": "session_schedule",
+              "label": "Session schedule",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Tutoring Intake task details",
+          "fields": [
+            {
+              "key": "support_need",
+              "label": "Support need",
+              "units": 1.15
+            },
+            {
+              "key": "tutor_match",
+              "label": "Tutor match",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "Tutoring Intake exception review and discussion",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "Tutoring Intake strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_learner_goal",
+              "label": "Strength, progress, or successful support related to learner goal"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Tutoring Intake questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_session_schedule",
+              "label": "Concern, missing context, or question about session schedule"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "Tutoring Intake participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_support_need",
+              "label": "Priority, preference, or proposed support for support need"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "Tutoring Intake action plan and handoff",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "Tutoring Intake agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "Tutoring Intake follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "Tutoring Intake review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,300 @@
+{
+  "catalog_id": "business_operations/dbo_1806__internal_approval_checklist",
+  "description": "For internal approval, this checklist records decision requested, authority basis, options, recommendation, impact, conditions, required reviewers, and expiry. Its supporting evidence includes supporting analysis, policy reference, budget proof, reviewer comments, conflict disclosure, and prior decisions.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Approval opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Approval site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Approval contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Approval process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Approval due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this internal approval record to its evidence.",
+          "key": "record_routing",
+          "label": "Internal Approval Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Request type",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Business unit",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Requester",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Approval owner",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Value",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Effective date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture request type, business unit, requester, responsible owner, value, effective date, related records, and confidentiality for this internal approval.",
+          "key": "core_identity",
+          "label": "Internal Approval Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify request type, business unit, requester, responsible owner, value, effective date, related records, and confidentiality for this internal approval record.",
+      "key": "identity_1",
+      "title": "Process Checkpoint and Owner"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Decision requested",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Options",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Recommendation",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Impact",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Conditions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For internal approval, record decision requested, authority basis, options, recommendation, impact, conditions, required reviewers, and expiry.",
+          "key": "task_inputs",
+          "label": "Internal Approval Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the internal approval condition before marking.",
+          "items": [
+            "Verify delegation schedule, monetary threshold, business unit, and approval expiry",
+            "Record recusal, related-party interest, segregation of duties, and alternate approver",
+            "Distinguish precedent-setting decision, one-time exception, standing authority, and ratification",
+            "Protect board material, personnel matter, investigation record, and confidential rationale",
+            "State conditions precedent, continuing conditions, renewal trigger, and revocation event",
+            "Preserve decision citation, meeting resolution, dissent, notification list, and reliance window"
+          ],
+          "key": "task_checks",
+          "label": "Internal Approval Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Approval checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Approval review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Approval qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Approval check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each internal approval result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Internal Approval Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Route outside-authority, conflicted, incomplete, regulated, privacy-sensitive, or precedent-setting decisions for review. Route unresolved internal approval work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Internal Approval Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For internal approval, capture decision requested, authority basis, options, recommendation, impact, conditions, required reviewers, and expiry.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Approval when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Approval measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Approval evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Approval result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For internal approval, record supporting analysis, policy reference, budget proof, reviewer comments, conflict disclosure, and prior decisions.",
+          "key": "evidence_register",
+          "label": "Internal Approval Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Supporting analysis",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Policy reference",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Budget proof",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Reviewer comments",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Conflict disclosure",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every internal approval evidence source.",
+          "key": "evidence_sources",
+          "label": "Internal Approval Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked internal approval items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Internal Approval Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Internal Approval Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State internal approval limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Internal Approval Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support internal approval findings with supporting analysis, policy reference, budget proof, reviewer comments, conflict disclosure, and prior decisions.",
+      "key": "observation_3",
+      "title": "Checklist Finding Record"
+    }
+  ],
+  "slug": "internal-approval-checklist",
+  "source_filename": "dbo_1806__internal_approval_checklist.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Internal Approval Checklist: controlled internal decision and approval record using request type, decision requested, and supporting analysis.",
+  "title": "Internal Approval Checklist",
+  "use_case": "Use the checklist during controlled internal decision and approval record when the internal approval record must identify request type, business unit, requester, responsible owner, value, effective date, related records, and confidentiality. Complete the applicable handoff for approval or rejection, conditions, effective period, implementation handoff, notification, and retained decision record."
+}

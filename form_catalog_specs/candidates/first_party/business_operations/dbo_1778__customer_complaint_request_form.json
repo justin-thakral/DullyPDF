@@ -1,0 +1,357 @@
+{
+  "catalog_id": "business_operations/dbo_1778__customer_complaint_request_form",
+  "description": "For customer complaint, this request form records customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits. Its supporting evidence includes communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Complaint opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Complaint site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Complaint contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Complaint process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Complaint due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this customer complaint record to its evidence.",
+          "key": "record_routing",
+          "label": "Customer Complaint Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Customer account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Contact",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Product or service",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Transaction",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Channel",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture customer account, contact, product or service, transaction, channel, affected location, and prior complaint history for this customer complaint.",
+          "key": "core_identity",
+          "label": "Customer Complaint Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify customer account, contact, product or service, transaction, channel, affected location, and prior complaint history for this customer complaint record.",
+      "key": "identity_1",
+      "title": "Business Request Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Customer statement",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Desired resolution",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Urgency",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Safety or privacy screen",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Ownership",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For customer complaint, record customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits.",
+          "key": "task_inputs",
+          "label": "Customer Complaint Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer Complaint Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State customer complaint outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Customer Complaint Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Complaint work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Complaint owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate customer complaint items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Customer Complaint Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Escalate threats, injury, discrimination, fraud, privacy exposure, regulator contact, media risk, or remedy beyond authority. Route unresolved customer complaint work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Customer Complaint Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For customer complaint, capture customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits.",
+      "key": "task_2",
+      "title": "Requested Commitment and Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Complaint decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Complaint approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Complaint schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate customer complaint disposition.",
+          "key": "disposition",
+          "label": "Customer Complaint Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer Complaint Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the customer complaint decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Customer Complaint Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Complaint requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Complaint process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Customer Complaint Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the customer complaint next step from communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+      "key": "decision_3",
+      "title": "Sponsor Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "response_status",
+              "label": "Response status",
+              "options": [
+                "Select response status",
+                "Approved for next step",
+                "Scheduled",
+                "More information required",
+                "Declined with reason",
+                "Escalated for review"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "response_date",
+              "label": "Response date",
+              "units": 1.0
+            },
+            {
+              "key": "response_owner",
+              "label": "Responding process owner",
+              "units": 1.0
+            },
+            {
+              "key": "requester_notice",
+              "label": "Requester notice date",
+              "units": 1.0
+            },
+            {
+              "key": "notice_method",
+              "label": "Notice method",
+              "units": 1.0
+            },
+            {
+              "key": "response_record",
+              "label": "Response record location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Return the customer complaint response to the requester and record.",
+          "key": "request_response",
+          "label": "Customer Complaint Response and Notice",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question or information needed",
+              "units": 2.6
+            },
+            {
+              "key": "owner",
+              "label": "Assigned process owner",
+              "units": 1.7
+            },
+            {
+              "key": "due",
+              "label": "Due or response date",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Response or decision evidence",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Keep unresolved customer complaint questions visible to closure.",
+          "key": "request_followup",
+          "label": "Customer Complaint Open Questions and Follow-Up",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer Complaint Requester Message and Conditions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State the customer complaint response, conditions, next action, and contact for questions.",
+          "height": 43,
+          "key": "requester_message",
+          "label": "Customer Complaint Requester Message and Conditions",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close the customer complaint record with approved response, customer confirmation, credit or corrective action, root-cause referral, trend coding, and closure.",
+      "key": "closeout_4",
+      "title": "Requester Notice and Next Step"
+    }
+  ],
+  "slug": "customer-complaint-request-form",
+  "source_filename": "dbo_1778__customer_complaint_request_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Customer Complaint Request Form: customer complaint intake, investigation, and recovery using customer account, customer statement, and communications.",
+  "title": "Customer Complaint Request Form",
+  "use_case": "Use the request form during customer complaint intake, investigation, and recovery when the customer complaint record must identify customer account, contact, product or service, transaction, channel, affected location, and prior complaint history. Complete the applicable handoff for approved response, customer confirmation, credit or corrective action, root-cause referral, trend coding, and closure."
+}

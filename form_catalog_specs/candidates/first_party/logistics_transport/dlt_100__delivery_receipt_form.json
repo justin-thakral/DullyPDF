@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_100__delivery_receipt_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_100__delivery_receipt_form.pdf",
+  "slug": "dlt-100-delivery-receipt-form-26849c80",
+  "title": "Delivery Receipt Form",
+  "subtitle": "Carrier Delivery Receipt: captures actual activity and handoff.",
+  "description": "Delivery Receipt Form covers transport unit, freight pieces, delivery notation, consignee handoff, and carrier record. The delivery operations coordinator records Carrier Delivery Receipt activity, quantities, variance, and handoff. Delivery Receipt Form keeps Carrier Delivery Receipt exceptions visible until the delivery operations coordinator handoff.",
+  "use_case": "Use Delivery Receipt Form at vehicle, consignee dock, delivery point, and return documentation route. Document transport unit, freight pieces, delivery notation, consignee handoff, and carrier record identity before Carrier Delivery Receipt begins. Compare transport unit, freight pieces, delivery notation, consignee handoff, and carrier record findings with stated Carrier Delivery Receipt criteria; route unresolved Carrier Delivery Receipt issues to carrier documentation reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Operating context and subject identity",
+      "guidance": "For Carrier Delivery Receipt, identify responsible parties, vehicle, consignee dock, delivery point, and return documentation route, and the linked transport unit, freight pieces, delivery notation, consignee handoff, and carrier record source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Activity record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Consignee / customer",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "location",
+              "label": "Delivery point / dock",
+              "units": 1.1666666666666667
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Carrier Delivery Receipt identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Bill, shipment, and delivery number",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, driver, vehicle, trailer, and seal",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Piece, pallet, package, and consignee references",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Activity observations and operating checks",
+      "guidance": "Capture Carrier Delivery Receipt facts for transport unit, freight pieces, delivery notation, consignee handoff, and carrier record; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Activity and result lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Task, item, or service point",
+              "units": 1.25
+            },
+            {
+              "key": "required",
+              "label": "Required result or target",
+              "units": 1.05
+            },
+            {
+              "key": "actual",
+              "label": "Actual result or quantity",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Correction, status, or next action",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Carrier Delivery Receipt operating checks",
+          "items": [
+            "Arrival and delivery timing",
+            "Seal and vehicle condition",
+            "Piece count and notation",
+            "Visible condition at handoff",
+            "Consignee identity and authority",
+            "Exception notation and document distribution"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Retained evidence and next operating action",
+      "guidance": "Resolve open Carrier Delivery Receipt conditions; have delivery operations coordinator assign the next Carrier Delivery Receipt owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Operating exceptions, holds, and retained evidence",
+          "items": [
+            "Count, seal, or freight condition exception",
+            "Consignee refuses or lacks authority",
+            "Notation disputed or incomplete",
+            "Document copy cannot be preserved",
+            "Delivery document and notation",
+            "Seal and freight photographs",
+            "Count and shortage evidence",
+            "Recipient acknowledgment and document copy"
+          ],
+          "guidance": "Pause Carrier Delivery Receipt when count, condition, recipient authority, exception notation, or document custody remains unresolved. Retain the available Carrier Delivery Receipt proof and route unresolved transport unit, freight pieces, delivery notation, consignee handoff, and carrier record scope to delivery operations coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Service outcome and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Recorded activity outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with follow-up",
+                "Partially completed",
+                "Held",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Operator and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Delivery Operations Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Carrier Documentation Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

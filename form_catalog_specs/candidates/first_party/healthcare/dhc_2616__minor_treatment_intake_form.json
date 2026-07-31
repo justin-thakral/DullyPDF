@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2616__minor_treatment_intake_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2616__minor_treatment_intake_form.pdf",
+  "slug": "minor-treatment-intake-form",
+  "title": "Minor Treatment Intake Form",
+  "subtitle": "Capture requested service, guardian authority, qualified decision, and consent limit; confirm encounter result and follow-up.",
+  "description": "Minor Treatment records requested service, guardian authority, qualified decision, consent limit, encounter result, and follow-up. Minor Treatment evidence stays linked.",
+  "use_case": "Use this minor treatment structured intake when staff must document requested service and guardian authority. Reconcile qualified decision, consent limit, encounter result, and follow-up before the minor treatment handoff. Use the service request, minor and guardian identity checks, authority documentation, qualified recommendation, itemized consent, encounter record, aftercare instructions, and follow-up receipt. This authorization centers a minor, guardian or other lawful authority, a named treatment or procedure, qualified explanation, itemized limits, encounter result, aftercare receipt, and guardian follow-up. Ask the assigned minor treatment reviewer to confirm requested service against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Minor Treatment contact and reference",
+      "guidance": "Name requested service, minor and guardian, custody or authority source, qualified decision maker, consent limits, encounter outcome, aftercare route, and follow-up. Keep any urgent minor treatment issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Minor Treatment people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "patient_location_or_service_site",
+              "label": "Patient location or service site",
+              "units": 1.1
+            },
+            {
+              "key": "requested_service",
+              "label": "Requested service",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Minor Treatment task details",
+          "fields": [
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.15
+            },
+            {
+              "key": "qualified_decision",
+              "label": "Qualified decision",
+              "units": 1.0
+            },
+            {
+              "key": "consent_limit",
+              "label": "Consent limit",
+              "units": 1.25
+            },
+            {
+              "key": "encounter_result",
+              "label": "Encounter result",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_story",
+      "title": "Minor Treatment exception review and reported needs",
+      "guidance": "Preserve the person's wording and route questions without interpretation.",
+      "blocks": [
+        {
+          "key": "stated_need",
+          "type": "textarea",
+          "label": "Minor Treatment stated need or goal",
+          "fields": [
+            {
+              "key": "person_s_words_desired_outcome_and_priority",
+              "label": "Person's words, desired outcome, and priority"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "source_facts",
+          "type": "table",
+          "label": "Minor Treatment facts and questions",
+          "columns": [
+            {
+              "key": "requested_service",
+              "label": "Requested service",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "qualified_decision",
+              "label": "Qualified decision",
+              "units": 1.25
+            },
+            {
+              "key": "question_or_route",
+              "label": "Question or route",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "intake_readiness",
+          "type": "checklist",
+          "label": "Minor Treatment intake readiness",
+          "items": [
+            "Requested service is identified for this record",
+            "Guardian authority matches the current request or source",
+            "Qualified decision is ready for point-of-use staff",
+            "Consent limit limits or questions are resolved",
+            "Encounter result is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_handoff",
+      "title": "Minor Treatment receiving route and handoff",
+      "guidance": "Assign open questions and confirm where the intake goes next.",
+      "blocks": [
+        {
+          "key": "intake_route",
+          "type": "fields",
+          "label": "Minor Treatment next step",
+          "fields": [
+            {
+              "key": "receiving_person_or_team",
+              "label": "Receiving person or team",
+              "units": 1.15
+            },
+            {
+              "key": "open_question_or_missing_item",
+              "label": "Open question or missing item",
+              "units": 1.0
+            },
+            {
+              "key": "urgent_route_if_applicable",
+              "label": "Urgent route if applicable",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "intake_receipt",
+          "type": "signatures",
+          "label": "Minor Treatment intake receipt",
+          "fields": [
+            {
+              "key": "intake_coordinator_and_date",
+              "label": "Intake coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms routing, not professional review."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_123__landscaping_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_123__landscaping_estimate_worksheet.pdf",
+  "slug": "landscaping-estimate-worksheet",
+  "title": "Landscaping Estimate Worksheet",
+  "subtitle": "Residential Landscaping Estimate: prices observed scope, options, and exclusions.",
+  "description": "Landscaping Estimate Worksheet covers lawn, bed, tree, shrub, hardscape edge, irrigation zone, and requested improvement. The landscape estimate coordinator records Residential Landscaping Estimate observed scope, costs, options, and terms. Landscaping Estimate Worksheet keeps Residential Landscaping Estimate exceptions visible until the landscape estimate coordinator handoff.",
+  "use_case": "Use Landscaping Estimate Worksheet at residential property, yard zone, access route, slope, and property edge. Document lawn, bed, tree, shrub, hardscape edge, irrigation zone, and requested improvement identity before Residential Landscaping Estimate begins. Compare lawn, bed, tree, shrub, hardscape edge, irrigation zone, and requested improvement findings with stated Residential Landscaping Estimate criteria; route unresolved Residential Landscaping Estimate issues to landscape operations reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Pricing evidence and service location",
+      "guidance": "For Residential Landscaping Estimate, identify responsible parties, residential property, yard zone, access route, slope, and property edge, and the linked lawn, bed, tree, shrub, hardscape edge, irrigation zone, and requested improvement source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Estimate ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Estimate date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Customer / party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Estimator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Landscaping Estimate identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and estimate number",
+              "units": 2.111111111111111
+            },
+            {
+              "key": "identity_2",
+              "label": "Zone, plant, irrigation, or feature identifier",
+              "units": 2.5555555555555554
+            },
+            {
+              "key": "identity_3",
+              "label": "Requested outcome, maintenance level, and timing constraint",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Estimated scope, options, and pricing",
+      "guidance": "Capture Residential Landscaping Estimate facts for lawn, bed, tree, shrub, hardscape edge, irrigation zone, and requested improvement; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Estimate and option lines",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Task, item, or option",
+              "units": 1.15
+            },
+            {
+              "key": "basis",
+              "label": "Quantity or condition basis",
+              "units": 1.05
+            },
+            {
+              "key": "labor",
+              "label": "Labor or time",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Part, material, or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "amount",
+              "label": "Amount or option status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Landscaping Estimate checks",
+          "items": [
+            "Plant and turf condition by zone",
+            "Sun, drainage, soil, slope, and irrigation context",
+            "Access, staging, gate, utility-mark, and property-line constraint",
+            "Quantity, area, length, or count basis",
+            "Seasonal timing and material availability",
+            "Existing damage and excluded restoration"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Estimate assumptions and customer decision",
+      "guidance": "Resolve open Residential Landscaping Estimate conditions; have landscape estimate coordinator assign the next Residential Landscaping Estimate owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Pricing assumptions, exclusions, and retained evidence",
+          "items": [
+            "Property boundary or utility location uncertain",
+            "Unsafe tree, slope, access, or equipment condition",
+            "Chemical work outside authorized service",
+            "Scope conflicts with drainage or neighboring property",
+            "Annotated site and zone photographs",
+            "Measured quantity or sketch",
+            "Material and plant assumptions",
+            "Option, exclusion, and customer decision record"
+          ],
+          "guidance": "Pause Residential Landscaping Estimate when a boundary, utility, access, tree, slope, chemical, or drainage concern remains. Retain the available Residential Landscaping Estimate proof and route unresolved lawn, bed, tree, shrub, hardscape edge, irrigation zone, and requested improvement scope to landscape estimate coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Estimate status and next customer action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Estimate review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for customer review",
+                "Accepted as written",
+                "Accepted with listed option",
+                "Revision required",
+                "Declined"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Estimator and customer review",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Landscape Estimate Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,277 @@
+{
+  "catalog_id": "construction_trades/dct_1163__punch_list_completion_sign_off_form",
+  "description": "For punch list, this completion sign-off form records observed deficiency, acceptance criterion, access need, correction owner, due date, and predecessor dependency. Its supporting evidence includes dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "List opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "List site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "List contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "List superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "List due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this punch list record to its evidence.",
+          "key": "record_routing",
+          "label": "Punch List Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Room or grid location",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "System",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Responsible trade",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Contract reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture room or grid location, system, responsible trade, contract reference, and turnover milestone for this punch list.",
+          "key": "core_identity",
+          "label": "Punch List Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify room or grid location, system, responsible trade, contract reference, and turnover milestone for this punch list record.",
+      "key": "identity_1",
+      "title": "Walkthrough Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "List when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "List measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "List evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "List result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For punch list, record dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+          "key": "evidence_register",
+          "label": "Punch List Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Dated photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Test reading",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Inspection note",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Drawing reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every punch list evidence source.",
+          "key": "evidence_sources",
+          "label": "Punch List Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary punch list evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Punch List Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Escalate life-safety, water-intrusion, energized-system, occupancy, or concealed-work defects immediately. Route unresolved punch list work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Punch List Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support punch list findings with dated photo, test reading, inspection note, drawing reference, and reinspection result.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "List completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Verified correction",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Owner acceptance",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Exception disposition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the punch list outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Punch List Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "List open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "List owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "List acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer punch list items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Punch List Remaining Work and Handoff",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Punch List Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For punch list, document verified correction, owner acceptance, exception disposition, remaining-list reconciliation, and turnover handoff; identify each punch list reservation and punch list follow-up trigger, then record the punch list instruction recipient.",
+          "height": 48,
+          "key": "acceptance_reservations",
+          "label": "Punch List Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "List trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "List site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Punch List Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the punch list record with verified correction, owner acceptance, exception disposition, remaining-list reconciliation, and turnover handoff.",
+      "key": "closeout_3",
+      "title": "Customer Acceptance and Handoff"
+    }
+  ],
+  "slug": "punch-list-completion-sign-off-form",
+  "source_filename": "dct_1163__punch_list_completion_sign_off_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Punch List Completion Sign-Off Form: deficiency capture, assignment, and verification using room or grid location, observed deficiency, and dated photo.",
+  "title": "Punch List Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during deficiency capture, assignment, and verification when the punch list record must identify room or grid location, system, responsible trade, contract reference, and turnover milestone. Complete the applicable handoff for verified correction, owner acceptance, exception disposition, remaining-list reconciliation, and turnover handoff."
+}

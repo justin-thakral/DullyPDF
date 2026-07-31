@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1426__tutoring_intake_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1426__tutoring_intake_authorization_form.pdf",
+  "slug": "tutoring-intake-authorization-form",
+  "title": "Tutoring Intake Authorization Form",
+  "subtitle": "Capture learner goal, source work, session schedule, and support need; confirm tutor match and progress checkpoint.",
+  "description": "Tutoring Intake records learner goal, source work, session schedule, support need, tutor match, and progress checkpoint. Tutoring Intake evidence stays linked.",
+  "use_case": "Use this tutoring intake authorization decision when staff must document learner goal and source work. Reconcile session schedule, support need, tutor match, and progress checkpoint before the tutoring intake handoff. Use the intake request, learner work sample, teacher referral if provided, availability calendar, tutor-match rationale, support-route acknowledgment, and first-session plan. For tutoring intake live use, check roster. Reconcile the tutoring intake schedule and actual handoff times. Preserve the tutoring intake roster and schedule. Record the tutoring intake handoff time and instructions. Close the tutoring intake exception queue. Verify tutoring intake day-of-service timing. Resolve tutoring intake real-time changes and operating handoff for tutoring intake. Ask the assigned tutoring intake reviewer to confirm learner goal against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Tutoring Intake contact and reference",
+      "guidance": "Preserve learner goal, source assignment or assessment, preferred schedule, support need, tutor match factors, session plan, and initial progress checkpoint.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Tutoring Intake people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "learner_goal",
+              "label": "Learner goal",
+              "units": 1.2
+            },
+            {
+              "key": "source_work",
+              "label": "Source work",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Tutoring Intake task details",
+          "fields": [
+            {
+              "key": "session_schedule",
+              "label": "Session schedule",
+              "units": 1.15
+            },
+            {
+              "key": "support_need",
+              "label": "Support need",
+              "units": 1.0
+            },
+            {
+              "key": "tutor_match",
+              "label": "Tutor match",
+              "units": 1.25
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Tutoring Intake scope choices review",
+      "guidance": "Decide each tutoring intake scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Tutoring Intake primary scope",
+          "fields": [
+            {
+              "key": "learner_goal",
+              "label": "Learner goal",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "source_work",
+              "label": "Source work",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "session_schedule",
+              "label": "Session schedule",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Tutoring Intake additional scope",
+          "fields": [
+            {
+              "key": "support_need",
+              "label": "Support need",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "tutor_match",
+              "label": "Tutor match",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Tutoring Intake authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Tutoring Intake effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            },
+            {
+              "key": "revocation_or_update_route",
+              "label": "Revocation or update route",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Tutoring Intake decision and signer receipt",
+      "guidance": "Only recorded tutoring intake choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Tutoring Intake limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Tutoring Intake signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "school_or_program_reviewer_and_date",
+              "label": "School or program reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Tutoring Intake signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Tutoring Intake authorization boundary",
+          "guidance": "Named tutoring intake reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

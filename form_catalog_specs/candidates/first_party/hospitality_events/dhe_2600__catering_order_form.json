@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2600__catering_order_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2600__catering_order_form.pdf",
+  "slug": "dhe-2600-catering-order-form",
+  "title": "Catering Order Form",
+  "subtitle": "Capture menu order, quantity, delivery window, and service style; confirm dietary routing and acceptance.",
+  "description": "Catering records menu order, quantity, delivery window, service style, dietary routing, and acceptance. Catering evidence stays linked.",
+  "use_case": "Use this catering authorized order and fulfillment when staff must document menu order and quantity. Reconcile delivery window, service style, dietary routing, and acceptance before the catering handoff. Use the proposal, menu selection, quantity worksheet, production sheet, delivery route, dietary communication, equipment manifest, proof of delivery, and acceptance. Ask the assigned catering reviewer to confirm menu order against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Catering contact and reference",
+      "guidance": "List menu selections and quantities, preparation count, delivery window, service style, dietary routing, equipment pickup, on-site contact, and acceptance.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Catering people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "event_stay_or_reservation_date",
+              "label": "Event, stay, or reservation date",
+              "units": 1.1
+            },
+            {
+              "key": "menu_order",
+              "label": "Menu order",
+              "units": 1.2
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Catering task details",
+          "fields": [
+            {
+              "key": "delivery_window",
+              "label": "Delivery window",
+              "units": 1.15
+            },
+            {
+              "key": "service_style",
+              "label": "Service style",
+              "units": 1.0
+            },
+            {
+              "key": "dietary_routing",
+              "label": "Dietary routing",
+              "units": 1.25
+            },
+            {
+              "key": "acceptance",
+              "label": "Acceptance",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "order_lines",
+      "title": "Catering line items",
+      "guidance": "Record exact quantities, timing, restrictions, and substitutions.",
+      "blocks": [
+        {
+          "key": "ordered_items",
+          "type": "table",
+          "label": "Catering items and requirements",
+          "columns": [
+            {
+              "key": "menu_order",
+              "label": "Menu order",
+              "units": 1.2
+            },
+            {
+              "key": "quantity_or_timing",
+              "label": "Quantity or timing",
+              "units": 1.1
+            },
+            {
+              "key": "requirement_or_delivery_window",
+              "label": "Requirement or delivery window",
+              "units": 1.25
+            },
+            {
+              "key": "substitution_rule",
+              "label": "Substitution rule",
+              "units": 1.0
+            },
+            {
+              "key": "line_status",
+              "label": "Line status",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "order_instructions",
+          "type": "textarea",
+          "label": "Catering production or service instructions",
+          "fields": [
+            {
+              "key": "delivery_setup_dietary_routing_or_other_line_instruction",
+              "label": "Delivery, setup, dietary routing, or other line instruction"
+            }
+          ],
+          "height": 42
+        }
+      ]
+    },
+    {
+      "key": "fulfillment",
+      "title": "Catering delivery",
+      "guidance": "Record the receiving person, variance, and final acceptance.",
+      "blocks": [
+        {
+          "key": "fulfillment_details",
+          "type": "fields",
+          "label": "Catering fulfillment",
+          "fields": [
+            {
+              "key": "planned_delivery_or_service_time",
+              "label": "Planned delivery or service time",
+              "units": 1.15
+            },
+            {
+              "key": "actual_delivery_or_service_time",
+              "label": "Actual delivery or service time",
+              "units": 1.0
+            },
+            {
+              "key": "receiving_person",
+              "label": "Receiving person",
+              "units": 1.25
+            },
+            {
+              "key": "variance_and_correction",
+              "label": "Variance and correction",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "order_receipt",
+          "type": "signatures",
+          "label": "Catering authorization and receipt",
+          "fields": [
+            {
+              "key": "authorized_requester_and_date",
+              "label": "Authorized requester and date",
+              "units": 1.15
+            },
+            {
+              "key": "receiving_client_or_service_lead_and_date",
+              "label": "Receiving client or service lead and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the delivered scope and visible variance."
+        }
+      ]
+    }
+  ]
+}

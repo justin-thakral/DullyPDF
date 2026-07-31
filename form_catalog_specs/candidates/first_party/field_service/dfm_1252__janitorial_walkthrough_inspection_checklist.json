@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1252__janitorial_walkthrough_inspection_checklist",
+  "source_section": "field_service",
+  "source_filename": "dfm_1252__janitorial_walkthrough_inspection_checklist.pdf",
+  "slug": "janitorial-walkthrough-inspection-checklist",
+  "title": "Janitorial Walkthrough Inspection Checklist",
+  "subtitle": "Janitorial Walkthrough: documents findings, limits, and disposition.",
+  "description": "Janitorial Walkthrough Inspection Checklist covers cleaning zone, surface, fixture, supply point, waste stream, and service task. The facility cleaning coordinator records Janitorial Walkthrough criteria, findings, restrictions, and follow-up. Janitorial Walkthrough Inspection Checklist keeps Janitorial Walkthrough exceptions visible until the facility cleaning coordinator handoff.",
+  "use_case": "Use Janitorial Walkthrough Inspection Checklist at occupied rooms, restrooms, common areas, service closets, and restricted zones. Document cleaning zone, surface, fixture, supply point, waste stream, and service task identity before Janitorial Walkthrough begins. Compare cleaning zone, surface, fixture, supply point, waste stream, and service task findings with stated Janitorial Walkthrough criteria; route unresolved Janitorial Walkthrough issues to janitorial quality supervisor.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Janitorial Walkthrough, identify responsible parties, occupied rooms, restrooms, common areas, service closets, and restricted zones, and the linked cleaning zone, surface, fixture, supply point, waste stream, and service task source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Janitorial Walkthrough identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility, route, and shift",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Room or zone identifier",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Scope standard, service level, and prior deficiency reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist points, conditions, and actions",
+      "guidance": "Capture Janitorial Walkthrough facts for cleaning zone, surface, fixture, supply point, waste stream, and service task; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Janitorial Walkthrough inspection checks",
+          "items": [
+            "Soil, residue, touchpoint, floor, and fixture condition",
+            "Supply and consumable availability",
+            "Waste, recycling, sharps, or special-stream handling",
+            "Wet-floor control and public access",
+            "Chemical label, dilution, container, and storage condition",
+            "Room release, odor, damage, and recurring deficiency"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection disposition and reviewer acknowledgment",
+      "guidance": "Before closing Janitorial Walkthrough, identify what failed or was not inspected, who owns correction, and when examination resumes. Facility Cleaning Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Unknown spill or hazardous material",
+            "Damaged surface or fixture outside cleaning scope",
+            "Restricted room or privacy boundary not cleared",
+            "Wet-floor or access control cannot be maintained",
+            "Zone completion and exception log",
+            "Before-and-after deficiency photographs",
+            "Chemical or supply usage record",
+            "Customer walkthrough and callback evidence"
+          ],
+          "guidance": "Pause Janitorial Walkthrough when an unknown exposure, restricted-area concern, public slip risk, or unresolved damage remains. Retain the available Janitorial Walkthrough proof and route unresolved cleaning zone, surface, fixture, supply point, waste stream, and service task scope to facility cleaning coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Facility Cleaning Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Janitorial Quality Supervisor",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

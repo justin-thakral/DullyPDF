@@ -1,0 +1,291 @@
+{
+  "catalog_id": "home_services/dhs_2623__appliance_repair_inspection_checklist",
+  "description": "For appliance repair, this inspection checklist records diagnostic sequence, service-manual checks, parts, labor, customer authorization, food or property protection, and testing. Its supporting evidence includes fault codes, voltage or pressure readings, component condition, part numbers, photos, and post-repair cycle result.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this appliance repair review to the service record.",
+          "key": "service_review_reference",
+          "label": "Appliance Repair Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Appliance type",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Make",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Model",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Serial",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed appliance repair location and assets.",
+          "key": "service_context",
+          "label": "Appliance Repair Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the appliance repair service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each appliance repair item after direct review.",
+          "items": [
+            "Reported symptom and diagnostic findings are reconciled",
+            "Part numbers, connections, settings, and replaced components are recorded",
+            "Leak, electrical, pressure, temperature, or cycle tests are complete",
+            "Food, floors, cabinetry, and surrounding property are protected",
+            "Unresolved faults and safe-use limits are conspicuous",
+            "Customer guidance, parts warranty, and recurrence plan are documented"
+          ],
+          "key": "quality_checks",
+          "label": "Appliance Repair Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one appliance repair row for each reviewed area.",
+          "key": "area_results",
+          "label": "Appliance Repair Area and Task Results",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Stop for gas leak, damaged supply, fire evidence, refrigerant issue beyond qualification, or unsafe continued operation. Route unresolved appliance repair work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Appliance Repair Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Check completed appliance repair work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Recurring Service Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Appliance owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each appliance repair concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "Appliance Repair Issue, Photo, and Correction Record",
+          "rows": 7,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Appliance Repair Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved appliance repair expectations here.",
+          "height": 42,
+          "key": "customer_concern",
+          "label": "Appliance Repair Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every appliance repair issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the appliance repair outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "Appliance Repair Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Repair outcome",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Replaced-part disposition",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "Operational test",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Customer guidance",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For appliance repair, record repair outcome, replaced-part disposition, operational test, customer guidance, warranty, and recurrence follow-up.",
+          "key": "quality_followup",
+          "label": "Appliance Repair Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "Appliance Repair Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the appliance repair result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Service Review and Handoff"
+    }
+  ],
+  "slug": "dhs-2623-appliance-repair-inspection-checklist",
+  "source_filename": "dhs_2623__appliance_repair_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "Appliance Repair Inspection Checklist: appliance repair diagnosis and service record using appliance type, diagnostic sequence, and fault codes.",
+  "title": "Appliance Repair Inspection Checklist",
+  "use_case": "Use the inspection checklist during appliance repair diagnosis and service record when the appliance repair record must identify appliance type, make, model, serial, age, symptom, location, utilities, warranty, and prior repair. Complete the applicable handoff for repair outcome, replaced-part disposition, operational test, customer guidance, warranty, and recurrence follow-up."
+}

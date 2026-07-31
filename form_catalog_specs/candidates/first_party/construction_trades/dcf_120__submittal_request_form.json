@@ -1,0 +1,278 @@
+{
+  "catalog_id": "construction_trades/dcf_120__submittal_request_form",
+  "description": "For submittal, this request form records package completeness, deviations, substitutions, interfaces, long-lead constraints, and required approvals. Its supporting evidence includes manufacturer literature, compliance matrix, coordination drawings, certifications, and revision comparison.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Submittal opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Submittal site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Submittal contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Submittal superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Submittal due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this submittal record to its evidence.",
+          "key": "record_routing",
+          "label": "Submittal Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Specification section",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Product data",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Shop drawings",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Samples",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture specification section, product data, shop drawings, samples, calculations, and procurement milestone for this submittal.",
+          "key": "core_identity",
+          "label": "Submittal Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify specification section, product data, shop drawings, samples, calculations, and procurement milestone for this submittal record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Package completeness",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Deviations",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Substitutions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Interfaces",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For submittal, record package completeness, deviations, substitutions, interfaces, long-lead constraints, and required approvals.",
+          "key": "task_inputs",
+          "label": "Submittal Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Submittal Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State submittal outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Submittal Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Submittal work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Submittal owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate submittal items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Submittal Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not fabricate, procure, or install from a rejected, incomplete, superseded, or unreviewed submittal. Route unresolved submittal work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Submittal Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For submittal, capture package completeness, deviations, substitutions, interfaces, long-lead constraints, and required approvals.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Submittal decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Submittal approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Submittal schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate submittal disposition.",
+          "key": "disposition",
+          "label": "Submittal Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Submittal Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the submittal decision to evidence.",
+          "height": 112,
+          "key": "decision_basis",
+          "label": "Submittal Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Review disposition",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Revision status",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Procurement release",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Field distribution",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For submittal, record review disposition, revision status, procurement release, field distribution, and approved-record archive.",
+          "key": "request_handoff",
+          "label": "Submittal Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Submittal requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Submittal coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Submittal Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the submittal next step from manufacturer literature, compliance matrix, coordination drawings, certifications, and revision comparison.",
+      "key": "decision_3",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "submittal-request-form",
+  "source_filename": "dcf_120__submittal_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Submittal Request Form: technical submittal routing and disposition using specification section, package completeness, and manufacturer literature.",
+  "title": "Submittal Request Form",
+  "use_case": "Use the request form during technical submittal routing and disposition when the submittal record must identify specification section, product data, shop drawings, samples, calculations, and procurement milestone. Complete the applicable handoff for review disposition, revision status, procurement release, field distribution, and approved-record archive."
+}

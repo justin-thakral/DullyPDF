@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1803__youth_sports_waiver_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1803__youth_sports_waiver_registration_form.pdf",
+  "slug": "youth-sports-waiver-registration-form",
+  "title": "Youth Sports Waiver Registration Form",
+  "subtitle": "Capture sport, season, guardian authority, and contact level; confirm equipment and coach release.",
+  "description": "Youth Sports Waiver records sport, season, guardian authority, contact level, equipment, and coach release. Youth Sports Waiver evidence stays linked.",
+  "use_case": "Use this youth sports waiver registration and placement when staff must document sport and season. Reconcile guardian authority, contact level, equipment, and coach release before the youth sports waiver handoff. Use the season plan, team roster, guardian verification, disclosed contact conditions, equipment issue, coach brief, optional-activity choices, and player release. This acknowledgment concerns a player in a team season with practice and competition, contact level, coach supervision, protective gear, league rules, sideline release, and guardian choice. Ask the assigned youth sports waiver reviewer to confirm sport against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "participant_and_activity",
+      "title": "Youth Sports Waiver participant contact and activity details",
+      "guidance": "Name sport, season, team, participant and guardian authority, contact level, equipment, coaching supervision, alternative activity, and release.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Youth Sports Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "sport",
+              "label": "Sport",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Youth Sports Waiver task details",
+          "fields": [
+            {
+              "key": "season",
+              "label": "Season",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.0
+            },
+            {
+              "key": "contact_level",
+              "label": "Contact level",
+              "units": 1.25
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.1
+            },
+            {
+              "key": "coach_release",
+              "label": "Coach release",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "disclosures_and_registration",
+      "title": "Youth Sports Waiver disclosure review and registration readiness",
+      "guidance": "Keep the registration decision separate from the disclosed conditions, questions, and available alternatives.",
+      "blocks": [
+        {
+          "key": "disclosure_readiness",
+          "type": "checklist",
+          "label": "Youth Sports Waiver disclosure checks",
+          "items": [
+            "Sport is named for this registration",
+            "Season is stated and current",
+            "Guardian authority is explained or verified",
+            "Contact level and related limits are disclosed",
+            "Equipment is recorded separately",
+            "Coach release is confirmed or routed",
+            "Questions and a practical alternative are offered",
+            "Organizer safety duties and non-waivable rights remain in force"
+          ]
+        },
+        {
+          "key": "registration_and_choice",
+          "type": "fields",
+          "label": "Youth Sports Waiver registration and choice",
+          "fields": [
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "activity_or_session",
+              "label": "Activity or session",
+              "units": 1.0
+            },
+            {
+              "key": "participation_choice",
+              "label": "Participation choice",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Participate",
+                "Participate with limit",
+                "Do not participate",
+                "Pending"
+              ]
+            },
+            {
+              "key": "modification_or_alternative",
+              "label": "Modification or alternative",
+              "units": 1.1
+            },
+            {
+              "key": "waiver_version_or_date",
+              "label": "Waiver version or date",
+              "units": 1.2
+            },
+            {
+              "key": "fee_or_roster_reference",
+              "label": "Fee or roster reference",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "confirmation_and_receipt",
+      "title": "Youth Sports Waiver decision, limits, and receipt",
+      "guidance": "Do not complete registration while a material question remains open.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Youth Sports Waiver registration confirmation",
+          "fields": [
+            {
+              "key": "confirmed_activity_team_trip_or_session",
+              "label": "Confirmed activity, team, trip, or session",
+              "units": 1.15
+            },
+            {
+              "key": "registration_confirmation_number",
+              "label": "Registration confirmation number",
+              "units": 1.0
+            },
+            {
+              "key": "question_or_participation_limit",
+              "label": "Question or participation limit",
+              "units": 1.25
+            },
+            {
+              "key": "check_in_or_start_instructions_sent_date",
+              "label": "Check-in or start instructions sent date",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_coordinator",
+              "label": "Responsible coordinator",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Youth Sports Waiver acknowledgment and receipt",
+          "fields": [
+            {
+              "key": "participant_or_guardian_acknowledgment_and_date",
+              "label": "Participant or guardian acknowledgment and date",
+              "units": 1.15
+            },
+            {
+              "key": "registration_staff_receipt_and_date",
+              "label": "Registration staff receipt and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Acknowledgment records the named conditions and voluntary choice; it does not remove organizer safety duties or non-waivable rights."
+        }
+      ]
+    }
+  ]
+}

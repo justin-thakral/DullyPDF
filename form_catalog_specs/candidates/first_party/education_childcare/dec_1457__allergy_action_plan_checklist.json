@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1457__allergy_action_plan_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1457__allergy_action_plan_checklist.pdf",
+  "slug": "allergy-action-plan-checklist",
+  "title": "Allergy Action Plan Checklist",
+  "subtitle": "Capture allergen source, exposure route, current plan, and emergency supply; confirm symptom threshold and guardian update.",
+  "description": "Allergy Action Plan records allergen source, exposure route, current plan, emergency supply, symptom threshold, and guardian update. Allergy Action Plan evidence stays linked.",
+  "use_case": "Use this allergy action plan stage-gated verification when staff must document allergen source and exposure route. Reconcile current plan, emergency supply, symptom threshold, and guardian update before the allergy action plan handoff. Use the current clinician action-plan reference, allergen list, medication-label match, emergency-supply seal and expiration, exposure record, and guardian receipt. Unlike a medication administration record, this plan centers exposure prevention, recognized threshold signs, emergency-supply access, school response roles, and return to review. Ask the assigned allergy action plan reviewer to confirm allergen source against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Allergy Action Plan starting details",
+      "guidance": "Preserve the named allergen, likely exposure setting, current qualified plan, emergency supply location, symptom threshold, and guardian notification route. Keep any urgent allergy action plan issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Allergy Action Plan people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "allergen_source",
+              "label": "Allergen source",
+              "units": 1.1
+            },
+            {
+              "key": "exposure_route",
+              "label": "Exposure route",
+              "units": 1.2
+            },
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Allergy Action Plan task details",
+          "fields": [
+            {
+              "key": "emergency_supply",
+              "label": "Emergency supply",
+              "units": 1.15
+            },
+            {
+              "key": "symptom_threshold",
+              "label": "Symptom threshold",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_update",
+              "label": "Guardian update",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Allergy Action Plan checks and corrections",
+      "guidance": "Check current allergy action plan facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Allergy Action Plan required checks",
+          "items": [
+            "Allergen source is identified for this record",
+            "Exposure route matches the current request or source",
+            "Current plan is ready for point-of-use staff",
+            "Emergency supply limits or questions are resolved",
+            "Symptom threshold is communicated to the responsible person",
+            "Guardian update is confirmed at handoff",
+            "A changed allergy action plan fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Allergy Action Plan failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Allergy Action Plan readiness",
+      "guidance": "Hold allergy action plan readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Allergy Action Plan checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Allergy Action Plan reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Allergy Action Plan receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

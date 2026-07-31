@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1230__boiler_inspection_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1230__boiler_inspection_service_request_form.pdf",
+  "slug": "boiler-inspection-service-request-form",
+  "title": "Boiler Inspection Service Request Form",
+  "subtitle": "Boiler Inspection: defines need, constraints, and assignment.",
+  "description": "Boiler Inspection Service Request Form covers boiler, burner, fuel train, controls, venting, water system, and served loop. The facility boiler coordinator records Boiler Inspection need, timing, access, and assignment. Boiler Inspection Service Request Form keeps Boiler Inspection exceptions visible until the facility boiler coordinator handoff.",
+  "use_case": "Use Boiler Inspection Service Request Form at boiler room, fuel entry, flue route, and served mechanical system. Document boiler, burner, fuel train, controls, venting, water system, and served loop identity before Boiler Inspection begins. Compare boiler, burner, fuel train, controls, venting, water system, and served loop findings with stated Boiler Inspection criteria; route unresolved Boiler Inspection issues to qualified boiler or combustion-system reviewer. For Boiler Inspection Service Request Form, confirm requirements for Boiler Inspection. Ask qualified boiler or combustion-system reviewer to review Boiler Inspection conditions beyond the facility boiler coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requested-service contact and source record",
+      "guidance": "For Boiler Inspection, identify responsible parties, boiler room, fuel entry, flue route, and served mechanical system, and the linked boiler, burner, fuel train, controls, venting, water system, and served loop source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Boiler Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility and boiler number",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Make, model, serial, rating, fuel, and permit reference",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Operating schedule, service history, and inspection basis",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Intake checks and assignment readiness",
+      "guidance": "Capture Boiler Inspection facts for boiler, burner, fuel train, controls, venting, water system, and served loop; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Boiler Inspection intake confirmations",
+          "items": [
+            "Requested or already documented: visible vessel, piping, valve, pump, and leak condition",
+            "Requested or already documented: burner, flame, fuel-train, and ignition observation",
+            "Requested or already documented: vent, draft, combustion-air, and room condition",
+            "Requested or already documented: pressure, temperature, level, and makeup-water indication",
+            "Requested or already documented: limit, cutoff, relief, alarm, and control response",
+            "Requested or already documented: startup, operating, shutdown, and lockout sequence"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Boiler Inspection request questions; have facility boiler coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Fuel leak or combustion concern",
+            "Low-water, limit, relief, or cutoff failure",
+            "Unsafe pressure, temperature, venting, or vessel condition",
+            "Test requires authority or shutdown not available",
+            "Prior or requester-supplied: nameplate and permit identification",
+            "Prior or requester-supplied: combustion or operating readings by instrument",
+            "Prior or requester-supplied: control and safety-device test result",
+            "Prior or requester-supplied: deficiency restriction and restoration record"
+          ],
+          "guidance": "Do not assign or authorize the Boiler Inspection request when a fuel, combustion, pressure-boundary, venting, or required safety-control concern remains. Retain information supplied with the request and route unresolved constraints to facility boiler coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Facility Boiler Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

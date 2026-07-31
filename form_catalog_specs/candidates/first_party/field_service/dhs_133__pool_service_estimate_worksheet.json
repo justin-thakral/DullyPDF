@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_133__pool_service_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_133__pool_service_estimate_worksheet.pdf",
+  "slug": "pool-service-estimate-worksheet",
+  "title": "Pool Service Estimate Worksheet",
+  "subtitle": "Residential Pool Service: prices observed scope, options, and exclusions.",
+  "description": "Pool Service Estimate Worksheet covers pool or spa, circulation, filtration, chemical feed, controller, and deck feature. The residential pool-service coordinator records Residential Pool Service observed scope, costs, options, and terms. Pool Service Estimate Worksheet keeps Residential Pool Service exceptions visible until the residential pool-service coordinator handoff.",
+  "use_case": "Use Pool Service Estimate Worksheet at residential pool, spa, equipment pad, chemical storage, and access gate. Document pool or spa, circulation, filtration, chemical feed, controller, and deck feature identity before Residential Pool Service begins. Compare pool or spa, circulation, filtration, chemical feed, controller, and deck feature findings with stated Residential Pool Service criteria; route unresolved Residential Pool Service issues to qualified pool-service reviewer. For Pool Service Estimate Worksheet, confirm requirements for Residential Pool Service. Ask qualified pool-service reviewer to review Residential Pool Service conditions beyond the residential pool-service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "estimate_context",
+      "title": "Property estimate review and customer identity",
+      "guidance": "Identify the customer, asset or property, estimator, and basis date before pricing the work.",
+      "blocks": [
+        {
+          "key": "estimate_header",
+          "type": "fields",
+          "label": "Estimate header",
+          "fields": [
+            {
+              "key": "estimate_number",
+              "label": "Pool job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "estimate_date",
+              "label": "Estimate date",
+              "units": 0.65
+            },
+            {
+              "key": "valid_until",
+              "label": "Valid until",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Pool customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Pool address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "estimator",
+              "label": "Residential Pool-Service Coordinator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Pool Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and body-of-water identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Equipment and controller identity",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Service interval, target range, and prior reading",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Pool Service identifier printed on pool or spa, circulation, filtration, chemical feed, controller, and deck feature or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "estimate_scope",
+      "title": "Pricing options and customer decision inputs",
+      "guidance": "Price the observable work and options. Keep concealed conditions and unconfirmed quantities out of fixed scope.",
+      "blocks": [
+        {
+          "key": "scope_observations",
+          "type": "checklist",
+          "label": "Residential Pool Service scope observations",
+          "items": [
+            "Disinfectant, pH, temperature, and clarity",
+            "Filter pressure, flow, pump, and leak condition",
+            "Skimmer, basket, surface, wall, floor, and debris condition",
+            "Chemical supply, feeder, storage, and label condition",
+            "Gate, barrier, drain cover, and visible deck condition",
+            "Adjustment, circulation, retest, and customer restriction"
+          ],
+          "guidance": "Mark what was observed or supplied as estimate input; explain anything material that could not be inspected."
+        },
+        {
+          "key": "price_lines",
+          "type": "table",
+          "label": "Scope, quantities, options, and pricing",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Task, area, or option",
+              "units": 1.25
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity, size, or hours",
+              "units": 0.9
+            },
+            {
+              "key": "rate",
+              "label": "Rate or unit price",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Material or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "total",
+              "label": "Line total",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Included, option, or excluded",
+              "units": 0.95
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "estimate_totals",
+          "type": "fields",
+          "label": "Estimate totals",
+          "fields": [
+            {
+              "key": "subtotal",
+              "label": "Subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "taxes",
+              "label": "Taxes",
+              "units": 0.7
+            },
+            {
+              "key": "fees",
+              "label": "Fees or disposal",
+              "units": 0.8
+            },
+            {
+              "key": "allowances",
+              "label": "Allowances",
+              "units": 0.8
+            },
+            {
+              "key": "discounts",
+              "label": "Discount or credit",
+              "units": 0.8
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "estimate_terms",
+      "title": "Estimate exception and change conditions",
+      "guidance": "State what could change the price, timing, method, or scope before the customer or responsible party decides.",
+      "blocks": [
+        {
+          "key": "estimate_uncertainty",
+          "type": "checklist",
+          "label": "Conditions that may require a revised estimate or specialist review",
+          "items": [
+            "Water outside service criteria",
+            "Chemical leak or incompatible storage",
+            "Barrier or drain-cover concern",
+            "Equipment cannot circulate or maintain control"
+          ],
+          "guidance": "Pause Residential Pool Service and notify residential pool-service coordinator when water, chemical, circulation, barrier, visibility, or safe-use control remains unresolved."
+        },
+        {
+          "key": "assumptions_exclusions",
+          "type": "textarea",
+          "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "estimate_decision",
+      "title": "Estimate decision and selected service scope",
+      "guidance": "Record the selected option and spending limit. Approval of an estimate authorizes only the stated scope and terms.",
+      "blocks": [
+        {
+          "key": "estimate_support",
+          "type": "checklist",
+          "label": "Estimate support retained",
+          "items": [
+            "Time-stamped water readings",
+            "Equipment-pad and condition photographs",
+            "Chemical addition and calculation record",
+            "Restriction, retest, and customer notice"
+          ],
+          "guidance": "Attach or link proof for pool or spa, circulation, filtration, chemical feed, controller, and deck feature; mark only Residential Pool Service evidence present in that record."
+        },
+        {
+          "key": "estimate_status",
+          "type": "fields",
+          "label": "Decision and selected scope",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Estimate decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved",
+                "Approved with selected options",
+                "Revision requested",
+                "Declined",
+                "Expired"
+              ]
+            },
+            {
+              "key": "selected_scope",
+              "label": "Selected option, scope, or limit",
+              "units": 1.2
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "follow_up",
+              "label": "Scheduling or revision next step",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Residential Pool Service selected scope, exclusions, and scheduling notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Residential Pool Service selected scope, exclusions, and scheduling notes",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Explain the selected Residential Pool Service option, retained exclusion, pricing assumption, and scheduling dependency."
+        },
+        {
+          "key": "estimate_signatures",
+          "type": "signatures",
+          "label": "Estimate preparation and decision",
+          "fields": [
+            {
+              "key": "estimator_signature",
+              "label": "Estimator",
+              "units": 1.1
+            },
+            {
+              "key": "estimator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer or authorized decision maker",
+              "units": 1.25
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

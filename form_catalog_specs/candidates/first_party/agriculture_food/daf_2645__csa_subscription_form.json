@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2645__csa_subscription_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2645__csa_subscription_form.pdf",
+  "slug": "csa-subscription-form",
+  "title": "CSA Subscription Form",
+  "subtitle": "Community-Supported Agriculture Subscription: captures actual activity and handoff.",
+  "description": "CSA Subscription Form covers subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication. The CSA program coordinator records Community-Supported Agriculture Subscription activity, quantities, variance, and handoff. CSA Subscription Form keeps Community-Supported Agriculture Subscription exceptions visible until the CSA program coordinator handoff.",
+  "use_case": "Use CSA Subscription Form at farm program, packing point, pickup site, delivery route, and subscriber handoff. Document subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication identity before Community-Supported Agriculture Subscription begins. Compare subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication findings with stated Community-Supported Agriculture Subscription criteria; route unresolved Community-Supported Agriculture Subscription issues to farm subscription operations reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Operating context and subject identity",
+      "guidance": "For Community-Supported Agriculture Subscription, identify responsible parties, farm program, packing point, pickup site, delivery route, and subscriber handoff, and the linked subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Activity record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Community-Supported Agriculture Subscription identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Subscriber, account, household, and contact",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_2",
+              "label": "Share type, season, frequency, and payment plan",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Pickup site, route, authorization, and preference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Activity observations and operating checks",
+      "guidance": "Capture Community-Supported Agriculture Subscription facts for subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Community-Supported Agriculture Subscription operating checks",
+          "items": [
+            "Enrollment and payment status",
+            "Share contents and source lot where needed",
+            "Packing, hold, pickup, and authorized alternate",
+            "Allergy or preference communication boundary",
+            "Missed pickup, substitution, credit, and donation rule",
+            "Season completion, balance, feedback, and renewal"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Activity and result lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Task, item, or service point",
+              "units": 1.25
+            },
+            {
+              "key": "required",
+              "label": "Required result or target",
+              "units": 1.05
+            },
+            {
+              "key": "actual",
+              "label": "Actual result or quantity",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Correction, status, or next action",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Retained evidence and next operating review",
+      "guidance": "Resolve open Community-Supported Agriculture Subscription conditions; have CSA program coordinator assign the next Community-Supported Agriculture Subscription owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Operating exceptions, holds, and retained evidence",
+          "items": [
+            "Payment or plan mismatch",
+            "Pickup authority uncertain",
+            "Substitution or allergen communication failure",
+            "Unclaimed share lacks timely disposition",
+            "Subscription and payment agreement",
+            "Distribution and pickup record",
+            "Substitution or credit communication",
+            "Balance, complaint, and season-closeout trace"
+          ],
+          "guidance": "Pause Community-Supported Agriculture Subscription when subscription terms, payment, pickup authority, communication, or share disposition remains unresolved. Retain the available Community-Supported Agriculture Subscription proof and route unresolved subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication scope to CSA program coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Service outcome and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Recorded activity outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with follow-up",
+                "Partially completed",
+                "Held",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Operator and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "CSA Program Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Farm Subscription Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

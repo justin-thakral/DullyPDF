@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1467__device_checkout_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1467__device_checkout_checklist.pdf",
+  "slug": "device-checkout-checklist",
+  "title": "Device Checkout Checklist",
+  "subtitle": "Capture asset tag, charger, protective case, and software access; confirm existing damage and return condition.",
+  "description": "Device Checkout records asset tag, charger, protective case, software access, existing damage, and return condition. Device Checkout evidence stays linked.",
+  "use_case": "Use this device checkout stage-gated verification when staff must document asset tag and charger. Reconcile protective case, software access, existing damage, and return condition before the device checkout handoff. Use the inventory record, barcode or serial scan, accessory count, condition images, acceptable-use receipt, repair ticket, return scan, and damage disposition. Ask the assigned device checkout reviewer to confirm asset tag against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Device Checkout starting details",
+      "guidance": "Match asset tag and serial number to charger and case; photograph existing damage, record software access, custody transfer, repair route, and return condition.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Device Checkout people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "asset_tag",
+              "label": "Asset tag",
+              "units": 1.1
+            },
+            {
+              "key": "charger",
+              "label": "Charger",
+              "units": 1.2
+            },
+            {
+              "key": "protective_case",
+              "label": "Protective case",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Device Checkout task details",
+          "fields": [
+            {
+              "key": "software_access",
+              "label": "Software access",
+              "units": 1.15
+            },
+            {
+              "key": "existing_damage",
+              "label": "Existing damage",
+              "units": 1.0
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Device Checkout checks and corrections",
+      "guidance": "Check current device checkout facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Device Checkout required checks",
+          "items": [
+            "Asset tag is identified for this record",
+            "Charger matches the current request or source",
+            "Protective case is ready for point-of-use staff",
+            "Software access limits or questions are resolved",
+            "Existing damage is communicated to the responsible person",
+            "Return condition is confirmed at handoff",
+            "A changed device checkout fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Device Checkout failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Device Checkout exception review and readiness",
+      "guidance": "Hold device checkout readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Device Checkout checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Device Checkout reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Device Checkout receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

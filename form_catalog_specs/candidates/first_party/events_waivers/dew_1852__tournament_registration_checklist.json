@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1852__tournament_registration_checklist",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1852__tournament_registration_checklist.pdf",
+  "slug": "tournament-registration-checklist",
+  "title": "Tournament Registration Checklist",
+  "subtitle": "Capture division placement, roster, schedule, and rules acknowledgment; confirm credential and result route.",
+  "description": "Tournament Registration records division placement, roster, schedule, rules acknowledgment, credential, and result route. Tournament Registration evidence stays linked.",
+  "use_case": "Use this tournament registration stage-gated verification when staff must document division placement and roster. Reconcile schedule, rules acknowledgment, credential, and result route before the tournament registration handoff. Use the entry application, eligibility source, roster and substitutes, division capacity, schedule acknowledgment, rules receipt, credential record, and placement notice. This registration places a team or entrant into a competitive division using eligibility, roster and substitutes, seeding inputs, bracket capacity, rules receipt, and credential issue. Capture team-manager authority, age or weight classification where applicable, roster lock, jersey or bib assignment, club affiliation, ranking evidence, and officials' packet readiness. Ask the assigned tournament registration reviewer to confirm division placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Tournament Registration starting details",
+      "guidance": "Confirm division eligibility, roster and substitutes, schedule availability, rules receipt, credential issuance, seeding source, payment reference, and result route.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Tournament Registration people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "division_placement",
+              "label": "Division placement",
+              "units": 1.1
+            },
+            {
+              "key": "roster",
+              "label": "Roster",
+              "units": 1.2
+            },
+            {
+              "key": "schedule",
+              "label": "Schedule",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Tournament Registration task details",
+          "fields": [
+            {
+              "key": "rules_acknowledgment",
+              "label": "Rules acknowledgment",
+              "units": 1.15
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.0
+            },
+            {
+              "key": "result_route",
+              "label": "Result route",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Tournament Registration checks and corrections review",
+      "guidance": "Check current tournament registration facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Tournament Registration required checks",
+          "items": [
+            "Division placement is identified for this record",
+            "Roster matches the current request or source",
+            "Schedule is ready for point-of-use staff",
+            "Rules acknowledgment limits or questions are resolved",
+            "Credential is communicated to the responsible person",
+            "Result route is confirmed at handoff",
+            "A changed tournament registration fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Tournament Registration failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Tournament Registration decision and readiness",
+      "guidance": "Hold tournament registration readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Tournament Registration checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Tournament Registration reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Tournament Registration receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

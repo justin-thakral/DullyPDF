@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2607__new_patient_registration_authorization_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2607__new_patient_registration_authorization_form.pdf",
+  "slug": "new-patient-registration-authorization-form",
+  "title": "New Patient Registration Authorization Form",
+  "subtitle": "Capture demographics source, contact, representative authority, and privacy acknowledgment; confirm chart match and visit handoff.",
+  "description": "New Patient Registration records demographics source, contact, representative authority, privacy acknowledgment, chart match, and visit handoff. New Patient Registration evidence stays linked.",
+  "use_case": "Use this new patient registration authorization decision when staff must document demographics source and contact. Reconcile representative authority, privacy acknowledgment, chart match, and visit handoff before the new patient registration handoff. Use registration source documents, demographic confirmation, representative authority, privacy notice receipt, duplicate-record result, communication preference, and check-in handoff. This registration centers chart creation, demographic confirmation, representative authority, communication preference, privacy receipt, duplicate-record prevention, guarantor routing, and front-desk arrival. Ask the assigned new patient registration reviewer to confirm demographics source against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "New Patient Registration contact and reference",
+      "guidance": "Verify demographics source, contact and representative authority, communication preferences, privacy acknowledgment, chart match, guarantor route, and visit handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "New Patient Registration people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.1
+            },
+            {
+              "key": "demographics_source",
+              "label": "Demographics source",
+              "units": 1.2
+            },
+            {
+              "key": "contact",
+              "label": "Contact",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "New Patient Registration task details",
+          "fields": [
+            {
+              "key": "representative_authority",
+              "label": "Representative authority",
+              "units": 1.15
+            },
+            {
+              "key": "privacy_acknowledgment",
+              "label": "Privacy acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "chart_match",
+              "label": "Chart match",
+              "units": 1.25
+            },
+            {
+              "key": "visit_handoff",
+              "label": "Visit handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "New Patient Registration decision and scope choices",
+      "guidance": "Decide each new patient registration scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "New Patient Registration itemized scope",
+          "fields": [
+            {
+              "key": "demographics_source",
+              "label": "Demographics source",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "contact",
+              "label": "Contact",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "representative_authority",
+              "label": "Representative authority",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "privacy_acknowledgment",
+              "label": "Privacy acknowledgment",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "chart_match",
+              "label": "Chart match",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "visit_handoff",
+              "label": "Visit handoff",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "New Patient Registration authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "New Patient Registration effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_care_recipient",
+              "label": "Authorized care recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "New Patient Registration contact and reference",
+      "guidance": "Only recorded new patient registration choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "New Patient Registration limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "New Patient Registration signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "clinical_or_administrative_reviewer_and_date",
+              "label": "Clinical or administrative reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "New Patient Registration signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "New Patient Registration authorization boundary",
+          "guidance": "Named new patient registration reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

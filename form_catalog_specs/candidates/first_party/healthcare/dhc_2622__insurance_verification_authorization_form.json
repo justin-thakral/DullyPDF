@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2622__insurance_verification_authorization_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2622__insurance_verification_authorization_form.pdf",
+  "slug": "insurance-verification-authorization-form",
+  "title": "Insurance Verification Authorization Form",
+  "subtitle": "Capture coverage source, member reference, service date, and network status; confirm benefit response and patient notice.",
+  "description": "Insurance Verification records coverage source, member reference, service date, network status, benefit response, and patient notice. Insurance Verification evidence stays linked.",
+  "use_case": "Use this insurance verification authorization decision when staff must document coverage source and member reference. Reconcile service date, network status, benefit response, and patient notice before the insurance verification handoff. Use the payer response, portal screenshot or call reference, representative name, benefit summary, network response, authorization indicator, patient estimate route, and notice receipt. This administrative record centers payer eligibility, plan dates, network response, benefit limitation, deductible or cost-share source, authorization indicator, representative reference, and patient notice. Ask the assigned insurance verification reviewer to confirm coverage source against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Insurance Verification signer details",
+      "guidance": "Record payer and plan source, member reference, service date, network response, benefit limitation, authorization indicator, call reference, and patient notice.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Insurance Verification people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.1
+            },
+            {
+              "key": "coverage_source",
+              "label": "Coverage source",
+              "units": 1.2
+            },
+            {
+              "key": "member_reference",
+              "label": "Member reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Insurance Verification task details",
+          "fields": [
+            {
+              "key": "service_date",
+              "label": "Service date",
+              "units": 1.15
+            },
+            {
+              "key": "network_status",
+              "label": "Network status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "benefit_response",
+              "label": "Benefit response",
+              "units": 1.25
+            },
+            {
+              "key": "patient_notice",
+              "label": "Patient notice",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Insurance Verification scope choices review",
+      "guidance": "Decide each insurance verification scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Insurance Verification itemized scope",
+          "fields": [
+            {
+              "key": "coverage_source",
+              "label": "Coverage source",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "member_reference",
+              "label": "Member reference",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "service_date",
+              "label": "Service date",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "network_status",
+              "label": "Network status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "benefit_response",
+              "label": "Benefit response",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "patient_notice",
+              "label": "Patient notice",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Insurance Verification authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Insurance Verification effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_care_recipient",
+              "label": "Authorized care recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            },
+            {
+              "key": "revocation_or_update_route",
+              "label": "Revocation or update route",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Insurance Verification signer receipt and handoff",
+      "guidance": "Only recorded insurance verification choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Insurance Verification limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Insurance Verification signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "clinical_or_administrative_reviewer_and_date",
+              "label": "Clinical or administrative reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Insurance Verification signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Insurance Verification authorization boundary",
+          "guidance": "Named insurance verification reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

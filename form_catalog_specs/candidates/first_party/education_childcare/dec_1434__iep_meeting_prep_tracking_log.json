@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1434__iep_meeting_prep_tracking_log",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1434__iep_meeting_prep_tracking_log.pdf",
+  "slug": "iep-meeting-prep-tracking-log",
+  "title": "IEP Meeting Prep Tracking Log",
+  "subtitle": "Capture meeting notice, current plan, progress evidence, and participant role; confirm family priority and proposed action.",
+  "description": "IEP Meeting Prep records meeting notice, current plan, progress evidence, participant role, family priority, and proposed action. IEP Meeting Prep evidence stays linked.",
+  "use_case": "Use this iep meeting prep time-ordered tracking when staff must document meeting notice and current plan. Reconcile progress evidence, participant role, family priority, and proposed action before the iep meeting prep handoff. Use the meeting notice, current IEP, service log, progress-monitoring data, evaluation reports, family agenda, participant list, draft proposal, and prior written notice route. For iep meeting prep live use, check roster. Reconcile the iep meeting prep schedule and actual handoff times. Preserve the iep meeting prep roster and schedule. Record the iep meeting prep handoff time and instructions. Close the iep meeting prep exception queue. Verify iep meeting prep day-of-service timing. Resolve iep meeting prep real-time changes and operating handoff for iep meeting prep. Ask the assigned iep meeting prep reviewer to confirm meeting notice against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "IEP Meeting Prep contact and reference",
+      "guidance": "Assemble meeting notice, current plan, service and progress records, participant roles, family priorities, proposed actions, accommodations, and follow-up questions.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "IEP Meeting Prep people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "meeting_notice",
+              "label": "Meeting notice",
+              "units": 1.2
+            },
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "IEP Meeting Prep task details",
+          "fields": [
+            {
+              "key": "progress_evidence",
+              "label": "Progress evidence",
+              "units": 1.15
+            },
+            {
+              "key": "participant_role",
+              "label": "Participant role",
+              "units": 1.0
+            },
+            {
+              "key": "family_priority",
+              "label": "Family priority",
+              "units": 1.25
+            },
+            {
+              "key": "proposed_action",
+              "label": "Proposed action",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "IEP Meeting Prep event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "IEP Meeting Prep events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "meeting_notice",
+              "label": "Meeting notice",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "family_priority",
+              "label": "Family priority",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "IEP Meeting Prep correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "IEP Meeting Prep current state and handoff",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "IEP Meeting Prep status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "IEP Meeting Prep open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "IEP Meeting Prep log receipt",
+          "fields": [
+            {
+              "key": "school_or_program_log_custodian_and_date",
+              "label": "School or program log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

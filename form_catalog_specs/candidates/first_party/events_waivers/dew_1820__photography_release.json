@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1820__photography_release",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1820__photography_release.pdf",
+  "slug": "photography-release",
+  "title": "Photography Release",
+  "subtitle": "Capture image or audio, capture setting, name use, and publication channel; confirm duration and withdrawal.",
+  "description": "Photography Release records image or audio, capture setting, name use, publication channel, duration, and withdrawal. Photography Release evidence stays linked.",
+  "use_case": "Use this photography release controlled release when staff must document image or audio and capture setting. Reconcile name use, publication channel, duration, and withdrawal before the photography release handoff. Use the production brief, capture list, subject match, permitted-use matrix, channel inventory, editing and attribution instruction, publication record, and withdrawal log. Ask the assigned photography release reviewer to confirm image or audio against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Photography Release contact and reference",
+      "guidance": "Itemize image, video, audio, name and quotation use; bound capture setting, publication channel, audience, editing, duration, storage, and withdrawal. Record the photography release decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Photography Release people and reference",
+          "fields": [
+            {
+              "key": "person_shown_or_recorded",
+              "label": "Person shown or recorded",
+              "units": 1.15
+            },
+            {
+              "key": "person_contact",
+              "label": "Person contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.1
+            },
+            {
+              "key": "image_or_audio",
+              "label": "Image or audio",
+              "units": 1.2
+            },
+            {
+              "key": "capture_setting",
+              "label": "Capture setting",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Photography Release task details",
+          "fields": [
+            {
+              "key": "name_use",
+              "label": "Name use",
+              "units": 1.15
+            },
+            {
+              "key": "publication_channel",
+              "label": "Publication channel",
+              "units": 1.0
+            },
+            {
+              "key": "duration",
+              "label": "Duration",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal",
+              "label": "Withdrawal",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "release_scope",
+      "title": "Photography Release scope and limits",
+      "guidance": "Choose the material, recipient, purpose, and channel separately.",
+      "blocks": [
+        {
+          "key": "release_choices",
+          "type": "fields",
+          "label": "Photography Release itemized release choices",
+          "fields": [
+            {
+              "key": "image_or_audio",
+              "label": "Image or audio",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Release",
+                "Release with limit",
+                "Do not release",
+                "Need review"
+              ]
+            },
+            {
+              "key": "capture_setting",
+              "label": "Capture setting",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Release",
+                "Release with limit",
+                "Do not release",
+                "Need review"
+              ]
+            },
+            {
+              "key": "name_use",
+              "label": "Name use",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Release",
+                "Release with limit",
+                "Do not release",
+                "Need review"
+              ]
+            },
+            {
+              "key": "publication_channel",
+              "label": "Publication channel",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Release",
+                "Release with limit",
+                "Do not release",
+                "Need review"
+              ]
+            },
+            {
+              "key": "duration",
+              "label": "Duration",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Release",
+                "Release with limit",
+                "Do not release",
+                "Need review"
+              ]
+            },
+            {
+              "key": "withdrawal",
+              "label": "Withdrawal",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Release",
+                "Release with limit",
+                "Do not release",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "release_items",
+          "type": "table",
+          "label": "Photography Release material and recipients",
+          "columns": [
+            {
+              "key": "material_or_category",
+              "label": "Material or category",
+              "units": 1.2
+            },
+            {
+              "key": "recipient_or_channel",
+              "label": "Recipient or channel",
+              "units": 1.1
+            },
+            {
+              "key": "purpose",
+              "label": "Purpose",
+              "units": 1.25
+            },
+            {
+              "key": "limit_or_expiration",
+              "label": "Limit or expiration",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "release_period",
+          "type": "fields",
+          "label": "Photography Release effective period",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "expiration_date_or_event",
+              "label": "Expiration date or event",
+              "units": 1.0
+            },
+            {
+              "key": "excluded_material_or_instruction",
+              "label": "Excluded material or instruction",
+              "units": 1.25
+            },
+            {
+              "key": "named_recipient",
+              "label": "Named recipient",
+              "units": 1.1
+            },
+            {
+              "key": "withdrawal_or_revocation_contact",
+              "label": "Withdrawal or revocation contact",
+              "units": 1.2
+            },
+            {
+              "key": "withdrawal_received_date",
+              "label": "Withdrawal received date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "release_receipt",
+      "title": "Photography Release delivery receipt and handoff",
+      "guidance": "Record the authorized signer and each completed release.",
+      "blocks": [
+        {
+          "key": "delivery_log",
+          "type": "table",
+          "label": "Photography Release delivery or publication",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date",
+              "units": 1.2
+            },
+            {
+              "key": "material_released",
+              "label": "Material released",
+              "units": 1.1
+            },
+            {
+              "key": "recipient_or_channel",
+              "label": "Recipient or channel",
+              "units": 1.25
+            },
+            {
+              "key": "custodian_or_evidence",
+              "label": "Custodian or evidence",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "release_signatures",
+          "type": "signatures",
+          "label": "Photography Release signatures",
+          "fields": [
+            {
+              "key": "releasing_person_and_date",
+              "label": "Releasing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "custodian_receipt_and_date",
+              "label": "Custodian receipt and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The signature applies only to the bounded release above."
+        },
+        {
+          "key": "release_boundary",
+          "type": "notice",
+          "label": "Photography Release boundary",
+          "guidance": "Named photography release reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "catalog_id": "construction_trades/dct_1111__plumbing_service_work_order_form",
+  "description": "For plumbing service, this work order form records symptom history, isolation, repair boundary, materials, water-damage protection, code needs, and restoration. Its supporting evidence includes pressure readings, leak trace, drain test, photos, removed-part condition, and post-repair observation.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Plumbing opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Plumbing site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Plumbing contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Plumbing superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Plumbing due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this plumbing service record to its evidence.",
+          "key": "record_routing",
+          "label": "Plumbing Service Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Fixture",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Branch",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Shutoff",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Supply or drain system",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Water source",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture fixture, branch, shutoff, supply or drain system, water source, affected areas, and building access for this plumbing service.",
+          "key": "core_identity",
+          "label": "Plumbing Service Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify fixture, branch, shutoff, supply or drain system, water source, affected areas, and building access for this plumbing service record.",
+      "key": "identity_1",
+      "title": "Work Assignment Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Symptom history",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Isolation",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Repair boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Materials",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Water-damage protection",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For plumbing service, record symptom history, isolation, repair boundary, materials, water-damage protection, code needs, and restoration.",
+          "key": "task_inputs",
+          "label": "Plumbing Service Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Plumbing work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized plumbing service work from additions.",
+          "key": "assigned_work",
+          "label": "Plumbing Service Assigned Work and Acceptance Criteria",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Plumbing arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Plumbing access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Plumbing added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Plumbing inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop plumbing service work at recorded limits.",
+          "key": "work_window",
+          "label": "Plumbing Service Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Shut down and escalate uncontrolled discharge, contamination, sewer gas, failed backflow protection, or concealed damage. Route unresolved plumbing service work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Plumbing Service Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For plumbing service, capture symptom history, isolation, repair boundary, materials, water-damage protection, code needs, and restoration.",
+      "key": "task_2",
+      "title": "Authorized Work Plan"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Plumbing completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Leak-free verification",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Restored service",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Damage referral",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the plumbing service outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Plumbing Service Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Plumbing open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Plumbing owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Plumbing acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer plumbing service items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Plumbing Service Remaining Work and Handoff",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Plumbing Service Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For plumbing service, record leak-free verification, restored service, damage referral, customer care instructions, and repair warranty record; give the plumbing service care or operating instruction, identify plumbing service access restoration and recipient.",
+          "height": 60,
+          "key": "completion_care_notes",
+          "label": "Plumbing Service Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Plumbing trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Plumbing site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Plumbing Service Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the plumbing service record with leak-free verification, restored service, damage referral, customer care instructions, and repair warranty record.",
+      "key": "closeout_3",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "plumbing-service-work-order-form",
+  "source_filename": "dct_1111__plumbing_service_work_order_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Plumbing Service Work Order Form: plumbing leak or fixture service workflow using fixture, symptom history, and pressure readings.",
+  "title": "Plumbing Service Work Order Form",
+  "use_case": "Use the work order form during plumbing leak or fixture service workflow when the plumbing service record must identify fixture, branch, shutoff, supply or drain system, water source, affected areas, and building access. Complete the applicable handoff for leak-free verification, restored service, damage referral, customer care instructions, and repair warranty record."
+}

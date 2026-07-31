@@ -1,0 +1,277 @@
+{
+  "catalog_id": "construction_trades/dcf_190__owner_selection_request_form",
+  "description": "For owner selection, this request form records available options, performance criteria, finish attributes, lead time, cost delta, maintenance, and alternates. Its supporting evidence includes sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Selection opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Selection site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Selection contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Selection superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Selection due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this owner selection record to its evidence.",
+          "key": "record_routing",
+          "label": "Owner Selection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Selection category",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Rooms or systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Allowance",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Vendor",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities for this owner selection.",
+          "key": "core_identity",
+          "label": "Owner Selection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities for this owner selection record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Available options",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Performance criteria",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Finish attributes",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Lead time",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Cost delta",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For owner selection, record available options, performance criteria, finish attributes, lead time, cost delta, maintenance, and alternates.",
+          "key": "task_inputs",
+          "label": "Owner Selection Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Owner Selection Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State owner selection outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Owner Selection Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Selection work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Selection owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate owner selection items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Owner Selection Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        }
+      ],
+      "guidance": "For owner selection, capture available options, performance criteria, finish attributes, lead time, cost delta, maintenance, and alternates.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Selection decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Selection approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Selection schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate owner selection disposition.",
+          "key": "disposition",
+          "label": "Owner Selection Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Owner Selection Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the owner selection decision to evidence.",
+          "height": 112,
+          "key": "decision_basis",
+          "label": "Owner Selection Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Signed selection",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Budget",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Schedule update",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Procurement release",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For owner selection, record signed selection, budget and schedule update, procurement release, substitution rule, and field distribution.",
+          "key": "request_handoff",
+          "label": "Owner Selection Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Selection requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Selection coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Owner Selection Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the owner selection next step from sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+      "key": "decision_3",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "owner-selection-request-form",
+  "source_filename": "dcf_190__owner_selection_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Owner Selection Request Form: owner finish or product selection control using selection category, available options, and sample approval.",
+  "title": "Owner Selection Request Form",
+  "use_case": "Use the request form during owner finish or product selection control when the owner selection record must identify selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities. Complete the applicable handoff for signed selection, budget and schedule update, procurement release, substitution rule, and field distribution."
+}

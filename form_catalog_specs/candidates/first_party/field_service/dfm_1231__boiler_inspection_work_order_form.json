@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1231__boiler_inspection_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1231__boiler_inspection_work_order_form.pdf",
+  "slug": "boiler-inspection-work-order-form",
+  "title": "Boiler Inspection Work Order Form",
+  "subtitle": "Boiler Inspection: connects authorized scope to results.",
+  "description": "Boiler Inspection Work Order Form covers boiler, burner, fuel train, controls, venting, water system, and served loop. The facility boiler coordinator records Boiler Inspection authorized tasks, materials, results, and changes. Boiler Inspection Work Order Form keeps Boiler Inspection exceptions visible until the facility boiler coordinator handoff.",
+  "use_case": "Use Boiler Inspection Work Order Form at boiler room, fuel entry, flue route, and served mechanical system. Document boiler, burner, fuel train, controls, venting, water system, and served loop identity before Boiler Inspection begins. Compare boiler, burner, fuel train, controls, venting, water system, and served loop findings with stated Boiler Inspection criteria; route unresolved Boiler Inspection issues to qualified boiler or combustion-system reviewer. For Boiler Inspection Work Order Form, confirm requirements for Boiler Inspection. Ask qualified boiler or combustion-system reviewer to review Boiler Inspection conditions beyond the facility boiler coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Facility work-order scope review",
+      "guidance": "Bind Boiler Inspection to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Request, asset, or work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Requesting department or site contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Facility, building, or service area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Facility Boiler Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Boiler Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility and boiler number",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Make, model, serial, rating, fuel, and permit reference",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Operating schedule, service history, and inspection basis",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Boiler Inspection identifier printed on boiler, burner, fuel train, controls, venting, water system, and served loop or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized work observations and evidence",
+      "guidance": "Record authorized Boiler Inspection activity; separate proposed, declined, deferred, or new Boiler Inspection scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Boiler Inspection task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Asset, zone, device, or component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method, part, or material",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Actual result or reading",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Technician or crew",
+              "units": 0.8
+            },
+            {
+              "key": "verified",
+              "label": "Verified by / time",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Boiler Inspection work and verification points",
+          "items": [
+            "Visible vessel, piping, valve, pump, and leak condition",
+            "Burner, flame, fuel-train, and ignition observation",
+            "Vent, draft, combustion-air, and room condition",
+            "Pressure, temperature, level, and makeup-water indication",
+            "Limit, cutoff, relief, alarm, and control response",
+            "Startup, operating, shutdown, and lockout sequence"
+          ],
+          "guidance": "Use each Boiler Inspection check to prompt documented boiler, burner, fuel train, controls, venting, water system, and served loop execution; enter its actual Boiler Inspection result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Boiler Inspection parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Work exception and scope changes",
+      "guidance": "Stop Boiler Inspection at any scope or cost limit; honor facility boiler coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when a fuel, combustion, pressure-boundary, venting, or required safety-control concern remains. Protect boiler, burner, fuel train, controls, venting, water system, and served loop; document the Boiler Inspection notification and await qualified boiler or combustion-system reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Fuel leak or combustion concern",
+            "Low-water, limit, relief, or cutoff failure",
+            "Unsafe pressure, temperature, venting, or vessel condition",
+            "Test requires authority or shutdown not available"
+          ],
+          "guidance": "For Boiler Inspection, identify affected boiler, burner, fuel train, controls, venting, water system, and served loop scope; ask facility boiler coordinator to document the Boiler Inspection immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected condition, scope change, added cost, and authorization response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, scope change, added cost, and authorization response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work authorization decision and site release",
+      "guidance": "Reconcile Boiler Inspection to authorization; state facility boiler coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Nameplate and permit identification",
+            "Combustion or operating readings by instrument",
+            "Control and safety-device test result",
+            "Deficiency restriction and restoration record"
+          ],
+          "guidance": "Attach or link proof for boiler, burner, fuel train, controls, venting, water system, and served loop; mark only Boiler Inspection evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

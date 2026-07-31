@@ -1,0 +1,288 @@
+{
+  "catalog_id": "home_services/dhs_2410__handyman_repair_request_form",
+  "description": "For handyman repair, this request form records diagnostic boundary, repair approach, parts, protection, estimated labor, exclusions, and restoration expectations. Its supporting evidence includes existing-condition photos, measurements, model data, test results, material receipts, and completed-repair photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Handyman opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Handyman site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Handyman contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Handyman service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Handyman due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this handyman repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Handyman Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Repair location",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Fixture or finish",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Reported defect",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Dimensions",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Access",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture repair location, fixture or finish, reported defect, dimensions, access, utilities, and customer-supplied materials for this handyman repair.",
+          "key": "core_identity",
+          "label": "Handyman Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify repair location, fixture or finish, reported defect, dimensions, access, utilities, and customer-supplied materials for this handyman repair record.",
+      "key": "identity_1",
+      "title": "Customer Contact and Address"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Diagnostic boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Repair approach",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Protection",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Estimated labor",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For handyman repair, record diagnostic boundary, repair approach, parts, protection, estimated labor, exclusions, and restoration expectations.",
+          "key": "task_inputs",
+          "label": "Handyman Repair Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Handyman Repair Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State handyman repair outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Handyman Repair Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Handyman work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Handyman owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate handyman repair items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Handyman Repair Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Stop for structural, electrical, gas, water, hazardous-material, permit, or specialist work beyond authorization. Route unresolved handyman repair work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Handyman Repair Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For handyman repair, capture diagnostic boundary, repair approach, parts, protection, estimated labor, exclusions, and restoration expectations.",
+      "key": "task_2",
+      "title": "Requested Service and Access"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Handyman decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Handyman scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Handyman schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate handyman repair disposition.",
+          "key": "disposition",
+          "label": "Handyman Repair Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Handyman Repair Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the handyman repair decision to evidence.",
+          "height": 112,
+          "key": "decision_basis",
+          "label": "Handyman Repair Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Functional verification",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Cleanup",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Customer acceptance",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Open referral",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For handyman repair, record functional verification, cleanup, customer acceptance, open referral, material warranty, and invoice handoff.",
+          "key": "request_handoff",
+          "label": "Handyman Repair Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Handyman customer confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Handyman service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Handyman Repair Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the handyman repair next step from existing-condition photos, measurements, model data, test results, material receipts, and completed-repair photos.",
+      "key": "decision_3",
+      "title": "Schedule Decision"
+    }
+  ],
+  "slug": "handyman-repair-request-form",
+  "source_filename": "dhs_2410__handyman_repair_request_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Handyman Repair Request Form: small-repair intake, estimate, and work control using repair location, diagnostic boundary, and existing-condition photos.",
+  "title": "Handyman Repair Request Form",
+  "use_case": "Use the request form during small-repair intake, estimate, and work control when the handyman repair record must identify repair location, fixture or finish, reported defect, dimensions, access, utilities, and customer-supplied materials. Complete the applicable handoff for functional verification, cleanup, customer acceptance, open referral, material warranty, and invoice handoff."
+}

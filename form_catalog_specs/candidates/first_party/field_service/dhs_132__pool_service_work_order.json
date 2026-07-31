@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_132__pool_service_work_order",
+  "source_section": "field_service",
+  "source_filename": "dhs_132__pool_service_work_order.pdf",
+  "slug": "pool-service-work-order",
+  "title": "Pool Service Work Order",
+  "subtitle": "Residential Pool Service: connects authorized scope to results.",
+  "description": "Pool Service Work Order covers pool or spa, circulation, filtration, chemical feed, controller, and deck feature. The residential pool-service coordinator records Residential Pool Service authorized tasks, materials, results, and changes. Pool Service Work Order keeps Residential Pool Service exceptions visible until the residential pool-service coordinator handoff.",
+  "use_case": "Use Pool Service Work Order at residential pool, spa, equipment pad, chemical storage, and access gate. Document pool or spa, circulation, filtration, chemical feed, controller, and deck feature identity before Residential Pool Service begins. Compare pool or spa, circulation, filtration, chemical feed, controller, and deck feature findings with stated Residential Pool Service criteria; route unresolved Residential Pool Service issues to qualified pool-service reviewer. For Pool Service Work Order, confirm requirements for Residential Pool Service. Ask qualified pool-service reviewer to review Residential Pool Service conditions beyond the residential pool-service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Residential work-order scope review",
+      "guidance": "Bind Residential Pool Service to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Pool job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Pool customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Pool address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Residential Pool-Service Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Pool Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and body-of-water identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Equipment and controller identity",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Service interval, target range, and prior reading",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Pool Service identifier printed on pool or spa, circulation, filtration, chemical feed, controller, and deck feature or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized residential work details",
+      "guidance": "Record authorized Residential Pool Service activity; separate proposed, declined, deferred, or new Residential Pool Service scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Residential Pool Service task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Property area, unit, item, or component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method, part, or material",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Actual result or reading",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Technician or crew",
+              "units": 0.8
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Residential Pool Service work and verification points",
+          "items": [
+            "Disinfectant, pH, temperature, and clarity",
+            "Filter pressure, flow, pump, and leak condition",
+            "Skimmer, basket, surface, wall, floor, and debris condition",
+            "Chemical supply, feeder, storage, and label condition",
+            "Gate, barrier, drain cover, and visible deck condition",
+            "Adjustment, circulation, retest, and customer restriction"
+          ],
+          "guidance": "Use each Residential Pool Service check to prompt documented pool or spa, circulation, filtration, chemical feed, controller, and deck feature execution; enter its actual Residential Pool Service result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Residential Pool Service parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Residential work exception and changes",
+      "guidance": "Stop Residential Pool Service at any scope or cost limit; honor residential pool-service coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Water outside service criteria",
+            "Chemical leak or incompatible storage",
+            "Barrier or drain-cover concern",
+            "Equipment cannot circulate or maintain control"
+          ],
+          "guidance": "Pause Residential Pool Service and notify residential pool-service coordinator when water, chemical, circulation, barrier, visibility, or safe-use control remains unresolved."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected condition, scope change, added cost, and authorization response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, scope change, added cost, and authorization response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work completion and customer handoff",
+      "guidance": "Reconcile Residential Pool Service to authorization; state residential pool-service coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Time-stamped water readings",
+            "Equipment-pad and condition photographs",
+            "Chemical addition and calculation record",
+            "Restriction, retest, and customer notice"
+          ],
+          "guidance": "Attach or link proof for pool or spa, circulation, filtration, chemical feed, controller, and deck feature; mark only Residential Pool Service evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Residential Pool Service completed-scope notes and customer instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Residential Pool Service completed-scope notes and customer instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Reconcile Residential Pool Service completion to authorized scope and note customer instructions, open work, or a required return visit."
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

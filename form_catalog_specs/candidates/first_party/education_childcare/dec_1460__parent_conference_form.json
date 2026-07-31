@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1460__parent_conference_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1460__parent_conference_form.pdf",
+  "slug": "parent-conference-form",
+  "title": "Parent Conference Form",
+  "subtitle": "Capture conference agenda, student work, attendance context, and family question; confirm agreed action and progress follow-up.",
+  "description": "Parent Conference records conference agenda, student work, attendance context, family question, agreed action, and progress follow-up. Parent Conference evidence stays linked.",
+  "use_case": "Use this parent conference operational record when staff must document conference agenda and student work. Reconcile attendance context, family question, agreed action, and progress follow-up before the parent conference handoff. Use the conference invitation, work samples, gradebook snapshot, attendance record, teacher observations, family questions, action notes, and progress-review calendar. For parent conference live use, check roster. Reconcile the parent conference schedule and actual handoff times. Preserve the parent conference roster and schedule. Record the parent conference handoff time and instructions. Close the parent conference exception queue. Verify parent conference day-of-service timing. Resolve parent conference real-time changes and operating handoff for parent conference. Ask the assigned parent conference reviewer to confirm conference agenda against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Parent Conference contact and reference",
+      "guidance": "Prepare agenda, student work samples, attendance and classroom context, family questions, agreed actions, communication preferences, and progress checkpoints.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Parent Conference people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "conference_agenda",
+              "label": "Conference agenda",
+              "units": 1.2
+            },
+            {
+              "key": "student_work",
+              "label": "Student work",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Parent Conference task details",
+          "fields": [
+            {
+              "key": "attendance_context",
+              "label": "Attendance context",
+              "units": 1.15
+            },
+            {
+              "key": "family_question",
+              "label": "Family question",
+              "units": 1.0
+            },
+            {
+              "key": "agreed_action",
+              "label": "Agreed action",
+              "units": 1.25
+            },
+            {
+              "key": "progress_follow_up",
+              "label": "Progress follow-up",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Parent Conference activity",
+      "guidance": "Record each meaningful parent conference event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Parent Conference activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "conference_agenda",
+              "label": "Conference agenda",
+              "units": 1.1
+            },
+            {
+              "key": "attendance_context",
+              "label": "Attendance context",
+              "units": 1.25
+            },
+            {
+              "key": "agreed_action",
+              "label": "Agreed action",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Parent Conference change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Parent Conference completion and handoff",
+      "guidance": "Leave the current parent conference result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Parent Conference final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Parent Conference completion receipt",
+          "fields": [
+            {
+              "key": "responsible_teacher_or_program_staff_and_date",
+              "label": "Responsible teacher or program staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded parent conference task status."
+        }
+      ]
+    }
+  ]
+}

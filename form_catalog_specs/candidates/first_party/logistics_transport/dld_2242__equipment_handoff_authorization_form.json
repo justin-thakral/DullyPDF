@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2242__equipment_handoff_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2242__equipment_handoff_authorization_form.pdf",
+  "slug": "equipment-handoff-authorization-form",
+  "title": "Equipment Handoff Authorization Form",
+  "subtitle": "Equipment Handoff: bounds the decision, conditions, and expiry.",
+  "description": "Equipment Handoff Authorization Form controls equipment unit, accessory set, condition, configuration, custody, and return obligation by tying each Equipment Handoff custody, document, or movement decision to the equipment owner / custodian, a stated boundary, and an expiry. The equipment custody coordinator preserves conditions, exceptions, confirmation, and both sides of the handoff.",
+  "use_case": "Use Equipment Handoff Authorization Form at issuing location, receiving location, transport path, and return point. Check applicable Equipment Handoff requirements, list the affected quantity, value, document, route, or custody action, and state its limit. Record whether the equipment owner / custodian approves, conditions, holds, or declines the request; obtain renewed consent before changing equipment unit, accessory set, condition, configuration, custody, and return obligation scope.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Decision context and authorization record",
+      "guidance": "For Equipment Handoff, identify responsible parties, issuing location, receiving location, transport path, and return point, and the linked equipment unit, accessory set, condition, configuration, custody, and return obligation source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Authorization ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Request date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Requesting party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Issue / return point",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "basis",
+              "label": "Requested limit",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Equipment Handoff identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Handoff, project, and request number",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Asset tag, serial, model, and quantity",
+              "units": 2.111111111111111
+            },
+            {
+              "key": "identity_3",
+              "label": "Accessory, key, credential, software, and configuration identifiers",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Authorization basis and bounded decision",
+      "guidance": "Capture Equipment Handoff facts for equipment unit, accessory set, condition, configuration, custody, and return obligation; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Requested scope and decision lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Requested scope or custody action",
+              "units": 1.2
+            },
+            {
+              "key": "basis",
+              "label": "Finding, rate, or source basis",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Limit or condition",
+              "units": 0.95
+            },
+            {
+              "key": "decision",
+              "label": "Decision or required change",
+              "units": 1.1
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Equipment Handoff authorization checks",
+          "items": [
+            "Pre-handoff condition and function",
+            "Accessory and consumable count",
+            "Configuration, data, and account boundary",
+            "Recipient identity and authority",
+            "Custody date, location, and intended use",
+            "Return condition, due date, and unresolved defect"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Decision evidence, expiry, and next control",
+      "guidance": "Resolve open Equipment Handoff conditions; have equipment custody coordinator assign the next Equipment Handoff owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Decision limits, holds, and retained evidence",
+          "items": [
+            "Recipient not authorized",
+            "Asset, accessory, or condition mismatch",
+            "Data or credential not cleared",
+            "Unsafe or failed equipment cannot be released",
+            "Asset and serial photographs",
+            "Condition and function test",
+            "Accessory checklist and configuration record",
+            "Signed custody and return evidence"
+          ],
+          "guidance": "Pause Equipment Handoff when authority, identity, condition, data protection, accessory accounting, or custody remains unresolved. Retain the available Equipment Handoff proof and route unresolved equipment unit, accessory set, condition, configuration, custody, and return obligation scope to equipment custody coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Authorization decision and limits",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Authorization decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved within listed limits",
+                "Approved with listed conditions",
+                "Revision required",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and authorizer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requesting party or authorized representative",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorizing authority: Asset-Control Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

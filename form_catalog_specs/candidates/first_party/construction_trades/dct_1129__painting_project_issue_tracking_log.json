@@ -1,0 +1,289 @@
+{
+  "catalog_id": "construction_trades/dct_1129__painting_project_issue_tracking_log",
+  "description": "For painting project, this issue tracking log records surface preparation, repairs, masking, primer, coat count, application method, protection, and sequencing. Its supporting evidence includes color approval, substrate test, moisture reading, product batch, coverage photos, and finish inspection.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Project opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Project site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Project contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Project superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Project due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this painting project record to its evidence.",
+          "key": "record_routing",
+          "label": "Painting Project Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Rooms or elevations",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Substrate",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Existing coating",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Color",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Sheen",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Occupied contents",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture rooms or elevations, substrate, existing coating, color and sheen, occupied contents, access, and environmental limits for this painting project.",
+          "key": "core_identity",
+          "label": "Painting Project Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify rooms or elevations, substrate, existing coating, color and sheen, occupied contents, access, and environmental limits for this painting project record.",
+      "key": "identity_1",
+      "title": "Issue Register Coverage"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Project when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Project measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Project evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Project result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For painting project, record color approval, substrate test, moisture reading, product batch, coverage photos, and finish inspection.",
+          "key": "evidence_register",
+          "label": "Painting Project Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Color approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Substrate test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Moisture reading",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Product batch",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Coverage photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every painting project evidence source.",
+          "key": "evidence_sources",
+          "label": "Painting Project Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Project dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Project owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Project escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep painting project items open through verification.",
+          "key": "open_item_register",
+          "label": "Painting Project Open Items and Next Actions",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Support painting project findings with color approval, substrate test, moisture reading, product batch, coverage photos, and finish inspection.",
+      "key": "observation_2",
+      "title": "Investigation Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Stop for incompatible coating, excessive moisture, inadequate ventilation, unsafe access, or unapproved color change. Do not release affected painting project work.",
+          "key": "stop_boundary",
+          "label": "Painting Project Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Project exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Project correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Project escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close painting project exceptions with verification.",
+          "key": "exception_register",
+          "label": "Painting Project Exception and Corrective Action",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Project notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Project notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Project interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Project review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Project release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep painting project controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Painting Project Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Painting Project Resolution Verification Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For painting project, compare the retest with color approval, substrate test, moisture reading, product batch, coverage photos, and finish inspection; preserve each painting project limitation and name its painting project restart or closure authority.",
+          "height": 55,
+          "key": "resolution_verification_notes",
+          "label": "Painting Project Resolution Verification Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Stop for incompatible coating, excessive moisture, inadequate ventilation, unsafe access, or unapproved color change. Control and route each painting project exception.",
+      "key": "exception_3",
+      "title": "Controls, Corrections, and Escalation"
+    }
+  ],
+  "slug": "painting-project-issue-tracking-log",
+  "source_filename": "dct_1129__painting_project_issue_tracking_log.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Painting Project Issue Tracking Log: painting scope preparation and finish control using rooms or elevations, surface preparation, and color approval.",
+  "title": "Painting Project Issue Tracking Log",
+  "use_case": "Use the issue tracking log during painting scope preparation and finish control when the painting project record must identify rooms or elevations, substrate, existing coating, color and sheen, occupied contents, access, and environmental limits. Complete the applicable handoff for touch-up verification, leftover material label, cleaning, customer acceptance, and maintenance guidance."
+}

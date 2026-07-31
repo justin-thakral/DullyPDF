@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2643__farmers_market_vendor_request_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2643__farmers_market_vendor_request_form.pdf",
+  "slug": "farmers-market-vendor-request-form",
+  "title": "Farmers Market Vendor Request Form",
+  "subtitle": "Farmers Market Vendor Operation: defines need, constraints, and assignment.",
+  "description": "Farmers Market Vendor Request Form covers vendor, market date, product, lot, booth, cold-holding control, sale, and closeout. The market vendor coordinator records Farmers Market Vendor Operation need, timing, access, and assignment. Farmers Market Vendor Request Form keeps Farmers Market Vendor Operation exceptions visible until the market vendor coordinator handoff.",
+  "use_case": "Use Farmers Market Vendor Request Form at market, booth, vehicle, storage cooler, display, and customer service area. Document vendor, market date, product, lot, booth, cold-holding control, sale, and closeout identity before Farmers Market Vendor Operation begins. Compare vendor, market date, product, lot, booth, cold-holding control, sale, and closeout findings with stated Farmers Market Vendor Operation criteria; route unresolved Farmers Market Vendor Operation issues to market operations or food-safety reviewer. For Farmers Market Vendor Request Form, confirm requirements for Farmers Market Vendor Operation. Ask market operations or food-safety reviewer to review Farmers Market Vendor Operation conditions beyond the market vendor coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requested-service contact and source record",
+      "guidance": "For Farmers Market Vendor Operation, identify responsible parties, market, booth, vehicle, storage cooler, display, and customer service area, and the linked vendor, market date, product, lot, booth, cold-holding control, sale, and closeout source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Farmers Market Vendor Operation identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Vendor, market, booth, and date",
+              "units": 1.7222222222222223
+            },
+            {
+              "key": "identity_2",
+              "label": "Product, lot, source, quantity, and price",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Permit, insurance, contact, and payment identifiers",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested scope and practical constraints",
+      "guidance": "Capture Farmers Market Vendor Operation facts for vendor, market date, product, lot, booth, cold-holding control, sale, and closeout; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Farmers Market Vendor Operation intake confirmations",
+          "items": [
+            "Requested or already documented: approved product and source",
+            "Requested or already documented: transport and display condition",
+            "Requested or already documented: temperature or protection where needed",
+            "Requested or already documented: label, price, allergen, and customer information",
+            "Requested or already documented: cash, electronic payment, and sales reconciliation",
+            "Requested or already documented: unsold product, waste, complaint, and incident closeout"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Farmers Market Vendor Operation request questions; have market vendor coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Vendor approval incomplete",
+            "Product source or lot unknown",
+            "Temperature or contamination concern",
+            "Complaint or unsold product lacks disposition",
+            "Prior or requester-supplied: vendor approval and product list",
+            "Prior or requester-supplied: lot and source trace",
+            "Prior or requester-supplied: temperature or display-control record",
+            "Prior or requester-supplied: sales, complaint, and unsold-product reconciliation"
+          ],
+          "guidance": "Do not assign or authorize the Farmers Market Vendor Operation request when vendor authority, product trace, display control, complaint, or product disposition remains unresolved. Retain information supplied with the request and route unresolved constraints to market vendor coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Market Vendor Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

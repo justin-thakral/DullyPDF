@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_130__pool_service_form",
+  "source_section": "field_service",
+  "source_filename": "dhs_130__pool_service_form.pdf",
+  "slug": "pool-service-form",
+  "title": "Pool Service Form",
+  "subtitle": "Residential Pool Service: captures actual activity and handoff.",
+  "description": "Pool Service Form covers pool or spa, circulation, filtration, chemical feed, controller, and deck feature. The residential pool-service coordinator records Residential Pool Service activity, quantities, variance, and handoff. Pool Service Form keeps Residential Pool Service exceptions visible until the residential pool-service coordinator handoff.",
+  "use_case": "Use Pool Service Form at residential pool, spa, equipment pad, chemical storage, and access gate. Document pool or spa, circulation, filtration, chemical feed, controller, and deck feature identity before Residential Pool Service begins. Compare pool or spa, circulation, filtration, chemical feed, controller, and deck feature findings with stated Residential Pool Service criteria; route unresolved Residential Pool Service issues to qualified pool-service reviewer. For Pool Service Form, confirm requirements for Residential Pool Service. Ask qualified pool-service reviewer to review Residential Pool Service conditions beyond the residential pool-service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Activity parties and source record",
+      "guidance": "For Residential Pool Service, identify responsible parties, residential pool, spa, equipment pad, chemical storage, and access gate, and the linked pool or spa, circulation, filtration, chemical feed, controller, and deck feature source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Activity record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Pool Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and body-of-water identifier",
+              "units": 2.6
+            },
+            {
+              "key": "identity_2",
+              "label": "Equipment and controller identity",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_3",
+              "label": "Service interval, target range, and prior reading",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Recorded quantities, results, and controls",
+      "guidance": "Capture Residential Pool Service facts for pool or spa, circulation, filtration, chemical feed, controller, and deck feature; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Pool Service operating checks",
+          "items": [
+            "Disinfectant, pH, temperature, and clarity",
+            "Filter pressure, flow, pump, and leak condition",
+            "Skimmer, basket, surface, wall, floor, and debris condition",
+            "Chemical supply, feeder, storage, and label condition",
+            "Gate, barrier, drain cover, and visible deck condition",
+            "Adjustment, circulation, retest, and customer restriction"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Activity and result lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Task, item, or service point",
+              "units": 1.25
+            },
+            {
+              "key": "required",
+              "label": "Required result or target",
+              "units": 1.05
+            },
+            {
+              "key": "actual",
+              "label": "Actual result or quantity",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Correction, status, or next action",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Retained evidence and next operating action",
+      "guidance": "Resolve open Residential Pool Service conditions; have residential pool-service coordinator assign the next Residential Pool Service owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Operating exceptions, holds, and retained evidence",
+          "items": [
+            "Water outside service criteria",
+            "Chemical leak or incompatible storage",
+            "Barrier or drain-cover concern",
+            "Equipment cannot circulate or maintain control",
+            "Time-stamped water readings",
+            "Equipment-pad and condition photographs",
+            "Chemical addition and calculation record",
+            "Restriction, retest, and customer notice"
+          ],
+          "guidance": "Pause Residential Pool Service when water, chemical, circulation, barrier, visibility, or safe-use control remains unresolved. Retain the available Residential Pool Service proof and route unresolved pool or spa, circulation, filtration, chemical feed, controller, and deck feature scope to residential pool-service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Service outcome and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Recorded activity outcome",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with follow-up",
+                "Partially completed",
+                "Held",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Operator and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Residential Pool-Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Pool-Service Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

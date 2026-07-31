@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_134__warehouse_receiving_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_134__warehouse_receiving_authorization_form.pdf",
+  "slug": "warehouse-receiving-authorization-form",
+  "title": "Warehouse Receiving Authorization Form",
+  "subtitle": "Warehouse Receiving: bounds the decision, conditions, and expiry.",
+  "description": "Warehouse Receiving Authorization Form binds inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status to a named transport decision, commercial or operating limit, effective time, and the receiving / inventory authority's confirmation. The receiving operations coordinator records the requested Warehouse Receiving action and keeps any variance outside the granted authority.",
+  "use_case": "Use Warehouse Receiving Authorization Form at gate, yard, receiving dock, staging lane, inspection area, and storage location. Reconcile applicable Warehouse Receiving requirements with the load, carrier, rate, claim, equipment, document, or inventory boundary that applies. Capture the receiving / inventory authority's approval, counteroffer, hold, or decline, then reauthorize any change to inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Authorization request and subject identity",
+      "guidance": "For Warehouse Receiving, identify responsible parties, gate, yard, receiving dock, staging lane, inspection area, and storage location, and the linked inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Authorization ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Request date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Requesting party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Dock / storage zone",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Warehouse Receiving identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Appointment, purchase order, shipment, and receipt",
+              "units": 2.6
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, driver, vehicle, trailer, and seal",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, lot, serial, pallet, quantity, and unit",
+              "units": 2.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Authorization basis and bounded decision",
+      "guidance": "Capture Warehouse Receiving facts for inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Requested scope and decision lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Requested scope or custody action",
+              "units": 1.2
+            },
+            {
+              "key": "basis",
+              "label": "Finding, rate, or source basis",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Limit or condition",
+              "units": 0.95
+            },
+            {
+              "key": "decision",
+              "label": "Decision or required change",
+              "units": 1.1
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Warehouse Receiving authorization checks",
+          "items": [
+            "Arrival, gate, dock, and unload timing",
+            "Seal and trailer condition",
+            "Handling-unit and item identity",
+            "Count, damage, and temperature result",
+            "Quarantine, hold, cross-dock, or accepted status",
+            "Receipt posting, label, staging, and putaway"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Decision evidence, expiry, and next control",
+      "guidance": "Resolve open Warehouse Receiving conditions; have receiving operations coordinator assign the next Warehouse Receiving owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Decision limits, holds, and retained evidence",
+          "items": [
+            "Unplanned or unauthorized arrival",
+            "Seal, identity, quantity, or condition mismatch",
+            "Unsafe unload or product concern",
+            "Receipt posting or putaway cannot be reconciled",
+            "Appointment and shipment document",
+            "Seal, trailer, and freight images",
+            "Count and inspection record",
+            "Receipt transaction and location confirmation"
+          ],
+          "guidance": "Pause Warehouse Receiving when arrival authority, seal, identity, condition, quantity, system receipt, or storage destination remains unresolved. Retain the available Warehouse Receiving proof and route unresolved inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status scope to receiving operations coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Authorization decision and limits",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Authorization decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved within listed limits",
+                "Approved with listed conditions",
+                "Revision required",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and authorizer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requesting party or authorized representative",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorizing authority: Warehouse Inventory Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

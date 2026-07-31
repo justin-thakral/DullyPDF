@@ -1,0 +1,338 @@
+{
+  "catalog_id": "construction_trades/dcf_124__submittal_review_worksheet",
+  "description": "For submittal, this review worksheet records package completeness, deviations, substitutions, interfaces, long-lead constraints, and required approvals. Its supporting evidence includes manufacturer literature, compliance matrix, coordination drawings, certifications, and revision comparison.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Submittal opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Submittal site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Submittal contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Submittal superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Submittal due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this submittal record to its evidence.",
+          "key": "record_routing",
+          "label": "Submittal Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Specification section",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Product data",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Shop drawings",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Samples",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture specification section, product data, shop drawings, samples, calculations, and procurement milestone for this submittal.",
+          "key": "core_identity",
+          "label": "Submittal Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify specification section, product data, shop drawings, samples, calculations, and procurement milestone for this submittal record.",
+      "key": "identity_1",
+      "title": "Review Assignment and Question"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Package completeness",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Deviations",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Substitutions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Interfaces",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For submittal, record package completeness, deviations, substitutions, interfaces, long-lead constraints, and required approvals.",
+          "key": "task_inputs",
+          "label": "Submittal Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Submittal decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Submittal supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Submittal review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified submittal facts from judgment.",
+          "key": "review_criteria",
+          "label": "Submittal Review Criteria and Support",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Submittal Analysis and Alternatives",
+              "multiline": true
+            }
+          ],
+          "guidance": "Explain submittal alternatives and retained uncertainty.",
+          "height": 50,
+          "key": "analysis",
+          "label": "Submittal Analysis and Alternatives",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not fabricate, procure, or install from a rejected, incomplete, superseded, or unreviewed submittal. Route unresolved submittal work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Submittal Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For submittal, capture package completeness, deviations, substitutions, interfaces, long-lead constraints, and required approvals.",
+      "key": "task_2",
+      "title": "Criteria and Analysis"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Submittal when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Submittal measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Submittal evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Submittal result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For submittal, record manufacturer literature, compliance matrix, coordination drawings, certifications, and revision comparison.",
+          "key": "evidence_register",
+          "label": "Submittal Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Manufacturer literature",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Compliance matrix",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Coordination drawings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Certifications",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every submittal evidence source.",
+          "key": "evidence_sources",
+          "label": "Submittal Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Submittal Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State submittal limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Submittal Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support submittal findings with manufacturer literature, compliance matrix, coordination drawings, certifications, and revision comparison.",
+      "key": "observation_3",
+      "title": "Records Examined and Findings"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select review worksheet disposition",
+                "Recommend acceptance",
+                "Recommend conditions",
+                "Further review",
+                "Do not accept"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Submittal decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Submittal approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Submittal authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Submittal review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate submittal disposition.",
+          "key": "disposition",
+          "label": "Submittal Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Submittal Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the submittal decision to evidence.",
+          "height": 48,
+          "key": "decision_basis",
+          "label": "Submittal Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Submittal coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Submittal manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Submittal decision recipient and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Submittal Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the submittal next step from manufacturer literature, compliance matrix, coordination drawings, certifications, and revision comparison.",
+      "key": "decision_4",
+      "title": "Reviewer Recommendation"
+    }
+  ],
+  "slug": "submittal-review-worksheet",
+  "source_filename": "dcf_124__submittal_review_worksheet.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Submittal Review Worksheet: technical submittal routing and disposition using specification section, package completeness, and manufacturer literature.",
+  "title": "Submittal Review Worksheet",
+  "use_case": "Use the review worksheet during technical submittal routing and disposition when the submittal record must identify specification section, product data, shop drawings, samples, calculations, and procurement milestone. Complete the applicable handoff for review disposition, revision status, procurement release, field distribution, and approved-record archive."
+}

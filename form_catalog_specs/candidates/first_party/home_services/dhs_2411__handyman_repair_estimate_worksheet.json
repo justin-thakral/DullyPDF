@@ -1,0 +1,348 @@
+{
+  "catalog_id": "home_services/dhs_2411__handyman_repair_estimate_worksheet",
+  "description": "For handyman repair, this estimate worksheet records diagnostic boundary, repair approach, parts, protection, estimated labor, exclusions, and restoration expectations. Its supporting evidence includes existing-condition photos, measurements, model data, test results, material receipts, and completed-repair photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Handyman opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Handyman site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Handyman contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Handyman service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Handyman due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this handyman repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Handyman Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Repair location",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Fixture or finish",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Reported defect",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Dimensions",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Access",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture repair location, fixture or finish, reported defect, dimensions, access, utilities, and customer-supplied materials for this handyman repair.",
+          "key": "core_identity",
+          "label": "Handyman Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify repair location, fixture or finish, reported defect, dimensions, access, utilities, and customer-supplied materials for this handyman repair record.",
+      "key": "identity_1",
+      "title": "Estimate Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Diagnostic boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Repair approach",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Protection",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Estimated labor",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For handyman repair, record diagnostic boundary, repair approach, parts, protection, estimated labor, exclusions, and restoration expectations.",
+          "key": "task_inputs",
+          "label": "Handyman Repair Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Handyman Repair Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State handyman repair outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Handyman Repair Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Handyman work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Handyman owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate handyman repair items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Handyman Repair Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Stop for structural, electrical, gas, water, hazardous-material, permit, or specialist work beyond authorization. Route unresolved handyman repair work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Handyman Repair Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For handyman repair, capture diagnostic boundary, repair approach, parts, protection, estimated labor, exclusions, and restoration expectations.",
+      "key": "task_2",
+      "title": "Quantities, Rates, and Assumptions"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Handyman when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Handyman measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Handyman evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Handyman result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For handyman repair, record existing-condition photos, measurements, model data, test results, material receipts, and completed-repair photos.",
+          "key": "evidence_register",
+          "label": "Handyman Repair Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Existing-condition photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Model data",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Test results",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Material receipts",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every handyman repair evidence source.",
+          "key": "evidence_sources",
+          "label": "Handyman Repair Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Handyman Repair Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State handyman repair limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Handyman Repair Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support handyman repair findings with existing-condition photos, measurements, model data, test results, material receipts, and completed-repair photos.",
+      "key": "observation_3",
+      "title": "Pricing Evidence and Options"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate worksheet disposition",
+                "Approve estimate",
+                "Approve with option",
+                "Revise basis",
+                "Decline to price"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Handyman decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Handyman scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Handyman authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Handyman review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate handyman repair disposition.",
+          "key": "disposition",
+          "label": "Handyman Repair Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Handyman Repair Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the handyman repair decision to evidence.",
+          "height": 43,
+          "key": "decision_basis",
+          "label": "Handyman Repair Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Handyman crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Handyman service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Handyman Repair Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the handyman repair next step from existing-condition photos, measurements, model data, test results, material receipts, and completed-repair photos.",
+      "key": "decision_4",
+      "title": "Price Review"
+    }
+  ],
+  "slug": "handyman-repair-estimate-worksheet",
+  "source_filename": "dhs_2411__handyman_repair_estimate_worksheet.pdf",
+  "source_section": "home_services",
+  "subtitle": "Handyman Repair Estimate Worksheet: small-repair intake, estimate, and work control using repair location, diagnostic boundary, and existing-condition photos.",
+  "title": "Handyman Repair Estimate Worksheet",
+  "use_case": "Use the estimate worksheet during small-repair intake, estimate, and work control when the handyman repair record must identify repair location, fixture or finish, reported defect, dimensions, access, utilities, and customer-supplied materials. Complete the applicable handoff for functional verification, cleanup, customer acceptance, open referral, material warranty, and invoice handoff."
+}

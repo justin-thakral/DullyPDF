@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1843__room_rental_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1843__room_rental_registration_form.pdf",
+  "slug": "room-rental-registration-form",
+  "title": "Room Rental Registration Form",
+  "subtitle": "Capture room, occupancy, access key, and setup; confirm use restriction and reset.",
+  "description": "Room Rental records room, occupancy, access key, setup, use restriction, and reset. Room Rental evidence stays linked.",
+  "use_case": "Use this room rental registration and placement when staff must document room and occupancy. Reconcile access key, setup, use restriction, and reset before the room rental handoff. Use the room diagram, occupancy limit, key or code custody log, setup inventory, audiovisual test, use restrictions, cleaning check, reset photos, and access return. This rental follows a fixed space by occupancy, key or fob access, furniture layout, audiovisual setup, building restrictions, cleaning, room reset, lockup, and facilities inspection. Ask the assigned room rental reviewer to confirm room against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Room Rental registrant details",
+      "guidance": "Identify room, occupancy, access keys, setup layout, audiovisual inventory, permitted use, cleaning expectation, reset evidence, and key return.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Room Rental people and reference",
+          "fields": [
+            {
+              "key": "renter_or_responsible_party",
+              "label": "Renter or responsible party",
+              "units": 1.15
+            },
+            {
+              "key": "renter_phone",
+              "label": "Renter phone",
+              "units": 1.0
+            },
+            {
+              "key": "renter_email",
+              "label": "Renter email",
+              "units": 1.25
+            },
+            {
+              "key": "rental_item_or_room",
+              "label": "Rental item or room",
+              "units": 1.1
+            },
+            {
+              "key": "room",
+              "label": "Room",
+              "units": 1.2
+            },
+            {
+              "key": "occupancy",
+              "label": "Occupancy",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Room Rental task details",
+          "fields": [
+            {
+              "key": "access_key",
+              "label": "Access key",
+              "units": 1.15
+            },
+            {
+              "key": "setup",
+              "label": "Setup",
+              "units": 1.0
+            },
+            {
+              "key": "use_restriction",
+              "label": "Use restriction",
+              "units": 1.25
+            },
+            {
+              "key": "reset",
+              "label": "Reset",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_choices",
+      "title": "Room Rental requested options and readiness",
+      "guidance": "Record requested options, prerequisites, availability, and conditions without assuming an outcome.",
+      "blocks": [
+        {
+          "key": "registration_options",
+          "type": "table",
+          "label": "Room Rental requested options",
+          "columns": [
+            {
+              "key": "requested_option_or_scope",
+              "label": "Requested option or scope",
+              "units": 1.2
+            },
+            {
+              "key": "availability_or_prerequisite",
+              "label": "Availability or prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.25
+            },
+            {
+              "key": "condition_support_or_owner",
+              "label": "Condition, support, or owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "start_readiness",
+          "type": "checklist",
+          "label": "Room Rental registration readiness",
+          "items": [
+            "Room is identified for this record",
+            "Occupancy matches the current request or source",
+            "Access key is ready for point-of-use staff",
+            "Setup limits or questions are resolved",
+            "Use restriction is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_result",
+      "title": "Room Rental confirmation and next steps",
+      "guidance": "Confirm the accepted scope, reference, open condition, and instructions.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Room Rental registration result",
+          "fields": [
+            {
+              "key": "registration_outcome",
+              "label": "Registration outcome",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_room_and_rental_window",
+              "label": "Confirmed room and rental window",
+              "units": 1.0
+            },
+            {
+              "key": "access_or_setup_reference",
+              "label": "Access or setup reference",
+              "units": 1.25
+            },
+            {
+              "key": "open_condition_and_owner",
+              "label": "Open condition and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Room Rental registration receipt",
+          "fields": [
+            {
+              "key": "registration_coordinator_and_date",
+              "label": "Registration coordinator and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Receipt confirms the recorded registration result and open condition."
+        }
+      ]
+    }
+  ]
+}

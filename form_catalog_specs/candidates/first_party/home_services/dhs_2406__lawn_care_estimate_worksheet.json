@@ -1,0 +1,357 @@
+{
+  "catalog_id": "home_services/dhs_2406__lawn_care_estimate_worksheet",
+  "description": "For lawn care, this estimate worksheet records mowing height, edging, trimming, debris, treatment exclusions, seasonal needs, frequency, and pricing. Its supporting evidence includes arrival condition, measurements, route photos, weather, completed services, product record, and damage observations.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Care opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Care site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Care contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Care service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Care due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this lawn care record to its evidence.",
+          "key": "record_routing",
+          "label": "Lawn Care Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Property boundaries",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Turf zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Beds",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Trees",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Irrigation",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Gates",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture property boundaries, turf zones, beds, trees, irrigation, gates, pets, slopes, and parked assets for this lawn care.",
+          "key": "core_identity",
+          "label": "Lawn Care Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify property boundaries, turf zones, beds, trees, irrigation, gates, pets, slopes, and parked assets for this lawn care record.",
+      "key": "identity_1",
+      "title": "Estimate Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Mowing height",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Edging",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Trimming",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Debris",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Treatment exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Seasonal needs",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For lawn care, record mowing height, edging, trimming, debris, treatment exclusions, seasonal needs, frequency, and pricing.",
+          "key": "task_inputs",
+          "label": "Lawn Care Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lawn Care Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State lawn care outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Lawn Care Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Care work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Care owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate lawn care items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Lawn Care Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        }
+      ],
+      "guidance": "For lawn care, capture mowing height, edging, trimming, debris, treatment exclusions, seasonal needs, frequency, and pricing.",
+      "key": "task_2",
+      "title": "Quantities, Rates, and Assumptions"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Care when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Care measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Care evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Care result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For lawn care, record arrival condition, measurements, route photos, weather, completed services, product record, and damage observations.",
+          "key": "evidence_register",
+          "label": "Lawn Care Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Arrival condition",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Route photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Weather",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Completed services",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Product record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every lawn care evidence source.",
+          "key": "evidence_sources",
+          "label": "Lawn Care Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lawn Care Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State lawn care limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Lawn Care Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support lawn care findings with arrival condition, measurements, route photos, weather, completed services, product record, and damage observations.",
+      "key": "observation_3",
+      "title": "Pricing Evidence and Options"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate worksheet disposition",
+                "Approve estimate",
+                "Approve with option",
+                "Revise basis",
+                "Decline to price"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Care decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Care scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Care authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Care review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate lawn care disposition.",
+          "key": "disposition",
+          "label": "Lawn Care Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Lawn Care Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the lawn care decision to evidence.",
+          "height": 46,
+          "key": "decision_basis",
+          "label": "Lawn Care Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Care crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Care service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Lawn Care Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the lawn care next step from arrival condition, measurements, route photos, weather, completed services, product record, and damage observations.",
+      "key": "decision_4",
+      "title": "Price Review"
+    }
+  ],
+  "slug": "lawn-care-estimate-worksheet",
+  "source_filename": "dhs_2406__lawn_care_estimate_worksheet.pdf",
+  "source_section": "home_services",
+  "subtitle": "Lawn Care Estimate Worksheet: lawn service assessment and route completion using property boundaries, mowing height, and arrival condition.",
+  "title": "Lawn Care Estimate Worksheet",
+  "use_case": "Use the estimate worksheet during lawn service assessment and route completion when the lawn care record must identify property boundaries, turf zones, beds, trees, irrigation, gates, pets, slopes, and parked assets. Complete the applicable handoff for service verification, gate closure, customer note, skipped-area reason, next-visit plan, and route closeout."
+}

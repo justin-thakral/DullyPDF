@@ -1,0 +1,350 @@
+{
+  "catalog_id": "home_services/dhs_2611__pest_control_request_form",
+  "description": "For pest control, this request form records inspection, treatment sites, product and method, label restrictions, preparation, reentry, exclusions, and follow-up. Its supporting evidence includes activity observations, conducive conditions, monitoring results, product lot and amount, placement map, and photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Control opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Control site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Control contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Control account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Control due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this pest control record to its evidence.",
+          "key": "record_routing",
+          "label": "Pest Control Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Target pest",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Structures",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Rooms",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Exterior zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Occupants",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Children",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture target pest, structures, rooms, exterior zones, occupants, children, animals, sensitivities, and prior activity for this pest control.",
+          "key": "core_identity",
+          "label": "Pest Control Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify target pest, structures, rooms, exterior zones, occupants, children, animals, sensitivities, and prior activity for this pest control record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Inspection",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Treatment sites",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Product",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Method",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Label restrictions",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Preparation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For pest control, record inspection, treatment sites, product and method, label restrictions, preparation, reentry, exclusions, and follow-up.",
+          "key": "task_inputs",
+          "label": "Pest Control Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pest Control Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State pest control outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Pest Control Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Control work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Control owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate pest control items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Pest Control Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not treat contrary to label, in unprepared areas, near unprotected occupants, or where identification is uncertain. Route unresolved pest control work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Pest Control Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For pest control, capture inspection, treatment sites, product and method, label restrictions, preparation, reentry, exclusions, and follow-up.",
+      "key": "task_2",
+      "title": "Requested Record Change"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not treat contrary to label, in unprepared areas, near unprotected occupants, or where identification is uncertain. Do not release affected pest control work.",
+          "key": "stop_boundary",
+          "label": "Pest Control Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Control exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Control correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Control escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close pest control exceptions with verification.",
+          "key": "exception_register",
+          "label": "Pest Control Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Control notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Control notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Control interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Control review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Control release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep pest control controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Pest Control Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Do not treat contrary to label, in unprepared areas, near unprotected occupants, or where identification is uncertain. Control and route each pest control exception.",
+      "key": "exception_3",
+      "title": "Service Risk and Exception"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Control decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Control service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Control schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate pest control disposition.",
+          "key": "disposition",
+          "label": "Pest Control Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pest Control Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the pest control decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Pest Control Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Control customer confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Control service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Pest Control Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the pest control next step from activity observations, conducive conditions, monitoring results, product lot and amount, placement map, and photos.",
+      "key": "decision_4",
+      "title": "Request Decision"
+    }
+  ],
+  "slug": "pest-control-request-form",
+  "source_filename": "dhs_2611__pest_control_request_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Pest Control Request Form: residential pest-control service and treatment record using target pest, inspection, and activity observations.",
+  "title": "Pest Control Request Form",
+  "use_case": "Use the request form during residential pest-control service and treatment record when the pest control record must identify target pest, structures, rooms, exterior zones, occupants, children, animals, sensitivities, and prior activity. Complete the applicable handoff for treatment record, safety instructions, reentry acknowledgment, monitoring plan, corrective recommendations, and follow-up."
+}

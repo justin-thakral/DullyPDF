@@ -1,0 +1,309 @@
+{
+  "catalog_id": "legal_office/dlo_2159__estate_planning_intake_document_request_form",
+  "description": "Use this Estate Planning Intake Document Request Form for its named administrative intake job while preserving source attribution, qualified review, stop conditions, and secure record custody.",
+  "risk_tier": "C",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "intake_number",
+              "label": "Administrative intake number",
+              "units": 1.0
+            },
+            {
+              "key": "client_name",
+              "label": "Prospective client's full legal name",
+              "units": 1.0
+            },
+            {
+              "key": "domicile",
+              "label": "Current state or country of domicile",
+              "units": 1.0
+            },
+            {
+              "key": "intake_date",
+              "label": "Intake date and local time",
+              "units": 1.0
+            },
+            {
+              "key": "safe_contact",
+              "label": "Safe contact method",
+              "units": 1.0
+            },
+            {
+              "key": "intake_owner",
+              "label": "Intake owner",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use a stable intake number and do not imply that an attorney-client relationship exists.",
+          "key": "intake_identity",
+          "label": "Estate Planning Document Request Intake Identity",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "participants",
+              "label": "Participants and stated roles",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "private_interview",
+              "label": "Private interview available",
+              "options": [
+                "Yes",
+                "No",
+                "Not yet requested"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "language_access",
+              "label": "Language support",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "conflict_status",
+              "label": "Conflict-screen status",
+              "options": [
+                "Pending",
+                "Clear to consult",
+                "Attorney review",
+                "Stop"
+              ],
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "engagement_status",
+              "label": "Relationship status",
+              "options": [
+                "Prospective only",
+                "Consultation scheduled",
+                "Engaged separately",
+                "Declined"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Collect only what the current administrative purpose requires.",
+          "key": "participation_boundary",
+          "label": "Estate Planning Document Request Participation and Privacy",
+          "type": "fields"
+        },
+        {
+          "guidance": "This intake form does not create representation, legal advice, a testamentary instrument, a power, a transfer, or authority to act.",
+          "key": "legal_boundary",
+          "label": "Administrative Record Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Establish the prospective-client, privacy, conflict, and administrative record boundary.",
+      "key": "identity_boundary",
+      "title": "Estate Planning Document Request Identity and Routing"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "request_purpose",
+              "label": "Administrative purpose",
+              "units": 1.0
+            },
+            {
+              "key": "requested_from",
+              "label": "Person or custodian requested from",
+              "units": 1.0
+            },
+            {
+              "key": "permission_source",
+              "label": "Permission or authority source",
+              "units": 1.0
+            },
+            {
+              "key": "delivery_method",
+              "label": "Approved secure delivery method",
+              "units": 1.0
+            },
+            {
+              "key": "due_date",
+              "label": "Requested due date",
+              "units": 1.0
+            },
+            {
+              "key": "originals_policy",
+              "label": "Original custody instruction",
+              "units": 1.0
+            }
+          ],
+          "key": "request_scope",
+          "label": "Request Scope and Permission",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "document",
+              "label": "Document category and requested version",
+              "units": 2.5
+            },
+            {
+              "key": "custodian",
+              "label": "Custodian or source",
+              "units": 1.7
+            },
+            {
+              "key": "date_range",
+              "label": "Date or period",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Requested, received, or unavailable",
+              "units": 1.7
+            },
+            {
+              "key": "review",
+              "label": "Attorney or specialist review path",
+              "units": 2.0
+            }
+          ],
+          "guidance": "Receipt does not authenticate a copy, prove ownership, or establish legal or tax effect.",
+          "key": "document_request",
+          "label": "Document Request and Receipt Register",
+          "rows": 8,
+          "type": "table"
+        },
+        {
+          "items": [
+            "Existing wills, trusts, amendments, directives, and powers",
+            "Deeds, business records, marital agreements, and significant contracts",
+            "Current beneficiary confirmations for retirement and insurance",
+            "Representative account or debt summaries without credentials",
+            "Tax, gift, trust, title, valuation, or benefits records requested by a qualified reviewer",
+            "Prior-plan revocation, superseded-version, or original-location information"
+          ],
+          "key": "request_categories",
+          "label": "Common Request Categories",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Request only records relevant to the stated intake purpose and identify version, custodian, due date, and secure delivery.",
+      "key": "request_details",
+      "title": "Estate Planning Document Request Working Details"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Stop broad collection when relevance, consent, privilege, privacy, secure transmission, identity, third-party ownership, or original custody is uncertain.",
+          "key": "collection_boundary",
+          "label": "Minimum-Necessary and Attorney Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Document and version",
+              "units": 2.1
+            },
+            {
+              "key": "received",
+              "label": "Received date and method",
+              "units": 1.6
+            },
+            {
+              "key": "access",
+              "label": "Access limit and location",
+              "units": 1.9
+            },
+            {
+              "key": "disposition",
+              "label": "Return, retain, destroy, or review",
+              "units": 2.0
+            },
+            {
+              "key": "evidence",
+              "label": "Receipt or disposition evidence",
+              "units": 1.9
+            }
+          ],
+          "key": "custody_log",
+          "label": "Receipt, Access, and Disposition Log",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "status",
+              "label": "Request status",
+              "options": [
+                "Complete for review",
+                "Missing items listed",
+                "Narrowed",
+                "Paused",
+                "Closed"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "missing_reason",
+              "label": "Missing-item explanation",
+              "units": 1.0
+            },
+            {
+              "key": "attorney_review",
+              "label": "Attorney review owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "client_notice",
+              "label": "Client notice and copy date",
+              "units": 1.0
+            },
+            {
+              "key": "retention",
+              "label": "Retention, return, or destruction instruction",
+              "units": 1.0
+            }
+          ],
+          "key": "request_closeout",
+          "label": "Request Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Missing Record, Custody, and Follow-Up Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "Explain missing records, custody exceptions, assigned follow-up, and the evidence required before legal review.",
+          "height": 42,
+          "key": "custody_followup_notes",
+          "label": "Missing Record, Custody, and Follow-Up Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Control minimum-necessary collection, consent, privacy, original custody, and qualified review.",
+      "key": "custody_review",
+      "title": "Estate Planning Document Request Exceptions and Escalation"
+    }
+  ],
+  "slug": "estate-planning-intake-document-request-form",
+  "source_filename": "dlo_2159__estate_planning_intake_document_request_form.pdf",
+  "source_section": "legal_office",
+  "subtitle": "A bounded Tier-C estate planning document request record with direct inputs, attorney-review routing, and privacy safeguards.",
+  "title": "Estate Planning Intake Document Request Form",
+  "use_case": "Use before or during attorney-supervised estate-planning intake. The form does not create representation, legal advice, or a legally operative instrument."
+}

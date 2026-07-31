@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1421__preschool_registration_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1421__preschool_registration_authorization_form.pdf",
+  "slug": "preschool-registration-authorization-form",
+  "title": "Preschool Registration Authorization Form",
+  "subtitle": "Capture class placement, start readiness, daily routine, and support route; confirm authorized pickup and family orientation.",
+  "description": "Preschool Registration records class placement, start readiness, daily routine, support route, authorized pickup, and family orientation. Preschool Registration evidence stays linked.",
+  "use_case": "Use this preschool registration authorization decision when staff must document class placement and start readiness. Reconcile daily routine, support route, authorized pickup, and family orientation before the preschool registration handoff. Use the application, age or placement source, classroom availability, readiness list, daily-routine sheet, pickup authorization, orientation receipt, and start confirmation. Ask the assigned preschool registration reviewer to confirm class placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Preschool Registration signer details",
+      "guidance": "Confirm class and start readiness, daily routine, meal and rest information, support route, pickup list, orientation, and classroom transition.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Preschool Registration people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "class_placement",
+              "label": "Class placement",
+              "units": 1.2
+            },
+            {
+              "key": "start_readiness",
+              "label": "Start readiness",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Preschool Registration task details",
+          "fields": [
+            {
+              "key": "daily_routine",
+              "label": "Daily routine",
+              "units": 1.15
+            },
+            {
+              "key": "support_route",
+              "label": "Support route",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_pickup",
+              "label": "Authorized pickup",
+              "units": 1.25
+            },
+            {
+              "key": "family_orientation",
+              "label": "Family orientation",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Preschool Registration decision and scope choices",
+      "guidance": "Decide each preschool registration scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Preschool Registration primary scope",
+          "fields": [
+            {
+              "key": "class_placement",
+              "label": "Class placement",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "start_readiness",
+              "label": "Start readiness",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "daily_routine",
+              "label": "Daily routine",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Preschool Registration additional scope",
+          "fields": [
+            {
+              "key": "support_route",
+              "label": "Support route",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "authorized_pickup",
+              "label": "Authorized pickup",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "family_orientation",
+              "label": "Family orientation",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Preschool Registration authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Preschool Registration effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Preschool Registration decision and signer receipt",
+      "guidance": "Only recorded preschool registration choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Preschool Registration limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Preschool Registration signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Preschool Registration signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Preschool Registration authorization boundary",
+          "guidance": "Named preschool registration reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

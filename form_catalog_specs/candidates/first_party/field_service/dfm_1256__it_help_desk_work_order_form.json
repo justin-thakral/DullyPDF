@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1256__it_help_desk_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1256__it_help_desk_work_order_form.pdf",
+  "slug": "it-help-desk-work-order-form",
+  "title": "IT Help Desk Work Order Form",
+  "subtitle": "IT Help-Desk Service: connects authorized scope to results.",
+  "description": "IT Help Desk Work Order Form covers user account, endpoint, application, network path, service, and business function. The service desk coordinator records IT Help-Desk Service authorized tasks, materials, results, and changes. IT Help Desk Work Order Form keeps IT Help-Desk Service exceptions visible until the service desk coordinator handoff.",
+  "use_case": "Use IT Help Desk Work Order Form at approved remote session, user workspace, equipment room, or service environment. Document user account, endpoint, application, network path, service, and business function identity before IT Help-Desk Service begins. Compare user account, endpoint, application, network path, service, and business function findings with stated IT Help-Desk Service criteria; route unresolved IT Help-Desk Service issues to authorized IT support reviewer. For IT Help Desk Work Order Form, confirm requirements for IT Help-Desk Service. Ask authorized IT support reviewer to review IT Help-Desk Service conditions beyond the service desk coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Facility work-order scope review",
+      "guidance": "Bind IT Help-Desk Service to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Request, asset, or work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Requesting department or site contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Facility, building, or service area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Service Desk Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "IT Help-Desk Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Ticket and requester identity",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Device, asset tag, hostname, account, or service identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Affected application, location, and business-impact reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the IT Help-Desk Service identifier printed on user account, endpoint, application, network path, service, and business function or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized work observations and evidence",
+      "guidance": "Record authorized IT Help-Desk Service activity; separate proposed, declined, deferred, or new IT Help-Desk Service scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "IT Help-Desk Service task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Asset, zone, device, or component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method, part, or material",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Actual result or reading",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Technician or crew",
+              "units": 0.8
+            },
+            {
+              "key": "verified",
+              "label": "Verified by / time",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "IT Help-Desk Service work and verification points",
+          "items": [
+            "Reported behavior and reproducible steps",
+            "Error text, timestamp, log, and recent-change history",
+            "Device, operating system, application, and network context",
+            "Account state and least-privilege requirement",
+            "Backup, data-protection, and rollback readiness",
+            "Post-change functional and user acceptance result"
+          ],
+          "guidance": "Use each IT Help-Desk Service check to prompt documented user account, endpoint, application, network path, service, and business function execution; enter its actual IT Help-Desk Service result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "IT Help-Desk Service parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Work exception and scope changes",
+      "guidance": "Stop IT Help-Desk Service at any scope or cost limit; honor service desk coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Requester authority cannot be verified",
+            "Sensitive data or credential exposure",
+            "Change exceeds approved access or maintenance window",
+            "Security incident indicators require separate response"
+          ],
+          "guidance": "Pause IT Help-Desk Service and notify service desk coordinator when identity, authorization, security, backup, or rollback control is unresolved."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected condition, scope change, added cost, and authorization response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, scope change, added cost, and authorization response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work completion and site handoff",
+      "guidance": "Reconcile IT Help-Desk Service to authorization; state service desk coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Sanitized error and diagnostic record",
+            "Approved change and configuration evidence",
+            "Backup or rollback confirmation",
+            "Test result without unnecessary sensitive data"
+          ],
+          "guidance": "Attach or link proof for user account, endpoint, application, network path, service, and business function; mark only IT Help-Desk Service evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "IT Help-Desk Service completed-scope notes and customer instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "IT Help-Desk Service completed-scope notes and customer instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Reconcile IT Help-Desk Service completion to authorized scope and note customer instructions, open work, or a required return visit."
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

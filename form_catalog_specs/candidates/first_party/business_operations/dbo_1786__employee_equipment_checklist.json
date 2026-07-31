@@ -1,0 +1,304 @@
+{
+  "catalog_id": "business_operations/dbo_1786__employee_equipment_checklist",
+  "description": "For employee equipment, this checklist records business need, standard configuration, exception, data classification, shipping, access, support, and return trigger. Its supporting evidence includes manager approval, asset tag, serial, configuration record, security controls, delivery receipt, and condition photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Equipment opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Equipment site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Equipment contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Equipment process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Equipment due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this employee equipment record to its evidence.",
+          "key": "record_routing",
+          "label": "Employee Equipment Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Employee",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Manager",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Role",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Device or asset",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Accessories",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture employee, manager, role, location, device or asset, accessories, software, cost center, and employment event for this employee equipment.",
+          "key": "core_identity",
+          "label": "Employee Equipment Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify employee, manager, role, location, device or asset, accessories, software, cost center, and employment event for this employee equipment record.",
+      "key": "identity_1",
+      "title": "Process Checkpoint and Owner"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Business need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Standard configuration",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Exception",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Data classification",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Shipping",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Access",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For employee equipment, record business need, standard configuration, exception, data classification, shipping, access, support, and return trigger.",
+          "key": "task_inputs",
+          "label": "Employee Equipment Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the employee equipment condition before marking.",
+          "items": [
+            "Verify business need",
+            "Verify standard configuration",
+            "Verify exception",
+            "Verify data classification",
+            "Verify shipping"
+          ],
+          "key": "task_checks",
+          "label": "Employee Equipment Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Equipment checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Equipment review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Equipment qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Equipment check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each employee equipment result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Employee Equipment Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not issue unsupported, unapproved, unencrypted, export-restricted, or improperly licensed equipment. Route unresolved employee equipment work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Employee Equipment Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For employee equipment, capture business need, standard configuration, exception, data classification, shipping, access, support, and return trigger.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Equipment when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Equipment measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Equipment evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Equipment result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For employee equipment, record manager approval, asset tag, serial, configuration record, security controls, delivery receipt, and condition photos.",
+          "key": "evidence_register",
+          "label": "Employee Equipment Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Manager approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Asset tag",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Serial",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Configuration record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Security controls",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Delivery receipt",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every employee equipment evidence source.",
+          "key": "evidence_sources",
+          "label": "Employee Equipment Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked employee equipment items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Employee Equipment Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Employee Equipment Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State employee equipment limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Employee Equipment Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support employee equipment findings with manager approval, asset tag, serial, configuration record, security controls, delivery receipt, and condition photos.",
+      "key": "observation_3",
+      "title": "Checklist Finding Record"
+    }
+  ],
+  "slug": "employee-equipment-checklist",
+  "source_filename": "dbo_1786__employee_equipment_checklist.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Employee Equipment Checklist: employee equipment request, custody, and return using employee, business need, and manager approval.",
+  "title": "Employee Equipment Checklist",
+  "use_case": "Use the checklist during employee equipment request, custody, and return when the employee equipment record must identify employee, manager, role, location, device or asset, accessories, software, cost center, and employment event. Complete the applicable handoff for custody acknowledgment, inventory update, support handoff, return due date, recovered condition, and access deprovisioning."
+}

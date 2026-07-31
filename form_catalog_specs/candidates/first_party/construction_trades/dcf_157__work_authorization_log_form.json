@@ -1,0 +1,240 @@
+{
+  "catalog_id": "construction_trades/dcf_157__work_authorization_log_form",
+  "description": "For work authorization, this log form records authorized task boundary, inclusions, exclusions, budget code, schedule dates, quality hold points, and interfaces. Its supporting evidence includes approved drawings, permit status, readiness inspection, coordination record, and required training evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Authorization opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Authorization site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Authorization contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Authorization superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Authorization due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this work authorization record to its evidence.",
+          "key": "record_routing",
+          "label": "Work Authorization Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Contract package",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Work area",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Responsible crew",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Predecessor completion",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Permits",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture contract package, work area, responsible crew, predecessor completion, permits, submittals, and access window for this work authorization.",
+          "key": "core_identity",
+          "label": "Work Authorization Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify contract package, work area, responsible crew, predecessor completion, permits, submittals, and access window for this work authorization record.",
+      "key": "identity_1",
+      "title": "Log Reference and Review Owner"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Authorization when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Authorization measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Authorization evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Authorization result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For work authorization, record approved drawings, permit status, readiness inspection, coordination record, and required training evidence.",
+          "key": "evidence_register",
+          "label": "Work Authorization Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Approved drawings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Permit status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Readiness inspection",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Coordination record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every work authorization evidence source.",
+          "key": "evidence_sources",
+          "label": "Work Authorization Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Authorization dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Authorization owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Authorization escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep work authorization items open through verification.",
+          "key": "open_item_register",
+          "label": "Work Authorization Open Items and Next Actions",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Authorization reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved work authorization entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Work Authorization Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Work Authorization Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For work authorization, explain authorization signatures, release conditions, field distribution, start record, and change-control linkage; transfer each work authorization open entry to the work authorization successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Work Authorization Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not release work with missing permits, unresolved design conflicts, unsafe access, unavailable controls, or exceeded authority. Route unresolved work authorization work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Work Authorization Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support work authorization findings with approved drawings, permit status, readiness inspection, coordination record, and required training evidence.",
+      "key": "observation_2",
+      "title": "Recorded Findings and Actions"
+    }
+  ],
+  "slug": "work-authorization-log-form",
+  "source_filename": "dcf_157__work_authorization_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Work Authorization Log Form: construction work authorization and release using contract package, authorized task boundary, and approved drawings.",
+  "title": "Work Authorization Log Form",
+  "use_case": "Use the log form during construction work authorization and release when the work authorization record must identify contract package, work area, responsible crew, predecessor completion, permits, submittals, and access window. Complete the applicable handoff for authorization signatures, release conditions, field distribution, start record, and change-control linkage."
+}

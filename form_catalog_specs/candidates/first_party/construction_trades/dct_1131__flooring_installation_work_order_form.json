@@ -1,0 +1,351 @@
+{
+  "catalog_id": "construction_trades/dct_1131__flooring_installation_work_order_form",
+  "description": "For flooring installation, this work order form records layout, acclimation, substrate preparation, moisture limits, adhesive, expansion, sequencing, and protection. Its supporting evidence includes moisture test, flatness readings, lot record, layout approval, installation photos, and seam or lippage checks.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Flooring opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Flooring site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Flooring contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Flooring superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Flooring due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this flooring installation record to its evidence.",
+          "key": "record_routing",
+          "label": "Flooring Installation Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Room",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Substrate",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Flooring product",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Lot",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Transitions",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Moisture-sensitive areas",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes for this flooring installation.",
+          "key": "core_identity",
+          "label": "Flooring Installation Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes for this flooring installation record.",
+      "key": "identity_1",
+      "title": "Work Assignment Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Layout",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Acclimation",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Substrate preparation",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Moisture limits",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Adhesive",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Expansion",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For flooring installation, record layout, acclimation, substrate preparation, moisture limits, adhesive, expansion, sequencing, and protection.",
+          "key": "task_inputs",
+          "label": "Flooring Installation Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Flooring work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized flooring installation work from additions.",
+          "key": "assigned_work",
+          "label": "Flooring Installation Assigned Work and Acceptance Criteria",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Flooring arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Flooring access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Flooring added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Flooring inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop flooring installation work at recorded limits.",
+          "key": "work_window",
+          "label": "Flooring Installation Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not install over out-of-tolerance moisture, flatness, contamination, movement, or unapproved substrate condition. Route unresolved flooring installation work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Flooring Installation Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For flooring installation, capture layout, acclimation, substrate preparation, moisture limits, adhesive, expansion, sequencing, and protection.",
+      "key": "task_2",
+      "title": "Authorized Work Plan"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Flooring completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Finish inspection",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Protection plan",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Care instructions",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Attic-stock handoff",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the flooring installation outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Flooring Installation Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Flooring open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Flooring owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Flooring acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer flooring installation items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Flooring Installation Remaining Work and Handoff",
+          "rows": 9,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Flooring Installation Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For flooring installation, record finish inspection, protection plan, care instructions, attic-stock handoff, warranty, and customer acceptance; give the flooring installation care or operating instruction, identify flooring installation access restoration and recipient.",
+          "height": 60,
+          "key": "completion_care_notes",
+          "label": "Flooring Installation Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "care_and_warranty_handoff_1",
+              "label": "Finish inspection",
+              "units": 1.0
+            },
+            {
+              "key": "care_and_warranty_handoff_2",
+              "label": "Protection plan",
+              "units": 1.0
+            },
+            {
+              "key": "care_and_warranty_handoff_3",
+              "label": "Care instructions",
+              "units": 1.0
+            },
+            {
+              "key": "care_and_warranty_handoff_4",
+              "label": "Attic-stock handoff",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For flooring installation, record finish inspection, protection plan, care instructions, attic-stock handoff, warranty, and customer acceptance.",
+          "key": "care_and_warranty_handoff",
+          "label": "Flooring Installation Care, Warranty, and Record Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Flooring trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Flooring site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Flooring Installation Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the flooring installation record with finish inspection, protection plan, care instructions, attic-stock handoff, warranty, and customer acceptance.",
+      "key": "closeout_3",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "flooring-installation-work-order-form",
+  "source_filename": "dct_1131__flooring_installation_work_order_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Flooring Installation Work Order Form: flooring installation readiness and acceptance using room, layout, and moisture test.",
+  "title": "Flooring Installation Work Order Form",
+  "use_case": "Use the work order form during flooring installation readiness and acceptance when the flooring installation record must identify room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes. Complete the applicable handoff for finish inspection, protection plan, care instructions, attic-stock handoff, warranty, and customer acceptance."
+}

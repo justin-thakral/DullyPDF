@@ -1,0 +1,374 @@
+{
+  "catalog_id": "home_services/dhs_2600__house_cleaning_form",
+  "description": "For house cleaning, this service record records scheduled task set, rotation items, customer exceptions, team assignment, products, time window, and add-on approval. Its supporting evidence includes arrival exceptions, completed-zone checks, quality observations, supply exceptions, photos, and customer messages.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Cleaning opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Cleaning site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Cleaning contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Cleaning account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Cleaning due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this house cleaning record to its evidence.",
+          "key": "record_routing",
+          "label": "House Cleaning Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Service zone",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Room sequence",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Surface restrictions",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Pets",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Keys or codes",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture account, service zone, room sequence, surface restrictions, pets, keys or codes, preferences, and recurring notes for this house cleaning.",
+          "key": "core_identity",
+          "label": "House Cleaning Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify account, service zone, room sequence, surface restrictions, pets, keys or codes, preferences, and recurring notes for this house cleaning record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Scheduled task set",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Rotation items",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Customer exceptions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Team assignment",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Products",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For house cleaning, record scheduled task set, rotation items, customer exceptions, team assignment, products, time window, and add-on approval.",
+          "key": "task_inputs",
+          "label": "House Cleaning Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Cleaning work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized house cleaning work from additions.",
+          "key": "assigned_work",
+          "label": "House Cleaning Assigned Work and Acceptance Criteria",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Cleaning arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Cleaning access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Cleaning added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Cleaning inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop house cleaning work at recorded limits.",
+          "key": "work_window",
+          "label": "House Cleaning Work Window and Limits",
+          "type": "fields"
+        }
+      ],
+      "guidance": "For house cleaning, capture scheduled task set, rotation items, customer exceptions, team assignment, products, time window, and add-on approval.",
+      "key": "task_2",
+      "title": "Scheduled Service and Limits"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Cleaning when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Cleaning measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Cleaning evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Cleaning result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For house cleaning, record arrival exceptions, completed-zone checks, quality observations, supply exceptions, photos, and customer messages.",
+          "key": "evidence_register",
+          "label": "House Cleaning Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Arrival exceptions",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Completed-zone checks",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Quality observations",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Supply exceptions",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every house cleaning evidence source.",
+          "key": "evidence_sources",
+          "label": "House Cleaning Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary house cleaning evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "House Cleaning Evidence Completeness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Support house cleaning findings with arrival exceptions, completed-zone checks, quality observations, supply exceptions, photos, and customer messages.",
+      "key": "observation_3",
+      "title": "Service Findings and Results"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Cleaning completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Quality review",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Secured-property confirmation",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Missed-task recovery",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the house cleaning outcome to evidence.",
+          "key": "final_outcome",
+          "label": "House Cleaning Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Cleaning open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Cleaning owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Cleaning acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer house cleaning items to named owners.",
+          "key": "remaining_handoff",
+          "label": "House Cleaning Remaining Work and Handoff",
+          "rows": 2,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Cleaning technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Cleaning customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "House Cleaning Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the house cleaning record with quality review, secured-property confirmation, missed-task recovery, preference update, and next-service handoff.",
+      "key": "closeout_4",
+      "title": "Property Handoff"
+    }
+  ],
+  "slug": "house-cleaning-form",
+  "source_filename": "dhs_2600__house_cleaning_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "House Cleaning Service Record: recurring house-cleaning service record using account, scheduled task set, and arrival exceptions.",
+  "title": "House Cleaning Form",
+  "use_case": "Use the service record during recurring house-cleaning service record when the house cleaning record must identify account, service zone, room sequence, surface restrictions, pets, keys or codes, preferences, and recurring notes. Complete the applicable handoff for quality review, secured-property confirmation, missed-task recovery, preference update, and next-service handoff."
+}

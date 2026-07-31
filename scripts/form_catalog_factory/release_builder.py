@@ -23,12 +23,20 @@ from PIL import Image, features as pillow_features
 from .models import FormSpec, load_form_spec
 from .pdf_qa import validate_pdf
 from .renderer import render_form
-from .spec_qa import SpecQaResult, validate_spec_batch, validate_spec_content
+from .spec_qa import (
+    SpecQaResult,
+    usability_profile_for_spec,
+    validate_spec_batch,
+    validate_spec_content,
+)
+from .themes import DEFAULT_THEME_ID, ThemeError, validate_theme_provenance
 
 
 RELEASE_SCHEMA_VERSION = 1
 COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}(?:[0-9a-f]{24})?$")
 RISK_RANK = {"A": 1, "B": 2, "C": 3}
+MAX_SPARSE_LAST_PAGE_LOWEST_WIDGET_RATIO = 0.45
+LEGACY_MAX_SPARSE_LAST_PAGE_LOWEST_WIDGET_RATIO = 0.60
 
 
 class ReleaseBuildError(RuntimeError):
@@ -63,6 +71,7 @@ def release_runtime_source_paths() -> tuple[Path, ...]:
                 package_root / "pdf_qa.py",
                 package_root / "renderer.py",
                 package_root / "spec_qa.py",
+                package_root / "themes.py",
                 repository_root / "backend" / "requirements.txt",
             )
         )
@@ -482,6 +491,17 @@ def _load_selection(path: Path) -> dict[str, Any]:
         raise ReleaseBuildError(
             f"Selection plan expected {target} items but contains {len(items)}"
         )
+    if "renderTheme" in payload:
+        try:
+            expected_theme = validate_theme_provenance(
+                payload["renderTheme"],
+                location="Selection plan renderTheme",
+            )
+        except ThemeError as exc:
+            raise ReleaseBuildError(
+                f"Selection plan renderTheme is invalid: {exc}"
+            ) from exc
+        payload["renderTheme"] = expected_theme
     return payload
 
 
@@ -552,6 +572,30 @@ def _bind_planned_specs(
     return bound
 
 
+def validate_release_selection_specs(
+    *,
+    selection_path: str | Path,
+    spec_root: str | Path,
+) -> dict[str, Any]:
+    """Run current content QA against one exact release workset."""
+
+    resolved_selection = Path(selection_path).expanduser().resolve()
+    resolved_spec_root = Path(spec_root).expanduser().resolve()
+    selection = _load_selection(resolved_selection)
+    planned = _bind_planned_specs(selection, spec_root=resolved_spec_root)
+    report = validate_spec_batch(item.spec for item in planned)
+    return {
+        "schemaVersion": 1,
+        "reportType": "form-catalog-selection-spec-qa",
+        "releaseId": selection["releaseId"],
+        "selectionPath": resolved_selection.as_posix(),
+        "selectionSha256": _sha256_file(resolved_selection),
+        "specRoot": resolved_spec_root.as_posix(),
+        "renderTheme": selection.get("renderTheme"),
+        **report,
+    }
+
+
 def _render_thumbnail(
     pdf_path: Path,
     thumbnail_path: Path,
@@ -602,10 +646,112 @@ def _render_thumbnail(
         temporary_path.unlink(missing_ok=True)
 
 
+def _apply_task_page_budget(
+    spec: FormSpec,
+    pdf_qa: dict[str, Any],
+    *,
+    location: str,
+) -> None:
+    """Fail the rendered artifact when it exceeds its task-proportional ceiling."""
+
+    usability_profile = usability_profile_for_spec(spec)
+    page_count = int(pdf_qa["metrics"]["pages"])
+    if page_count <= usability_profile.max_pages:
+        return
+    pdf_qa["errors"].append(
+        {
+            "code": "task_scope_exceeds_page_budget",
+            "message": (
+                f"The {usability_profile.name} task profile permits at most "
+                f"{usability_profile.max_pages} rendered pages; found "
+                f"{page_count}. Remove nonessential workflow stages or split "
+                "a genuinely separate job into its own form."
+            ),
+            "location": location,
+        }
+    )
+    pdf_qa["ok"] = False
+
+
+def _apply_page_balance_qa(
+    pdf_qa: dict[str, Any],
+    *,
+    location: str,
+    max_sparse_last_page_ratio: float = MAX_SPARSE_LAST_PAGE_LOWEST_WIDGET_RATIO,
+) -> None:
+    """Reject mechanically measurable pagination spills before visual review."""
+
+    metrics = pdf_qa["metrics"]
+    widgets_per_page = metrics.get("widgets_per_page") or []
+    lowest_ratios = metrics.get("lowest_widget_bottom_ratio_per_page") or []
+    lowest_ratio = metrics.get("last_page_lowest_widget_bottom_ratio")
+    page_count = int(metrics["pages"])
+    is_orphan_last_page = (
+        page_count > 1
+        and widgets_per_page
+        and int(widgets_per_page[-1]) <= 6
+        and isinstance(lowest_ratio, (int, float))
+        and float(lowest_ratio) > 0.45
+    )
+    if is_orphan_last_page:
+        pdf_qa["errors"].append(
+            {
+                "code": "orphan_last_page",
+                "message": (
+                    "The last page contains only a small control cluster in its "
+                    "upper half; compact or rebalance the workflow, adding closeout "
+                    "content only when the task requires it."
+                ),
+                "location": location,
+            }
+        )
+        pdf_qa["ok"] = False
+    elif (
+        page_count > 1
+        and isinstance(lowest_ratio, (int, float))
+        and float(lowest_ratio) > max_sparse_last_page_ratio
+    ):
+        pdf_qa["errors"].append(
+            {
+                "code": "sparse_last_page",
+                "message": (
+                    "The last page keeps every interactive control in its upper "
+                    "region and leaves a large lower region unused; rebalance "
+                    "adjacent workflow content."
+                ),
+                "location": location,
+            }
+        )
+        pdf_qa["ok"] = False
+    for page_index, (widget_count, page_lowest_ratio) in enumerate(
+        zip(widgets_per_page[:-1], lowest_ratios[:-1]),
+        start=1,
+    ):
+        if (
+            int(widget_count) <= 16
+            and isinstance(page_lowest_ratio, (int, float))
+            and float(page_lowest_ratio) > 0.55
+        ):
+            pdf_qa["errors"].append(
+                {
+                    "code": "sparse_interior_page",
+                    "message": (
+                        f"Page {page_index} contains only {widget_count} controls "
+                        "and leaves most of the page unused; rebalance adjacent "
+                        "workflow content."
+                    ),
+                    "location": location,
+                }
+            )
+            pdf_qa["ok"] = False
+
+
 def _build_one(
     planned: PlannedSpec,
     *,
     release_id: str,
+    theme_id: str,
+    max_sparse_last_page_ratio: float,
     output_root: Path,
     spec_root: Path,
 ) -> dict[str, Any]:
@@ -614,7 +760,7 @@ def _build_one(
     pdf_path = asset_dir / spec.source_filename
     thumbnail_path = pdf_path.with_suffix(".webp")
     asset_dir.mkdir(parents=True, exist_ok=True)
-    render_form(spec, pdf_path)
+    render_form(spec, pdf_path, theme_id=theme_id)
     pdf_qa = validate_pdf(
         pdf_path,
         display_path=f"{spec.source_section}/{spec.source_filename}",
@@ -636,50 +782,16 @@ def _build_one(
             }
         )
         pdf_qa["ok"] = False
-    widgets_per_page = pdf_qa["metrics"].get("widgets_per_page") or []
-    lowest_ratios = (
-        pdf_qa["metrics"].get("lowest_widget_bottom_ratio_per_page") or []
+    _apply_task_page_budget(
+        spec,
+        pdf_qa,
+        location=f"{spec.source_section}/{spec.source_filename}",
     )
-    lowest_ratio = pdf_qa["metrics"].get("last_page_lowest_widget_bottom_ratio")
-    if (
-        int(pdf_qa["metrics"]["pages"]) > 1
-        and widgets_per_page
-        and int(widgets_per_page[-1]) <= 6
-        and isinstance(lowest_ratio, (int, float))
-        and float(lowest_ratio) > 0.45
-    ):
-        pdf_qa["errors"].append(
-            {
-                "code": "orphan_last_page",
-                "message": (
-                    "The last page contains only a small control cluster in its "
-                    "upper half; rebalance pagination or add substantive closeout content."
-                ),
-                "location": f"{spec.source_section}/{spec.source_filename}",
-            }
-        )
-        pdf_qa["ok"] = False
-    for page_index, (widget_count, page_lowest_ratio) in enumerate(
-        zip(widgets_per_page[:-1], lowest_ratios[:-1]),
-        start=1,
-    ):
-        if (
-            int(widget_count) <= 16
-            and isinstance(page_lowest_ratio, (int, float))
-            and float(page_lowest_ratio) > 0.55
-        ):
-            pdf_qa["errors"].append(
-                {
-                    "code": "sparse_interior_page",
-                    "message": (
-                        f"Page {page_index} contains only {widget_count} controls "
-                        "and leaves most of the page unused; rebalance adjacent "
-                        "workflow content."
-                    ),
-                    "location": f"{spec.source_section}/{spec.source_filename}",
-                }
-            )
-            pdf_qa["ok"] = False
+    _apply_page_balance_qa(
+        pdf_qa,
+        location=f"{spec.source_section}/{spec.source_filename}",
+        max_sparse_last_page_ratio=max_sparse_last_page_ratio,
+    )
     if not pdf_qa["ok"]:
         return {
             "catalogId": spec.catalog_id,
@@ -768,6 +880,21 @@ def build_release(
     resolved_selection = Path(selection_path).expanduser().resolve()
     resolved_spec_root = Path(spec_root).expanduser().resolve()
     selection = _load_selection(resolved_selection)
+    render_theme = (
+        dict(selection["renderTheme"])
+        if "renderTheme" in selection
+        else None
+    )
+    theme_id = (
+        str(render_theme["id"])
+        if render_theme is not None
+        else DEFAULT_THEME_ID
+    )
+    max_sparse_last_page_ratio = (
+        MAX_SPARSE_LAST_PAGE_LOWEST_WIDGET_RATIO
+        if render_theme is not None
+        else LEGACY_MAX_SPARSE_LAST_PAGE_LOWEST_WIDGET_RATIO
+    )
     release_id = str(selection.get("releaseId") or "")
     if not release_id:
         raise ReleaseBuildError("Selection plan has no releaseId")
@@ -800,6 +927,8 @@ def build_release(
                 _build_one,
                 item,
                 release_id=release_id,
+                theme_id=theme_id,
+                max_sparse_last_page_ratio=max_sparse_last_page_ratio,
                 output_root=resolved_output,
                 spec_root=resolved_spec_root,
             ): item.spec.catalog_id
@@ -836,6 +965,8 @@ def build_release(
         "passed": all(result.get("ok") is True for result in results),
         "results": results,
     }
+    if render_theme is not None:
+        build_report["renderTheme"] = render_theme
     if not build_report["passed"]:
         (resolved_output / "build-report.json").write_text(
             json.dumps(build_report, ensure_ascii=False, indent=2) + "\n",
@@ -870,6 +1001,8 @@ def build_release(
         "createdAt": timestamp,
         "forms": release_forms,
     }
+    if render_theme is not None:
+        manifest["renderTheme"] = render_theme
     manifest_path = resolved_output / "release.json"
     manifest_path.write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",

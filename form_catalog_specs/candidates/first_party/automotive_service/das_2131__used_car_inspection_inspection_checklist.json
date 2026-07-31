@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2131__used_car_inspection_inspection_checklist",
+  "source_section": "automotive_service",
+  "source_filename": "das_2131__used_car_inspection_inspection_checklist.pdf",
+  "slug": "used-car-inspection-inspection-checklist",
+  "title": "Used Car Inspection Checklist",
+  "subtitle": "Used Vehicle Inspection: documents findings, limits, and disposition.",
+  "description": "Used Car Inspection Checklist covers vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input. The vehicle inspection coordinator records Used Vehicle Inspection criteria, findings, restrictions, and follow-up. Used Car Inspection Checklist keeps Used Vehicle Inspection exceptions visible until the vehicle inspection coordinator handoff.",
+  "use_case": "Use Used Car Inspection Checklist at inspection facility, lift bay, controlled test route, and document review area. Document vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input identity before Used Vehicle Inspection begins. Compare vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input findings with stated Used Vehicle Inspection criteria; route unresolved Used Vehicle Inspection issues to qualified independent automotive reviewer. For Used Car Inspection Checklist, confirm requirements for Used Vehicle Inspection. Ask qualified independent automotive reviewer to review Used Vehicle Inspection conditions beyond the vehicle inspection coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Used Vehicle Inspection, identify responsible parties, inspection facility, lift bay, controlled test route, and document review area, and the linked vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Used Vehicle Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Inspection, client, and seller",
+              "units": 1.6666666666666667
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, year, make, model, and mileage",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_3",
+              "label": "History, title, service-record, and listing references",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Used Vehicle Inspection facts for vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Used Vehicle Inspection checks",
+          "items": [
+            "Identity and displayed-mileage consistency",
+            "Body, glass, structure, paint, and prior-repair indicators",
+            "Engine, transmission, cooling, fuel, and exhaust operation",
+            "Brakes, steering, suspension, tires, and wheels",
+            "Electrical, controls, safety features, and accessories",
+            "Road test, scan, leaks, measurements, and inspection limitations"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Before closing Used Vehicle Inspection, identify what failed or was not inspected, who owns correction, and when examination resumes. Vehicle Inspection Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "VIN or history inconsistency",
+            "Unsafe road-test condition",
+            "Material area inaccessible",
+            "Finding presented as guarantee or valuation without basis",
+            "VIN and odometer evidence",
+            "Condition and defect photographs",
+            "Scan and measurement record",
+            "Limitations and prioritized finding summary"
+          ],
+          "guidance": "Pause Used Vehicle Inspection when identity, safe testing, access limitation, material defect, or communication boundary remains unresolved. Retain the available Used Vehicle Inspection proof and route unresolved vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input scope to vehicle inspection coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Vehicle Inspection Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Independent Automotive Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

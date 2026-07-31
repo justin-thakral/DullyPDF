@@ -1,0 +1,240 @@
+{
+  "catalog_id": "construction_trades/dcf_102__construction_change_order_log_form",
+  "description": "For construction change order, this log form records origin, changed work boundaries, labor, materials, equipment, allowances, exclusions, and schedule effect. Its supporting evidence includes directive, annotated plan, estimate backup, vendor quote, daily record, and notice history.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Change opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Change site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Change contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Change superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Change due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this construction change order record to its evidence.",
+          "key": "record_routing",
+          "label": "Construction Change Order Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Contract scope",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Affected drawing references",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Schedule milestones",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Cost codes",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture contract scope, affected drawing references, schedule milestones, and cost codes for this construction change order.",
+          "key": "core_identity",
+          "label": "Construction Change Order Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify contract scope, affected drawing references, schedule milestones, and cost codes for this construction change order record.",
+      "key": "identity_1",
+      "title": "Log Coverage and Custodian"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Change when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Change measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Change evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Change result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For construction change order, record directive, annotated plan, estimate backup, vendor quote, daily record, and notice history.",
+          "key": "evidence_register",
+          "label": "Construction Change Order Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Directive",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Annotated plan",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Estimate backup",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Vendor quote",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Daily record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every construction change order evidence source.",
+          "key": "evidence_sources",
+          "label": "Construction Change Order Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Change dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Change owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Change escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep construction change order items open through verification.",
+          "key": "open_item_register",
+          "label": "Construction Change Order Open Items and Next Actions",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Change reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved construction change order entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Construction Change Order Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Construction Change Order Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For construction change order, explain signed disposition, revised contract value, schedule update, distribution record, and cost-code handoff; transfer each construction change order open entry to the construction change order successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Construction Change Order Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not proceed without written emergency direction or approval at the applicable authority level. Route unresolved construction change order work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Construction Change Order Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support construction change order findings with directive, annotated plan, estimate backup, vendor quote, daily record, and notice history.",
+      "key": "observation_2",
+      "title": "Dated Events and Supporting Facts"
+    }
+  ],
+  "slug": "construction-change-order-log-form",
+  "source_filename": "dcf_102__construction_change_order_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Construction Change Order Log Form: scope-change pricing and authorization using contract scope, origin, and directive.",
+  "title": "Construction Change Order Log Form",
+  "use_case": "Use the log form during scope-change pricing and authorization when the construction change order record must identify contract scope, affected drawing references, schedule milestones, and cost codes. Complete the applicable handoff for signed disposition, revised contract value, schedule update, distribution record, and cost-code handoff."
+}

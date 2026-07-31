@@ -1,0 +1,300 @@
+{
+  "catalog_id": "business_operations/dbo_1761__vendor_setup_checklist",
+  "description": "For vendor setup, this checklist records business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification. Its supporting evidence includes tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Setup opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Setup site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Setup contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Setup process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Setup due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this vendor setup record to its evidence.",
+          "key": "record_routing",
+          "label": "Vendor Setup Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Vendor legal name",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Tax",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Banking data",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Ownership",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Contacts",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Goods or services",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status for this vendor setup.",
+          "key": "core_identity",
+          "label": "Vendor Setup Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status for this vendor setup record.",
+      "key": "identity_1",
+      "title": "Process Checkpoint and Owner"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Business need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Sourcing decision",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Contract status",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Payment terms",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Insurance",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For vendor setup, record business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification.",
+          "key": "task_inputs",
+          "label": "Vendor Setup Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the vendor setup condition before marking.",
+          "items": [
+            "Verify business need",
+            "Verify sourcing decision",
+            "Verify contract status",
+            "Verify payment terms",
+            "Verify insurance",
+            "Verify security access"
+          ],
+          "key": "task_checks",
+          "label": "Vendor Setup Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Setup checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Setup review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Setup qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Setup check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each vendor setup result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Vendor Setup Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not activate or pay vendors with unverified bank changes, missing screening, expired insurance, conflicts, or exceeded authority. Route unresolved vendor setup work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Vendor Setup Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For vendor setup, capture business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Setup when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Setup measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Setup evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Setup result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For vendor setup, record tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+          "key": "evidence_register",
+          "label": "Vendor Setup Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Tax form",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Bank verification",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Insurance certificate",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Screening results",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Contract",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every vendor setup evidence source.",
+          "key": "evidence_sources",
+          "label": "Vendor Setup Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked vendor setup items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Vendor Setup Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Vendor Setup Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State vendor setup limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Vendor Setup Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support vendor setup findings with tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+      "key": "observation_3",
+      "title": "Checklist Finding Record"
+    }
+  ],
+  "slug": "vendor-setup-checklist",
+  "source_filename": "dbo_1761__vendor_setup_checklist.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Vendor Setup Checklist: vendor due diligence and system setup using vendor legal name, business need, and tax form.",
+  "title": "Vendor Setup Checklist",
+  "use_case": "Use the checklist during vendor due diligence and system setup when the vendor setup record must identify vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status. Complete the applicable handoff for approved vendor ID, controls applied, payment method, renewal dates, document retention, and requester notification."
+}

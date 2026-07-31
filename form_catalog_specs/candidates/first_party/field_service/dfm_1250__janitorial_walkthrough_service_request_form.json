@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1250__janitorial_walkthrough_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1250__janitorial_walkthrough_service_request_form.pdf",
+  "slug": "janitorial-walkthrough-service-request-form",
+  "title": "Janitorial Walkthrough Service Request Form",
+  "subtitle": "Janitorial Walkthrough: defines need, constraints, and assignment.",
+  "description": "Janitorial Walkthrough Service Request Form covers cleaning zone, surface, fixture, supply point, waste stream, and service task. The facility cleaning coordinator records Janitorial Walkthrough need, timing, access, and assignment. Janitorial Walkthrough Service Request Form keeps Janitorial Walkthrough exceptions visible until the facility cleaning coordinator handoff.",
+  "use_case": "Use Janitorial Walkthrough Service Request Form at occupied rooms, restrooms, common areas, service closets, and restricted zones. Document cleaning zone, surface, fixture, supply point, waste stream, and service task identity before Janitorial Walkthrough begins. Compare cleaning zone, surface, fixture, supply point, waste stream, and service task findings with stated Janitorial Walkthrough criteria; route unresolved Janitorial Walkthrough issues to janitorial quality supervisor.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requested-service contact and source record",
+      "guidance": "For Janitorial Walkthrough, identify responsible parties, occupied rooms, restrooms, common areas, service closets, and restricted zones, and the linked cleaning zone, surface, fixture, supply point, waste stream, and service task source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Janitorial Walkthrough identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility, route, and shift",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Room or zone identifier",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Scope standard, service level, and prior deficiency reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested scope and practical constraints",
+      "guidance": "Capture Janitorial Walkthrough facts for cleaning zone, surface, fixture, supply point, waste stream, and service task; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Janitorial Walkthrough intake confirmations",
+          "items": [
+            "Requested or already documented: soil, residue, touchpoint, floor, and fixture condition",
+            "Requested or already documented: supply and consumable availability",
+            "Requested or already documented: waste, recycling, sharps, or special-stream handling",
+            "Requested or already documented: wet-floor control and public access",
+            "Requested or already documented: chemical label, dilution, container, and storage condition",
+            "Requested or already documented: room release, odor, damage, and recurring deficiency"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Janitorial Walkthrough request questions; have facility cleaning coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Unknown spill or hazardous material",
+            "Damaged surface or fixture outside cleaning scope",
+            "Restricted room or privacy boundary not cleared",
+            "Wet-floor or access control cannot be maintained",
+            "Prior or requester-supplied: prior zone condition and exception history",
+            "Prior or requester-supplied: before-and-after deficiency photographs",
+            "Prior or requester-supplied: chemical or supply usage record",
+            "Prior or requester-supplied: requester access, walkthrough, and callback preference"
+          ],
+          "guidance": "Do not assign or authorize the Janitorial Walkthrough request when an unknown exposure, restricted-area concern, public slip risk, or unresolved damage remains. Retain information supplied with the request and route unresolved constraints to facility cleaning coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Facility Cleaning Coordinator",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

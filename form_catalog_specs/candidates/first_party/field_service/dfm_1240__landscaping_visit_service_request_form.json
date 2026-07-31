@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1240__landscaping_visit_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1240__landscaping_visit_service_request_form.pdf",
+  "slug": "landscaping-visit-service-request-form",
+  "title": "Landscaping Visit Service Request Form",
+  "subtitle": "Commercial Landscaping Visit: defines need, constraints, and assignment.",
+  "description": "Landscaping Visit Service Request Form covers grounds zone, plant material, irrigation interface, hardscape edge, and assigned task. The grounds service coordinator records Commercial Landscaping Visit need, timing, access, and assignment. Landscaping Visit Service Request Form keeps Commercial Landscaping Visit exceptions visible until the grounds service coordinator handoff.",
+  "use_case": "Use Landscaping Visit Service Request Form at property zone, bed, lawn area, slope, walkway, and equipment access route. Document grounds zone, plant material, irrigation interface, hardscape edge, and assigned task identity before Commercial Landscaping Visit begins. Compare grounds zone, plant material, irrigation interface, hardscape edge, and assigned task findings with stated Commercial Landscaping Visit criteria; route unresolved Commercial Landscaping Visit issues to landscape operations supervisor.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requested-service contact and source record",
+      "guidance": "For Commercial Landscaping Visit, identify responsible parties, property zone, bed, lawn area, slope, walkway, and equipment access route, and the linked grounds zone, plant material, irrigation interface, hardscape edge, and assigned task source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Commercial Landscaping Visit identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Property and service route",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Zone, plant, irrigation, or task identifier",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Approved seasonal scope and visit number",
+              "units": 2.2222222222222223
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested result, access, and timing",
+      "guidance": "Capture Commercial Landscaping Visit facts for grounds zone, plant material, irrigation interface, hardscape edge, and assigned task; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Commercial Landscaping Visit intake confirmations",
+          "items": [
+            "Requested or already documented: turf, bed, tree, shrub, and plant-health condition",
+            "Requested or already documented: irrigation coverage, leak, runoff, and controller observation",
+            "Requested or already documented: walkway, curb, visibility, and access impact",
+            "Requested or already documented: weed, debris, erosion, and drainage condition",
+            "Requested or already documented: weather, soil moisture, and seasonal constraint",
+            "Requested or already documented: requested quantity compared with contracted scope"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Supplied evidence and assignment outcome",
+      "guidance": "Resolve open Commercial Landscaping Visit request questions; have grounds service coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Unsafe tree, slope, equipment, or pedestrian condition",
+            "Weather prevents safe or effective work",
+            "Irrigation leak or runoff requires separate authority",
+            "Requested treatment outside approved scope",
+            "Prior or requester-supplied: before-and-after zone photographs",
+            "Prior or requester-supplied: visit quantity and material record",
+            "Prior or requester-supplied: irrigation or plant-health observation",
+            "Prior or requester-supplied: deferred-work and property-contact notice"
+          ],
+          "guidance": "Do not assign or authorize the Commercial Landscaping Visit request when a public-access hazard, weather stop, chemical boundary, or uncontrolled property condition remains. Retain information supplied with the request and route unresolved constraints to grounds service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Grounds Service Coordinator",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1207__elevator_service_inspection_checklist",
+  "source_section": "field_service",
+  "source_filename": "dfm_1207__elevator_service_inspection_checklist.pdf",
+  "slug": "elevator-service-inspection-checklist",
+  "title": "Elevator Service Inspection Checklist",
+  "subtitle": "Elevator Service: documents findings, limits, and disposition.",
+  "description": "Elevator Service Inspection Checklist covers elevator, controller, door system, communication device, and landing. The building elevator coordinator records Elevator Service criteria, findings, restrictions, and follow-up. Elevator Service Inspection Checklist keeps Elevator Service exceptions visible until the building elevator coordinator handoff.",
+  "use_case": "Use Elevator Service Inspection Checklist at machine space, hoistway access point, car, and affected landings. Document elevator, controller, door system, communication device, and landing identity before Elevator Service begins. Compare elevator, controller, door system, communication device, and landing findings with stated Elevator Service criteria; route unresolved Elevator Service issues to licensed or otherwise qualified elevator service reviewer. For Elevator Service Inspection Checklist, confirm requirements for Elevator Service. Ask licensed or otherwise qualified elevator service reviewer to review Elevator Service conditions beyond the building elevator coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Elevator Service, identify responsible parties, machine space, hoistway access point, car, and affected landings, and the linked elevator, controller, door system, communication device, and landing source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Elevator Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Building and unit designation",
+              "units": 1.6111111111111112
+            },
+            {
+              "key": "identity_2",
+              "label": "Controller or equipment identifier",
+              "units": 1.8888888888888888
+            },
+            {
+              "key": "identity_3",
+              "label": "Service call, permit, and maintenance-control reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist points, conditions, and actions",
+      "guidance": "Capture Elevator Service facts for elevator, controller, door system, communication device, and landing; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Elevator Service inspection checks",
+          "items": [
+            "Car and landing door operation",
+            "Leveling, ride, noise, and vibration observation",
+            "Alarm, emergency communication, and lighting response",
+            "Visible controls, indicators, and operating fixtures",
+            "Machine-space housekeeping and accessible component condition",
+            "Out-of-service protection and landing communication"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection exception, restriction, and reinspection",
+      "guidance": "Before closing Elevator Service, identify what failed or was not inspected, who owns correction, and when examination resumes. Building Elevator Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Entrapment or uncontrolled movement concern",
+            "Door protection or leveling failure",
+            "Emergency communication failure",
+            "Work or testing beyond technician qualification",
+            "Unit and controller identification photographs",
+            "Fault history or controller indication",
+            "Test and measurement record within authorized scope",
+            "Out-of-service notice and restoration confirmation"
+          ],
+          "guidance": "Pause Elevator Service when the unit cannot be secured, a life-safety device fails, or required qualified elevator review is unavailable. Retain the available Elevator Service proof and route unresolved elevator, controller, door system, communication device, and landing scope to building elevator coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Building Elevator Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Licensed Or Otherwise Qualified Elevator Service Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

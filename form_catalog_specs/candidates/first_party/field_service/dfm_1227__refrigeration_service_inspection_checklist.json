@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1227__refrigeration_service_inspection_checklist",
+  "source_section": "field_service",
+  "source_filename": "dfm_1227__refrigeration_service_inspection_checklist.pdf",
+  "slug": "refrigeration-service-inspection-checklist",
+  "title": "Refrigeration Service Inspection Checklist",
+  "subtitle": "Commercial Refrigeration Service: documents findings, limits, and disposition.",
+  "description": "Refrigeration Service Inspection Checklist covers compressor, evaporator, condenser, controls, case, and temperature-controlled contents. The refrigeration service coordinator records Commercial Refrigeration Service criteria, findings, restrictions, and follow-up. Refrigeration Service Inspection Checklist keeps Commercial Refrigeration Service exceptions visible until the refrigeration service coordinator handoff.",
+  "use_case": "Use Refrigeration Service Inspection Checklist at walk-in, reach-in, display case, machine area, and affected product zone. Document compressor, evaporator, condenser, controls, case, and temperature-controlled contents identity before Commercial Refrigeration Service begins. Compare compressor, evaporator, condenser, controls, case, and temperature-controlled contents findings with stated Commercial Refrigeration Service criteria; route unresolved Commercial Refrigeration Service issues to qualified refrigeration supervisor. For Refrigeration Service Inspection Checklist, confirm requirements for Commercial Refrigeration Service. Ask qualified refrigeration supervisor to review Commercial Refrigeration Service conditions beyond the refrigeration service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspector, location, and subject identity",
+      "guidance": "For Commercial Refrigeration Service, identify responsible parties, walk-in, reach-in, display case, machine area, and affected product zone, and the linked compressor, evaporator, condenser, controls, case, and temperature-controlled contents source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Commercial Refrigeration Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Site and refrigeration asset",
+              "units": 1.5555555555555556
+            },
+            {
+              "key": "identity_2",
+              "label": "Make, model, serial, refrigerant designation, and circuit",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Required range, product status, and alarm history",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Commercial Refrigeration Service facts for compressor, evaporator, condenser, controls, case, and temperature-controlled contents; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Commercial Refrigeration Service inspection checks",
+          "items": [
+            "Product and air temperature at defined points",
+            "Door, gasket, drain, fan, coil, and airflow condition",
+            "Compressor, condenser, control, and defrost indication",
+            "Visible tubing, oil residue, frost pattern, and leak concern",
+            "Alarm, sensor, setpoint, and monitoring response",
+            "Affected-product hold and custody status"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Use observed Commercial Refrigeration Service evidence to state disposition. Keep limits visible and give Refrigeration Service Coordinator both correction and repeat-check responsibility.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Temperature excursion with uncertain duration",
+            "Refrigerant work beyond certification",
+            "Food or product disposition not assigned",
+            "System cannot maintain the required range",
+            "Time-stamped temperature and alarm history",
+            "Instrument and sensor identification",
+            "System nameplate and condition photographs",
+            "Product hold, release, or disposition record"
+          ],
+          "guidance": "Pause Commercial Refrigeration Service when temperature control, refrigerant integrity, product disposition, or alarm protection is unresolved. Retain the available Commercial Refrigeration Service proof and route unresolved compressor, evaporator, condenser, controls, case, and temperature-controlled contents scope to refrigeration service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Refrigeration Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Refrigeration Supervisor",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

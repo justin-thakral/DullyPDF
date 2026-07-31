@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_131__volunteer_chaperone_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dey_131__volunteer_chaperone_checklist.pdf",
+  "slug": "volunteer-chaperone-checklist",
+  "title": "Volunteer Chaperone Checklist",
+  "subtitle": "Capture trip assignment, student group, screening status, and supervision boundary; confirm emergency route and return handoff.",
+  "description": "Volunteer Chaperone records trip assignment, student group, screening status, supervision boundary, emergency route, and return handoff. Volunteer Chaperone evidence stays linked.",
+  "use_case": "Use this volunteer chaperone stage-gated verification when staff must document trip assignment and student group. Reconcile screening status, supervision boundary, emergency route, and return handoff before the volunteer chaperone handoff. Use screening evidence, assignment roster, student-group list, supervision brief, emergency card route, transport seat list, checkpoint headcounts, and return handoff. This assignment places a screened adult with a student group using ratio and supervision boundaries, bus position, checkpoint headcounts, emergency response role, prohibited tasks, and return handoff. Ask the assigned volunteer chaperone reviewer to confirm trip assignment against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Volunteer Chaperone contact and reference",
+      "guidance": "Assign trip, student group, screening evidence, supervision boundary, transport position, emergency route, headcount responsibility, and return handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Volunteer Chaperone people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "trip_assignment",
+              "label": "Trip assignment",
+              "units": 1.1
+            },
+            {
+              "key": "student_group",
+              "label": "Student group",
+              "units": 1.2
+            },
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Volunteer Chaperone task details",
+          "fields": [
+            {
+              "key": "supervision_boundary",
+              "label": "Supervision boundary",
+              "units": 1.15
+            },
+            {
+              "key": "emergency_route",
+              "label": "Emergency route",
+              "units": 1.0
+            },
+            {
+              "key": "return_handoff",
+              "label": "Return handoff",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Volunteer Chaperone exception review: checks and corrections",
+      "guidance": "Check current volunteer chaperone facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Volunteer Chaperone required checks",
+          "items": [
+            "Trip assignment is identified for this record",
+            "Student group matches the current request or source",
+            "Screening status is ready for point-of-use staff",
+            "Supervision boundary limits or questions are resolved",
+            "Emergency route is communicated to the responsible person",
+            "Return handoff is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Volunteer Chaperone failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Volunteer Chaperone readiness",
+      "guidance": "Hold volunteer chaperone readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Volunteer Chaperone checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Volunteer Chaperone reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Volunteer Chaperone receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

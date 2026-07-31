@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_120__tutoring_intake_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_120__tutoring_intake_form.pdf",
+  "slug": "dey-120-tutoring-intake-form-5e806304",
+  "title": "Tutoring Intake Form",
+  "subtitle": "Capture subject area, learning goal, schedule, and baseline evidence; confirm communication route and progress review.",
+  "description": "Tutoring records subject area, learning goal, schedule, baseline evidence, communication route, and progress review. Tutoring evidence stays linked.",
+  "use_case": "Use this tutoring structured intake when staff must document subject area and learning goal. Reconcile schedule, baseline evidence, communication route, and progress review before the tutoring handoff. Use the learning-goal statement, baseline assignment, assessment sample, tutor calendar, session notes, family updates, progress measure, and review summary. For tutoring review use, cite source. Match the tutoring family or learner wording. Preserve the tutoring amendment history and supersession date. Link the tutoring source version and meeting notes. Record the tutoring learner response and accessibility support. Close the tutoring recipient list. Verify tutoring documentary provenance. Resolve tutoring amendments, superseded wording, and archival distribution for tutoring. Ask the assigned tutoring reviewer to confirm subject area against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Tutoring contact and reference",
+      "guidance": "Define subject area, learning goal, baseline work sample, session cadence, tutor assignment, communication route, progress measure, and review date.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Tutoring people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "subject_area",
+              "label": "Subject area",
+              "units": 1.2
+            },
+            {
+              "key": "learning_goal",
+              "label": "Learning goal",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Tutoring task details",
+          "fields": [
+            {
+              "key": "schedule",
+              "label": "Schedule",
+              "units": 1.15
+            },
+            {
+              "key": "baseline_evidence",
+              "label": "Baseline evidence",
+              "units": 1.0
+            },
+            {
+              "key": "communication_route",
+              "label": "Communication route",
+              "units": 1.25
+            },
+            {
+              "key": "progress_review",
+              "label": "Progress review",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_story",
+      "title": "Tutoring reported needs review",
+      "guidance": "Preserve the person's wording and route questions without interpretation.",
+      "blocks": [
+        {
+          "key": "stated_need",
+          "type": "textarea",
+          "label": "Tutoring stated need or goal",
+          "fields": [
+            {
+              "key": "person_s_words_desired_outcome_and_priority",
+              "label": "Person's words, desired outcome, and priority"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "source_facts",
+          "type": "table",
+          "label": "Tutoring facts and questions",
+          "columns": [
+            {
+              "key": "subject_area",
+              "label": "Subject area",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "schedule",
+              "label": "Schedule",
+              "units": 1.25
+            },
+            {
+              "key": "question_or_route",
+              "label": "Question or route",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "intake_readiness",
+          "type": "checklist",
+          "label": "Tutoring intake readiness",
+          "items": [
+            "Subject area is identified for this record",
+            "Learning goal matches the current request or source",
+            "Schedule is ready for point-of-use staff",
+            "Baseline evidence limits or questions are resolved",
+            "Communication route is communicated to the responsible person",
+            "Progress review is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_handoff",
+      "title": "Tutoring receiving route",
+      "guidance": "Assign open questions and confirm where the intake goes next.",
+      "blocks": [
+        {
+          "key": "intake_route",
+          "type": "fields",
+          "label": "Tutoring next step",
+          "fields": [
+            {
+              "key": "receiving_person_or_team",
+              "label": "Receiving person or team",
+              "units": 1.15
+            },
+            {
+              "key": "open_question_or_missing_item",
+              "label": "Open question or missing item",
+              "units": 1.0
+            },
+            {
+              "key": "urgent_route_if_applicable",
+              "label": "Urgent route if applicable",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "intake_receipt",
+          "type": "signatures",
+          "label": "Tutoring intake receipt",
+          "fields": [
+            {
+              "key": "intake_coordinator_and_date",
+              "label": "Intake coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms routing, not professional review."
+        }
+      ]
+    }
+  ]
+}

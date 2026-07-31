@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_169__scholarship_application_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_169__scholarship_application_review_worksheet.pdf",
+  "slug": "scholarship-application-review-worksheet",
+  "title": "Scholarship Application Review Worksheet",
+  "subtitle": "Capture award cycle, eligibility source, application evidence, and review rubric; confirm conflict disclosure and award notice.",
+  "description": "Scholarship Application records award cycle, eligibility source, application evidence, review rubric, conflict disclosure, and award notice. Scholarship Application evidence stays linked.",
+  "use_case": "Use this scholarship application evidence-based review when staff must document award cycle and eligibility source. Reconcile application evidence, review rubric, conflict disclosure, and award notice before the scholarship application handoff. Use the program rules, eligibility documents, transcript or work evidence, rubric scores, reviewer conflict statement, award ledger, decision notice, and acceptance receipt. Ask the assigned scholarship application reviewer to confirm award cycle against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Scholarship Application meeting details",
+      "guidance": "Identify award cycle, eligibility source, application materials, rubric evidence, reviewer conflict disclosure, decision rationale, and award notification.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Scholarship Application people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_team",
+              "label": "Grade or team",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "award_cycle",
+              "label": "Award cycle",
+              "units": 1.1
+            },
+            {
+              "key": "eligibility_source",
+              "label": "Eligibility source",
+              "units": 1.2
+            },
+            {
+              "key": "application_evidence",
+              "label": "Application evidence",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Scholarship Application task details",
+          "fields": [
+            {
+              "key": "review_rubric",
+              "label": "Review rubric",
+              "units": 1.15
+            },
+            {
+              "key": "conflict_disclosure",
+              "label": "Conflict disclosure",
+              "units": 1.0
+            },
+            {
+              "key": "award_notice",
+              "label": "Award notice",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "Scholarship Application discussion",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "Scholarship Application strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_award_cycle",
+              "label": "Strength, progress, or successful support related to award cycle"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Scholarship Application questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_application_evidence",
+              "label": "Concern, missing context, or question about application evidence"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "Scholarship Application participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_review_rubric",
+              "label": "Priority, preference, or proposed support for review rubric"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "Scholarship Application exception review and action plan",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "Scholarship Application agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "Scholarship Application follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "Scholarship Application review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1846__equipment_rental_consent_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1846__equipment_rental_consent_form.pdf",
+  "slug": "equipment-rental-consent-form",
+  "title": "Equipment Rental Consent Form",
+  "subtitle": "Capture asset number, component count, approved use, and condition photo; confirm custody and return.",
+  "description": "Equipment Rental records asset number, component count, approved use, condition photo, custody, and return. Equipment Rental evidence stays linked.",
+  "use_case": "Use this equipment rental scoped consent when staff must document asset number and component count. Reconcile approved use, condition photo, custody, and return before the equipment rental handoff. Use the rental agreement reference, asset inventory, accessory checklist, condition photos, pickup receipt, custody transfer, damage ticket, return timestamp, and deposit disposition. This rental follows a portable asset by inventory class, serial identifier, accessory kit, pickup inspection, borrower custody, deposit disposition, damage charge, and physical return. Ask the assigned equipment rental reviewer to confirm asset number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Equipment Rental contact and reference",
+      "guidance": "List asset and component count, approved use, pickup condition photographs, custodian, deposit reference, damage route, return time, and final condition.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Equipment Rental people and reference",
+          "fields": [
+            {
+              "key": "renter_or_responsible_party",
+              "label": "Renter or responsible party",
+              "units": 1.15
+            },
+            {
+              "key": "renter_phone",
+              "label": "Renter phone",
+              "units": 1.0
+            },
+            {
+              "key": "renter_email",
+              "label": "Renter email",
+              "units": 1.25
+            },
+            {
+              "key": "rental_item_or_room",
+              "label": "Rental item or room",
+              "units": 1.1
+            },
+            {
+              "key": "asset_number",
+              "label": "Asset number",
+              "units": 1.2
+            },
+            {
+              "key": "component_count",
+              "label": "Component count",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Equipment Rental task details",
+          "fields": [
+            {
+              "key": "approved_use",
+              "label": "Approved use",
+              "units": 1.15
+            },
+            {
+              "key": "condition_photo",
+              "label": "Condition photo",
+              "units": 1.0
+            },
+            {
+              "key": "custody",
+              "label": "Custody",
+              "units": 1.25
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_choices",
+      "title": "Equipment Rental exception review and voluntary choices",
+      "guidance": "Present each choice independently; do not preselect an answer.",
+      "blocks": [
+        {
+          "key": "itemized_consent",
+          "type": "fields",
+          "label": "Equipment Rental itemized consent",
+          "fields": [
+            {
+              "key": "asset_number",
+              "label": "Asset number",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "component_count",
+              "label": "Component count",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "approved_use",
+              "label": "Approved use",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "condition_photo",
+              "label": "Condition photo",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "custody",
+              "label": "Custody",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consent_checks",
+          "type": "checklist",
+          "label": "Equipment Rental informed-choice checks",
+          "items": [
+            "Purpose and practical conditions are explained",
+            "Questions and access needs are addressed",
+            "Declining one choice does not decide another",
+            "Withdrawal route and practical limits are explained"
+          ]
+        },
+        {
+          "key": "consent_conditions",
+          "type": "fields",
+          "label": "Equipment Rental conditions and withdrawal",
+          "fields": [
+            {
+              "key": "choice_explained_by",
+              "label": "Choice explained by",
+              "units": 1.15
+            },
+            {
+              "key": "question_or_accessibility_need",
+              "label": "Question or accessibility need",
+              "units": 1.0
+            },
+            {
+              "key": "special_condition_or_exclusion",
+              "label": "Special condition or exclusion",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal_contact",
+              "label": "Withdrawal contact",
+              "units": 1.1
+            },
+            {
+              "key": "consent_copy_provided_date",
+              "label": "Consent copy provided date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_signoff",
+      "title": "Equipment Rental decision and signer receipt",
+      "guidance": "Record the voluntary decision and responsible staff recipient.",
+      "blocks": [
+        {
+          "key": "consent_note",
+          "type": "textarea",
+          "label": "Equipment Rental question or limit",
+          "fields": [
+            {
+              "key": "question_explanation_declined_scope_or_participation_limit",
+              "label": "Question, explanation, declined scope, or participation limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "consent_signatures",
+          "type": "signatures",
+          "label": "Equipment Rental signatures",
+          "fields": [
+            {
+              "key": "person_giving_consent_and_date",
+              "label": "Person giving consent and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The signature applies only to choices recorded above."
+        }
+      ]
+    }
+  ]
+}

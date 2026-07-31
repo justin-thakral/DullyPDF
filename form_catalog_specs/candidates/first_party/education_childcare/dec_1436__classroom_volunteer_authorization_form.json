@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1436__classroom_volunteer_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1436__classroom_volunteer_authorization_form.pdf",
+  "slug": "classroom-volunteer-authorization-form",
+  "title": "Classroom Volunteer Authorization Form",
+  "subtitle": "Capture class assignment, approved task, student boundary, and screening status; confirm supervision and badge return.",
+  "description": "Classroom Volunteer records class assignment, approved task, student boundary, screening status, supervision, and badge return. Classroom Volunteer evidence stays linked.",
+  "use_case": "Use this classroom volunteer authorization decision when staff must document class assignment and approved task. Reconcile student boundary, screening status, supervision, and badge return before the classroom volunteer handoff. Use the screening clearance reference, classroom calendar, task brief, confidentiality acknowledgment, supervising-teacher assignment, badge log, and departure record. Ask the assigned classroom volunteer reviewer to confirm class assignment against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Classroom Volunteer signer details review",
+      "guidance": "Define classroom assignment, approved tasks, student-contact boundaries, screening status, supervising teacher, badge custody, and departure.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Classroom Volunteer people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "class_assignment",
+              "label": "Class assignment",
+              "units": 1.2
+            },
+            {
+              "key": "approved_task",
+              "label": "Approved task",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Classroom Volunteer task details",
+          "fields": [
+            {
+              "key": "student_boundary",
+              "label": "Student boundary",
+              "units": 1.15
+            },
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "supervision",
+              "label": "Supervision",
+              "units": 1.25
+            },
+            {
+              "key": "badge_return",
+              "label": "Badge return",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Classroom Volunteer scope choices review",
+      "guidance": "Decide each classroom volunteer scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Classroom Volunteer itemized scope",
+          "fields": [
+            {
+              "key": "class_assignment",
+              "label": "Class assignment",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "approved_task",
+              "label": "Approved task",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "student_boundary",
+              "label": "Student boundary",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "supervision",
+              "label": "Supervision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "badge_return",
+              "label": "Badge return",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Classroom Volunteer authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Classroom Volunteer effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Classroom Volunteer signer receipt and handoff",
+      "guidance": "Only recorded classroom volunteer choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Classroom Volunteer limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Classroom Volunteer signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "school_or_program_reviewer_and_date",
+              "label": "School or program reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Classroom Volunteer signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Classroom Volunteer authorization boundary",
+          "guidance": "Named classroom volunteer reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

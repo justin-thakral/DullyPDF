@@ -1,0 +1,344 @@
+{
+  "catalog_id": "business_operations/dbo_1777__customer_complaint_approval_form",
+  "description": "For customer complaint, this approval form records customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits. Its supporting evidence includes communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Complaint opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Complaint site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Complaint contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Complaint process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Complaint due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this customer complaint record to its evidence.",
+          "key": "record_routing",
+          "label": "Customer Complaint Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Customer account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Contact",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Product or service",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Transaction",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Channel",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture customer account, contact, product or service, transaction, channel, affected location, and prior complaint history for this customer complaint.",
+          "key": "core_identity",
+          "label": "Customer Complaint Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify customer account, contact, product or service, transaction, channel, affected location, and prior complaint history for this customer complaint record.",
+      "key": "identity_1",
+      "title": "Proposal and Authority Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Customer statement",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Desired resolution",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Urgency",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Safety or privacy screen",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Ownership",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For customer complaint, record customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits.",
+          "key": "task_inputs",
+          "label": "Customer Complaint Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Complaint decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Complaint supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Complaint review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified customer complaint facts from judgment.",
+          "key": "review_criteria",
+          "label": "Customer Complaint Review Criteria and Support",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Resolve each failed customer complaint approval check.",
+          "items": [
+            "Decision statement is singular and unambiguous",
+            "Approver authority and any conflict are checked",
+            "Cost, schedule, quality, safety, and compliance effects are addressed",
+            "Alternatives and recommendation are documented",
+            "Conditions and effective period can be monitored",
+            "Implementation owner acknowledges the disposition"
+          ],
+          "key": "decision_readiness",
+          "label": "Customer Complaint Decision Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Escalate threats, injury, discrimination, fraud, privacy exposure, regulator contact, media risk, or remedy beyond authority. Route unresolved customer complaint work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Customer Complaint Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For customer complaint, capture customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits.",
+      "key": "task_2",
+      "title": "Required Inputs and Review Criteria"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Complaint when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Complaint measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Complaint evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Complaint result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For customer complaint, record communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+          "key": "evidence_register",
+          "label": "Customer Complaint Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Communications",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Order or service record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Logs",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Staff statements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Policy references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every customer complaint evidence source.",
+          "key": "evidence_sources",
+          "label": "Customer Complaint Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support customer complaint findings with communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+      "key": "observation_3",
+      "title": "Supporting Record Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select approval form disposition",
+                "Approve",
+                "Approve with conditions",
+                "Revise and resubmit",
+                "Reject"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Complaint decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Complaint approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Complaint authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Complaint review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate customer complaint disposition.",
+          "key": "disposition",
+          "label": "Customer Complaint Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer Complaint Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the customer complaint decision to evidence.",
+          "height": 44,
+          "key": "decision_basis",
+          "label": "Customer Complaint Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Complaint request owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Complaint process reviewer and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Complaint delegated approver and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Customer Complaint Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the customer complaint next step from communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+      "key": "decision_4",
+      "title": "Approval Decision and Conditions"
+    }
+  ],
+  "slug": "customer-complaint-approval-form",
+  "source_filename": "dbo_1777__customer_complaint_approval_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Customer Complaint Approval Form: customer complaint intake, investigation, and recovery using customer account, customer statement, and communications.",
+  "title": "Customer Complaint Approval Form",
+  "use_case": "Use the approval form during customer complaint intake, investigation, and recovery when the customer complaint record must identify customer account, contact, product or service, transaction, channel, affected location, and prior complaint history. Complete the applicable handoff for approved response, customer confirmation, credit or corrective action, root-cause referral, trend coding, and closure."
+}

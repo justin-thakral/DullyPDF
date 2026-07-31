@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1233__boiler_inspection_technician_sign_off_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1233__boiler_inspection_technician_sign_off_form.pdf",
+  "slug": "boiler-inspection-technician-sign-off-form",
+  "title": "Boiler Inspection Technician Sign-Off Form",
+  "subtitle": "Boiler Inspection: verifies results and open follow-up.",
+  "description": "Boiler Inspection Technician Sign-Off Form covers boiler, burner, fuel train, controls, venting, water system, and served loop. The facility boiler coordinator records Boiler Inspection performed work, tests, limits, and acceptance. Boiler Inspection Technician Sign-Off Form keeps Boiler Inspection exceptions visible until the facility boiler coordinator handoff.",
+  "use_case": "Use Boiler Inspection Technician Sign-Off Form at boiler room, fuel entry, flue route, and served mechanical system. Document boiler, burner, fuel train, controls, venting, water system, and served loop identity before Boiler Inspection begins. Compare boiler, burner, fuel train, controls, venting, water system, and served loop findings with stated Boiler Inspection criteria; route unresolved Boiler Inspection issues to qualified boiler or combustion-system reviewer. For Boiler Inspection Technician Sign-Off Form, confirm requirements for Boiler Inspection. Ask qualified boiler or combustion-system reviewer to review Boiler Inspection conditions beyond the facility boiler coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Completion parties and source record",
+      "guidance": "For Boiler Inspection, identify responsible parties, boiler room, fuel entry, flue route, and served mechanical system, and the linked boiler, burner, fuel train, controls, venting, water system, and served loop source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Completion record ID",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Boiler Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility and boiler number",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Make, model, serial, rating, fuel, and permit reference",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Operating schedule, service history, and inspection basis",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Completion checks and remaining limitations",
+      "guidance": "Capture Boiler Inspection facts for boiler, burner, fuel train, controls, venting, water system, and served loop; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Boiler Inspection completion checks",
+          "items": [
+            "Visible vessel, piping, valve, pump, and leak condition",
+            "Burner, flame, fuel-train, and ignition observation",
+            "Vent, draft, combustion-air, and room condition",
+            "Pressure, temperature, level, and makeup-water indication",
+            "Limit, cutoff, relief, alarm, and control response",
+            "Startup, operating, shutdown, and lockout sequence"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Completion verification lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Performed task or delivered item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 0.9
+            },
+            {
+              "key": "result",
+              "label": "Verified result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.85
+            },
+            {
+              "key": "follow_up",
+              "label": "Limitation or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Verified outcome and customer acknowledgment",
+      "guidance": "Resolve open Boiler Inspection conditions; have facility boiler coordinator assign the next Boiler Inspection owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Limitations, open work, and retained evidence",
+          "items": [
+            "Fuel leak or combustion concern",
+            "Low-water, limit, relief, or cutoff failure",
+            "Unsafe pressure, temperature, venting, or vessel condition",
+            "Test requires authority or shutdown not available",
+            "Nameplate and permit identification",
+            "Combustion or operating readings by instrument",
+            "Control and safety-device test result",
+            "Deficiency restriction and restoration record"
+          ],
+          "guidance": "Pause Boiler Inspection when a fuel, combustion, pressure-boundary, venting, or required safety-control concern remains. Retain the available Boiler Inspection proof and route unresolved boiler, burner, fuel train, controls, venting, water system, and served loop scope to facility boiler coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Acceptance status and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completion status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Accepted",
+                "Accepted with listed limitation",
+                "Follow-up required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Facility Boiler Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Site contact or service reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

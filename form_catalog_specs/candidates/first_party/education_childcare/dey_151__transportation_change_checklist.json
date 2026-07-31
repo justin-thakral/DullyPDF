@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_151__transportation_change_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dey_151__transportation_change_checklist.pdf",
+  "slug": "transportation-change-checklist",
+  "title": "Transportation Change Checklist",
+  "subtitle": "Capture student route, effective day, alternate stop, and request source; confirm driver notice and arrival confirmation.",
+  "description": "Transportation Change records student route, effective day, alternate stop, request source, driver notice, and arrival confirmation. Transportation Change evidence stays linked.",
+  "use_case": "Use this transportation change stage-gated verification when staff must document student route and effective day. Reconcile alternate stop, request source, driver notice, and arrival confirmation before the transportation change handoff. Use the guardian request, identity verification, original route sheet, alternate-stop map, school approval, dispatch notice, driver acknowledgment, and arrival confirmation. This request alters one student's day-specific dismissal route using guardian authentication, alternate stop or pickup person, dispatch update, driver read-back, school release, and arrival verification. Ask the assigned transportation change reviewer to confirm student route against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Transportation Change starting details review",
+      "guidance": "Identify student, original route, effective day, alternate stop or pickup person, request source, school approval, driver notice, and arrival confirmation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Transportation Change people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "student_route",
+              "label": "Student route",
+              "units": 1.1
+            },
+            {
+              "key": "effective_day",
+              "label": "Effective day",
+              "units": 1.2
+            },
+            {
+              "key": "alternate_stop",
+              "label": "Alternate stop",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Transportation Change task details",
+          "fields": [
+            {
+              "key": "request_source",
+              "label": "Request source",
+              "units": 1.15
+            },
+            {
+              "key": "driver_notice",
+              "label": "Driver notice",
+              "units": 1.0
+            },
+            {
+              "key": "arrival_confirmation",
+              "label": "Arrival confirmation",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Transportation Change checks and corrections",
+      "guidance": "Check current transportation change facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Transportation Change required checks",
+          "items": [
+            "Student route is identified for this record",
+            "Effective day matches the current request or source",
+            "Alternate stop is ready for point-of-use staff",
+            "Request source limits or questions are resolved",
+            "Driver notice is communicated to the responsible person",
+            "Arrival confirmation is confirmed at handoff",
+            "A changed transportation change fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Transportation Change failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Transportation Change readiness and handoff",
+      "guidance": "Hold transportation change readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Transportation Change checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Transportation Change reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Transportation Change receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

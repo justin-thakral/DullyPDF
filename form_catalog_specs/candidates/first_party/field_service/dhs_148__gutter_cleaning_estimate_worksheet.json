@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_148__gutter_cleaning_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_148__gutter_cleaning_estimate_worksheet.pdf",
+  "slug": "gutter-cleaning-estimate-worksheet",
+  "title": "Gutter Cleaning Estimate Worksheet",
+  "subtitle": "Residential Gutter Cleaning: prices observed scope, options, and exclusions.",
+  "description": "Gutter Cleaning Estimate Worksheet covers gutter run, outlet, downspout, discharge, roof edge, and collected debris. The gutter service coordinator records Residential Gutter Cleaning observed scope, costs, options, and terms. Gutter Cleaning Estimate Worksheet keeps Residential Gutter Cleaning exceptions visible until the gutter service coordinator handoff.",
+  "use_case": "Use Gutter Cleaning Estimate Worksheet at residence perimeter, roof edge, ladder position, discharge point, and protected landscaping. Document gutter run, outlet, downspout, discharge, roof edge, and collected debris identity before Residential Gutter Cleaning begins. Compare gutter run, outlet, downspout, discharge, roof edge, and collected debris findings with stated Residential Gutter Cleaning criteria; route unresolved Residential Gutter Cleaning issues to exterior service supervisor. For Gutter Cleaning Estimate Worksheet, confirm requirements for Residential Gutter Cleaning. Ask exterior service supervisor to review Residential Gutter Cleaning conditions beyond the gutter service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Customer contact, estimator, and source record",
+      "guidance": "For Residential Gutter Cleaning, identify responsible parties, residence perimeter, roof edge, ladder position, discharge point, and protected landscaping, and the linked gutter run, outlet, downspout, discharge, roof edge, and collected debris source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Estimate ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Estimate date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Customer / party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Gutter Cleaning identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and visit",
+              "units": 1.5555555555555556
+            },
+            {
+              "key": "identity_2",
+              "label": "Gutter run and downspout identifier",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_3",
+              "label": "Access method, roof height, weather, and discharge expectation",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Estimate lines and customer options",
+      "guidance": "Capture Residential Gutter Cleaning facts for gutter run, outlet, downspout, discharge, roof edge, and collected debris; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Estimate and option lines",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Task, item, or option",
+              "units": 1.15
+            },
+            {
+              "key": "basis",
+              "label": "Quantity or condition basis",
+              "units": 1.05
+            },
+            {
+              "key": "labor",
+              "label": "Labor or time",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Part, material, or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "amount",
+              "label": "Amount or option status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Gutter Cleaning estimate checks",
+          "items": [
+            "Debris load and blockage location",
+            "Gutter pitch, joint, hanger, seam, and visible damage",
+            "Outlet and downspout flow",
+            "Discharge location, erosion, and foundation proximity",
+            "Roof-edge, fascia, soffit, and adjacent condition",
+            "Post-cleaning water-flow result"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Estimate assumptions and customer decision",
+      "guidance": "Resolve open Residential Gutter Cleaning conditions; have gutter service coordinator assign the next Residential Gutter Cleaning owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Pricing assumptions, exclusions, and retained evidence",
+          "items": [
+            "Unsafe ladder, edge, weather, or power-line proximity",
+            "Loose gutter or damaged fascia cannot support work",
+            "Downspout blockage requires disassembly beyond scope",
+            "Water discharge creates property or erosion concern",
+            "Before-and-after gutter photographs",
+            "Blocked outlet and damage images",
+            "Debris removal and disposal record",
+            "Flow-test and discharge-point evidence"
+          ],
+          "guidance": "Pause Residential Gutter Cleaning when access, edge, weather, electrical proximity, unstable attachment, or unsafe discharge remains. Retain the available Residential Gutter Cleaning proof and route unresolved gutter run, outlet, downspout, discharge, roof edge, and collected debris scope to gutter service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Estimate status and next customer action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Estimate review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for customer review",
+                "Accepted as written",
+                "Accepted with listed option",
+                "Revision required",
+                "Declined"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Estimator and customer review",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Gutter Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

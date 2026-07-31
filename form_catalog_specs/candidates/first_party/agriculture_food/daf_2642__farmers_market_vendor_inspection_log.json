@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2642__farmers_market_vendor_inspection_log",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2642__farmers_market_vendor_inspection_log.pdf",
+  "slug": "farmers-market-vendor-inspection-log",
+  "title": "Farmers Market Vendor Inspection Log",
+  "subtitle": "Farmers Market Vendor Operation: records repeated checks and excursions.",
+  "description": "Farmers Market Vendor Inspection Log covers vendor, market date, product, lot, booth, cold-holding control, sale, and closeout. The market vendor coordinator records Farmers Market Vendor Operation check times, results, excursions, and review. Farmers Market Vendor Inspection Log keeps Farmers Market Vendor Operation exceptions visible until the market vendor coordinator handoff.",
+  "use_case": "Use Farmers Market Vendor Inspection Log at market, booth, vehicle, storage cooler, display, and customer service area. Document vendor, market date, product, lot, booth, cold-holding control, sale, and closeout identity before Farmers Market Vendor Operation begins. Compare vendor, market date, product, lot, booth, cold-holding control, sale, and closeout findings with stated Farmers Market Vendor Operation criteria; route unresolved Farmers Market Vendor Operation issues to market operations or food-safety reviewer. For Farmers Market Vendor Inspection Log, confirm requirements for Farmers Market Vendor Operation. Ask market operations or food-safety reviewer to review Farmers Market Vendor Operation conditions beyond the market vendor coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Recorder, location, and log identity",
+      "guidance": "For Farmers Market Vendor Operation, identify responsible parties, market, booth, vehicle, storage cooler, display, and customer service area, and the linked vendor, market date, product, lot, booth, cold-holding control, sale, and closeout source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Log period",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Farmers Market Vendor Operation identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Vendor, market, booth, and date",
+              "units": 1.7222222222222223
+            },
+            {
+              "key": "identity_2",
+              "label": "Product, lot, source, quantity, and price",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Permit, insurance, contact, and payment identifiers",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Log exception entries and corrections",
+      "guidance": "Capture Farmers Market Vendor Operation facts for vendor, market date, product, lot, booth, cold-holding control, sale, and closeout; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Farmers Market Vendor Operation monitored controls",
+          "items": [
+            "Approved product and source",
+            "Transport and display condition",
+            "Temperature or protection where needed",
+            "Label, price, allergen, and customer information",
+            "Cash, electronic payment, and sales reconciliation",
+            "Unsold product, waste, complaint, and incident closeout"
+          ]
+        },
+        {
+          "key": "inspection_log",
+          "type": "table",
+          "label": "Repeated inspection entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "subject",
+              "label": "Vendor, booth, product, or sales interval",
+              "units": 1.05
+            },
+            {
+              "key": "observed",
+              "label": "Approval, temperature, trace, or balance",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Acceptable or exception",
+              "units": 0.9
+            },
+            {
+              "key": "action",
+              "label": "Correct, hold, refund, escalate, or none",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner or initials",
+              "units": 0.7
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Period outcome and next monitoring point",
+      "guidance": "Resolve open Farmers Market Vendor Operation log excursions; have market vendor coordinator record the period result, review owner, and next monitoring point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Excursions, missed checks, and retained evidence",
+          "items": [
+            "Vendor approval incomplete",
+            "Product source or lot unknown",
+            "Temperature or contamination concern",
+            "Complaint or unsold product lacks disposition",
+            "Vendor approval and product list",
+            "Lot and source trace",
+            "Temperature or display-control record",
+            "Sales, complaint, and unsold-product reconciliation"
+          ],
+          "guidance": "Pause Farmers Market Vendor Operation when vendor authority, product trace, display control, complaint, or product disposition remains unresolved. Retain the available Farmers Market Vendor Operation proof and route unresolved vendor, market date, product, lot, booth, cold-holding control, sale, and closeout scope to market vendor coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Period result and next review",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Log-period result",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Period complete and in control",
+                "Period complete with listed exception",
+                "Correction remains open",
+                "Review required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Log owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Market Vendor Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Market Operations Or Food-Safety Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

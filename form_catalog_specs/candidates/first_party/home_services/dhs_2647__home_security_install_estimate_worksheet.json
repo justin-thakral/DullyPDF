@@ -1,0 +1,363 @@
+{
+  "catalog_id": "home_services/dhs_2647__home_security_install_estimate_worksheet",
+  "description": "For home security install, this estimate worksheet records device placement, privacy preferences, power and connectivity, communication path, permits, testing, and user training. Its supporting evidence includes device serials, zone map, signal tests, camera views, network results, alarm events, and monitoring confirmation.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Install opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Install site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Install contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Install account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Install due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this home security install record to its evidence.",
+          "key": "record_routing",
+          "label": "Home Security Install Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Premises",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Panel",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Sensors",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Cameras",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture account, premises, zones, panel, sensors, cameras, network, monitoring plan, users, and emergency contacts for this home security install.",
+          "key": "core_identity",
+          "label": "Home Security Install Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify account, premises, zones, panel, sensors, cameras, network, monitoring plan, users, and emergency contacts for this home security install record.",
+      "key": "identity_1",
+      "title": "Account and Estimate Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Device placement",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Privacy preferences",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Power",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Connectivity",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Communication path",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Permits",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For home security install, record device placement, privacy preferences, power and connectivity, communication path, permits, testing, and user training.",
+          "key": "task_inputs",
+          "label": "Home Security Install Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Security Install Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State home security install outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Home Security Install Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Install work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Install owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate home security install items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Home Security Install Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not activate with unapproved surveillance areas, failed life-safety devices, exposed wiring, or incomplete monitoring data. Route unresolved home security install work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Home Security Install Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For home security install, capture device placement, privacy preferences, power and connectivity, communication path, permits, testing, and user training.",
+      "key": "task_2",
+      "title": "Quantities, Rates, and Assumptions"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Install when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Install measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Install evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Install result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For home security install, record device serials, zone map, signal tests, camera views, network results, alarm events, and monitoring confirmation.",
+          "key": "evidence_register",
+          "label": "Home Security Install Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Device serials",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Zone map",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Signal tests",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Camera views",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Network results",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Alarm events",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every home security install evidence source.",
+          "key": "evidence_sources",
+          "label": "Home Security Install Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Security Install Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State home security install limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Home Security Install Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support home security install findings with device serials, zone map, signal tests, camera views, network results, alarm events, and monitoring confirmation.",
+      "key": "observation_3",
+      "title": "Pricing Evidence and Options"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate worksheet disposition",
+                "Approve estimate",
+                "Approve with option",
+                "Revise basis",
+                "Decline to price"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Install decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Install service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Install authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Install review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate home security install disposition.",
+          "key": "disposition",
+          "label": "Home Security Install Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Security Install Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the home security install decision to evidence.",
+          "height": 46,
+          "key": "decision_basis",
+          "label": "Home Security Install Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Install crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Install service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Home Security Install Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the home security install next step from device serials, zone map, signal tests, camera views, network results, alarm events, and monitoring confirmation.",
+      "key": "decision_4",
+      "title": "Pricing Outcome"
+    }
+  ],
+  "slug": "home-security-install-estimate-worksheet",
+  "source_filename": "dhs_2647__home_security_install_estimate_worksheet.pdf",
+  "source_section": "home_services",
+  "subtitle": "Home Security Install Estimate Worksheet: home security system installation and activation using account, device placement, and device serials.",
+  "title": "Home Security Install Estimate Worksheet",
+  "use_case": "Use the estimate worksheet during home security system installation and activation when the home security install record must identify account, premises, zones, panel, sensors, cameras, network, monitoring plan, users, and emergency contacts. Complete the applicable handoff for zone verification, monitoring activation, user credential handoff, training acknowledgment, privacy settings, and support plan."
+}

@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_116__driver_vehicle_inspection_checklist",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_116__driver_vehicle_inspection_checklist.pdf",
+  "slug": "driver-vehicle-inspection-checklist",
+  "title": "Driver Vehicle Inspection Checklist",
+  "subtitle": "Driver Vehicle Inspection: documents findings, limits, and disposition.",
+  "description": "Driver Vehicle Inspection Checklist covers power unit, trailer, safety equipment, visible defect, driver report, and release status. The fleet dispatch coordinator records Driver Vehicle Inspection criteria, findings, restrictions, and follow-up. Driver Vehicle Inspection Checklist keeps Driver Vehicle Inspection exceptions visible until the fleet dispatch coordinator handoff.",
+  "use_case": "Use Driver Vehicle Inspection Checklist at yard, roadside safe area, vehicle cab, exterior walkaround, and trailer. Document power unit, trailer, safety equipment, visible defect, driver report, and release status identity before Driver Vehicle Inspection begins. Compare power unit, trailer, safety equipment, visible defect, driver report, and release status findings with stated Driver Vehicle Inspection criteria; route unresolved Driver Vehicle Inspection issues to qualified vehicle maintenance reviewer. For Driver Vehicle Inspection Checklist, confirm requirements for Driver Vehicle Inspection. Ask qualified vehicle maintenance reviewer to review Driver Vehicle Inspection conditions beyond the fleet dispatch coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspection scope and subject identity",
+      "guidance": "For Driver Vehicle Inspection, identify responsible parties, yard, roadside safe area, vehicle cab, exterior walkaround, and trailer, and the linked power unit, trailer, safety equipment, visible defect, driver report, and release status source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Driver / fleet",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Inspection area",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Driver Vehicle Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Inspection, route, driver, and date",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle, unit, plate, odometer, and trailer",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Prior defect, repair, and release references",
+              "units": 2.4444444444444446
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist points, conditions, and actions",
+      "guidance": "Capture Driver Vehicle Inspection facts for power unit, trailer, safety equipment, visible defect, driver report, and release status; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Driver Vehicle Inspection checks",
+          "items": [
+            "Tires, wheels, fasteners, and visible inflation",
+            "Lights, reflectors, mirrors, glazing, and wipers",
+            "Brakes, steering, suspension, coupling, and visible leaks",
+            "Horn, warning devices, emergency equipment, and restraints",
+            "Load securement, doors, landing gear, and trailer condition",
+            "Defect classification, restriction, repair, and release"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection exception, restriction, and reinspection",
+      "guidance": "List each unresolved Driver Vehicle Inspection finding with its restriction, correction owner, and reinspection trigger. Fleet Dispatch Coordinator records reviewer disposition.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Safety-critical defect",
+            "Inspection area unsafe",
+            "Repair status cannot be verified",
+            "Vehicle released without required authority",
+            "Vehicle and defect photographs",
+            "Driver inspection and odometer record",
+            "Repair or maintenance reference",
+            "Qualified release or out-of-service evidence"
+          ],
+          "guidance": "Pause Driver Vehicle Inspection when a safety-critical defect, inspection limitation, repair verification, or qualified release remains unresolved. Retain the available Driver Vehicle Inspection proof and route unresolved power unit, trailer, safety equipment, visible defect, driver report, and release status scope to fleet dispatch coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Fleet Dispatch Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Vehicle Maintenance Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

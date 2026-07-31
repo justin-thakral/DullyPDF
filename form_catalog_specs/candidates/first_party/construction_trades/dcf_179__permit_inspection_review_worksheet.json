@@ -1,0 +1,353 @@
+{
+  "catalog_id": "construction_trades/dcf_179__permit_inspection_review_worksheet",
+  "description": "For permit inspection, this review worksheet records prerequisite completion, accessibility, test readiness, correction history, required documents, and representative attendance. Its supporting evidence includes approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Permit opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Permit site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Permit contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Permit superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Permit due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this permit inspection record to its evidence.",
+          "key": "record_routing",
+          "label": "Permit Inspection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Permit number",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Authority",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Inspection type",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Approved plans",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window for this permit inspection.",
+          "key": "core_identity",
+          "label": "Permit Inspection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window for this permit inspection record.",
+      "key": "identity_1",
+      "title": "Package Reference and Reviewer"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Prerequisite completion",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Accessibility",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Test readiness",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Correction history",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For permit inspection, record prerequisite completion, accessibility, test readiness, correction history, required documents, and representative attendance.",
+          "key": "task_inputs",
+          "label": "Permit Inspection Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Permit decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Permit supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Permit review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified permit inspection facts from judgment.",
+          "key": "review_criteria",
+          "label": "Permit Inspection Review Criteria and Support",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Permit Inspection Analysis and Alternatives",
+              "multiline": true
+            }
+          ],
+          "guidance": "Explain permit inspection alternatives and retained uncertainty.",
+          "height": 46,
+          "key": "analysis",
+          "label": "Permit Inspection Analysis and Alternatives",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not conceal or energize work before required inspection approval or documented authority direction. Route unresolved permit inspection work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Permit Inspection Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For permit inspection, capture prerequisite completion, accessibility, test readiness, correction history, required documents, and representative attendance.",
+      "key": "task_2",
+      "title": "Review Scope and Requirements"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Permit when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Permit measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Permit evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Permit result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For permit inspection, record approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+          "key": "evidence_register",
+          "label": "Permit Inspection Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Approved-plan set",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Permit card",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Test results",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Product approvals",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Inspector comments",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every permit inspection evidence source.",
+          "key": "evidence_sources",
+          "label": "Permit Inspection Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Permit Inspection Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State permit inspection limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Permit Inspection Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support permit inspection findings with approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+      "key": "observation_3",
+      "title": "Evidence Comparison"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select review worksheet disposition",
+                "Recommend acceptance",
+                "Recommend conditions",
+                "Further review",
+                "Do not accept"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Permit decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Permit approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Permit authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Permit review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate permit inspection disposition.",
+          "key": "disposition",
+          "label": "Permit Inspection Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Permit Inspection Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the permit inspection decision to evidence.",
+          "height": 44,
+          "key": "decision_basis",
+          "label": "Permit Inspection Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Permit coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Permit manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Permit decision recipient and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Permit Inspection Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the permit inspection next step from approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+      "key": "decision_4",
+      "title": "Recommended Disposition"
+    }
+  ],
+  "slug": "permit-inspection-review-worksheet",
+  "source_filename": "dcf_179__permit_inspection_review_worksheet.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Permit Inspection Review Worksheet: permit inspection readiness and result control using permit number, prerequisite completion, and approved-plan set.",
+  "title": "Permit Inspection Review Worksheet",
+  "use_case": "Use the review worksheet during permit inspection readiness and result control when the permit inspection record must identify permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window. Complete the applicable handoff for inspection result, correction assignment, reinspection date, approval evidence, and downstream release."
+}

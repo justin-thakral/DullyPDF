@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_136__appliance_repair_checklist",
+  "source_section": "field_service",
+  "source_filename": "dhs_136__appliance_repair_checklist.pdf",
+  "slug": "appliance-repair-checklist",
+  "title": "Appliance Repair Checklist",
+  "subtitle": "Residential Appliance Repair: documents findings, limits, and disposition.",
+  "description": "Appliance Repair Checklist covers household appliance, connected utility, control, enclosure, and surrounding finish. The home appliance service coordinator records Residential Appliance Repair criteria, findings, restrictions, and follow-up. Appliance Repair Checklist keeps Residential Appliance Repair exceptions visible until the home appliance service coordinator handoff.",
+  "use_case": "Use Appliance Repair Checklist at residence, room, appliance position, utility connection, and protected work area. Document household appliance, connected utility, control, enclosure, and surrounding finish identity before Residential Appliance Repair begins. Compare household appliance, connected utility, control, enclosure, and surrounding finish findings with stated Residential Appliance Repair criteria; route unresolved Residential Appliance Repair issues to qualified appliance technician. For Appliance Repair Checklist, confirm requirements for Residential Appliance Repair. Ask qualified appliance technician to review Residential Appliance Repair conditions beyond the home appliance service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspector, location, and subject identity",
+      "guidance": "For Residential Appliance Repair, identify responsible parties, residence, room, appliance position, utility connection, and protected work area, and the linked household appliance, connected utility, control, enclosure, and surrounding finish source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Appliance Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and service call",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Appliance type, make, model, and serial",
+              "units": 2.1666666666666665
+            },
+            {
+              "key": "identity_3",
+              "label": "Symptom, fault code, cycle, load, and prior repair history",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Residential Appliance Repair facts for household appliance, connected utility, control, enclosure, and surrounding finish; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Appliance Repair inspection checks",
+          "items": [
+            "Power, gas, water, drain, and vent connection",
+            "Door, seal, latch, interlock, and enclosure",
+            "Motor, pump, fan, heater, sensor, and control behavior",
+            "Leak, drainage, airflow, temperature, and cycle result",
+            "Floor, cabinet, wall, and surrounding property condition",
+            "Representative operating cycle after repair"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Use observed Residential Appliance Repair evidence to state disposition. Keep limits visible and give Home Appliance Service Coordinator both correction and repeat-check responsibility.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Gas, electrical, water, refrigerant, or combustion concern",
+            "Failed interlock or protective device",
+            "Recall or incompatible-part concern",
+            "Property damage or test condition outside scope",
+            "Model and serial label image",
+            "Fault code and diagnostic readings",
+            "Part compatibility and repair trace",
+            "Utility restoration and customer-observed test"
+          ],
+          "guidance": "Pause Residential Appliance Repair when a utility hazard, protective-device failure, part concern, property risk, or unsafe test remains. Retain the available Residential Appliance Repair proof and route unresolved household appliance, connected utility, control, enclosure, and surrounding finish scope to home appliance service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Home Appliance Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Appliance Technician",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

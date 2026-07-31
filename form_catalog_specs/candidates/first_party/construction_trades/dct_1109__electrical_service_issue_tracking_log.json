@@ -1,0 +1,295 @@
+{
+  "catalog_id": "construction_trades/dct_1109__electrical_service_issue_tracking_log",
+  "description": "For electrical service, this issue tracking log records reported condition, troubleshooting boundary, isolation plan, parts, outage window, permits, and testing. Its supporting evidence includes meter readings, one-line reference, fault observations, thermal image, device condition, and test results.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Electrical opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Electrical site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Electrical contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Electrical superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Electrical due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this electrical service record to its evidence.",
+          "key": "record_routing",
+          "label": "Electrical Service Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Panel",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Circuit",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Voltage",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Load",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Disconnect",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Equipment served",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture panel, circuit, voltage, load, disconnect, equipment served, labels, and occupancy impact for this electrical service.",
+          "key": "core_identity",
+          "label": "Electrical Service Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify panel, circuit, voltage, load, disconnect, equipment served, labels, and occupancy impact for this electrical service record.",
+      "key": "identity_1",
+      "title": "Issue Register Coverage"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Electrical when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Electrical measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Electrical evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Electrical result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For electrical service, record meter readings, one-line reference, fault observations, thermal image, device condition, and test results.",
+          "key": "evidence_register",
+          "label": "Electrical Service Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Meter readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "One-line reference",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Fault observations",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Thermal image",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Device condition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every electrical service evidence source.",
+          "key": "evidence_sources",
+          "label": "Electrical Service Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Electrical dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Electrical owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Electrical escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep electrical service items open through verification.",
+          "key": "open_item_register",
+          "label": "Electrical Service Open Items and Next Actions",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "De-energize and escalate exposed live parts, arc-flash concerns, damaged service conductors, or work beyond qualification. Route unresolved electrical service work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Electrical Service Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support electrical service findings with meter readings, one-line reference, fault observations, thermal image, device condition, and test results.",
+      "key": "observation_2",
+      "title": "Investigation Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "De-energize and escalate exposed live parts, arc-flash concerns, damaged service conductors, or work beyond qualification. Do not release affected electrical service work.",
+          "key": "stop_boundary",
+          "label": "Electrical Service Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Electrical exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Electrical correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Electrical escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close electrical service exceptions with verification.",
+          "key": "exception_register",
+          "label": "Electrical Service Exception and Corrective Action",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Electrical notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Electrical notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Electrical interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Electrical review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Electrical release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep electrical service controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Electrical Service Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Electrical Service Resolution Verification Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For electrical service, compare the retest with meter readings, one-line reference, fault observations, thermal image, device condition, and test results; preserve each electrical service limitation and name its electrical service restart or closure authority.",
+          "height": 55,
+          "key": "resolution_verification_notes",
+          "label": "Electrical Service Resolution Verification Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "De-energize and escalate exposed live parts, arc-flash concerns, damaged service conductors, or work beyond qualification. Control and route each electrical service exception.",
+      "key": "exception_3",
+      "title": "Controls, Corrections, and Escalation"
+    }
+  ],
+  "slug": "electrical-service-issue-tracking-log",
+  "source_filename": "dct_1109__electrical_service_issue_tracking_log.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Electrical Service Issue Tracking Log: electrical service diagnosis and controlled repair using panel, reported condition, and meter readings.",
+  "title": "Electrical Service Issue Tracking Log",
+  "use_case": "Use the issue tracking log during electrical service diagnosis and controlled repair when the electrical service record must identify panel, circuit, voltage, load, disconnect, equipment served, labels, and occupancy impact. Complete the applicable handoff for functional test, label update, energized release, customer explanation, permit result, and service record."
+}

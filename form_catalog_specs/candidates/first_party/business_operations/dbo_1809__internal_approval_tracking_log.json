@@ -1,0 +1,366 @@
+{
+  "catalog_id": "business_operations/dbo_1809__internal_approval_tracking_log",
+  "description": "For internal approval, this tracking log records decision requested, authority basis, options, recommendation, impact, conditions, required reviewers, and expiry. Its supporting evidence includes supporting analysis, policy reference, budget proof, reviewer comments, conflict disclosure, and prior decisions.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Approval opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Approval site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Approval contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Approval process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Approval due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this internal approval record to its evidence.",
+          "key": "record_routing",
+          "label": "Internal Approval Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Request type",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Business unit",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Requester",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Approval owner",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Value",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Effective date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture request type, business unit, requester, responsible owner, value, effective date, related records, and confidentiality for this internal approval.",
+          "key": "core_identity",
+          "label": "Internal Approval Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify request type, business unit, requester, responsible owner, value, effective date, related records, and confidentiality for this internal approval record.",
+      "key": "identity_1",
+      "title": "Portfolio Coverage and Owners"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Decision requested",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Options",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Recommendation",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Impact",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Conditions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For internal approval, record decision requested, authority basis, options, recommendation, impact, conditions, required reviewers, and expiry.",
+          "key": "task_inputs",
+          "label": "Internal Approval Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.35
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact or event",
+              "units": 2.6
+            },
+            {
+              "key": "action",
+              "label": "Approval action lead",
+              "units": 2.0
+            },
+            {
+              "key": "due",
+              "label": "Due or next review",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.3
+            }
+          ],
+          "guidance": "Keep internal approval chronology immutable.",
+          "key": "working_log",
+          "label": "Internal Approval Dated Activity Log",
+          "rows": 7,
+          "type": "table"
+        },
+        {
+          "guidance": "Route outside-authority, conflicted, incomplete, regulated, privacy-sensitive, or precedent-setting decisions for review. Route unresolved internal approval work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Internal Approval Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For internal approval, capture decision requested, authority basis, options, recommendation, impact, conditions, required reviewers, and expiry.",
+      "key": "task_2",
+      "title": "Tracked Commitments"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Approval when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Approval measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Approval evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Approval result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For internal approval, record supporting analysis, policy reference, budget proof, reviewer comments, conflict disclosure, and prior decisions.",
+          "key": "evidence_register",
+          "label": "Internal Approval Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Supporting analysis",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Policy reference",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Budget proof",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Reviewer comments",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Conflict disclosure",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every internal approval evidence source.",
+          "key": "evidence_sources",
+          "label": "Internal Approval Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Approval dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Approval owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Approval escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep internal approval items open through verification.",
+          "key": "open_item_register",
+          "label": "Internal Approval Open Items and Next Actions",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Support internal approval findings with supporting analysis, policy reference, budget proof, reviewer comments, conflict disclosure, and prior decisions.",
+      "key": "observation_3",
+      "title": "Milestone Evidence and Progress"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select tracking log disposition",
+                "Advance",
+                "Unblock",
+                "Escalate",
+                "Suspend",
+                "Reject",
+                "Close"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Approval decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Approval approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Approval authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Approval review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate internal approval disposition.",
+          "key": "disposition",
+          "label": "Internal Approval Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Internal Approval Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the internal approval decision to evidence.",
+          "height": 46,
+          "key": "decision_basis",
+          "label": "Internal Approval Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Approval record owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Approval process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Internal Approval Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the internal approval next step from supporting analysis, policy reference, budget proof, reviewer comments, conflict disclosure, and prior decisions.",
+      "key": "decision_4",
+      "title": "Status and Routing"
+    }
+  ],
+  "slug": "internal-approval-tracking-log",
+  "source_filename": "dbo_1809__internal_approval_tracking_log.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Internal Approval Tracking Log: controlled internal decision and approval record using request type, decision requested, and supporting analysis.",
+  "title": "Internal Approval Tracking Log",
+  "use_case": "Use the tracking log during controlled internal decision and approval record when the internal approval record must identify request type, business unit, requester, responsible owner, value, effective date, related records, and confidentiality. Complete the applicable handoff for approval or rejection, conditions, effective period, implementation handoff, notification, and retained decision record."
+}

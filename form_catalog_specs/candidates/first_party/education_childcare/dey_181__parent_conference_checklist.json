@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_181__parent_conference_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dey_181__parent_conference_checklist.pdf",
+  "slug": "dey-181-parent-conference-checklist-c33ad9f2",
+  "title": "Parent Conference Checklist",
+  "subtitle": "Capture conference agenda, student work, attendance context, and family question; confirm agreed action and progress follow-up.",
+  "description": "Parent Conference records conference agenda, student work, attendance context, family question, agreed action, and progress follow-up. Parent Conference evidence stays linked.",
+  "use_case": "Use this parent conference stage-gated verification when staff must document conference agenda and student work. Reconcile attendance context, family question, agreed action, and progress follow-up before the parent conference handoff. Use the conference invitation, work samples, gradebook snapshot, attendance record, teacher observations, family questions, action notes, and progress-review calendar. For parent conference review use, cite source. Match the parent conference family or learner wording. Preserve the parent conference amendment history and supersession date. Link the parent conference source version and meeting notes. Record the parent conference learner response and accessibility support. Close the parent conference recipient list. Verify parent conference documentary provenance. Resolve parent conference amendments, superseded wording, and archival distribution for parent conference. Ask the assigned parent conference reviewer to confirm conference agenda against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Parent Conference contact and reference",
+      "guidance": "Prepare agenda, student work samples, attendance and classroom context, family questions, agreed actions, communication preferences, and progress checkpoints.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Parent Conference people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "conference_agenda",
+              "label": "Conference agenda",
+              "units": 1.1
+            },
+            {
+              "key": "student_work",
+              "label": "Student work",
+              "units": 1.2
+            },
+            {
+              "key": "attendance_context",
+              "label": "Attendance context",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Parent Conference task details",
+          "fields": [
+            {
+              "key": "family_question",
+              "label": "Family question",
+              "units": 1.15
+            },
+            {
+              "key": "agreed_action",
+              "label": "Agreed action",
+              "units": 1.0
+            },
+            {
+              "key": "progress_follow_up",
+              "label": "Progress follow-up",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Parent Conference exception review: checks and corrections",
+      "guidance": "Check current parent conference facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Parent Conference required checks",
+          "items": [
+            "Conference agenda is identified for this record",
+            "Student work matches the current request or source",
+            "Attendance context is ready for point-of-use staff",
+            "Family question limits or questions are resolved",
+            "Agreed action is communicated to the responsible person",
+            "Progress follow-up is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Parent Conference failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Parent Conference readiness",
+      "guidance": "Hold parent conference readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Parent Conference checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Parent Conference reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_teacher_or_program_coordinator_and_date",
+              "label": "Responsible teacher or program coordinator and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Parent Conference receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

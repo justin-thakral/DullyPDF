@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_142__route_exception_log_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_142__route_exception_log_form.pdf",
+  "slug": "route-exception-log-form",
+  "title": "Route Exception Log Form",
+  "subtitle": "Route Exception: preserves changes and next triggers.",
+  "description": "Route Exception Log Form covers route event, vehicle, stop, shipment, delay, safety condition, and recovery plan. The dispatch exception coordinator records Route Exception events, owners, exceptions, and next triggers. Route Exception Log Form keeps Route Exception exceptions visible until the dispatch exception coordinator handoff.",
+  "use_case": "Use Route Exception Log Form at current safe location, planned route, affected stop, alternate route, and return point. Document route event, vehicle, stop, shipment, delay, safety condition, and recovery plan identity before Route Exception begins. Compare route event, vehicle, stop, shipment, delay, safety condition, and recovery plan findings with stated Route Exception criteria; route unresolved Route Exception issues to transport operations reviewer. For Route Exception Log Form, confirm requirements for Route Exception. Ask transport operations reviewer to review Route Exception conditions beyond the dispatch exception coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Route Exception, identify responsible parties, current safe location, planned route, affected stop, alternate route, and return point, and the linked route event, vehicle, stop, shipment, delay, safety condition, and recovery plan source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Driver / dispatch",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Route / affected stop",
+              "units": 1.1666666666666667
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Route Exception identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Route, trip, driver, and date",
+              "units": 1.6111111111111112
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle, trailer, shipment, and stop",
+              "units": 2.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Event time, location, and service commitment",
+              "units": 2.4444444444444446
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status events and next-control history",
+      "guidance": "Capture Route Exception facts for route event, vehicle, stop, shipment, delay, safety condition, and recovery plan; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Route Exception tracked controls",
+          "items": [
+            "Exception type and immediate safety state",
+            "Vehicle, cargo, driver, road, weather, and customer impact",
+            "Last completed and next affected stop",
+            "Delay estimate and duty-time implication",
+            "Reroute, rescue, transfer, return, or wait option",
+            "Customer notice and recovery completion"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Keep the Route Exception chronology intact through handoff. State the unresolved exception, the owner selected by Dispatch Exception Coordinator, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Unsafe location or continued movement",
+            "Driver duty or fitness concern",
+            "Cargo custody or condition compromised",
+            "Recovery changes commitment without authority",
+            "Time-and-location event record",
+            "Vehicle or cargo condition images",
+            "Dispatch and customer communication",
+            "Authorized recovery and route reconciliation"
+          ],
+          "guidance": "Pause Route Exception when safe location, driver fitness, vehicle condition, cargo custody, or authorized recovery remains unresolved. Retain the available Route Exception proof and route unresolved route event, vehicle, stop, shipment, delay, safety condition, and recovery plan scope to dispatch exception coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Dispatch Exception Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Transport Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1439__classroom_volunteer_tracking_log",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1439__classroom_volunteer_tracking_log.pdf",
+  "slug": "classroom-volunteer-tracking-log",
+  "title": "Classroom Volunteer Tracking Log",
+  "subtitle": "Capture class assignment, approved task, student boundary, and screening status; confirm supervision and badge return.",
+  "description": "Classroom Volunteer records class assignment, approved task, student boundary, screening status, supervision, and badge return. Classroom Volunteer evidence stays linked.",
+  "use_case": "Use this classroom volunteer time-ordered tracking when staff must document class assignment and approved task. Reconcile student boundary, screening status, supervision, and badge return before the classroom volunteer handoff. Use the screening clearance reference, classroom calendar, task brief, confidentiality acknowledgment, supervising-teacher assignment, badge log, and departure record. Ask the assigned classroom volunteer reviewer to confirm class assignment against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Classroom Volunteer starting details review",
+      "guidance": "Define classroom assignment, approved tasks, student-contact boundaries, screening status, supervising teacher, badge custody, and departure.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Classroom Volunteer people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "class_assignment",
+              "label": "Class assignment",
+              "units": 1.2
+            },
+            {
+              "key": "approved_task",
+              "label": "Approved task",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Classroom Volunteer task details",
+          "fields": [
+            {
+              "key": "student_boundary",
+              "label": "Student boundary",
+              "units": 1.15
+            },
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "supervision",
+              "label": "Supervision",
+              "units": 1.25
+            },
+            {
+              "key": "badge_return",
+              "label": "Badge return",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Classroom Volunteer exception review and event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Classroom Volunteer events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "class_assignment",
+              "label": "Class assignment",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "supervision",
+              "label": "Supervision",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Classroom Volunteer correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 44
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Classroom Volunteer exception review and current state",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Classroom Volunteer status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Classroom Volunteer open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Classroom Volunteer log receipt",
+          "fields": [
+            {
+              "key": "school_or_program_log_custodian_and_date",
+              "label": "School or program log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

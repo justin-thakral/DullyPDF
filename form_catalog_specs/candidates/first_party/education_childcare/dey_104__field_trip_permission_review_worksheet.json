@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_104__field_trip_permission_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_104__field_trip_permission_review_worksheet.pdf",
+  "slug": "field-trip-permission-review-worksheet",
+  "title": "Field Trip Permission Review Worksheet",
+  "subtitle": "Plan the trip, document transport and supervision, and route the guardian permission decision.",
+  "description": "Captures the student and guardian, trip schedule, meeting and pickup locations, transportation, activities, supervision, emergency contact, support needs, permission scope, and return handoff.",
+  "use_case": "Use when school or program staff request guardian permission for a specific trip. A material change to the itinerary, transport, supervision, or return plan requires renewed communication and review. For planning or review use, cite the current itinerary, guardian wording, support plan route, communicated changes, and supersession date. Preserve the permission source, effective date, guardian question, accessibility support, amendment history, distribution list, and replaced version.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Field Trip Permission contact and reference",
+      "guidance": "Name the student, guardian, destination, trip date, itinerary, transportation legs, chaperone group, emergency contact, permission choice, and return plan.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Field Trip Permission people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_team",
+              "label": "Grade or team",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "destination",
+              "label": "Destination",
+              "units": 1.1
+            },
+            {
+              "key": "itinerary",
+              "label": "Itinerary",
+              "units": 1.2
+            },
+            {
+              "key": "transport_leg",
+              "label": "Transport leg",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Field Trip Permission task details",
+          "fields": [
+            {
+              "key": "headcount",
+              "label": "Headcount",
+              "units": 1.15
+            },
+            {
+              "key": "chaperone_group",
+              "label": "Chaperone group",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_return",
+              "label": "Authorized return",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "Field Trip Permission discussion",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "Field Trip Permission strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_destination",
+              "label": "Strength, progress, or successful support related to destination"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Field Trip Permission questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_transport_leg",
+              "label": "Concern, missing context, or question about transport leg"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "Field Trip Permission participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_headcount",
+              "label": "Priority, preference, or proposed support for headcount"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "Field Trip Permission decision and action plan",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "Field Trip Permission agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "Field Trip Permission follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "Field Trip Permission review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

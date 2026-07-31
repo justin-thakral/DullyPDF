@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_174__student_absence_note_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_174__student_absence_note_review_worksheet.pdf",
+  "slug": "student-absence-note-review-worksheet",
+  "title": "Student Absence Note Review Worksheet",
+  "subtitle": "Document reported absence dates, attendance coding, missed work, and the return or correction route.",
+  "description": "Keeps the student, guardian source, absence period, attendance code, missed-work route, return condition, and any record correction in one attendance-office record.",
+  "use_case": "Use when a family reports a student absence or asks the school to correct the attendance record. Do not request medical detail that the school does not need. Attendance coding and required documentation follow the school's applicable policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Student Absence Note meeting details review",
+      "guidance": "Capture absence start and end dates, guardian source, attendance code, missed-work delivery, return condition, documentation status, and correction request.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Student Absence Note people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "absence_dates",
+              "label": "Absence dates",
+              "units": 1.1
+            },
+            {
+              "key": "guardian_source",
+              "label": "Guardian source",
+              "units": 1.2
+            },
+            {
+              "key": "attendance_code",
+              "label": "Attendance code",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Student Absence Note task details",
+          "fields": [
+            {
+              "key": "missed_work_route",
+              "label": "Missed-work route",
+              "units": 1.15
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.0
+            },
+            {
+              "key": "record_correction",
+              "label": "Record correction",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "Student Absence Note discussion",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "Student Absence Note strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_absence_dates",
+              "label": "Strength, progress, or successful support related to absence dates"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Student Absence Note questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_attendance_code",
+              "label": "Concern, missing context, or question about attendance code"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "Student Absence Note participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_missed_work_route",
+              "label": "Priority, preference, or proposed support for missed-work route"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "Student Absence Note action plan and handoff",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "Student Absence Note agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "Student Absence Note follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "Student Absence Note review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2618__guest_incident_authorization_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2618__guest_incident_authorization_form.pdf",
+  "slug": "guest-incident-authorization-form",
+  "title": "Guest Incident Authorization Form",
+  "subtitle": "Capture guest account, scene condition, witness, and immediate response; confirm evidence custody and follow-up.",
+  "description": "Guest Incident records guest account, scene condition, witness, immediate response, evidence custody, and follow-up. Guest Incident evidence stays linked.",
+  "use_case": "Use this guest incident authorization decision when staff must document guest account and scene condition. Reconcile witness, immediate response, evidence custody, and follow-up before the guest incident handoff. Use the guest statement, witness contacts, scene photographs, camera-footage custody reference, first-response log, security report, property action, claim route, and follow-up call. Ask the assigned guest incident reviewer to confirm guest account against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Guest Incident contact and reference",
+      "guidance": "Preserve guest account and exact time, scene condition, witnesses, immediate care or security response, photographs, evidence custody, property action, and follow-up contact.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Guest Incident people and reference",
+          "fields": [
+            {
+              "key": "guest_full_name",
+              "label": "Guest full name",
+              "units": 1.15
+            },
+            {
+              "key": "guest_contact",
+              "label": "Guest contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_service_area",
+              "label": "Property, venue, or service area",
+              "units": 1.25
+            },
+            {
+              "key": "event_or_service_date",
+              "label": "Event or service date",
+              "units": 1.1
+            },
+            {
+              "key": "guest_account",
+              "label": "Guest account",
+              "units": 1.2
+            },
+            {
+              "key": "scene_condition",
+              "label": "Scene condition",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Guest Incident task details",
+          "fields": [
+            {
+              "key": "witness",
+              "label": "Witness",
+              "units": 1.15
+            },
+            {
+              "key": "immediate_response",
+              "label": "Immediate response",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_custody",
+              "label": "Evidence custody",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Guest Incident decision and scope choices",
+      "guidance": "Decide each guest incident scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Guest Incident primary scope",
+          "fields": [
+            {
+              "key": "guest_account",
+              "label": "Guest account",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "scene_condition",
+              "label": "Scene condition",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "witness",
+              "label": "Witness",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Guest Incident additional scope",
+          "fields": [
+            {
+              "key": "immediate_response",
+              "label": "Immediate response",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "evidence_custody",
+              "label": "Evidence custody",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Guest Incident authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Guest Incident effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_service_recipient",
+              "label": "Authorized service recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            },
+            {
+              "key": "revocation_or_update_route",
+              "label": "Revocation or update route",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Guest Incident signer receipt and handoff",
+      "guidance": "Only recorded guest incident choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Guest Incident limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Guest Incident signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Guest Incident signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Guest Incident authorization boundary",
+          "guidance": "Named guest incident reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

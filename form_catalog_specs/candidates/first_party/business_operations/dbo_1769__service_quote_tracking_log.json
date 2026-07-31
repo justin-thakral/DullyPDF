@@ -1,0 +1,371 @@
+{
+  "catalog_id": "business_operations/dbo_1769__service_quote_tracking_log",
+  "description": "For service quote, this tracking log records deliverables, exclusions, responsibilities, service levels, implementation, recurring fees, pass-through costs, and options. Its supporting evidence includes discovery notes, cost model, rate card, supplier inputs, exception approvals, scope attachment, and version comparison.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Quote opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Quote site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Quote contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Quote process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Quote due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this service quote record to its evidence.",
+          "key": "record_routing",
+          "label": "Service Quote Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Prospect",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Service package",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Locations",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Volumes",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Delivery window",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Assumptions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture prospect, service package, locations, volumes, delivery window, assumptions, pricing inputs, and quote validity for this service quote.",
+          "key": "core_identity",
+          "label": "Service Quote Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify prospect, service package, locations, volumes, delivery window, assumptions, pricing inputs, and quote validity for this service quote record.",
+      "key": "identity_1",
+      "title": "Portfolio Coverage and Owners"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Deliverables",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Responsibilities",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Service levels",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Implementation",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Recurring fees",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For service quote, record deliverables, exclusions, responsibilities, service levels, implementation, recurring fees, pass-through costs, and options.",
+          "key": "task_inputs",
+          "label": "Service Quote Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.35
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact or event",
+              "units": 2.6
+            },
+            {
+              "key": "action",
+              "label": "Quote action lead",
+              "units": 2.0
+            },
+            {
+              "key": "due",
+              "label": "Due or next review",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.3
+            }
+          ],
+          "guidance": "Keep service quote chronology immutable.",
+          "key": "working_log",
+          "label": "Service Quote Dated Activity Log",
+          "rows": 7,
+          "type": "table"
+        },
+        {
+          "guidance": "Hold quotes with unsupported margin, unapproved terms, privacy or security commitments, or delivery promises beyond capacity. Route unresolved service quote work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Service Quote Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For service quote, capture deliverables, exclusions, responsibilities, service levels, implementation, recurring fees, pass-through costs, and options.",
+      "key": "task_2",
+      "title": "Tracked Commitments"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Quote when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Quote measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Quote evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Quote result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For service quote, record discovery notes, cost model, rate card, supplier inputs, exception approvals, scope attachment, and version comparison.",
+          "key": "evidence_register",
+          "label": "Service Quote Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Discovery notes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Cost model",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Rate card",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Supplier inputs",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Exception approvals",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Scope attachment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every service quote evidence source.",
+          "key": "evidence_sources",
+          "label": "Service Quote Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Quote dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Quote owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Quote escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep service quote items open through verification.",
+          "key": "open_item_register",
+          "label": "Service Quote Open Items and Next Actions",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Support service quote findings with discovery notes, cost model, rate card, supplier inputs, exception approvals, scope attachment, and version comparison.",
+      "key": "observation_3",
+      "title": "Milestone Evidence and Progress"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select tracking log disposition",
+                "Advance",
+                "Unblock",
+                "Escalate",
+                "Suspend",
+                "Reject",
+                "Close"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Quote decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Quote approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Quote authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Quote review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate service quote disposition.",
+          "key": "disposition",
+          "label": "Service Quote Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Service Quote Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the service quote decision to evidence.",
+          "height": 46,
+          "key": "decision_basis",
+          "label": "Service Quote Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Quote record owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Quote process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Service Quote Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the service quote next step from discovery notes, cost model, rate card, supplier inputs, exception approvals, scope attachment, and version comparison.",
+      "key": "decision_4",
+      "title": "Status and Routing"
+    }
+  ],
+  "slug": "service-quote-tracking-log",
+  "source_filename": "dbo_1769__service_quote_tracking_log.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Service Quote Tracking Log: business service quote development and approval using prospect, deliverables, and discovery notes.",
+  "title": "Service Quote Tracking Log",
+  "use_case": "Use the tracking log during business service quote development and approval when the service quote record must identify prospect, service package, locations, volumes, delivery window, assumptions, pricing inputs, and quote validity. Complete the applicable handoff for approved quote version, customer delivery, acceptance status, expiry follow-up, CRM update, and contract handoff."
+}

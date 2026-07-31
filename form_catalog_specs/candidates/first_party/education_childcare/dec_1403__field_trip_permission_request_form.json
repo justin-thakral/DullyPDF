@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1403__field_trip_permission_request_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1403__field_trip_permission_request_form.pdf",
+  "slug": "field-trip-permission-request-form",
+  "title": "Field Trip Permission Request Form",
+  "subtitle": "Plan the trip, document transport and supervision, and route the guardian permission decision.",
+  "description": "Captures the student and guardian, trip schedule, meeting and pickup locations, transportation, activities, supervision, emergency contact, support needs, permission scope, and return handoff.",
+  "use_case": "Use when school or program staff request guardian permission for a specific trip. A material change to the itinerary, transport, supervision, or return plan requires renewed communication and review. For day-of-trip use, reconcile the live roster, departure and return schedule, transport handoffs, and authorized return. Preserve the vehicle or bus assignment, driver contact, boarding count, destination arrival, return transfer, and any in-flight trip-plan change.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "people_and_details",
+      "title": "Student, guardian, and trip details",
+      "guidance": "Identify field trip permission people, dates, and routing.",
+      "blocks": [
+        {
+          "key": "required_details_1",
+          "type": "fields",
+          "label": "Student, guardian, and emergency contact",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "emergency_contact_name_and_phone",
+              "label": "Emergency contact name and phone",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "required_details_2",
+          "type": "fields",
+          "label": "Trip date, permission, and destination",
+          "fields": [
+            {
+              "key": "trip_date",
+              "label": "Trip date",
+              "units": 1.15
+            },
+            {
+              "key": "departure_time",
+              "label": "Departure time",
+              "units": 1.0
+            },
+            {
+              "key": "expected_return_time",
+              "label": "Expected return time",
+              "units": 1.25
+            },
+            {
+              "key": "meeting_or_pickup_location",
+              "label": "Meeting or pickup location",
+              "units": 1.1
+            },
+            {
+              "key": "transportation_method_or_provider",
+              "label": "Transportation method or provider",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "required_details_3",
+          "type": "fields",
+          "label": "Transport, headcount, and authorized return",
+          "fields": [
+            {
+              "key": "planned_activity_and_supervision",
+              "label": "Planned activity and supervision",
+              "units": 1.15
+            },
+            {
+              "key": "support_or_accommodation_route",
+              "label": "Support or accommodation route",
+              "units": 1.0
+            },
+            {
+              "key": "permission_choice",
+              "label": "Permission choice",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Permission granted",
+                "Permission granted with limits",
+                "More information needed",
+                "Permission declined"
+              ]
+            },
+            {
+              "key": "destination",
+              "label": "Destination",
+              "units": 1.1
+            },
+            {
+              "key": "itinerary",
+              "label": "Itinerary",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "required_details_4",
+          "type": "fields",
+          "label": "Roster source and authorized return",
+          "fields": [
+            {
+              "key": "transport_leg",
+              "label": "Transport leg",
+              "units": 1.15
+            },
+            {
+              "key": "headcount",
+              "label": "Headcount",
+              "units": 1.0
+            },
+            {
+              "key": "chaperone_group",
+              "label": "Chaperone group",
+              "units": 1.25
+            },
+            {
+              "key": "authorized_return",
+              "label": "Authorized return",
+              "units": 1.1
+            },
+            {
+              "key": "live_roster_or_queue_source",
+              "label": "Live roster or queue source",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_workflow",
+      "title": "Permission scope, transport, and supervision",
+      "guidance": "Record the requested trip plan, support needs, readiness checks, and decision status.",
+      "blocks": [
+        {
+          "key": "task_controls",
+          "type": "fields",
+          "label": "Trip request timing and ownership",
+          "fields": [
+            {
+              "key": "requesting_teacher_or_trip_lead",
+              "label": "Requesting teacher or trip lead",
+              "units": 1.15
+            },
+            {
+              "key": "school_or_program",
+              "label": "School or program",
+              "units": 1.0
+            },
+            {
+              "key": "departure_date_and_time",
+              "label": "Departure date and time",
+              "units": 1.25
+            },
+            {
+              "key": "expected_return_date_and_time",
+              "label": "Expected return date and time",
+              "units": 1.1
+            },
+            {
+              "key": "meeting_or_pickup_location",
+              "label": "Meeting or pickup location",
+              "units": 1.2
+            },
+            {
+              "key": "decision_due_date",
+              "label": "Decision due date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "review_notes",
+          "type": "textarea",
+          "label": "Trip questions, limits, and next step",
+          "fields": [
+            {
+              "key": "source_facts_limitation_decision_and_next_step",
+              "label": "Source facts, limitation, decision, and next step"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "review_boundary",
+          "type": "notice",
+          "label": "Field Trip Permission review boundary",
+          "guidance": "Permission applies only to the named trip, date, transportation plan, and activity scope recorded here. A material itinerary, supervision, or return change requires renewed guardian communication and authorized review. Record only field trip permission facts needed here. Route field trip permission policy review to assigned staff."
+        }
+      ]
+    },
+    {
+      "key": "review_and_open_items",
+      "title": "Safety review and open questions",
+      "guidance": "Resolve missing field trip permission facts and assign unfinished items.",
+      "blocks": [
+        {
+          "key": "task_checks",
+          "type": "checklist",
+          "label": "Trip plan readiness",
+          "items": [
+            "Destination, trip date, and itinerary are current",
+            "Departure, return, meeting, and pickup details are stated",
+            "Transportation provider and each transport leg are confirmed",
+            "Activities, supervision, and chaperone assignments are reviewed",
+            "Emergency contact and support or accommodation route are available",
+            "Material changes require renewed guardian communication"
+          ]
+        },
+        {
+          "key": "workflow_rows",
+          "type": "table",
+          "label": "Trip plan, support needs, and approval status",
+          "columns": [
+            {
+              "key": "trip_element",
+              "label": "Trip element",
+              "units": 1.2
+            },
+            {
+              "key": "plan_or_source",
+              "label": "Plan or source",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_support_need",
+              "label": "Constraint or support need",
+              "units": 1.25
+            },
+            {
+              "key": "responsible_lead",
+              "label": "Responsible lead",
+              "units": 1.0
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.15
+            }
+          ],
+          "rows": 4,
+          "guidance": "Add a field trip permission row for each distinct change."
+        },
+        {
+          "key": "open_item",
+          "type": "fields",
+          "label": "Field Trip Permission open item and owner",
+          "fields": [
+            {
+              "key": "open_trip_question_or_missing_detail",
+              "label": "Open trip question or missing detail",
+              "units": 1.15
+            },
+            {
+              "key": "immediate_action",
+              "label": "Immediate action",
+              "units": 1.0
+            },
+            {
+              "key": "responsible_owner",
+              "label": "Responsible owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_date_or_time",
+              "label": "Due date or time",
+              "units": 1.1
+            },
+            {
+              "key": "resolution_status",
+              "label": "Resolution status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "outcome_and_receipt",
+      "title": "Permission decision and return handoff",
+      "guidance": "Close field trip permission after outcome, remaining work, and receipt.",
+      "blocks": [
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Field Trip Permission outcome and handoff",
+          "fields": [
+            {
+              "key": "guardian_permission_decision",
+              "label": "Guardian permission decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_limitation",
+              "label": "Approved limitation",
+              "units": 1.0
+            },
+            {
+              "key": "trip_plan_follow_up",
+              "label": "Trip-plan follow-up",
+              "units": 1.25
+            },
+            {
+              "key": "responsible_trip_coordinator",
+              "label": "Responsible trip coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "guardian_decision_received_date_and_time",
+              "label": "Guardian decision received date and time",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "acknowledgments",
+          "type": "signatures",
+          "label": "Field Trip Permission preparation and receipt",
+          "fields": [
+            {
+              "key": "guardian_printed_name",
+              "label": "Guardian printed name",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_signature_and_date",
+              "label": "Guardian signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "trip_coordinator_receipt_and_date",
+              "label": "Trip coordinator receipt and date",
+              "units": 1.25
+            }
+          ],
+          "guidance": "Each field trip permission signature confirms role and date."
+        }
+      ]
+    }
+  ]
+}

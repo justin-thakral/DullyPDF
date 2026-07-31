@@ -1,0 +1,331 @@
+{
+  "catalog_id": "business_operations/dbo_1770__purchase_request_intake_form",
+  "description": "For purchase request, this intake form records business justification, specification, alternatives, total cost, recurring obligation, sourcing path, and budget availability. Its supporting evidence includes quotes, budget report, technical review, supplier record, conflict disclosure, contract reference, and approval evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Purchase opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Purchase site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Purchase contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Purchase process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Purchase due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this purchase request record to its evidence.",
+          "key": "record_routing",
+          "label": "Purchase Request Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Requester",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Department",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Supplier",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Goods or services",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Quantity",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Needed-by date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture requester, department, supplier, goods or services, quantity, needed-by date, location, and accounting dimensions for this purchase request.",
+          "key": "core_identity",
+          "label": "Purchase Request Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify requester, department, supplier, goods or services, quantity, needed-by date, location, and accounting dimensions for this purchase request record.",
+      "key": "identity_1",
+      "title": "Intake Contact and Ownership"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Business justification",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Specification",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Alternatives",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Total cost",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Recurring obligation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For purchase request, record business justification, specification, alternatives, total cost, recurring obligation, sourcing path, and budget availability.",
+          "key": "task_inputs",
+          "label": "Purchase Request Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Purchase Request Desired Outcome and Service Fit",
+              "multiline": true
+            }
+          ],
+          "guidance": "State purchase request outcomes, dependencies, timing, and sensitive-data limits.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Purchase Request Desired Outcome and Service Fit",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Route each unresolved purchase request qualification item.",
+          "items": [
+            "Identity, authority, and primary contacts are verified",
+            "Desired outcome and service fit are understood",
+            "Sensitive information is limited to a stated purpose",
+            "Conflicts, dependencies, and risk screens are complete",
+            "Commitments remain within policy and capacity",
+            "Intake disposition and retention path are explicit"
+          ],
+          "key": "qualification_readiness",
+          "label": "Purchase Request Qualification Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not order before required competitive review, budget confirmation, contract review, security assessment, or approval. Route unresolved purchase request work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Purchase Request Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For purchase request, capture business justification, specification, alternatives, total cost, recurring obligation, sourcing path, and budget availability.",
+      "key": "task_2",
+      "title": "Qualification Inputs"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not order before required competitive review, budget confirmation, contract review, security assessment, or approval. Do not release affected purchase request work.",
+          "key": "stop_boundary",
+          "label": "Purchase Request Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Purchase exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Purchase correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Purchase escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close purchase request exceptions with verification.",
+          "key": "exception_register",
+          "label": "Purchase Request Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Purchase notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Purchase notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Purchase interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Purchase review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Purchase release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep purchase request controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Purchase Request Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Do not order before required competitive review, budget confirmation, contract review, security assessment, or approval. Control and route each purchase request exception.",
+      "key": "exception_3",
+      "title": "Intake Risk and Referrals"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select intake form disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Qualified review",
+                "Hold",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Purchase decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Purchase approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Purchase schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate purchase request disposition.",
+          "key": "disposition",
+          "label": "Purchase Request Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Purchase Request Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the purchase request decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Purchase Request Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Purchase requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Purchase process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Purchase Request Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the purchase request next step from quotes, budget report, technical review, supplier record, conflict disclosure, contract reference, and approval evidence.",
+      "key": "decision_4",
+      "title": "Intake Decision"
+    }
+  ],
+  "slug": "purchase-request-intake-form",
+  "source_filename": "dbo_1770__purchase_request_intake_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Purchase Request Intake Form: internal purchase request and authorization using requester, business justification, and quotes.",
+  "title": "Purchase Request Intake Form",
+  "use_case": "Use the intake form during internal purchase request and authorization when the purchase request record must identify requester, department, supplier, goods or services, quantity, needed-by date, location, and accounting dimensions. Complete the applicable handoff for purchase-order reference, committed amount, receiving owner, invoice instructions, asset tagging, and request closure."
+}

@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_108__student_medication_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_108__student_medication_information_sheet.pdf",
+  "slug": "student-medication-information-sheet",
+  "title": "Student Medication Information Sheet",
+  "subtitle": "Capture medication identity, label match, dose schedule source, and storage custody; confirm administration record and return.",
+  "description": "Student Medication records medication identity, label match, dose schedule source, storage custody, administration record, and return. Student Medication evidence stays linked.",
+  "use_case": "Use this student medication controlled information handoff when staff must document medication identity and label match. Reconcile dose schedule source, storage custody, administration record, and return before the student medication handoff. Use the prescriber order, pharmacy label, guardian authorization, administration schedule, locked-storage inventory, dose log, variance report, expiration check, and return receipt. This record centers the pharmacy label, prescriber or qualified order, scheduled dose, staff administration entry, supply quantity, locked custody, missed or refused event, and medication return. For student medication review use, cite source. Match the student medication family or learner wording. Preserve the student medication amendment history and supersession date. Link the student medication source version and meeting notes. Record the student medication learner response and accessibility support. Close the student medication recipient list. Verify student medication documentary provenance. Resolve student medication amendments, superseded wording, and archival distribution for student medication. Ask the assigned student medication reviewer to confirm medication identity against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Student Medication contact and reference",
+      "guidance": "Match student, medication label, qualified dose schedule, administration time, supply count, storage custody, variance record, expiration, and return. Keep any urgent student medication issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Student Medication people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "medication_identity",
+              "label": "Medication identity",
+              "units": 1.1
+            },
+            {
+              "key": "label_match",
+              "label": "Label match",
+              "units": 1.2
+            },
+            {
+              "key": "dose_schedule_source",
+              "label": "Dose schedule source",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Student Medication task details",
+          "fields": [
+            {
+              "key": "storage_custody",
+              "label": "Storage custody",
+              "units": 1.15
+            },
+            {
+              "key": "administration_record",
+              "label": "Administration record",
+              "units": 1.0
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Student Medication current instructions review",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Student Medication instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Student Medication questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Student Medication exception review and update route",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Student Medication effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Student Medication update boundary",
+          "guidance": "Replace outdated student medication instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,287 @@
+{
+  "catalog_id": "construction_trades/dct_1113__plumbing_service_completion_sign_off_form",
+  "description": "For plumbing service, this completion sign-off form records symptom history, isolation, repair boundary, materials, water-damage protection, code needs, and restoration. Its supporting evidence includes pressure readings, leak trace, drain test, photos, removed-part condition, and post-repair observation.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Plumbing opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Plumbing site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Plumbing contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Plumbing superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Plumbing due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this plumbing service record to its evidence.",
+          "key": "record_routing",
+          "label": "Plumbing Service Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Fixture",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Branch",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Shutoff",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Supply or drain system",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Water source",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture fixture, branch, shutoff, supply or drain system, water source, affected areas, and building access for this plumbing service.",
+          "key": "core_identity",
+          "label": "Plumbing Service Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify fixture, branch, shutoff, supply or drain system, water source, affected areas, and building access for this plumbing service record.",
+      "key": "identity_1",
+      "title": "Walkthrough Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Plumbing when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Plumbing measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Plumbing evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Plumbing result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For plumbing service, record pressure readings, leak trace, drain test, photos, removed-part condition, and post-repair observation.",
+          "key": "evidence_register",
+          "label": "Plumbing Service Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Pressure readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Leak trace",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Drain test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Removed-part condition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every plumbing service evidence source.",
+          "key": "evidence_sources",
+          "label": "Plumbing Service Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary plumbing service evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Plumbing Service Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Shut down and escalate uncontrolled discharge, contamination, sewer gas, failed backflow protection, or concealed damage. Route unresolved plumbing service work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Plumbing Service Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support plumbing service findings with pressure readings, leak trace, drain test, photos, removed-part condition, and post-repair observation.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Plumbing completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Leak-free verification",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Restored service",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Damage referral",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the plumbing service outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Plumbing Service Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Plumbing open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Plumbing owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Plumbing acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer plumbing service items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Plumbing Service Remaining Work and Handoff",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Plumbing Service Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For plumbing service, document leak-free verification, restored service, damage referral, customer care instructions, and repair warranty record; identify each plumbing service reservation and plumbing service follow-up trigger, then record the plumbing service instruction recipient.",
+          "height": 48,
+          "key": "acceptance_reservations",
+          "label": "Plumbing Service Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Plumbing trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Plumbing site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Plumbing Service Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the plumbing service record with leak-free verification, restored service, damage referral, customer care instructions, and repair warranty record.",
+      "key": "closeout_3",
+      "title": "Customer Acceptance and Handoff"
+    }
+  ],
+  "slug": "plumbing-service-completion-sign-off-form",
+  "source_filename": "dct_1113__plumbing_service_completion_sign_off_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Plumbing Service Completion Sign-Off Form: plumbing leak or fixture service workflow using fixture, symptom history, and pressure readings.",
+  "title": "Plumbing Service Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during plumbing leak or fixture service workflow when the plumbing service record must identify fixture, branch, shutoff, supply or drain system, water source, affected areas, and building access. Complete the applicable handoff for leak-free verification, restored service, damage referral, customer care instructions, and repair warranty record."
+}

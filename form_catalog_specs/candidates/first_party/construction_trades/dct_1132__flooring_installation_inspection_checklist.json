@@ -1,0 +1,353 @@
+{
+  "catalog_id": "construction_trades/dct_1132__flooring_installation_inspection_checklist",
+  "description": "For flooring installation, this inspection checklist records layout, acclimation, substrate preparation, moisture limits, adhesive, expansion, sequencing, and protection. Its supporting evidence includes moisture test, flatness readings, lot record, layout approval, installation photos, and seam or lippage checks.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Flooring opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Flooring site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Flooring contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Flooring superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Flooring due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this flooring installation record to its evidence.",
+          "key": "record_routing",
+          "label": "Flooring Installation Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Room",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Substrate",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Flooring product",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Lot",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Transitions",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Moisture-sensitive areas",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes for this flooring installation.",
+          "key": "core_identity",
+          "label": "Flooring Installation Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes for this flooring installation record.",
+      "key": "identity_1",
+      "title": "Site Reference and Inspector"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Layout",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Acclimation",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Substrate preparation",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Moisture limits",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Adhesive",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Expansion",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For flooring installation, record layout, acclimation, substrate preparation, moisture limits, adhesive, expansion, sequencing, and protection.",
+          "key": "task_inputs",
+          "label": "Flooring Installation Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the flooring installation condition before marking.",
+          "items": [
+            "Verify layout",
+            "Verify acclimation",
+            "Verify substrate preparation",
+            "Verify moisture limits",
+            "Verify adhesive",
+            "Verify expansion"
+          ],
+          "key": "task_checks",
+          "label": "Flooring Installation Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Flooring checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Flooring review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Flooring qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Flooring check time",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the flooring installation criteria and inspector.",
+          "key": "checkpoint_result",
+          "label": "Flooring Installation Inspection Reference",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not install over out-of-tolerance moisture, flatness, contamination, movement, or unapproved substrate condition. Route unresolved flooring installation work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Flooring Installation Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For flooring installation, capture layout, acclimation, substrate preparation, moisture limits, adhesive, expansion, sequencing, and protection.",
+      "key": "task_2",
+      "title": "Scope, Criteria, and Test Method"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Flooring when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Flooring measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Flooring evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Flooring result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For flooring installation, record moisture test, flatness readings, lot record, layout approval, installation photos, and seam or lippage checks.",
+          "key": "evidence_register",
+          "label": "Flooring Installation Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Moisture test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Flatness readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Lot record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Layout approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Installation photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every flooring installation evidence source.",
+          "key": "evidence_sources",
+          "label": "Flooring Installation Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Flooring Installation Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State flooring installation limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Flooring Installation Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support flooring installation findings with moisture test, flatness readings, lot record, layout approval, installation photos, and seam or lippage checks.",
+      "key": "observation_3",
+      "title": "Measured Finding Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not install over out-of-tolerance moisture, flatness, contamination, movement, or unapproved substrate condition. Do not release affected flooring installation work.",
+          "key": "stop_boundary",
+          "label": "Flooring Installation Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Flooring exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Flooring correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Flooring escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close flooring installation exceptions with verification.",
+          "key": "exception_register",
+          "label": "Flooring Installation Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Flooring notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Flooring notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Flooring interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Flooring review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Flooring release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep flooring installation controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Flooring Installation Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Do not install over out-of-tolerance moisture, flatness, contamination, movement, or unapproved substrate condition. Control and route each flooring installation exception.",
+      "key": "exception_4",
+      "title": "Defect Risk and Correction"
+    }
+  ],
+  "slug": "flooring-installation-inspection-checklist",
+  "source_filename": "dct_1132__flooring_installation_inspection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Flooring Installation Inspection Checklist: flooring installation readiness and acceptance using room, layout, and moisture test.",
+  "title": "Flooring Installation Inspection Checklist",
+  "use_case": "Use the inspection checklist during flooring installation readiness and acceptance when the flooring installation record must identify room, substrate, flooring product and lot, transitions, moisture-sensitive areas, furniture, and adjacent finishes. Complete the applicable handoff for finish inspection, protection plan, care instructions, attic-stock handoff, warranty, and customer acceptance."
+}

@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_182__parent_conference_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_182__parent_conference_authorization_form.pdf",
+  "slug": "dey-182-parent-conference-authorization-form-d7c3a28e",
+  "title": "Parent Conference Authorization Form",
+  "subtitle": "Capture conference agenda, student work, attendance context, and family question; confirm agreed action and progress follow-up.",
+  "description": "Parent Conference records conference agenda, student work, attendance context, family question, agreed action, and progress follow-up. Parent Conference evidence stays linked.",
+  "use_case": "Use this parent conference authorization decision when staff must document conference agenda and student work. Reconcile attendance context, family question, agreed action, and progress follow-up before the parent conference handoff. Use the conference invitation, work samples, gradebook snapshot, attendance record, teacher observations, family questions, action notes, and progress-review calendar. For parent conference review use, cite source. Match the parent conference family or learner wording. Preserve the parent conference amendment history and supersession date. Link the parent conference source version and meeting notes. Record the parent conference learner response and accessibility support. Close the parent conference recipient list. Verify parent conference documentary provenance. Resolve parent conference amendments, superseded wording, and archival distribution for parent conference. Ask the assigned parent conference reviewer to confirm conference agenda against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Parent Conference signer details",
+      "guidance": "Prepare agenda, student work samples, attendance and classroom context, family questions, agreed actions, communication preferences, and progress checkpoints.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Parent Conference people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "conference_agenda",
+              "label": "Conference agenda",
+              "units": 1.2
+            },
+            {
+              "key": "student_work",
+              "label": "Student work",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Parent Conference task details",
+          "fields": [
+            {
+              "key": "attendance_context",
+              "label": "Attendance context",
+              "units": 1.15
+            },
+            {
+              "key": "family_question",
+              "label": "Family question",
+              "units": 1.0
+            },
+            {
+              "key": "agreed_action",
+              "label": "Agreed action",
+              "units": 1.25
+            },
+            {
+              "key": "progress_follow_up",
+              "label": "Progress follow-up",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Parent Conference decision and scope choices",
+      "guidance": "Decide each parent conference scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Parent Conference primary scope",
+          "fields": [
+            {
+              "key": "conference_agenda",
+              "label": "Conference agenda",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "student_work",
+              "label": "Student work",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "attendance_context",
+              "label": "Attendance context",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Parent Conference additional scope",
+          "fields": [
+            {
+              "key": "family_question",
+              "label": "Family question",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "agreed_action",
+              "label": "Agreed action",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "progress_follow_up",
+              "label": "Progress follow-up",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Parent Conference authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Parent Conference effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            },
+            {
+              "key": "revocation_or_update_route",
+              "label": "Revocation or update route",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Parent Conference decision and signer receipt",
+      "guidance": "Only recorded parent conference choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Parent Conference limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Parent Conference signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "school_or_program_reviewer_and_date",
+              "label": "School or program reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Parent Conference signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Parent Conference authorization boundary",
+          "guidance": "Named parent conference reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

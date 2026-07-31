@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1269__security_system_service_maintenance_log",
+  "source_section": "field_service",
+  "source_filename": "dfm_1269__security_system_service_maintenance_log.pdf",
+  "slug": "security-system-service-maintenance-log",
+  "title": "Security System Service Maintenance Log",
+  "subtitle": "Security System Service: preserves changes and next triggers.",
+  "description": "Security System Service Maintenance Log covers alarm panel, access-control device, sensor, camera, credential path, and monitoring interface. The site security coordinator records Security System Service events, owners, exceptions, and next triggers. Security System Service Maintenance Log keeps Security System Service exceptions visible until the site security coordinator handoff.",
+  "use_case": "Use Security System Service Maintenance Log at controlled premises, panel, door, zone, camera view, and monitoring point. Document alarm panel, access-control device, sensor, camera, credential path, and monitoring interface identity before Security System Service begins. Compare alarm panel, access-control device, sensor, camera, credential path, and monitoring interface findings with stated Security System Service criteria; route unresolved Security System Service issues to authorized security-system reviewer. For Security System Service Maintenance Log, confirm requirements for Security System Service. Ask authorized security-system reviewer to review Security System Service conditions beyond the site security coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For Security System Service, identify responsible parties, controlled premises, panel, door, zone, camera view, and monitoring point, and the linked alarm panel, access-control device, sensor, camera, credential path, and monitoring interface source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Security System Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Site and service ticket",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "Panel, door, zone, camera, or device identifier",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Scope, test window, account, and credential ID",
+              "units": 2.5555555555555554
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status variance and accountable response",
+      "guidance": "Capture Security System Service facts for alarm panel, access-control device, sensor, camera, credential path, and monitoring interface; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Security System Service tracked controls",
+          "items": [
+            "Panel, controller, power, communication, and trouble status",
+            "Door, lock, reader, request-to-exit, and contact response",
+            "Sensor, alarm, notification, and monitoring transmission",
+            "Camera view, recording, timestamp, retention, and obstruction state",
+            "Credential permission and least-access behavior",
+            "Test bypass, restoration, event history, and user acceptance"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Status decision and next trigger",
+      "guidance": "Reconcile the latest Security System Service event before closeout. Site Security Coordinator identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Premises left unprotected or bypassed",
+            "Credential or recording privacy boundary exceeded",
+            "Life-safety interface affected",
+            "Monitoring or critical device cannot be restored",
+            "Device and zone test record",
+            "Sanitized event or alarm history",
+            "Before-and-after configuration evidence",
+            "Monitoring notification and full restoration confirmation"
+          ],
+          "guidance": "Pause Security System Service when protection, monitoring, credential, privacy, or life-safety interface control is unresolved. Retain the available Security System Service proof and route unresolved alarm panel, access-control device, sensor, camera, credential path, and monitoring interface scope to site security coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Site Security Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorized Security-System Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "catalog_id": "construction_trades/dct_1101__roofing_repair_work_order_form",
+  "description": "For roofing repair, this work order form records leak history, wet-area boundary, repair method, temporary protection, materials, weather window, and occupant coordination. Its supporting evidence includes moisture readings, test cuts, infrared or visual findings, photos, water test, and repair detail.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Roofing opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Roofing site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Roofing contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Roofing superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Roofing due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this roofing repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Roofing Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Roof area",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Membrane or shingle system",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Penetrations",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Drainage",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Interior symptom",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture roof area, membrane or shingle system, penetrations, drainage, interior symptom, access, and warranty status for this roofing repair.",
+          "key": "core_identity",
+          "label": "Roofing Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify roof area, membrane or shingle system, penetrations, drainage, interior symptom, access, and warranty status for this roofing repair record.",
+      "key": "identity_1",
+      "title": "Work Assignment Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Leak history",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Wet-area boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Repair method",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Temporary protection",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Materials",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For roofing repair, record leak history, wet-area boundary, repair method, temporary protection, materials, weather window, and occupant coordination.",
+          "key": "task_inputs",
+          "label": "Roofing Repair Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Roofing work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized roofing repair work from additions.",
+          "key": "assigned_work",
+          "label": "Roofing Repair Assigned Work and Acceptance Criteria",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Roofing arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Roofing access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Roofing added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Roofing inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop roofing repair work at recorded limits.",
+          "key": "work_window",
+          "label": "Roofing Repair Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Stop for unsafe access, lightning, saturated deck, suspected hazardous materials, or structural deterioration. Route unresolved roofing repair work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Roofing Repair Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For roofing repair, capture leak history, wet-area boundary, repair method, temporary protection, materials, weather window, and occupant coordination.",
+      "key": "task_2",
+      "title": "Authorized Work Plan"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Roofing completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Watertightness verification",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Repair photos",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Warranty disposition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the roofing repair outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Roofing Repair Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Roofing open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Roofing owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Roofing acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer roofing repair items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Roofing Repair Remaining Work and Handoff",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Roofing Repair Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For roofing repair, record watertightness verification, repair photos, warranty disposition, maintenance note, and customer signoff; give the roofing repair care or operating instruction, identify roofing repair access restoration and recipient.",
+          "height": 60,
+          "key": "completion_care_notes",
+          "label": "Roofing Repair Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Roofing trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Roofing site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Roofing Repair Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the roofing repair record with watertightness verification, repair photos, warranty disposition, maintenance note, and customer signoff.",
+      "key": "closeout_3",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "roofing-repair-work-order-form",
+  "source_filename": "dct_1101__roofing_repair_work_order_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Roofing Repair Work Order Form: roof leak diagnosis and repair execution using roof area, leak history, and moisture readings.",
+  "title": "Roofing Repair Work Order Form",
+  "use_case": "Use the work order form during roof leak diagnosis and repair execution when the roofing repair record must identify roof area, membrane or shingle system, penetrations, drainage, interior symptom, access, and warranty status. Complete the applicable handoff for watertightness verification, repair photos, warranty disposition, maintenance note, and customer signoff."
+}

@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2644__therapy_intake_tracking_log",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2644__therapy_intake_tracking_log.pdf",
+  "slug": "therapy-intake-tracking-log",
+  "title": "Therapy Intake Tracking Log",
+  "subtitle": "Capture presenting concern, patient goal, referral, and accessibility; confirm clinician review and care handoff.",
+  "description": "Therapy Intake records presenting concern, patient goal, referral, accessibility, clinician review, and care handoff. Therapy Intake evidence stays linked.",
+  "use_case": "Use this therapy intake time-ordered tracking when staff must document presenting concern and patient goal. Reconcile referral, accessibility, clinician review, and care handoff before the therapy intake handoff. Use the patient narrative, referral documents, accessibility request, urgent-concern routing, clinician questions, modality preference, scheduling handoff, and receipt confirmation. This intake preserves the person's presenting narrative, counseling goals, referral context, communication access, urgent routing, clinician questions, modality preference, and first-session handoff. Keep self-described stressors, strengths, supports, prior service context, language preference, sensory or mobility access, immediate resource needs, screening provenance, and intake disposition visible. Ask the assigned therapy intake reviewer to confirm presenting concern against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Therapy Intake contact and reference",
+      "guidance": "Capture presenting concern in patient words, desired outcome, referral context, accessibility and communication needs, clinician review questions, and care handoff. Keep any urgent therapy intake issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Therapy Intake people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "patient_location_or_service_site",
+              "label": "Patient location or service site",
+              "units": 1.1
+            },
+            {
+              "key": "presenting_concern",
+              "label": "Presenting concern",
+              "units": 1.2
+            },
+            {
+              "key": "patient_goal",
+              "label": "Patient goal",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Therapy Intake task details",
+          "fields": [
+            {
+              "key": "referral",
+              "label": "Referral",
+              "units": 1.15
+            },
+            {
+              "key": "accessibility",
+              "label": "Accessibility",
+              "units": 1.0
+            },
+            {
+              "key": "clinician_review",
+              "label": "Clinician review",
+              "units": 1.25
+            },
+            {
+              "key": "care_handoff",
+              "label": "Care handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Therapy Intake event history review",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Therapy Intake events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "presenting_concern",
+              "label": "Presenting concern",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "clinician_review",
+              "label": "Clinician review",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Therapy Intake correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Therapy Intake current state",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Therapy Intake status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Therapy Intake open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Therapy Intake log receipt",
+          "fields": [
+            {
+              "key": "department_log_custodian_and_date",
+              "label": "Department log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

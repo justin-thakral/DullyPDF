@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1807__fitness_class_waiver_checklist",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1807__fitness_class_waiver_checklist.pdf",
+  "slug": "fitness-class-waiver-checklist",
+  "title": "Fitness Class Waiver Checklist",
+  "subtitle": "Capture class format, instructor, equipment, and exertion condition; confirm participant choice and session completion.",
+  "description": "Fitness Class Waiver records class format, instructor, equipment, exertion condition, participant choice, and session completion. Fitness Class Waiver evidence stays linked.",
+  "use_case": "Use this fitness class waiver stage-gated verification when staff must document class format and instructor. Reconcile equipment, exertion condition, participant choice, and session completion before the fitness class waiver handoff. Use the class description, instructor credential reference, equipment list, disclosed exertion conditions, modification menu, participant questions, and attendance result. This acknowledgment concerns an instructor-led exercise session with cardio or resistance intensity, repetitions, studio equipment, modification choices, rest, and class completion. Ask the assigned fitness class waiver reviewer to confirm class format against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "participant_and_class",
+      "title": "Participant and class details",
+      "guidance": "Match the waiver to the named participant, instructor, and session.",
+      "blocks": [
+        {
+          "key": "participant",
+          "type": "fields",
+          "label": "Participant and authority",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_phone_or_email",
+              "label": "Participant phone or email",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_if_participant_is_a_minor",
+              "label": "Guardian name if participant is a minor",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_authority_if_applicable",
+              "label": "Guardian authority if applicable",
+              "units": 1.1
+            },
+            {
+              "key": "emergency_contact_and_phone",
+              "label": "Emergency contact and phone",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "class",
+          "type": "fields",
+          "label": "Class and activity",
+          "fields": [
+            {
+              "key": "class_format",
+              "label": "Class format",
+              "units": 1.15
+            },
+            {
+              "key": "instructor",
+              "label": "Instructor",
+              "units": 1.0
+            },
+            {
+              "key": "session_date_and_time",
+              "label": "Session date and time",
+              "units": 1.25
+            },
+            {
+              "key": "equipment_used",
+              "label": "Equipment used",
+              "units": 1.1
+            },
+            {
+              "key": "exertion_condition_and_environment",
+              "label": "Exertion condition and environment",
+              "units": 1.2
+            },
+            {
+              "key": "modification_option",
+              "label": "Modification option",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "waiver_elements",
+      "title": "Waiver element verification",
+      "guidance": "Verify the participant received each applicable disclosure and choice.",
+      "blocks": [
+        {
+          "key": "required_elements",
+          "type": "checklist",
+          "label": "Required waiver elements",
+          "items": [
+            "The participant and exact class or activity are named",
+            "Material exertion, equipment, and environment conditions are stated",
+            "Instructor guidance and participant safety duties are explained",
+            "Modification, rest, or alternative options are available",
+            "Questions and an accessible explanation were offered",
+            "Participation is voluntary and decline or withdrawal is available",
+            "Emergency response and organizer safety duties remain in force",
+            "The form does not claim to waive non-waivable rights",
+            "Guardian authority is confirmed when the participant is a minor",
+            "Participant choice, signature, and date are present",
+            "A completed copy or confirmation is offered"
+          ]
+        },
+        {
+          "key": "verification_result",
+          "type": "fields",
+          "label": "Verification result",
+          "fields": [
+            {
+              "key": "missing_or_unclear_element",
+              "label": "Missing or unclear element",
+              "units": 1.15
+            },
+            {
+              "key": "correction_owner",
+              "label": "Correction owner",
+              "units": 1.0
+            },
+            {
+              "key": "correction_due_date",
+              "label": "Correction due date",
+              "units": 1.25
+            },
+            {
+              "key": "participant_choice_status",
+              "label": "Participant choice status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "session_completion_status",
+              "label": "Session completion status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "verified_waiver_version_or_date",
+              "label": "Verified waiver version or date",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_receipt",
+      "title": "Questions, limits, and reviewer receipt",
+      "guidance": "Keep unresolved questions visible before participation.",
+      "blocks": [
+        {
+          "key": "questions_limits",
+          "type": "textarea",
+          "label": "Participant question or participation limit",
+          "fields": [
+            {
+              "key": "question_requested_explanation_modification_or_declined_scope",
+              "label": "Question, requested explanation, modification, or declined scope"
+            }
+          ],
+          "height": 42
+        },
+        {
+          "key": "checklist_review",
+          "type": "signatures",
+          "label": "Checklist review",
+          "fields": [
+            {
+              "key": "waiver_reviewer_and_date",
+              "label": "Waiver reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Review confirms document completeness, not medical clearance."
+        }
+      ]
+    }
+  ]
+}

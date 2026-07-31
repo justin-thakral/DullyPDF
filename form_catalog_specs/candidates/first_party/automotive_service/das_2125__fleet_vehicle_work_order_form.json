@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2125__fleet_vehicle_work_order_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2125__fleet_vehicle_work_order_form.pdf",
+  "slug": "fleet-vehicle-work-order-form",
+  "title": "Fleet Vehicle Work Order Form",
+  "subtitle": "Fleet Vehicle Service: connects authorized scope to results.",
+  "description": "Fleet Vehicle Work Order Form covers fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision. The fleet maintenance coordinator records Fleet Vehicle Service authorized tasks, materials, results, and changes. Fleet Vehicle Work Order Form keeps Fleet Vehicle Service exceptions visible until the fleet maintenance coordinator handoff.",
+  "use_case": "Use Fleet Vehicle Work Order Form at fleet yard, service facility, operating route, and vehicle assignment point. Document fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision identity before Fleet Vehicle Service begins. Compare fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision findings with stated Fleet Vehicle Service criteria; route unresolved Fleet Vehicle Service issues to qualified fleet maintenance reviewer. For Fleet Vehicle Work Order Form, confirm requirements for Fleet Vehicle Service. Ask qualified fleet maintenance reviewer to review Fleet Vehicle Service conditions beyond the fleet maintenance coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Vehicle repair-order details",
+      "guidance": "Bind Fleet Vehicle Service to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Customer, fleet, insurer, or payer",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shop, bay, roadside, or site",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Fleet Maintenance Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Fleet Vehicle Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Fleet unit, work order, and department",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, engine hours, and assignment",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Driver report, interval, prior defect, and campaign reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Fleet Vehicle Service identifier printed on fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision or its linked source record."
+        },
+        {
+          "key": "vehicle_work_context",
+          "type": "fields",
+          "label": "Vehicle work context",
+          "fields": [
+            {
+              "key": "odometer_in",
+              "label": "Odometer or operating hours in",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Vehicle findings and repair evidence",
+      "guidance": "Record authorized Fleet Vehicle Service activity; separate proposed, declined, deferred, or new Fleet Vehicle Service scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Fleet Vehicle Service labor or diagnostic step",
+              "units": 1.25
+            },
+            {
+              "key": "component",
+              "label": "System, component, or position",
+              "units": 1.0
+            },
+            {
+              "key": "part",
+              "label": "Part, fluid, material, or sublet",
+              "units": 1.1
+            },
+            {
+              "key": "qty",
+              "label": "Qty / hours",
+              "units": 0.65
+            },
+            {
+              "key": "result",
+              "label": "Performed result or note",
+              "units": 1.1
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.75
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Fleet Vehicle Service work and verification points",
+          "items": [
+            "Driver concern and operating impact",
+            "Scheduled-maintenance status",
+            "Vehicle-system inspection and diagnostic result",
+            "Parts, labor, downtime, and vendor status",
+            "Open campaign, recall, or recurring defect",
+            "Return-to-service restriction and driver handoff"
+          ],
+          "guidance": "Use each Fleet Vehicle Service check to prompt documented fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision execution; enter its actual Fleet Vehicle Service result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Fleet Vehicle Service parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Repair exception and added-work limits",
+      "guidance": "Stop Fleet Vehicle Service at any scope or cost limit; honor fleet maintenance coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when safety, maintenance, repeat-defect, authorization, or return-to-service concern remains unresolved. Protect fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision; document the Fleet Vehicle Service notification and await qualified fleet maintenance reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Safety defect or overdue critical service",
+            "Repeat failure lacks escalation",
+            "Repair exceeds authority or downtime commitment",
+            "Return-to-service review incomplete"
+          ],
+          "guidance": "For Fleet Vehicle Service, identify affected fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision scope; ask fleet maintenance coordinator to document the Fleet Vehicle Service immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Added work, revised diagnosis, cost change, and customer response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Added work, revised diagnosis, cost change, and customer response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Vehicle release decision and completion",
+      "guidance": "Reconcile Fleet Vehicle Service to authorization; state fleet maintenance coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Driver report and intake condition",
+            "Maintenance and diagnostic readings",
+            "Part, labor, and vendor trace",
+            "Qualified return-to-service and assignment record"
+          ],
+          "guidance": "Attach or link proof for fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision; mark only Fleet Vehicle Service evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

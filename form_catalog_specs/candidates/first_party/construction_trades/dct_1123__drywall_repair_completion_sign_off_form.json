@@ -1,0 +1,291 @@
+{
+  "catalog_id": "construction_trades/dct_1123__drywall_repair_completion_sign_off_form",
+  "description": "For drywall repair, this completion sign-off form records cutout boundary, backing, board type, treatment, drying intervals, dust control, texture match, and painting handoff. Its supporting evidence includes moisture check, cavity photo, repair-stage photos, material record, surface flatness, and finish comparison.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Drywall opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Drywall site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Drywall contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Drywall superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Drywall due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this drywall repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Drywall Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Room",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Surface",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Substrate",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Damage dimensions",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Texture",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Finish",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture room, surface, substrate, damage dimensions, texture, finish, utilities, moisture source, and occupancy constraints for this drywall repair.",
+          "key": "core_identity",
+          "label": "Drywall Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify room, surface, substrate, damage dimensions, texture, finish, utilities, moisture source, and occupancy constraints for this drywall repair record.",
+      "key": "identity_1",
+      "title": "Walkthrough Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Drywall when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Drywall measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Drywall evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Drywall result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For drywall repair, record moisture check, cavity photo, repair-stage photos, material record, surface flatness, and finish comparison.",
+          "key": "evidence_register",
+          "label": "Drywall Repair Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Moisture check",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Cavity photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Repair-stage photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Material record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Surface flatness",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every drywall repair evidence source.",
+          "key": "evidence_sources",
+          "label": "Drywall Repair Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary drywall repair evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Drywall Repair Evidence Completeness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Support drywall repair findings with moisture check, cavity photo, repair-stage photos, material record, surface flatness, and finish comparison.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Drywall completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Dryness",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Finish verification",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Cleaned area",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Paint responsibility",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the drywall repair outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Drywall Repair Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Drywall open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Drywall owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Drywall acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer drywall repair items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Drywall Repair Remaining Work and Handoff",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Drywall Repair Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For drywall repair, document dryness and finish verification, cleaned area, paint responsibility, customer acceptance, and recurrence note; identify each drywall repair reservation and drywall repair follow-up trigger, then record the drywall repair instruction recipient.",
+          "height": 48,
+          "key": "acceptance_reservations",
+          "label": "Drywall Repair Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Drywall trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Drywall site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Drywall Repair Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the drywall repair record with dryness and finish verification, cleaned area, paint responsibility, customer acceptance, and recurrence note.",
+      "key": "closeout_3",
+      "title": "Customer Acceptance and Handoff"
+    }
+  ],
+  "slug": "drywall-repair-completion-sign-off-form",
+  "source_filename": "dct_1123__drywall_repair_completion_sign_off_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Drywall Repair Completion Sign-Off Form: drywall damage repair and finish restoration using room, cutout boundary, and moisture check.",
+  "title": "Drywall Repair Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during drywall damage repair and finish restoration when the drywall repair record must identify room, surface, substrate, damage dimensions, texture, finish, utilities, moisture source, and occupancy constraints. Complete the applicable handoff for dryness and finish verification, cleaned area, paint responsibility, customer acceptance, and recurrence note."
+}

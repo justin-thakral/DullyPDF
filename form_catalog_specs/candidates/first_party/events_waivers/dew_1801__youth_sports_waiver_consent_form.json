@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1801__youth_sports_waiver_consent_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1801__youth_sports_waiver_consent_form.pdf",
+  "slug": "youth-sports-waiver-consent-form",
+  "title": "Youth Sports Waiver Consent Form",
+  "subtitle": "Capture sport, season, guardian authority, and contact level; confirm equipment and coach release.",
+  "description": "Youth Sports Waiver records sport, season, guardian authority, contact level, equipment, and coach release. Youth Sports Waiver evidence stays linked.",
+  "use_case": "Use this youth sports waiver scoped consent when staff must document sport and season. Reconcile guardian authority, contact level, equipment, and coach release before the youth sports waiver handoff. Use the season plan, team roster, guardian verification, disclosed contact conditions, equipment issue, coach brief, optional-activity choices, and player release. This acknowledgment concerns a player in a team season with practice and competition, contact level, coach supervision, protective gear, league rules, sideline release, and guardian choice. Ask the assigned youth sports waiver reviewer to confirm sport against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Youth Sports Waiver participant details review",
+      "guidance": "Name sport, season, team, participant and guardian authority, contact level, equipment, coaching supervision, alternative activity, and release. Record the youth sports waiver decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Youth Sports Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "sport",
+              "label": "Sport",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Youth Sports Waiver task details",
+          "fields": [
+            {
+              "key": "season",
+              "label": "Season",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.0
+            },
+            {
+              "key": "contact_level",
+              "label": "Contact level",
+              "units": 1.25
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.1
+            },
+            {
+              "key": "coach_release",
+              "label": "Coach release",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_choices",
+      "title": "Youth Sports Waiver exception review and voluntary choices",
+      "guidance": "Present each choice independently; do not preselect an answer.",
+      "blocks": [
+        {
+          "key": "itemized_consent",
+          "type": "fields",
+          "label": "Youth Sports Waiver itemized consent",
+          "fields": [
+            {
+              "key": "sport",
+              "label": "Sport",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "season",
+              "label": "Season",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "contact_level",
+              "label": "Contact level",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "coach_release",
+              "label": "Coach release",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consent_checks",
+          "type": "checklist",
+          "label": "Youth Sports Waiver informed-choice checks",
+          "items": [
+            "Purpose and practical conditions are explained",
+            "Questions and access needs are addressed",
+            "Declining one choice does not decide another",
+            "Withdrawal route and practical limits are explained"
+          ]
+        },
+        {
+          "key": "consent_conditions",
+          "type": "fields",
+          "label": "Youth Sports Waiver conditions and withdrawal",
+          "fields": [
+            {
+              "key": "choice_explained_by",
+              "label": "Choice explained by",
+              "units": 1.15
+            },
+            {
+              "key": "question_or_accessibility_need",
+              "label": "Question or accessibility need",
+              "units": 1.0
+            },
+            {
+              "key": "special_condition_or_exclusion",
+              "label": "Special condition or exclusion",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal_contact",
+              "label": "Withdrawal contact",
+              "units": 1.1
+            },
+            {
+              "key": "consent_copy_provided_date",
+              "label": "Consent copy provided date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_signoff",
+      "title": "Youth Sports Waiver exception review and signer receipt",
+      "guidance": "Record the voluntary decision and responsible staff recipient.",
+      "blocks": [
+        {
+          "key": "consent_note",
+          "type": "textarea",
+          "label": "Youth Sports Waiver question or limit",
+          "fields": [
+            {
+              "key": "question_explanation_declined_scope_or_participation_limit",
+              "label": "Question, explanation, declined scope, or participation limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "consent_signatures",
+          "type": "signatures",
+          "label": "Youth Sports Waiver signatures",
+          "fields": [
+            {
+              "key": "person_giving_consent_and_date",
+              "label": "Person giving consent and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The signature applies only to choices recorded above."
+        }
+      ]
+    }
+  ]
+}

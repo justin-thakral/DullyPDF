@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2205__bill_of_lading_prep_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2205__bill_of_lading_prep_form.pdf",
+  "slug": "bill-of-lading-prep-form",
+  "title": "Bill of Lading Prep Form",
+  "subtitle": "Bill Of Lading Preparation: captures actual activity and handoff.",
+  "description": "Bill of Lading Prep Form covers transport shipment, commodity lines, package count, weight, classification, and instructions. The shipping documentation coordinator records Bill Of Lading Preparation activity, quantities, variance, and handoff. Bill of Lading Prep Form keeps Bill Of Lading Preparation exceptions visible until the shipping documentation coordinator handoff.",
+  "use_case": "Use Bill of Lading Prep Form at shipping office, origin dock, carrier handoff, and destination route. Document transport shipment, commodity lines, package count, weight, classification, and instructions identity before Bill Of Lading Preparation begins. Compare transport shipment, commodity lines, package count, weight, classification, and instructions findings with stated Bill Of Lading Preparation criteria; route unresolved Bill Of Lading Preparation issues to transport documentation reviewer. For Bill of Lading Prep Form, confirm requirements for Bill Of Lading Preparation. Ask transport documentation reviewer to review Bill Of Lading Preparation conditions beyond the shipping documentation coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "operation_header",
+      "title": "Shipment identity and party details",
+      "guidance": "Identify the Bill Of Lading Preparation entry, responsible parties, and operating window.",
+      "blocks": [
+        {
+          "key": "operation_context",
+          "type": "fields",
+          "label": "Record and operating context",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "BOL preparation record ID",
+              "units": 1.0
+            },
+            {
+              "key": "operation_date",
+              "label": "Date or operating period",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Shipment parties / order owner",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shipping office / origin handoff",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_person",
+              "label": "Shipping Documentation Coordinator",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Bill Of Lading Preparation identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Shipper, consignee, and billing references",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Load, order, booking, and carrier identifiers",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Commodity, package, weight, class, and special-instruction references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Bill Of Lading Preparation identifier printed on transport shipment, commodity lines, package count, weight, classification, and instructions or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "activity_record",
+      "title": "Distribution activity and custody details",
+      "guidance": "Enter one Bill Of Lading Preparation row per task, item, reading, or event.",
+      "blocks": [
+        {
+          "key": "plan_and_window",
+          "type": "fields",
+          "label": "Plan and operating window",
+          "fields": [
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.65
+            },
+            {
+              "key": "planned_result",
+              "label": "Planned result or target",
+              "units": 1.2
+            },
+            {
+              "key": "procedure",
+              "label": "Procedure, order, label, or instruction reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "activity_lines",
+          "type": "table",
+          "label": "Items, custody events, quantities, and condition",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item, package, document, or event",
+              "units": 1.2
+            },
+            {
+              "key": "expected",
+              "label": "Expected quantity or state",
+              "units": 0.9
+            },
+            {
+              "key": "actual",
+              "label": "Received, moved, or observed",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition or variance",
+              "units": 0.95
+            },
+            {
+              "key": "custody",
+              "label": "From / to custody",
+              "units": 0.9
+            },
+            {
+              "key": "initials",
+              "label": "Initials",
+              "units": 0.65
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "operation_controls",
+      "title": "Receipt variance and exception handling",
+      "guidance": "Record Bill Of Lading Preparation variances, affected scope, immediate control, and owner.",
+      "blocks": [
+        {
+          "key": "operating_checks",
+          "type": "checklist",
+          "label": "Bill Of Lading Preparation operating checks",
+          "items": [
+            "Party names and addresses",
+            "Commodity description and quantity",
+            "Weight and package reconciliation",
+            "Carrier, equipment, and routing data",
+            "Hazard or special-handling determination by qualified party",
+            "Document copies and tender timing"
+          ],
+          "guidance": "Complete the Bill Of Lading Preparation checks that apply to this transport shipment, commodity lines, package count, weight, classification, and instructions activity; explain every unchecked required item."
+        },
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when shipment identity, commodity, weight, instruction, or required qualified documentation review remains unresolved. Protect transport shipment, commodity lines, package count, weight, classification, and instructions; document the Bill Of Lading Preparation notification and await transport documentation reviewer direction."
+        },
+        {
+          "key": "operation_exceptions",
+          "type": "checklist",
+          "label": "Stop, hold, or correction triggers",
+          "items": [
+            "Party or address inconsistency",
+            "Quantity or weight cannot be reconciled",
+            "Classification or special handling lacks qualified basis",
+            "Document issued with unapproved alteration"
+          ],
+          "guidance": "For Bill Of Lading Preparation, identify affected transport shipment, commodity lines, package count, weight, classification, and instructions scope; ask shipping documentation coordinator to document the Bill Of Lading Preparation immediate control before continuing."
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Exception, change from plan, affected scope, and immediate response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Exception, change from plan, affected scope, and immediate response",
+              "multiline": true
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "operation_result",
+      "title": "Receipt evidence and custody status",
+      "guidance": "State the Bill Of Lading Preparation outcome, restrictions, next action, and receiving owner.",
+      "blocks": [
+        {
+          "key": "result_evidence",
+          "type": "checklist",
+          "label": "Supporting records retained",
+          "items": [
+            "Source order and packing record",
+            "Weight or scale evidence",
+            "Approved instruction and classification source",
+            "Issued-document and handoff trace"
+          ],
+          "guidance": "Attach or link proof for transport shipment, commodity lines, package count, weight, classification, and instructions; mark only Bill Of Lading Preparation evidence present in that record."
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Operation outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Received or completed",
+                "Completed with exception",
+                "Partially completed",
+                "Held",
+                "Refused or returned"
+              ]
+            },
+            {
+              "key": "completed_at",
+              "label": "Completion date and time",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_action",
+              "label": "Remaining action or restriction",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner or receiving party",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Due date or trigger",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "operation_handoff",
+          "type": "signatures",
+          "label": "Operator and handoff acknowledgment",
+          "fields": [
+            {
+              "key": "operator_signature",
+              "label": "Operator or preparer",
+              "units": 1.1
+            },
+            {
+              "key": "operator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver, supervisor, or customer",
+              "units": 1.2
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "The Bill Of Lading Preparation acknowledgment records the transport shipment, commodity lines, package count, weight, classification, and instructions outcome. It cannot conceal a Bill Of Lading Preparation hold, exception, or shipping documentation coordinator restriction."
+        }
+      ]
+    }
+  ]
+}

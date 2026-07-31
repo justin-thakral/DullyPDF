@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_171__student_absence_note_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dey_171__student_absence_note_checklist.pdf",
+  "slug": "student-absence-note-checklist",
+  "title": "Student Absence Note Checklist",
+  "subtitle": "Document reported absence dates, attendance coding, missed work, and the return or correction route.",
+  "description": "Keeps the student, guardian source, absence period, attendance code, missed-work route, return condition, and any record correction in one attendance-office record.",
+  "use_case": "Use when a family reports a student absence or asks the school to correct the attendance record. Do not request medical detail that the school does not need. Attendance coding and required documentation follow the school's applicable policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Student Absence Note starting details",
+      "guidance": "Capture absence start and end dates, guardian source, attendance code, missed-work delivery, return condition, documentation status, and correction request.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Student Absence Note people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "absence_dates",
+              "label": "Absence dates",
+              "units": 1.1
+            },
+            {
+              "key": "guardian_source",
+              "label": "Guardian source",
+              "units": 1.2
+            },
+            {
+              "key": "attendance_code",
+              "label": "Attendance code",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Student Absence Note task details",
+          "fields": [
+            {
+              "key": "missed_work_route",
+              "label": "Missed-work route",
+              "units": 1.15
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.0
+            },
+            {
+              "key": "record_correction",
+              "label": "Record correction",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Student Absence Note checks and corrections",
+      "guidance": "Check current student absence note facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Student Absence Note required checks",
+          "items": [
+            "Absence dates is identified for this record",
+            "Guardian source matches the current request or source",
+            "Attendance code is ready for point-of-use staff",
+            "Missed-work route limits or questions are resolved",
+            "Return condition is communicated to the responsible person",
+            "Record correction is confirmed at handoff",
+            "A changed student absence note fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Student Absence Note failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Student Absence Note decision and readiness",
+      "guidance": "Hold student absence note readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Student Absence Note checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Student Absence Note reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_teacher_or_program_coordinator_and_date",
+              "label": "Responsible teacher or program coordinator and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Student Absence Note receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

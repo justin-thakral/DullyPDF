@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1452__school_transportation_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1452__school_transportation_checklist.pdf",
+  "slug": "school-transportation-checklist",
+  "title": "School Transportation Checklist",
+  "subtitle": "Capture route number, stop location, rider roster, and mobility support; confirm driver handoff and arrival reconciliation.",
+  "description": "School Transportation records route number, stop location, rider roster, mobility support, driver handoff, and arrival reconciliation. School Transportation evidence stays linked.",
+  "use_case": "Use this school transportation stage-gated verification when staff must document route number and stop location. Reconcile rider roster, mobility support, driver handoff, and arrival reconciliation before the school transportation handoff. Use the route sheet, stop map, rider roster, accessibility assignment, driver manifest, guardian transfer record, delay notice, scan or headcount, and arrival exception. Ask the assigned school transportation reviewer to confirm route number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "School Transportation contact and reference",
+      "guidance": "Match rider to route, stop and schedule; record mobility support, driver roster, guardian transfer, bus exception, arrival confirmation, and missed-stop response.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "School Transportation people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "route_number",
+              "label": "Route number",
+              "units": 1.1
+            },
+            {
+              "key": "stop_location",
+              "label": "Stop location",
+              "units": 1.2
+            },
+            {
+              "key": "rider_roster",
+              "label": "Rider roster",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "School Transportation task details",
+          "fields": [
+            {
+              "key": "mobility_support",
+              "label": "Mobility support",
+              "units": 1.15
+            },
+            {
+              "key": "driver_handoff",
+              "label": "Driver handoff",
+              "units": 1.0
+            },
+            {
+              "key": "arrival_reconciliation",
+              "label": "Arrival reconciliation",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "School Transportation checks and corrections review",
+      "guidance": "Check current school transportation facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "School Transportation required checks",
+          "items": [
+            "Route number is identified for this record",
+            "Stop location matches the current request or source",
+            "Rider roster is ready for point-of-use staff",
+            "Mobility support limits or questions are resolved",
+            "Driver handoff is communicated to the responsible person",
+            "Arrival reconciliation is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "School Transportation failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "School Transportation readiness and handoff",
+      "guidance": "Hold school transportation readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "School Transportation checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "School Transportation reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "School Transportation receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,366 @@
+{
+  "catalog_id": "construction_trades/dcf_156__work_authorization_checklist",
+  "description": "For work authorization, this checklist records authorized task boundary, inclusions, exclusions, budget code, schedule dates, quality hold points, and interfaces. Its supporting evidence includes approved drawings, permit status, readiness inspection, coordination record, and required training evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Authorization opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Authorization site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Authorization contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Authorization superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Authorization due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this work authorization record to its evidence.",
+          "key": "record_routing",
+          "label": "Work Authorization Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Contract package",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Work area",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Responsible crew",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Predecessor completion",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Permits",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture contract package, work area, responsible crew, predecessor completion, permits, submittals, and access window for this work authorization.",
+          "key": "core_identity",
+          "label": "Work Authorization Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify contract package, work area, responsible crew, predecessor completion, permits, submittals, and access window for this work authorization record.",
+      "key": "identity_1",
+      "title": "Checkpoint Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Authorized task boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Inclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Budget code",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Schedule dates",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For work authorization, record authorized task boundary, inclusions, exclusions, budget code, schedule dates, quality hold points, and interfaces.",
+          "key": "task_inputs",
+          "label": "Work Authorization Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the work authorization condition before marking.",
+          "items": [
+            "Tie notice-to-proceed release to the controlling scope exhibit and revision",
+            "Confirm workface planning, predecessor turnover, constraint removal, and crew mobilization",
+            "Reconcile procurement release, material staging, approved submittals, and fabrication status",
+            "Identify cost code, committed budget, allowance draw, and added-work spending ceiling",
+            "Schedule owner outage, utility isolation, access escort, and occupied-space coordination",
+            "Set inspection hold points, concealed-work release, benchmark, and turnover deliverable"
+          ],
+          "key": "task_checks",
+          "label": "Work Authorization Verification Points",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Reconcile unchecked work authorization items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Work Authorization Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Authorization checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Authorization review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Authorization qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Authorization check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each work authorization result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Work Authorization Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not release work with missing permits, unresolved design conflicts, unsafe access, unavailable controls, or exceeded authority. Do not release affected work authorization work.",
+          "key": "stop_boundary",
+          "label": "Work Authorization Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Authorization exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Authorization correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Authorization escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close work authorization exceptions with verification.",
+          "key": "exception_register",
+          "label": "Work Authorization Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Authorization notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Authorization notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Authorization interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Authorization review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Authorization release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep work authorization controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Work Authorization Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Work Authorization Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State work authorization limits, assumptions, and access gaps.",
+          "height": 36,
+          "key": "limitations",
+          "label": "Work Authorization Limitations and Interpretation",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Work Authorization Correction Verification and Release Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For work authorization, connect the correction to approved drawings, permit status, readiness inspection, coordination record, and required training evidence; name the release decision and retained work authorization limitation.",
+          "height": 45,
+          "key": "checklist_correction_verification",
+          "label": "Work Authorization Correction Verification and Release Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Verify work authorization conditions, control exceptions, and preserve release evidence.",
+      "key": "task_2",
+      "title": "Checklist Conditions, Exception, and Release"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Authorization when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Authorization measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Authorization evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Authorization result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For work authorization, record approved drawings, permit status, readiness inspection, coordination record, and required training evidence.",
+          "key": "evidence_register",
+          "label": "Work Authorization Findings, Measurements, and Evidence",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Approved drawings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Permit status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Readiness inspection",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Coordination record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every work authorization evidence source.",
+          "key": "evidence_sources",
+          "label": "Work Authorization Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support work authorization findings with approved drawings, permit status, readiness inspection, coordination record, and required training evidence.",
+      "key": "observation_4",
+      "title": "Verification Finding Record"
+    }
+  ],
+  "slug": "work-authorization-checklist",
+  "source_filename": "dcf_156__work_authorization_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Work Authorization Checklist: construction work authorization and release using contract package, authorized task boundary, and approved drawings.",
+  "title": "Work Authorization Checklist",
+  "use_case": "Use the checklist during construction work authorization and release when the work authorization record must identify contract package, work area, responsible crew, predecessor completion, permits, submittals, and access window. Complete the applicable handoff for authorization signatures, release conditions, field distribution, start record, and change-control linkage."
+}

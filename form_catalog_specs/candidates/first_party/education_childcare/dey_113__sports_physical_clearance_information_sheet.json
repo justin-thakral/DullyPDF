@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_113__sports_physical_clearance_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_113__sports_physical_clearance_information_sheet.pdf",
+  "slug": "sports-physical-clearance-information-sheet",
+  "title": "Sports Physical Clearance Information Sheet",
+  "subtitle": "Capture sport season, qualified clearance, activity restriction, and expiration; confirm emergency route and coach receipt.",
+  "description": "Sports Physical Clearance records sport season, qualified clearance, activity restriction, expiration, emergency route, and coach receipt. Sports Physical Clearance evidence stays linked.",
+  "use_case": "Use this sports physical clearance controlled information handoff when staff must document sport season and qualified clearance. Reconcile activity restriction, expiration, emergency route, and coach receipt before the sports physical clearance handoff. Use the qualified clearance document, examination date, restriction page, expiration tracker, athletic roster, coach receipt, emergency-card route, and renewal notice. Ask the assigned sports physical clearance reviewer to confirm sport season against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Sports Physical Clearance audience details review",
+      "guidance": "Record sport and season, qualified clearance source, participation restriction, effective period, expiration, emergency route, athletic-office receipt, and coach notice. Keep any urgent sports physical clearance issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Sports Physical Clearance people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "sport_season",
+              "label": "Sport season",
+              "units": 1.1
+            },
+            {
+              "key": "qualified_clearance",
+              "label": "Qualified clearance",
+              "units": 1.2
+            },
+            {
+              "key": "activity_restriction",
+              "label": "Activity restriction",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Sports Physical Clearance task details",
+          "fields": [
+            {
+              "key": "expiration",
+              "label": "Expiration",
+              "units": 1.15
+            },
+            {
+              "key": "emergency_route",
+              "label": "Emergency route",
+              "units": 1.0
+            },
+            {
+              "key": "coach_receipt",
+              "label": "Coach receipt",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Sports Physical Clearance exception review and current instructions",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Sports Physical Clearance instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Sports Physical Clearance questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Sports Physical Clearance update route and handoff",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Sports Physical Clearance effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Sports Physical Clearance update boundary",
+          "guidance": "Replace outdated sports physical clearance instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

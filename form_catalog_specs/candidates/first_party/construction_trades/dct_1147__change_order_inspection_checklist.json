@@ -1,0 +1,353 @@
+{
+  "catalog_id": "construction_trades/dct_1147__change_order_inspection_checklist",
+  "description": "For change order, this inspection checklist records added and deleted work, labor, material, equipment, subcontract, markup, exclusions, and time effect. Its supporting evidence includes field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Change opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Change site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Change contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Change superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Change due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this change order record to its evidence.",
+          "key": "record_routing",
+          "label": "Change Order Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Base work order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Directive",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Affected task",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Pricing basis",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain for this change order.",
+          "key": "core_identity",
+          "label": "Change Order Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain for this change order record.",
+      "key": "identity_1",
+      "title": "Site Reference and Inspector"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Added",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Deleted work",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Labor",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Material",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Subcontract",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For change order, record added and deleted work, labor, material, equipment, subcontract, markup, exclusions, and time effect.",
+          "key": "task_inputs",
+          "label": "Change Order Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the change order condition before marking.",
+          "items": [
+            "Verify added",
+            "Verify deleted work",
+            "Verify labor",
+            "Verify material",
+            "Verify equipment",
+            "Verify subcontract",
+            "Verify markup"
+          ],
+          "key": "task_checks",
+          "label": "Change Order Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Change checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Change review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Change qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Change check time",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the change order criteria and inspector.",
+          "key": "checkpoint_result",
+          "label": "Change Order Inspection Reference",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not execute discretionary changed work before written authorization within the approving party's limit. Route unresolved change order work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Change Order Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For change order, capture added and deleted work, labor, material, equipment, subcontract, markup, exclusions, and time effect.",
+      "key": "task_2",
+      "title": "Scope, Criteria, and Test Method"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Change when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Change measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Change evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Change result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For change order, record field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+          "key": "evidence_register",
+          "label": "Change Order Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Field directive",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Estimate sheets",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Quotes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Time records",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Schedule fragment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every change order evidence source.",
+          "key": "evidence_sources",
+          "label": "Change Order Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Change Order Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State change order limits, assumptions, and access gaps.",
+          "height": 48,
+          "key": "limitations",
+          "label": "Change Order Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support change order findings with field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+      "key": "observation_3",
+      "title": "Measured Finding Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select inspection checklist disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Correct and reinspect",
+                "Unsafe—do not release"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Change decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Inspector and qualification",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Criteria or release authority",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Correction or released next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate change order disposition.",
+          "key": "disposition",
+          "label": "Change Order Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Change Order Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the change order decision to evidence.",
+          "height": 42,
+          "key": "decision_basis",
+          "label": "Change Order Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Change qualified inspector and date",
+              "units": 1.0
+            },
+            {
+              "key": "release_authority",
+              "label": "Change release authority and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Change Order Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the change order next step from field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+      "key": "decision_4",
+      "title": "Release Decision"
+    }
+  ],
+  "slug": "change-order-inspection-checklist",
+  "source_filename": "dct_1147__change_order_inspection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Change Order Inspection Checklist: trade change-order development and acceptance using base work order, added, and field directive.",
+  "title": "Change Order Inspection Checklist",
+  "use_case": "Use the inspection checklist during trade change-order development and acceptance when the change order record must identify base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain. Complete the applicable handoff for accepted price and days, revised work order, cost and schedule posting, field release, and distribution record."
+}

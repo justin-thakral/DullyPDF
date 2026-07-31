@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1211__fire_alarm_inspection_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1211__fire_alarm_inspection_work_order_form.pdf",
+  "slug": "fire-alarm-inspection-work-order-form",
+  "title": "Fire Alarm Inspection Work Order Form",
+  "subtitle": "Fire Alarm Inspection: connects authorized scope to results.",
+  "description": "Fire Alarm Inspection Work Order Form covers fire alarm control unit, initiating devices, notification appliances, and interfaces. The facility fire-alarm coordinator records Fire Alarm Inspection authorized tasks, materials, results, and changes. Fire Alarm Inspection Work Order Form keeps Fire Alarm Inspection exceptions visible until the facility fire-alarm coordinator handoff.",
+  "use_case": "Use Fire Alarm Inspection Work Order Form at protected premises, panel location, zones, and sampled device locations. Document fire alarm control unit, initiating devices, notification appliances, and interfaces identity before Fire Alarm Inspection begins. Compare fire alarm control unit, initiating devices, notification appliances, and interfaces findings with stated Fire Alarm Inspection criteria; route unresolved Fire Alarm Inspection issues to qualified fire-alarm inspection supervisor. For Fire Alarm Inspection Work Order Form, confirm requirements for Fire Alarm Inspection. Ask qualified fire-alarm inspection supervisor to review Fire Alarm Inspection conditions beyond the facility fire-alarm coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Facility work-order scope review",
+      "guidance": "Bind Fire Alarm Inspection to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Request, asset, or work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Requesting department or site contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Facility, building, or service area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Facility Fire-Alarm Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Fire Alarm Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Premises and system account",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Panel make, model, and system identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Inspection scope, device list, and monitoring reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Fire Alarm Inspection identifier printed on fire alarm control unit, initiating devices, notification appliances, and interfaces or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized work observations and evidence",
+      "guidance": "Record authorized Fire Alarm Inspection activity; separate proposed, declined, deferred, or new Fire Alarm Inspection scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Fire Alarm Inspection task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Asset, zone, device, or component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method, part, or material",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Actual result or reading",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Technician or crew",
+              "units": 0.8
+            },
+            {
+              "key": "verified",
+              "label": "Verified by / time",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Fire Alarm Inspection work and verification points",
+          "items": [
+            "Panel normal, trouble, supervisory, and alarm status",
+            "Sampled initiating-device response",
+            "Audible and visible notification response",
+            "Monitoring or supervising-station communication",
+            "Interface, shutdown, and release function evidence",
+            "Impairment notice, fire watch, and restoration state"
+          ],
+          "guidance": "Use each Fire Alarm Inspection check to prompt documented fire alarm control unit, initiating devices, notification appliances, and interfaces execution; enter its actual Fire Alarm Inspection result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Fire Alarm Inspection parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Work exception and scope changes",
+      "guidance": "Stop Fire Alarm Inspection at any scope or cost limit; honor facility fire-alarm coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when any required fire-alarm function is impaired without approved interim protection and accountable restoration. Protect fire alarm control unit, initiating devices, notification appliances, and interfaces; document the Fire Alarm Inspection notification and await qualified fire-alarm inspection supervisor direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Alarm or supervisory signal not received",
+            "Notification appliance or interface fails",
+            "System left impaired or disabled",
+            "Device inventory or prior deficiency cannot be reconciled"
+          ],
+          "guidance": "For Fire Alarm Inspection, identify affected fire alarm control unit, initiating devices, notification appliances, and interfaces scope; ask facility fire-alarm coordinator to document the Fire Alarm Inspection immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected condition, scope change, added cost, and authorization response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, scope change, added cost, and authorization response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work authorization decision and site release",
+      "guidance": "Reconcile Fire Alarm Inspection to authorization; state facility fire-alarm coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Panel-event and test-history export",
+            "Device-by-device result record",
+            "Notification and transmission test evidence",
+            "Impairment and restoration notifications"
+          ],
+          "guidance": "Attach or link proof for fire alarm control unit, initiating devices, notification appliances, and interfaces; mark only Fire Alarm Inspection evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

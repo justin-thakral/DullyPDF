@@ -1,0 +1,349 @@
+{
+  "catalog_id": "business_operations/dbo_1802__project_change_request_approval_form",
+  "description": "For project change request, this approval form records requested change, rationale, alternatives, benefits, cost, schedule, risk, dependencies, rollback, and communication. Its supporting evidence includes impact analysis, estimate, architecture or process review, stakeholder comments, decision record, and revised plan.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Change opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Change site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Change contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Change process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Change due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this project change request record to its evidence.",
+          "key": "record_routing",
+          "label": "Project Change Request Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Project",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Sponsor",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Baseline scope",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Deliverables",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Milestone",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Budget",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture project, sponsor, baseline scope, deliverables, milestone, budget, resources, systems, and affected stakeholders for this project change request.",
+          "key": "core_identity",
+          "label": "Project Change Request Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify project, sponsor, baseline scope, deliverables, milestone, budget, resources, systems, and affected stakeholders for this project change request record.",
+      "key": "identity_1",
+      "title": "Proposal and Authority Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Requested change",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Rationale",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Alternatives",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Benefits",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Cost",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Schedule",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For project change request, record requested change, rationale, alternatives, benefits, cost, schedule, risk, dependencies, rollback, and communication.",
+          "key": "task_inputs",
+          "label": "Project Change Request Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Change decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Change supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Change review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified project change request facts from judgment.",
+          "key": "review_criteria",
+          "label": "Project Change Request Review Criteria and Support",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Resolve each failed project change request approval check.",
+          "items": [
+            "Decision statement is singular and unambiguous",
+            "Approver authority and any conflict are checked",
+            "Cost, schedule, quality, safety, and compliance effects are addressed",
+            "Alternatives and recommendation are documented",
+            "Conditions and effective period can be monitored",
+            "Implementation owner acknowledges the disposition"
+          ],
+          "key": "decision_readiness",
+          "label": "Project Change Request Decision Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not implement before required sponsor, budget, security, privacy, legal, or change-control approval. Route unresolved project change request work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Project Change Request Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For project change request, capture requested change, rationale, alternatives, benefits, cost, schedule, risk, dependencies, rollback, and communication.",
+      "key": "task_2",
+      "title": "Required Inputs and Review Criteria"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Change when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Change measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Change evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Change result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For project change request, record impact analysis, estimate, architecture or process review, stakeholder comments, decision record, and revised plan.",
+          "key": "evidence_register",
+          "label": "Project Change Request Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Impact analysis",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Estimate",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Architecture or process review",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Stakeholder comments",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Decision record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every project change request evidence source.",
+          "key": "evidence_sources",
+          "label": "Project Change Request Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support project change request findings with impact analysis, estimate, architecture or process review, stakeholder comments, decision record, and revised plan.",
+      "key": "observation_3",
+      "title": "Supporting Record Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select approval form disposition",
+                "Approve",
+                "Approve with conditions",
+                "Revise and resubmit",
+                "Reject"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Change decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Change approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Change authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Change review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate project change request disposition.",
+          "key": "disposition",
+          "label": "Project Change Request Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Project Change Request Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the project change request decision to evidence.",
+          "height": 48,
+          "key": "decision_basis",
+          "label": "Project Change Request Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Change request owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Change process reviewer and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Change delegated approver and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Project Change Request Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the project change request next step from impact analysis, estimate, architecture or process review, stakeholder comments, decision record, and revised plan.",
+      "key": "decision_4",
+      "title": "Approval Decision and Conditions"
+    }
+  ],
+  "slug": "project-change-request-approval-form",
+  "source_filename": "dbo_1802__project_change_request_approval_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Project Change Request Approval Form: business project change evaluation and governance using project, requested change, and impact analysis.",
+  "title": "Project Change Request Approval Form",
+  "use_case": "Use the approval form during business project change evaluation and governance when the project change request record must identify project, sponsor, baseline scope, deliverables, milestone, budget, resources, systems, and affected stakeholders. Complete the applicable handoff for decision and conditions, baseline update, implementation owner, communication, benefit tracking, and rejected-request record."
+}

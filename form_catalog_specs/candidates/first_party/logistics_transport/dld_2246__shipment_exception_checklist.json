@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2246__shipment_exception_checklist",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2246__shipment_exception_checklist.pdf",
+  "slug": "shipment-exception-checklist",
+  "title": "Shipment Exception Checklist",
+  "subtitle": "Shipment Exception: documents findings, limits, and disposition.",
+  "description": "Shipment Exception Checklist covers shipment, affected unit, route event, service commitment, evidence, and recovery action. The shipment exception coordinator records Shipment Exception criteria, findings, restrictions, and follow-up. Shipment Exception Checklist keeps Shipment Exception exceptions visible until the shipment exception coordinator handoff.",
+  "use_case": "Use Shipment Exception Checklist at origin, in-transit node, destination, vehicle, and recovery location. Document shipment, affected unit, route event, service commitment, evidence, and recovery action identity before Shipment Exception begins. Compare shipment, affected unit, route event, service commitment, evidence, and recovery action findings with stated Shipment Exception criteria; route unresolved Shipment Exception issues to transport operations reviewer. For Shipment Exception Checklist, confirm requirements for Shipment Exception. Ask transport operations reviewer to review Shipment Exception conditions beyond the shipment exception coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspector, location, and subject identity",
+      "guidance": "For Shipment Exception, identify responsible parties, origin, in-transit node, destination, vehicle, and recovery location, and the linked shipment, affected unit, route event, service commitment, evidence, and recovery action source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Shipper / custodian",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "location",
+              "label": "Transit / recovery point",
+              "units": 1.3333333333333333
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Shipment Exception identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Shipment, order, tracking, and service level",
+              "units": 2.4444444444444446
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, vehicle, route, and event",
+              "units": 1.8888888888888888
+            },
+            {
+              "key": "identity_3",
+              "label": "Affected item, piece, lot, serial, and quantity",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Observed conditions and item decisions",
+      "guidance": "Capture Shipment Exception facts for shipment, affected unit, route event, service commitment, evidence, and recovery action; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Shipment Exception inspection checks",
+          "items": [
+            "Exception type and discovery time",
+            "Last confirmed custody and location",
+            "Affected and unaffected quantity",
+            "Condition, delay, and customer impact",
+            "Containment, reroute, recovery, or return action",
+            "Notice, owner, target, and final service outcome"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Use observed Shipment Exception evidence to state disposition. Keep limits visible and give Shipment Exception Coordinator both correction and repeat-check responsibility.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Shipment cannot be located",
+            "Condition or quantity cannot be established",
+            "Unsafe cargo or handling concern",
+            "Customer commitment changes without authority",
+            "Tracking and custody chronology",
+            "Condition or location photographs",
+            "Customer and carrier notification",
+            "Recovery action and final disposition"
+          ],
+          "guidance": "Pause Shipment Exception when location, custody, condition, customer communication, or authorized recovery remains unresolved. Retain the available Shipment Exception proof and route unresolved shipment, affected unit, route event, service commitment, evidence, and recovery action scope to shipment exception coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Shipment Exception Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Transport Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

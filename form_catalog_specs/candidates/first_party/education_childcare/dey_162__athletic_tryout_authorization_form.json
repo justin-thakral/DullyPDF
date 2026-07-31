@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_162__athletic_tryout_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_162__athletic_tryout_authorization_form.pdf",
+  "slug": "athletic-tryout-authorization-form",
+  "title": "Athletic Tryout Authorization Form",
+  "subtitle": "Capture team level, evaluation station, equipment, and exertion limit; confirm roster decision and coach handoff.",
+  "description": "Athletic Tryout records team level, evaluation station, equipment, exertion limit, roster decision, and coach handoff. Athletic Tryout evidence stays linked.",
+  "use_case": "Use this athletic tryout authorization decision when staff must document team level and evaluation station. Reconcile equipment, exertion limit, roster decision, and coach handoff before the athletic tryout handoff. Use the evaluation rubric, station score sheets, equipment issue record, activity restriction notice, coach roster, selection rationale, and result message. Ask the assigned athletic tryout reviewer to confirm team level against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Athletic Tryout signer details review",
+      "guidance": "Capture the sport level, evaluation stations, issued equipment, exertion restriction, scorer evidence, roster decision, and coach communication.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Athletic Tryout people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_team",
+              "label": "Grade or team",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "team_level",
+              "label": "Team level",
+              "units": 1.2
+            },
+            {
+              "key": "evaluation_station",
+              "label": "Evaluation station",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Athletic Tryout task details",
+          "fields": [
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.15
+            },
+            {
+              "key": "exertion_limit",
+              "label": "Exertion limit",
+              "units": 1.0
+            },
+            {
+              "key": "roster_decision",
+              "label": "Roster decision",
+              "units": 1.25
+            },
+            {
+              "key": "coach_handoff",
+              "label": "Coach handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Athletic Tryout scope choices review",
+      "guidance": "Decide each athletic tryout scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Athletic Tryout itemized scope",
+          "fields": [
+            {
+              "key": "team_level",
+              "label": "Team level",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "evaluation_station",
+              "label": "Evaluation station",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "exertion_limit",
+              "label": "Exertion limit",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "roster_decision",
+              "label": "Roster decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "coach_handoff",
+              "label": "Coach handoff",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Athletic Tryout authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Athletic Tryout effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Athletic Tryout exception review and signer receipt",
+      "guidance": "Only recorded athletic tryout choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Athletic Tryout limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Athletic Tryout signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "school_or_program_reviewer_and_date",
+              "label": "School or program reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Athletic Tryout signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Athletic Tryout authorization boundary",
+          "guidance": "Named athletic tryout reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

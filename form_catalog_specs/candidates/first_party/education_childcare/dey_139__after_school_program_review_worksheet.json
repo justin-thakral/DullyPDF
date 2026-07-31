@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_139__after_school_program_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_139__after_school_program_review_worksheet.pdf",
+  "slug": "after-school-program-review-worksheet",
+  "title": "After School Program Review Worksheet",
+  "subtitle": "Capture activity block, homework period, snack service, and dismissal roster; confirm late pickup and family communication.",
+  "description": "After School Program records activity block, homework period, snack service, dismissal roster, late pickup, and family communication. After School Program evidence stays linked.",
+  "use_case": "Use this after school program evidence-based review when staff must document activity block and homework period. Reconcile snack service, dismissal roster, late pickup, and family communication before the after school program handoff. Useful evidence includes the activity calendar, homework plan, snack roster, dismissal sheet, family message, and end-of-day pickup log. Ask the assigned after school program reviewer to confirm activity block against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "After School Program contact and reference",
+      "guidance": "Plan the activity block, homework period, snack service, dismissal roster, family message channel, and end-of-day pickup reconciliation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "After School Program people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_team",
+              "label": "Grade or team",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "activity_block",
+              "label": "Activity block",
+              "units": 1.1
+            },
+            {
+              "key": "homework_period",
+              "label": "Homework period",
+              "units": 1.2
+            },
+            {
+              "key": "snack_service",
+              "label": "Snack service",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "After School Program task details",
+          "fields": [
+            {
+              "key": "dismissal_roster",
+              "label": "Dismissal roster",
+              "units": 1.15
+            },
+            {
+              "key": "late_pickup",
+              "label": "Late pickup",
+              "units": 1.0
+            },
+            {
+              "key": "family_communication",
+              "label": "Family communication",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "After School Program discussion",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "After School Program strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_activity_block",
+              "label": "Strength, progress, or successful support related to activity block"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "After School Program questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_snack_service",
+              "label": "Concern, missing context, or question about snack service"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "After School Program participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_dismissal_roster",
+              "label": "Priority, preference, or proposed support for dismissal roster"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "After School Program decision and action plan",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "After School Program agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "After School Program follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "After School Program review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

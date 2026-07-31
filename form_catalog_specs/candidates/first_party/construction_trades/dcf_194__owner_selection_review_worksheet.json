@@ -1,0 +1,342 @@
+{
+  "catalog_id": "construction_trades/dcf_194__owner_selection_review_worksheet",
+  "description": "For owner selection, this review worksheet records available options, performance criteria, finish attributes, lead time, cost delta, maintenance, and alternates. Its supporting evidence includes sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Selection opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Selection site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Selection contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Selection superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Selection due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this owner selection record to its evidence.",
+          "key": "record_routing",
+          "label": "Owner Selection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Selection category",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Rooms or systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Allowance",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Vendor",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities for this owner selection.",
+          "key": "core_identity",
+          "label": "Owner Selection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities for this owner selection record.",
+      "key": "identity_1",
+      "title": "Review Assignment and Question"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Available options",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Performance criteria",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Finish attributes",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Lead time",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Cost delta",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For owner selection, record available options, performance criteria, finish attributes, lead time, cost delta, maintenance, and alternates.",
+          "key": "task_inputs",
+          "label": "Owner Selection Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Selection decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Selection supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Selection review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified owner selection facts from judgment.",
+          "key": "review_criteria",
+          "label": "Owner Selection Review Criteria and Support",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Owner Selection Analysis and Alternatives",
+              "multiline": true
+            }
+          ],
+          "guidance": "Explain owner selection alternatives and retained uncertainty.",
+          "height": 50,
+          "key": "analysis",
+          "label": "Owner Selection Analysis and Alternatives",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "For owner selection, capture available options, performance criteria, finish attributes, lead time, cost delta, maintenance, and alternates.",
+      "key": "task_2",
+      "title": "Criteria and Analysis"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Selection when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Selection measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Selection evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Selection result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For owner selection, record sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+          "key": "evidence_register",
+          "label": "Owner Selection Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Sample approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Product data",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Pricing",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Mockup photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Designer recommendation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every owner selection evidence source.",
+          "key": "evidence_sources",
+          "label": "Owner Selection Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Owner Selection Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State owner selection limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Owner Selection Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support owner selection findings with sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+      "key": "observation_3",
+      "title": "Records Examined and Findings"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select review worksheet disposition",
+                "Recommend acceptance",
+                "Recommend conditions",
+                "Further review",
+                "Do not accept"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Selection decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Selection approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Selection authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Selection review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate owner selection disposition.",
+          "key": "disposition",
+          "label": "Owner Selection Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Owner Selection Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the owner selection decision to evidence.",
+          "height": 48,
+          "key": "decision_basis",
+          "label": "Owner Selection Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Selection coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Selection manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Selection decision recipient and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Owner Selection Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the owner selection next step from sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+      "key": "decision_4",
+      "title": "Reviewer Recommendation"
+    }
+  ],
+  "slug": "owner-selection-review-worksheet",
+  "source_filename": "dcf_194__owner_selection_review_worksheet.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Owner Selection Review Worksheet: owner finish or product selection control using selection category, available options, and sample approval.",
+  "title": "Owner Selection Review Worksheet",
+  "use_case": "Use the review worksheet during owner finish or product selection control when the owner selection record must identify selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities. Complete the applicable handoff for signed selection, budget and schedule update, procurement release, substitution rule, and field distribution."
+}

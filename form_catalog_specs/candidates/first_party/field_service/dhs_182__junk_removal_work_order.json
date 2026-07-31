@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_182__junk_removal_work_order",
+  "source_section": "field_service",
+  "source_filename": "dhs_182__junk_removal_work_order.pdf",
+  "slug": "junk-removal-work-order",
+  "title": "Junk Removal Work Order",
+  "subtitle": "Residential Junk Removal: connects authorized scope to results.",
+  "description": "Junk Removal Work Order covers removal item, load category, access path, protected property, and destination stream. The removal service coordinator records Residential Junk Removal authorized tasks, materials, results, and changes. Junk Removal Work Order keeps Residential Junk Removal exceptions visible until the removal service coordinator handoff.",
+  "use_case": "Use Junk Removal Work Order at residence, removal zone, carry path, loading point, and approved destination. Document removal item, load category, access path, protected property, and destination stream identity before Residential Junk Removal begins. Compare removal item, load category, access path, protected property, and destination stream findings with stated Residential Junk Removal criteria; route unresolved Residential Junk Removal issues to waste-routing operations reviewer. For Junk Removal Work Order, confirm requirements for Residential Junk Removal. Ask waste-routing operations reviewer to review Residential Junk Removal conditions beyond the removal service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Customer, provider, and approved-work evidence",
+      "guidance": "For Residential Junk Removal, identify responsible parties, residence, removal zone, carry path, loading point, and approved destination, and the linked removal item, load category, access path, protected property, and destination stream source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Record date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "scope_limit",
+              "label": "Scope / amount limit",
+              "units": 1.1111111111111112
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Junk Removal identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and job number",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_2",
+              "label": "Item category, estimated volume, and removal zone",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Access, parking, elevator, property, and destination restriction",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Authorized work and completion entries",
+      "guidance": "Capture Residential Junk Removal facts for removal item, load category, access path, protected property, and destination stream; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Authorized work lines",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Authorized task or service",
+              "units": 1.25
+            },
+            {
+              "key": "resources",
+              "label": "Part, material, or resource",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Work performed and result",
+              "units": 1.15
+            },
+            {
+              "key": "status",
+              "label": "Change, status, or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Junk Removal authorized-work checks",
+          "items": [
+            "Item type, count, volume, weight, and disassembly need",
+            "Reusable, recyclable, donation, trash, and special-handling stream",
+            "Sharp, liquid, battery, electronic, appliance, and unknown-material concern",
+            "Wall, floor, stair, door, and landscaping protection",
+            "Load securement and vehicle capacity",
+            "Final sweep, excluded item, and property condition"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Work evidence and customer acknowledgment",
+      "guidance": "Resolve open Residential Junk Removal conditions; have removal service coordinator assign the next Residential Junk Removal owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scope changes, holds, and retained evidence",
+          "items": [
+            "Unknown, hazardous, regulated, or prohibited material",
+            "Item weight or access exceeds safe capability",
+            "Property damage or concealed attachment risk",
+            "Destination will not accept the material",
+            "Before-and-after removal-zone photographs",
+            "Load volume and category record",
+            "Destination, receipt, or transfer evidence",
+            "Excluded-item and customer walkthrough"
+          ],
+          "guidance": "Pause Residential Junk Removal when material identity, safe handling, access, property protection, or lawful destination remains unresolved. Retain the available Residential Junk Removal proof and route unresolved removal item, load category, access path, protected property, and destination stream scope to removal service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Completion status and open work",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work-order status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed within authorization",
+                "Completed with listed change",
+                "Follow-up work required",
+                "Held for approval",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer work acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Removal Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1220__commercial_kitchen_equipment_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1220__commercial_kitchen_equipment_service_request_form.pdf",
+  "slug": "commercial-kitchen-equipment-service-request-form",
+  "title": "Commercial Kitchen Equipment Service Request Form",
+  "subtitle": "Commercial Kitchen Equipment Service: defines need, constraints, and assignment.",
+  "description": "Commercial Kitchen Equipment Service Request Form covers cooking, warewashing, holding, preparation, ventilation, or connected utility equipment. The kitchen facilities coordinator records Commercial Kitchen Equipment Service need, timing, access, and assignment. Commercial Kitchen Equipment Service Request Form keeps Commercial Kitchen Equipment Service exceptions visible until the kitchen facilities coordinator handoff.",
+  "use_case": "Use Commercial Kitchen Equipment Service Request Form at kitchen line, dish area, preparation area, utility point, and equipment position. Document cooking, warewashing, holding, preparation, ventilation, or connected utility equipment identity before Commercial Kitchen Equipment Service begins. Compare cooking, warewashing, holding, preparation, ventilation, or connected utility equipment findings with stated Commercial Kitchen Equipment Service criteria; route unresolved Commercial Kitchen Equipment Service issues to qualified commercial-equipment service supervisor. For Commercial Kitchen Equipment Service Request Form, confirm requirements for Commercial Kitchen Equipment Service. Ask qualified commercial-equipment service supervisor to review Commercial Kitchen Equipment Service conditions beyond the kitchen facilities coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requester, location, and subject details",
+      "guidance": "For Commercial Kitchen Equipment Service, identify responsible parties, kitchen line, dish area, preparation area, utility point, and equipment position, and the linked cooking, warewashing, holding, preparation, ventilation, or connected utility equipment source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Commercial Kitchen Equipment Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Site and kitchen area",
+              "units": 1.1666666666666667
+            },
+            {
+              "key": "identity_2",
+              "label": "Equipment type, make, model, serial, and asset tag",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Reported symptom, menu impact, and service reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested scope and practical constraints",
+      "guidance": "Capture Commercial Kitchen Equipment Service facts for cooking, warewashing, holding, preparation, ventilation, or connected utility equipment; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Commercial Kitchen Equipment Service intake confirmations",
+          "items": [
+            "Requested or already documented: power, gas, water, steam, drain, and ventilation connection condition",
+            "Requested or already documented: guards, interlocks, doors, latches, and accessible controls",
+            "Requested or already documented: heating, cooling, washing, holding, or cycle result",
+            "Requested or already documented: temperature, pressure, timing, and displayed fault readings",
+            "Requested or already documented: required food-contact-area protection and cleanup expectation",
+            "Requested or already documented: clearance, anchorage, casters, and restraint condition"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Commercial Kitchen Equipment Service request questions; have kitchen facilities coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Gas odor, damaged conductor, or active leak",
+            "Unsafe temperature control or failed safety device",
+            "Contamination introduced during service",
+            "Utility or ventilation defect outside service scope",
+            "Prior or requester-supplied: equipment label and pre-work condition images",
+            "Prior or requester-supplied: fault code and operating readings",
+            "Prior or requester-supplied: part and configuration record",
+            "Prior or requester-supplied: sanitation release and functional-test evidence"
+          ],
+          "guidance": "Do not assign or authorize the Commercial Kitchen Equipment Service request when a utility hazard, failed safety control, sanitation concern, or unsafe operating result remains. Retain information supplied with the request and route unresolved constraints to kitchen facilities coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Kitchen Facilities Coordinator",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

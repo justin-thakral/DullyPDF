@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2219__freight_damage_tracking_log",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2219__freight_damage_tracking_log.pdf",
+  "slug": "freight-damage-tracking-log",
+  "title": "Freight Damage Tracking Log",
+  "subtitle": "Freight Damage: preserves changes and next triggers.",
+  "description": "Freight Damage Tracking Log covers freight unit, packaging, damage area, affected quantity, custody event, and mitigation action. The freight exception coordinator records Freight Damage events, owners, exceptions, and next triggers. Freight Damage Tracking Log keeps Freight Damage exceptions visible until the freight exception coordinator handoff.",
+  "use_case": "Use Freight Damage Tracking Log at trailer, dock, warehouse zone, delivery location, and protected evidence area. Document freight unit, packaging, damage area, affected quantity, custody event, and mitigation action identity before Freight Damage begins. Compare freight unit, packaging, damage area, affected quantity, custody event, and mitigation action findings with stated Freight Damage criteria; route unresolved Freight Damage issues to claims or cargo-condition reviewer. For Freight Damage Tracking Log, confirm requirements for Freight Damage. Ask claims or cargo-condition reviewer to review Freight Damage conditions beyond the freight exception coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Freight Damage, identify responsible parties, trailer, dock, warehouse zone, delivery location, and protected evidence area, and the linked freight unit, packaging, damage area, affected quantity, custody event, and mitigation action source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Cargo owner / custodian",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "location",
+              "label": "Dock / evidence area",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Freight Damage identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Shipment, order, bill, and claim reference",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, trailer, seal, and custody identifiers",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, lot, serial, package, and affected-quantity identity",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status variance and accountable response",
+      "guidance": "Capture Freight Damage facts for freight unit, packaging, damage area, affected quantity, custody event, and mitigation action; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Freight Damage tracked controls",
+          "items": [
+            "Damage type, location, extent, and discovery time",
+            "Packaging, pallet, restraint, and moisture condition",
+            "Seal, vehicle, dock, and handling context",
+            "Affected and unaffected quantity reconciliation",
+            "Salvage, quarantine, rework, or mitigation action",
+            "Notice, inspection, and evidence preservation"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Keep the Freight Damage chronology intact through handoff. State the unresolved exception, the owner selected by Freight Exception Coordinator, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Affected quantity cannot be isolated",
+            "Evidence discarded or altered",
+            "Product creates safety or contamination concern",
+            "Liability or disposition decision requested without review",
+            "Overview and close-up damage photographs",
+            "Packaging and restraint photographs",
+            "Count, value, and document evidence",
+            "Custody chronology and notification proof"
+          ],
+          "guidance": "Pause Freight Damage when affected scope, evidence preservation, safe containment, notice, or authorized disposition remains unresolved. Retain the available Freight Damage proof and route unresolved freight unit, packaging, damage area, affected quantity, custody event, and mitigation action scope to freight exception coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Freight Exception Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Claims Or Cargo-Condition Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

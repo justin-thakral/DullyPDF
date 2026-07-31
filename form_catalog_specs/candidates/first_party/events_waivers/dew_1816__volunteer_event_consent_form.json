@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1816__volunteer_event_consent_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1816__volunteer_event_consent_form.pdf",
+  "slug": "volunteer-event-consent-form",
+  "title": "Volunteer Event Consent Form",
+  "subtitle": "Capture service role, shift, site lead, and task boundary; confirm equipment and hours confirmation.",
+  "description": "Volunteer Event records service role, shift, site lead, task boundary, equipment, and hours confirmation. Volunteer Event evidence stays linked.",
+  "use_case": "Use this volunteer event scoped consent when staff must document service role and shift. Reconcile site lead, task boundary, equipment, and hours confirmation before the volunteer event handoff. Use the role description, shift roster, site-lead brief, safety equipment issue, task completion sheet, break record, hours verification, and departure log. This record assigns a service contributor to a nonprofit or community shift with a task brief, site supervisor, tools, protective equipment, break coverage, verified hours, and service exit. Ask the assigned volunteer event reviewer to confirm service role against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Volunteer Event participant details review",
+      "guidance": "Assign service role, shift, site lead, task boundary, tool or protective equipment, breaks, accessibility route, completed hours, and departure.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Volunteer Event people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact_when_applicable",
+              "label": "Guardian contact when applicable",
+              "units": 1.1
+            },
+            {
+              "key": "service_role",
+              "label": "Service role",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Volunteer Event task details",
+          "fields": [
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 1.15
+            },
+            {
+              "key": "site_lead",
+              "label": "Site lead",
+              "units": 1.0
+            },
+            {
+              "key": "task_boundary",
+              "label": "Task boundary",
+              "units": 1.25
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.1
+            },
+            {
+              "key": "hours_confirmation",
+              "label": "Hours confirmation",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_choices",
+      "title": "Volunteer Event exception review and voluntary choices",
+      "guidance": "Present each choice independently; do not preselect an answer.",
+      "blocks": [
+        {
+          "key": "itemized_consent",
+          "type": "fields",
+          "label": "Volunteer Event itemized consent",
+          "fields": [
+            {
+              "key": "service_role",
+              "label": "Service role",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "site_lead",
+              "label": "Site lead",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "task_boundary",
+              "label": "Task boundary",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "hours_confirmation",
+              "label": "Hours confirmation",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consent_checks",
+          "type": "checklist",
+          "label": "Volunteer Event informed-choice checks",
+          "items": [
+            "Purpose and practical conditions are explained",
+            "Questions and access needs are addressed",
+            "Declining one choice does not decide another",
+            "Withdrawal route and practical limits are explained"
+          ]
+        },
+        {
+          "key": "consent_conditions",
+          "type": "fields",
+          "label": "Volunteer Event conditions and withdrawal",
+          "fields": [
+            {
+              "key": "choice_explained_by",
+              "label": "Choice explained by",
+              "units": 1.15
+            },
+            {
+              "key": "question_or_accessibility_need",
+              "label": "Question or accessibility need",
+              "units": 1.0
+            },
+            {
+              "key": "special_condition_or_exclusion",
+              "label": "Special condition or exclusion",
+              "units": 1.25
+            },
+            {
+              "key": "withdrawal_contact",
+              "label": "Withdrawal contact",
+              "units": 1.1
+            },
+            {
+              "key": "consent_copy_provided_date",
+              "label": "Consent copy provided date",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "consent_signoff",
+      "title": "Volunteer Event signer receipt and handoff",
+      "guidance": "Record the voluntary decision and responsible staff recipient.",
+      "blocks": [
+        {
+          "key": "consent_note",
+          "type": "textarea",
+          "label": "Volunteer Event question or limit",
+          "fields": [
+            {
+              "key": "question_explanation_declined_scope_or_participation_limit",
+              "label": "Question, explanation, declined scope, or participation limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "consent_signatures",
+          "type": "signatures",
+          "label": "Volunteer Event signatures",
+          "fields": [
+            {
+              "key": "person_giving_consent_and_date",
+              "label": "Person giving consent and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "The signature applies only to choices recorded above."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_177__bullying_incident_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_177__bullying_incident_authorization_form.pdf",
+  "slug": "bullying-incident-authorization-form",
+  "title": "Bullying Incident Authorization Form",
+  "subtitle": "Capture reported conduct, exact statement, location pattern, and protective step; confirm retaliation concern and support follow-up.",
+  "description": "Bullying Incident records reported conduct, exact statement, location pattern, protective step, retaliation concern, and support follow-up. Bullying Incident evidence stays linked.",
+  "use_case": "Use this bullying incident authorization decision when staff must document reported conduct and exact statement. Reconcile location pattern, protective step, retaliation concern, and support follow-up before the bullying incident handoff. Preserve the original report, dated witness accounts, location map or digital-channel reference, protective-action log, retaliation check, and restricted support record. Ask the assigned bullying incident reviewer to confirm reported conduct against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Bullying Incident contact and reference",
+      "guidance": "Separate reported conduct and exact statements from observations; record location patterns, protective measures, retaliation concerns, and support follow-up.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Bullying Incident people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "reporting_person_and_role",
+              "label": "Reporting person and role",
+              "units": 1.0
+            },
+            {
+              "key": "date_and_time_first_reported",
+              "label": "Date and time first reported",
+              "units": 1.25
+            },
+            {
+              "key": "school_or_program_location",
+              "label": "School or program location",
+              "units": 1.1
+            },
+            {
+              "key": "reported_conduct",
+              "label": "Reported conduct",
+              "units": 1.2
+            },
+            {
+              "key": "exact_statement",
+              "label": "Exact statement",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Bullying Incident task details",
+          "fields": [
+            {
+              "key": "location_pattern",
+              "label": "Location pattern",
+              "units": 1.15
+            },
+            {
+              "key": "protective_step",
+              "label": "Protective step",
+              "units": 1.0
+            },
+            {
+              "key": "retaliation_concern",
+              "label": "Retaliation concern",
+              "units": 1.25
+            },
+            {
+              "key": "support_follow_up",
+              "label": "Support follow-up",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Bullying Incident scope choices review",
+      "guidance": "Decide each bullying incident scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Bullying Incident itemized scope",
+          "fields": [
+            {
+              "key": "reported_conduct",
+              "label": "Reported conduct",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "exact_statement",
+              "label": "Exact statement",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "location_pattern",
+              "label": "Location pattern",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "protective_step",
+              "label": "Protective step",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "retaliation_concern",
+              "label": "Retaliation concern",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "support_follow_up",
+              "label": "Support follow-up",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Bullying Incident authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Bullying Incident effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Bullying Incident contact and reference",
+      "guidance": "Only recorded bullying incident choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Bullying Incident limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Bullying Incident signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "school_or_program_reviewer_and_date",
+              "label": "School or program reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Bullying Incident signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Bullying Incident authorization boundary",
+          "guidance": "Named bullying incident reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,328 @@
+{
+  "catalog_id": "construction_trades/dct_1119__hvac_installation_issue_tracking_log",
+  "description": "For hvac installation, this issue tracking log records load basis, placement, clearances, connections, commissioning points, permits, training, and warranty registration. Its supporting evidence includes equipment data, pressure test, vacuum record, airflow and temperature readings, startup sheet, and installation photos.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "HVAC opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "HVAC site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "HVAC contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "HVAC superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "HVAC due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this hvac installation record to its evidence.",
+          "key": "record_routing",
+          "label": "Hvac Installation Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Equipment model",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Capacity",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Refrigerant",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Duct or piping interfaces",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Controls",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Power",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture equipment model, capacity, refrigerant, duct or piping interfaces, controls, power, drain, and served zones for this hvac installation.",
+          "key": "core_identity",
+          "label": "Hvac Installation Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify equipment model, capacity, refrigerant, duct or piping interfaces, controls, power, drain, and served zones for this hvac installation record.",
+      "key": "identity_1",
+      "title": "Issue Register Coverage"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "HVAC when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "HVAC measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "HVAC evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "HVAC result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For hvac installation, record equipment data, pressure test, vacuum record, airflow and temperature readings, startup sheet, and installation photos.",
+          "key": "evidence_register",
+          "label": "Hvac Installation Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Equipment data",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Pressure test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Vacuum record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Airflow",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Temperature readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Startup sheet",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every hvac installation evidence source.",
+          "key": "evidence_sources",
+          "label": "Hvac Installation Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "HVAC dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "HVAC owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "HVAC escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep hvac installation items open through verification.",
+          "key": "open_item_register",
+          "label": "Hvac Installation Open Items and Next Actions",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not start equipment with unresolved electrical, combustion, refrigerant, drainage, clearance, or ventilation hazards. Route unresolved hvac installation work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Hvac Installation Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support hvac installation findings with equipment data, pressure test, vacuum record, airflow and temperature readings, startup sheet, and installation photos.",
+      "key": "observation_2",
+      "title": "Investigation Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not start equipment with unresolved electrical, combustion, refrigerant, drainage, clearance, or ventilation hazards. Do not release affected hvac installation work.",
+          "key": "stop_boundary",
+          "label": "Hvac Installation Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "HVAC exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "HVAC correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "HVAC escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close hvac installation exceptions with verification.",
+          "key": "exception_register",
+          "label": "Hvac Installation Exception and Corrective Action",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "HVAC notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "HVAC notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "HVAC interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "HVAC review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "HVAC release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep hvac installation controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Hvac Installation Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Hvac Installation Resolution Verification Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For hvac installation, compare the retest with equipment data, pressure test, vacuum record, airflow and temperature readings, startup sheet, and installation photos; preserve each hvac installation limitation and name its hvac installation restart or closure authority.",
+          "height": 55,
+          "key": "resolution_verification_notes",
+          "label": "Hvac Installation Resolution Verification Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "issue_resolution_handoff_1",
+              "label": "Commissioning acceptance",
+              "units": 1.0
+            },
+            {
+              "key": "issue_resolution_handoff_2",
+              "label": "Setpoints",
+              "units": 1.0
+            },
+            {
+              "key": "issue_resolution_handoff_3",
+              "label": "Owner training",
+              "units": 1.0
+            },
+            {
+              "key": "issue_resolution_handoff_4",
+              "label": "Warranty registration",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For hvac installation, record commissioning acceptance, setpoints, owner training, warranty registration, permit closure, and service baseline.",
+          "key": "issue_resolution_handoff",
+          "label": "Hvac Installation Resolution and Record Handoff",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Do not start equipment with unresolved electrical, combustion, refrigerant, drainage, clearance, or ventilation hazards. Control and route each hvac installation exception.",
+      "key": "exception_3",
+      "title": "Controls, Corrections, and Escalation"
+    }
+  ],
+  "slug": "hvac-installation-issue-tracking-log",
+  "source_filename": "dct_1119__hvac_installation_issue_tracking_log.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Hvac Installation Issue Tracking Log: HVAC equipment installation and startup using equipment model, load basis, and equipment data.",
+  "title": "HVAC Installation Issue Tracking Log",
+  "use_case": "Use the issue tracking log during HVAC equipment installation and startup when the hvac installation record must identify equipment model, capacity, refrigerant, duct or piping interfaces, controls, power, drain, and served zones. Complete the applicable handoff for commissioning acceptance, setpoints, owner training, warranty registration, permit closure, and service baseline."
+}

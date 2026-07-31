@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2601__catering_order_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2601__catering_order_request_form.pdf",
+  "slug": "dhe-2601-catering-order-request-form",
+  "title": "Catering Order Request Form",
+  "subtitle": "Capture menu line, guarantee date, production count, and delivery; confirm dietary instruction and client signoff.",
+  "description": "Catering Order records menu line, guarantee date, production count, delivery, dietary instruction, and client signoff. Catering Order evidence stays linked.",
+  "use_case": "Use this catering order request intake when staff must document menu line and guarantee date. Reconcile production count, delivery, dietary instruction, and client signoff before the catering order handoff. Use the signed order, menu-line worksheet, guarantee confirmation, kitchen production count, delivery ticket, dietary flag, service-equipment list, and receiving signature. Ask the assigned catering order reviewer to confirm menu line against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Catering Order requester details review",
+      "guidance": "Capture menu lines, per-person or tray quantities, guarantee date, production count, delivery address, dietary instructions, service equipment, and client signoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Catering Order people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "event_stay_or_reservation_date",
+              "label": "Event, stay, or reservation date",
+              "units": 1.1
+            },
+            {
+              "key": "menu_line",
+              "label": "Menu line",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Catering Order task details",
+          "fields": [
+            {
+              "key": "guarantee_date",
+              "label": "Guarantee date",
+              "units": 1.15
+            },
+            {
+              "key": "production_count",
+              "label": "Production count",
+              "units": 1.0
+            },
+            {
+              "key": "delivery",
+              "label": "Delivery",
+              "units": 1.25
+            },
+            {
+              "key": "dietary_instruction",
+              "label": "Dietary instruction",
+              "units": 1.1
+            },
+            {
+              "key": "client_signoff",
+              "label": "Client signoff",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Catering Order request scope",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Catering Order requested items",
+          "columns": [
+            {
+              "key": "requested_menu_line",
+              "label": "Requested menu line",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_guarantee_date",
+              "label": "Need or guarantee date",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_delivery",
+              "label": "Constraint or delivery",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Catering Order request checks",
+          "items": [
+            "Menu line is identified for this record",
+            "Guarantee date matches the current request or source",
+            "Production count is ready for point-of-use staff",
+            "Delivery limits or questions are resolved"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Catering Order decision and response",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Catering Order request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Catering Order request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

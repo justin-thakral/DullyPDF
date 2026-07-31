@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1438__classroom_volunteer_request_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1438__classroom_volunteer_request_form.pdf",
+  "slug": "classroom-volunteer-request-form",
+  "title": "Classroom Volunteer Request Form",
+  "subtitle": "Capture class assignment, approved task, student boundary, and screening status; confirm supervision and badge return.",
+  "description": "Classroom Volunteer records class assignment, approved task, student boundary, screening status, supervision, and badge return. Classroom Volunteer evidence stays linked.",
+  "use_case": "Use this classroom volunteer request intake when staff must document class assignment and approved task. Reconcile student boundary, screening status, supervision, and badge return before the classroom volunteer handoff. Use the screening clearance reference, classroom calendar, task brief, confidentiality acknowledgment, supervising-teacher assignment, badge log, and departure record. Ask the assigned classroom volunteer reviewer to confirm class assignment against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Classroom Volunteer requester details",
+      "guidance": "Define classroom assignment, approved tasks, student-contact boundaries, screening status, supervising teacher, badge custody, and departure.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Classroom Volunteer people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "class_assignment",
+              "label": "Class assignment",
+              "units": 1.2
+            },
+            {
+              "key": "approved_task",
+              "label": "Approved task",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Classroom Volunteer task details",
+          "fields": [
+            {
+              "key": "student_boundary",
+              "label": "Student boundary",
+              "units": 1.15
+            },
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "supervision",
+              "label": "Supervision",
+              "units": 1.25
+            },
+            {
+              "key": "badge_return",
+              "label": "Badge return",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Classroom Volunteer request scope review",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Classroom Volunteer requested items",
+          "columns": [
+            {
+              "key": "requested_class_assignment",
+              "label": "Requested class assignment",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_approved_task",
+              "label": "Need or approved task",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_screening_status",
+              "label": "Constraint or screening status",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Classroom Volunteer request checks",
+          "items": [
+            "Class assignment is identified for this record",
+            "Approved task matches the current request or source",
+            "Student boundary is ready for point-of-use staff",
+            "Screening status limits or questions are resolved",
+            "Supervision is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Classroom Volunteer response and handoff",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Classroom Volunteer request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Classroom Volunteer request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

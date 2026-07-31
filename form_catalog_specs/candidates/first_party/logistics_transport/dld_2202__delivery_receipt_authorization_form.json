@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2202__delivery_receipt_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2202__delivery_receipt_authorization_form.pdf",
+  "slug": "delivery-receipt-authorization-form",
+  "title": "Delivery Receipt Authorization Form",
+  "subtitle": "Distribution Delivery Receipt: bounds the decision, conditions, and expiry.",
+  "description": "Delivery Receipt Authorization Form controls purchase-order shipment, handling unit, seal, receiving dock, and custody transfer by tying each Distribution Delivery Receipt custody, document, or movement decision to the consignee / receiving authority, a stated boundary, and an expiry. The receiving lead preserves conditions, exceptions, confirmation, and both sides of the handoff.",
+  "use_case": "Use Delivery Receipt Authorization Form at origin, destination dock, staging zone, and receiving location. Check applicable Distribution Delivery Receipt requirements, list the affected quantity, value, document, route, or custody action, and state its limit. Record whether the consignee / receiving authority approves, conditions, holds, or declines the request; obtain renewed consent before changing purchase-order shipment, handling unit, seal, receiving dock, and custody transfer scope.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Decision context and authorization record",
+      "guidance": "For Distribution Delivery Receipt, identify responsible parties, origin, destination dock, staging zone, and receiving location, and the linked purchase-order shipment, handling unit, seal, receiving dock, and custody transfer source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Authorization ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Request date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Requesting party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Receiving point / dock",
+              "units": 1.2222222222222223
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Distribution Delivery Receipt identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Purchase order, shipment, and appointment",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, vehicle, trailer, and seal",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_3",
+              "label": "Handling-unit, pallet, carton, lot, and item identifiers",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested scope, limits, and decision lines",
+      "guidance": "Capture Distribution Delivery Receipt facts for purchase-order shipment, handling unit, seal, receiving dock, and custody transfer; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Requested scope and decision lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Requested scope or custody action",
+              "units": 1.2
+            },
+            {
+              "key": "basis",
+              "label": "Finding, rate, or source basis",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Limit or condition",
+              "units": 0.95
+            },
+            {
+              "key": "decision",
+              "label": "Decision or required change",
+              "units": 1.1
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Distribution Delivery Receipt authorization checks",
+          "items": [
+            "Arrival and dock times",
+            "Seal and trailer condition",
+            "Unit count and label match",
+            "Visible damage and packaging condition",
+            "Temperature or special-handling result",
+            "Receiver authority and custody point"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Authorization conditions and final decision",
+      "guidance": "Resolve open Distribution Delivery Receipt conditions; have receiving lead assign the next Distribution Delivery Receipt owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Decision limits, holds, and retained evidence",
+          "items": [
+            "Count or identity mismatch",
+            "Visible damage or compromised seal",
+            "Temperature or handling deviation",
+            "Receiver or dock authority unavailable",
+            "Signed unit-count record",
+            "Seal and trailer photographs",
+            "Damage and shortage evidence",
+            "Receiving-system transaction reference"
+          ],
+          "guidance": "Pause Distribution Delivery Receipt when identity, count, condition, handling, or custody acceptance remains unresolved. Retain the available Distribution Delivery Receipt proof and route unresolved purchase-order shipment, handling unit, seal, receiving dock, and custody transfer scope to receiving lead."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Authorization decision and limits",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Authorization decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved within listed limits",
+                "Approved with listed conditions",
+                "Revision required",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and authorizer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requesting party or authorized representative",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorizing authority: Distribution Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

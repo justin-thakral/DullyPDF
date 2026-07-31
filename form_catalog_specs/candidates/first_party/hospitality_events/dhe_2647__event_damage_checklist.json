@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2647__event_damage_checklist",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2647__event_damage_checklist.pdf",
+  "slug": "event-damage-checklist",
+  "title": "Event Damage Checklist",
+  "subtitle": "Capture affected property, pre-event condition, discovery time, and containment; confirm repair evidence and settlement.",
+  "description": "Event Damage records affected property, pre-event condition, discovery time, containment, repair evidence, and settlement. Event Damage evidence stays linked.",
+  "use_case": "Use this event damage stage-gated verification when staff must document affected property and pre-event condition. Reconcile discovery time, containment, repair evidence, and settlement before the event damage handoff. Use pre-event and post-event condition photos, inspection notes, vendor report, containment log, repair quote, invoice, insurance reference, settlement record, and venue acceptance. Ask the assigned event damage reviewer to confirm affected property against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Event Damage starting details",
+      "guidance": "Identify affected property, pre-event condition, discovery time, photographs, containment, vendor involvement, repair estimate, insurance route, settlement, and venue acceptance.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Event Damage people and reference",
+          "fields": [
+            {
+              "key": "operational_record_subject",
+              "label": "Operational record subject",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_contact",
+              "label": "Responsible contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_work_area",
+              "label": "Property, venue, or work area",
+              "units": 1.25
+            },
+            {
+              "key": "affected_property",
+              "label": "Affected property",
+              "units": 1.1
+            },
+            {
+              "key": "pre_event_condition",
+              "label": "Pre-event condition",
+              "units": 1.2
+            },
+            {
+              "key": "discovery_time",
+              "label": "Discovery time",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Event Damage task details",
+          "fields": [
+            {
+              "key": "containment",
+              "label": "Containment",
+              "units": 1.15
+            },
+            {
+              "key": "repair_evidence",
+              "label": "Repair evidence",
+              "units": 1.0
+            },
+            {
+              "key": "settlement",
+              "label": "Settlement",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Event Damage checks and corrections review",
+      "guidance": "Check current event damage facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Event Damage required checks",
+          "items": [
+            "Affected property is identified for this record",
+            "Pre-event condition matches the current request or source",
+            "Discovery time is ready for point-of-use staff",
+            "Containment limits or questions are resolved",
+            "Repair evidence is communicated to the responsible person",
+            "Settlement is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Event Damage failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Event Damage readiness and handoff",
+      "guidance": "Hold event damage readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Event Damage checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Event Damage reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Event Damage receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

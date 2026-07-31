@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_176__bullying_incident_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dey_176__bullying_incident_checklist.pdf",
+  "slug": "bullying-incident-checklist",
+  "title": "Bullying Incident Checklist",
+  "subtitle": "Capture reported conduct, exact statement, location pattern, and protective step; confirm retaliation concern and support follow-up.",
+  "description": "Bullying Incident records reported conduct, exact statement, location pattern, protective step, retaliation concern, and support follow-up. Bullying Incident evidence stays linked.",
+  "use_case": "Use this bullying incident stage-gated verification when staff must document reported conduct and exact statement. Reconcile location pattern, protective step, retaliation concern, and support follow-up before the bullying incident handoff. Preserve the original report, dated witness accounts, location map or digital-channel reference, protective-action log, retaliation check, and restricted support record. Ask the assigned bullying incident reviewer to confirm reported conduct against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Bullying Incident starting details",
+      "guidance": "Separate reported conduct and exact statements from observations; record location patterns, protective measures, retaliation concerns, and support follow-up.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Bullying Incident people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "reporting_person_and_role",
+              "label": "Reporting person and role",
+              "units": 1.0
+            },
+            {
+              "key": "date_and_time_first_reported",
+              "label": "Date and time first reported",
+              "units": 1.25
+            },
+            {
+              "key": "reported_conduct",
+              "label": "Reported conduct",
+              "units": 1.1
+            },
+            {
+              "key": "exact_statement",
+              "label": "Exact statement",
+              "units": 1.2
+            },
+            {
+              "key": "location_pattern",
+              "label": "Location pattern",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Bullying Incident task details",
+          "fields": [
+            {
+              "key": "protective_step",
+              "label": "Protective step",
+              "units": 1.15
+            },
+            {
+              "key": "retaliation_concern",
+              "label": "Retaliation concern",
+              "units": 1.0
+            },
+            {
+              "key": "support_follow_up",
+              "label": "Support follow-up",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Bullying Incident checks and corrections",
+      "guidance": "Check current bullying incident facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Bullying Incident required checks",
+          "items": [
+            "Reported conduct is identified for this record",
+            "Exact statement matches the current request or source",
+            "Location pattern is ready for point-of-use staff",
+            "Protective step limits or questions are resolved",
+            "Retaliation concern is communicated to the responsible person",
+            "Support follow-up is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Bullying Incident failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Bullying Incident exception review and readiness",
+      "guidance": "Hold bullying incident readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Bullying Incident checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Bullying Incident reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Bullying Incident receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

@@ -287,8 +287,8 @@ class FormSpec:
                 f"risk_tier must be one of {sorted(RISK_TIERS)}"
             )
         raw_sections = payload.get("sections")
-        if not isinstance(raw_sections, list) or not 3 <= len(raw_sections) <= 14:
-            raise SpecValidationError("sections must contain 3 to 14 workflow sections")
+        if not isinstance(raw_sections, list) or not 2 <= len(raw_sections) <= 14:
+            raise SpecValidationError("sections must contain 2 to 14 workflow sections")
         sections = tuple(
             SectionSpec.from_dict(section, f"sections[{index}]")
             for index, section in enumerate(raw_sections)

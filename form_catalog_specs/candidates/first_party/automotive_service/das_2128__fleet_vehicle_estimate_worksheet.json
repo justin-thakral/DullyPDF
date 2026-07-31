@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2128__fleet_vehicle_estimate_worksheet",
+  "source_section": "automotive_service",
+  "source_filename": "das_2128__fleet_vehicle_estimate_worksheet.pdf",
+  "slug": "fleet-vehicle-estimate-worksheet",
+  "title": "Fleet Vehicle Estimate Worksheet",
+  "subtitle": "Fleet Vehicle Service: prices observed scope, options, and exclusions.",
+  "description": "Fleet Vehicle Estimate Worksheet covers fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision. The fleet maintenance coordinator records Fleet Vehicle Service observed scope, costs, options, and terms. Fleet Vehicle Estimate Worksheet keeps Fleet Vehicle Service exceptions visible until the fleet maintenance coordinator handoff.",
+  "use_case": "Use Fleet Vehicle Estimate Worksheet at fleet yard, service facility, operating route, and vehicle assignment point. Document fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision identity before Fleet Vehicle Service begins. Compare fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision findings with stated Fleet Vehicle Service criteria; route unresolved Fleet Vehicle Service issues to qualified fleet maintenance reviewer. For Fleet Vehicle Estimate Worksheet, confirm requirements for Fleet Vehicle Service. Ask qualified fleet maintenance reviewer to review Fleet Vehicle Service conditions beyond the fleet maintenance coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "estimate_context",
+      "title": "Vehicle, customer, and estimate identity",
+      "guidance": "Identify the customer, asset or property, estimator, and basis date before pricing the work.",
+      "blocks": [
+        {
+          "key": "estimate_header",
+          "type": "fields",
+          "label": "Estimate header",
+          "fields": [
+            {
+              "key": "estimate_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "estimate_date",
+              "label": "Estimate date",
+              "units": 0.65
+            },
+            {
+              "key": "valid_until",
+              "label": "Valid until",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Customer, fleet, insurer, or payer",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shop, bay, roadside, or site",
+              "units": 1.1
+            },
+            {
+              "key": "estimator",
+              "label": "Fleet Maintenance Coordinator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Fleet Vehicle Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Fleet unit, work order, and department",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, engine hours, and assignment",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Driver report, interval, prior defect, and campaign reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Fleet Vehicle Service identifier printed on fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "estimate_scope",
+      "title": "Vehicle findings and pricing evidence",
+      "guidance": "Price the observable work and options. Keep concealed conditions and unconfirmed quantities out of fixed scope.",
+      "blocks": [
+        {
+          "key": "scope_observations",
+          "type": "checklist",
+          "label": "Fleet Vehicle Service scope observations",
+          "items": [
+            "Driver concern and operating impact",
+            "Scheduled-maintenance status",
+            "Vehicle-system inspection and diagnostic result",
+            "Parts, labor, downtime, and vendor status",
+            "Open campaign, recall, or recurring defect",
+            "Return-to-service restriction and driver handoff"
+          ],
+          "guidance": "Mark what was observed or supplied as estimate input; explain anything material that could not be inspected."
+        },
+        {
+          "key": "price_lines",
+          "type": "table",
+          "label": "Scope, quantities, options, and pricing",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Operation, diagnostic, or option",
+              "units": 1.25
+            },
+            {
+              "key": "labor",
+              "label": "Labor hours / amount",
+              "units": 0.85
+            },
+            {
+              "key": "parts",
+              "label": "Parts or materials amount",
+              "units": 0.95
+            },
+            {
+              "key": "fees",
+              "label": "Sublet, fee, tax, or allowance",
+              "units": 0.95
+            },
+            {
+              "key": "total",
+              "label": "Line total",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Required, option, or declined",
+              "units": 0.95
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "estimate_totals",
+          "type": "fields",
+          "label": "Estimate totals",
+          "fields": [
+            {
+              "key": "subtotal",
+              "label": "Subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "taxes",
+              "label": "Taxes",
+              "units": 0.7
+            },
+            {
+              "key": "fees",
+              "label": "Fees or disposal",
+              "units": 0.8
+            },
+            {
+              "key": "allowances",
+              "label": "Allowances",
+              "units": 0.8
+            },
+            {
+              "key": "discounts",
+              "label": "Discount or credit",
+              "units": 0.8
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "estimate_terms",
+      "title": "Estimate exception and change conditions",
+      "guidance": "State what could change the price, timing, method, or scope before the customer or responsible party decides.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when safety, maintenance, repeat-defect, authorization, or return-to-service concern remains unresolved. Protect fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision; document the Fleet Vehicle Service notification and await qualified fleet maintenance reviewer direction."
+        },
+        {
+          "key": "estimate_uncertainty",
+          "type": "checklist",
+          "label": "Conditions that may require a revised estimate or specialist review",
+          "items": [
+            "Safety defect or overdue critical service",
+            "Repeat failure lacks escalation",
+            "Repair exceeds authority or downtime commitment",
+            "Return-to-service review incomplete"
+          ],
+          "guidance": "For Fleet Vehicle Service, identify affected fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision scope; ask fleet maintenance coordinator to document the Fleet Vehicle Service immediate control before continuing."
+        },
+        {
+          "key": "assumptions_exclusions",
+          "type": "textarea",
+          "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "estimate_decision",
+      "title": "Estimate decision and selected repair scope",
+      "guidance": "Record the selected option and spending limit. Approval of an estimate authorizes only the stated scope and terms.",
+      "blocks": [
+        {
+          "key": "estimate_support",
+          "type": "checklist",
+          "label": "Estimate support retained",
+          "items": [
+            "Driver report and intake condition",
+            "Maintenance and diagnostic readings",
+            "Part, labor, and vendor trace",
+            "Qualified return-to-service and assignment record"
+          ],
+          "guidance": "Attach or link proof for fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision; mark only Fleet Vehicle Service evidence present in that record."
+        },
+        {
+          "key": "estimate_status",
+          "type": "fields",
+          "label": "Decision and selected scope",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Estimate decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved",
+                "Approved with selected options",
+                "Revision requested",
+                "Declined",
+                "Expired"
+              ]
+            },
+            {
+              "key": "selected_scope",
+              "label": "Selected option, scope, or limit",
+              "units": 1.2
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "follow_up",
+              "label": "Scheduling or revision next step",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "estimate_signatures",
+          "type": "signatures",
+          "label": "Estimate preparation and decision",
+          "fields": [
+            {
+              "key": "estimator_signature",
+              "label": "Estimator",
+              "units": 1.1
+            },
+            {
+              "key": "estimator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer or authorized decision maker",
+              "units": 1.25
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

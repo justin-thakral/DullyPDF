@@ -1,0 +1,357 @@
+{
+  "catalog_id": "construction_trades/dct_1104__roofing_repair_issue_tracking_log",
+  "description": "For roofing repair, this issue tracking log records leak history, wet-area boundary, repair method, temporary protection, materials, weather window, and occupant coordination. Its supporting evidence includes moisture readings, test cuts, infrared or visual findings, photos, water test, and repair detail.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Roofing opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Roofing site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Roofing contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Roofing superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Roofing due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this roofing repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Roofing Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Roof area",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Membrane or shingle system",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Penetrations",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Drainage",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Interior symptom",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture roof area, membrane or shingle system, penetrations, drainage, interior symptom, access, and warranty status for this roofing repair.",
+          "key": "core_identity",
+          "label": "Roofing Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify roof area, membrane or shingle system, penetrations, drainage, interior symptom, access, and warranty status for this roofing repair record.",
+      "key": "identity_1",
+      "title": "Issue Register Coverage"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Leak history",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Wet-area boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Repair method",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Temporary protection",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Materials",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For roofing repair, record leak history, wet-area boundary, repair method, temporary protection, materials, weather window, and occupant coordination.",
+          "key": "task_inputs",
+          "label": "Roofing Repair Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.35
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact or event",
+              "units": 2.6
+            },
+            {
+              "key": "action",
+              "label": "Roofing action lead",
+              "units": 2.0
+            },
+            {
+              "key": "due",
+              "label": "Due or next review",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.3
+            }
+          ],
+          "guidance": "Keep roofing repair chronology immutable.",
+          "key": "working_log",
+          "label": "Roofing Repair Dated Activity Log",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Roofing when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Roofing measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Roofing evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Roofing result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For roofing repair, record moisture readings, test cuts, infrared or visual findings, photos, water test, and repair detail.",
+          "key": "evidence_register",
+          "label": "Roofing Repair Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Moisture readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Test cuts",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Infrared or visual findings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Water test",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every roofing repair evidence source.",
+          "key": "evidence_sources",
+          "label": "Roofing Repair Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Roofing dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Roofing owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Roofing escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep roofing repair items open through verification.",
+          "key": "open_item_register",
+          "label": "Roofing Repair Open Items and Next Actions",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Roofing exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Roofing correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Roofing escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close roofing repair exceptions with verification.",
+          "key": "exception_register",
+          "label": "Roofing Repair Exception and Corrective Action",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Roofing notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Roofing notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Roofing interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Roofing review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Roofing release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep roofing repair controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Roofing Repair Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Roofing Repair Resolution Verification Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For roofing repair, compare the retest with moisture readings, test cuts, infrared or visual findings, photos, water test, and repair detail; preserve each roofing repair limitation and name its roofing repair restart or closure authority.",
+          "height": 55,
+          "key": "resolution_verification_notes",
+          "label": "Roofing Repair Resolution Verification Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Complete the roofing repair workflow in order; link each roofing repair decision, roofing repair exception, and roofing repair handoff to evidence.",
+      "key": "task_2",
+      "title": "Issue Investigation, Correction, and Verification"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Stop for unsafe access, lightning, saturated deck, suspected hazardous materials, or structural deterioration.",
+          "key": "stop_boundary",
+          "label": "Roofing Repair Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "guidance": "Do not release affected roofing repair work. Retain the named roofing repair authority and roofing repair record.",
+          "key": "final_release_authority",
+          "label": "Roofing Repair Release Authority and Record",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Do not release unresolved roofing repair work without the named roofing repair authority and retained roofing repair record.",
+      "key": "release_boundary_3",
+      "title": "Final Release Review Boundary"
+    }
+  ],
+  "slug": "roofing-repair-issue-tracking-log",
+  "source_filename": "dct_1104__roofing_repair_issue_tracking_log.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Roofing Repair Issue Tracking Log: roof leak diagnosis and repair execution using roof area, leak history, and moisture readings.",
+  "title": "Roofing Repair Issue Tracking Log",
+  "use_case": "Use the issue tracking log during roof leak diagnosis and repair execution when the roofing repair record must identify roof area, membrane or shingle system, penetrations, drainage, interior symptom, access, and warranty status. Complete the applicable handoff for watertightness verification, repair photos, warranty disposition, maintenance note, and customer signoff."
+}

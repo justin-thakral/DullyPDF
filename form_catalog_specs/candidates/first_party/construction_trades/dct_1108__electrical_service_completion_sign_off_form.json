@@ -1,0 +1,364 @@
+{
+  "catalog_id": "construction_trades/dct_1108__electrical_service_completion_sign_off_form",
+  "description": "For electrical service, this completion sign-off form records reported condition, troubleshooting boundary, isolation plan, parts, outage window, permits, and testing. Its supporting evidence includes meter readings, one-line reference, fault observations, thermal image, device condition, and test results.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Electrical opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Electrical site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Electrical contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Electrical superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Electrical due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this electrical service record to its evidence.",
+          "key": "record_routing",
+          "label": "Electrical Service Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Panel",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Circuit",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Voltage",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Load",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Disconnect",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Equipment served",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture panel, circuit, voltage, load, disconnect, equipment served, labels, and occupancy impact for this electrical service.",
+          "key": "core_identity",
+          "label": "Electrical Service Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify panel, circuit, voltage, load, disconnect, equipment served, labels, and occupancy impact for this electrical service record.",
+      "key": "identity_1",
+      "title": "Walkthrough Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Electrical when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Electrical measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Electrical evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Electrical result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For electrical service, record meter readings, one-line reference, fault observations, thermal image, device condition, and test results.",
+          "key": "evidence_register",
+          "label": "Electrical Service Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Meter readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "One-line reference",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Fault observations",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Thermal image",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Device condition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every electrical service evidence source.",
+          "key": "evidence_sources",
+          "label": "Electrical Service Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary electrical service evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Electrical Service Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "De-energize and escalate exposed live parts, arc-flash concerns, damaged service conductors, or work beyond qualification. Do not release affected electrical service work.",
+          "key": "stop_boundary",
+          "label": "Electrical Service Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Electrical exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Electrical correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Electrical escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close electrical service exceptions with verification.",
+          "key": "exception_register",
+          "label": "Electrical Service Exception and Corrective Action",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Electrical notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Electrical notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Electrical interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Electrical review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Electrical release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep electrical service controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Electrical Service Escalation Record",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Electrical open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Electrical owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Electrical acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer electrical service items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Electrical Service Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Compare electrical service findings with electrical service open items and decide the electrical service customer handoff.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding and Correction Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Electrical completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Functional test",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Label update",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Energized release",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Customer explanation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the electrical service outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Electrical Service Final Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Electrical Service Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For electrical service, document functional test, label update, energized release, customer explanation, permit result, and service record; identify each electrical service reservation and electrical service follow-up trigger, then record the electrical service instruction recipient.",
+          "height": 40,
+          "key": "acceptance_reservations",
+          "label": "Electrical Service Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Electrical trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Electrical site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Electrical Service Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the electrical service record with functional test, label update, energized release, customer explanation, permit result, and service record.",
+      "key": "closeout_4",
+      "title": "Customer Acceptance and Handoff"
+    }
+  ],
+  "slug": "electrical-service-completion-sign-off-form",
+  "source_filename": "dct_1108__electrical_service_completion_sign_off_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Electrical Service Completion Sign-Off Form: electrical service diagnosis and controlled repair using panel, reported condition, and meter readings.",
+  "title": "Electrical Service Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during electrical service diagnosis and controlled repair when the electrical service record must identify panel, circuit, voltage, load, disconnect, equipment served, labels, and occupancy impact. Complete the applicable handoff for functional test, label update, energized release, customer explanation, permit result, and service record."
+}

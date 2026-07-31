@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2130__used_car_inspection_work_order_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2130__used_car_inspection_work_order_form.pdf",
+  "slug": "used-car-inspection-work-order-form",
+  "title": "Used Car Inspection Work Order Form",
+  "subtitle": "Used Vehicle Inspection: connects authorized scope to results.",
+  "description": "Used Car Inspection Work Order Form covers vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input. The vehicle inspection coordinator records Used Vehicle Inspection authorized tasks, materials, results, and changes. Used Car Inspection Work Order Form keeps Used Vehicle Inspection exceptions visible until the vehicle inspection coordinator handoff.",
+  "use_case": "Use Used Car Inspection Work Order Form at inspection facility, lift bay, controlled test route, and document review area. Document vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input identity before Used Vehicle Inspection begins. Compare vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input findings with stated Used Vehicle Inspection criteria; route unresolved Used Vehicle Inspection issues to qualified independent automotive reviewer. For Used Car Inspection Work Order Form, confirm requirements for Used Vehicle Inspection. Ask qualified independent automotive reviewer to review Used Vehicle Inspection conditions beyond the vehicle inspection coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Vehicle repair-order details",
+      "guidance": "Bind Used Vehicle Inspection to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Customer, fleet, insurer, or payer",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shop, bay, roadside, or site",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Vehicle Inspection Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Used Vehicle Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Inspection, client, and seller",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, year, make, model, and mileage",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "History, title, service-record, and listing references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Used Vehicle Inspection identifier printed on vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input or its linked source record."
+        },
+        {
+          "key": "vehicle_work_context",
+          "type": "fields",
+          "label": "Vehicle work context",
+          "fields": [
+            {
+              "key": "odometer_in",
+              "label": "Odometer or operating hours in",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Vehicle findings and repair evidence",
+      "guidance": "Record authorized Used Vehicle Inspection activity; separate proposed, declined, deferred, or new Used Vehicle Inspection scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Used Vehicle Inspection labor or diagnostic step",
+              "units": 1.25
+            },
+            {
+              "key": "component",
+              "label": "System, component, or position",
+              "units": 1.0
+            },
+            {
+              "key": "part",
+              "label": "Part, fluid, material, or sublet",
+              "units": 1.1
+            },
+            {
+              "key": "qty",
+              "label": "Qty / hours",
+              "units": 0.65
+            },
+            {
+              "key": "result",
+              "label": "Performed result or note",
+              "units": 1.1
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Used Vehicle Inspection work and verification points",
+          "items": [
+            "Identity and displayed-mileage consistency",
+            "Body, glass, structure, paint, and prior-repair indicators",
+            "Engine, transmission, cooling, fuel, and exhaust operation",
+            "Brakes, steering, suspension, tires, and wheels",
+            "Electrical, controls, safety features, and accessories",
+            "Road test, scan, leaks, measurements, and inspection limitations"
+          ],
+          "guidance": "Use each Used Vehicle Inspection check to prompt documented vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input execution; enter its actual Used Vehicle Inspection result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Used Vehicle Inspection parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Repair exception and added-work limits",
+      "guidance": "Stop Used Vehicle Inspection at any scope or cost limit; honor vehicle inspection coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when identity, safe testing, access limitation, material defect, or communication boundary remains unresolved. Protect vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input; document the Used Vehicle Inspection notification and await qualified independent automotive reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "VIN or history inconsistency",
+            "Unsafe road-test condition",
+            "Material area inaccessible",
+            "Finding presented as guarantee or valuation without basis"
+          ],
+          "guidance": "For Used Vehicle Inspection, identify affected vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input scope; ask vehicle inspection coordinator to document the Used Vehicle Inspection immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Added work, revised diagnosis, cost change, and customer response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Added work, revised diagnosis, cost change, and customer response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Vehicle release decision and completion",
+      "guidance": "Reconcile Used Vehicle Inspection to authorization; state vehicle inspection coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "VIN and odometer evidence",
+            "Condition and defect photographs",
+            "Scan and measurement record",
+            "Limitations and prioritized finding summary"
+          ],
+          "guidance": "Attach or link proof for vehicle identity, history representation, visible condition, system test, measurement, limitation, and purchase decision input; mark only Used Vehicle Inspection evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

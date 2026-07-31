@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2630__prior_authorization_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2630__prior_authorization_form.pdf",
+  "slug": "prior-authorization-form",
+  "title": "Prior Authorization Form",
+  "subtitle": "Capture requested service, authenticated source, payer criteria, and supporting record; confirm decision and appeal.",
+  "description": "Prior records requested service, authenticated source, payer criteria, supporting record, decision, and appeal. Prior evidence stays linked.",
+  "use_case": "Use this prior authorization decision when staff must document requested service and authenticated source. Reconcile payer criteria, supporting record, decision, and appeal before the prior handoff. Use the service request, payer criterion, authenticated clinical source, supporting-document index, submission receipt, reference number, decision letter, and appeal calendar. This intake assembles a service request against payer criteria using authenticated clinical support, document indexing, submission prerequisites, reference creation, deadline tracking, and appeal readiness. Use a readiness inventory for prerequisite imaging, conservative-care history, benefit rule citations, attachments, missing-evidence requests, ordering-office ownership, and submission-channel preparation. Ask the assigned prior reviewer to confirm requested service against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Prior signer details review",
+      "guidance": "Identify requested service, authenticated clinical source, payer criterion, supporting records, submission channel, decision deadline, peer-review option, and appeal. Keep any urgent prior issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Prior people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "ordering_or_referring_professional",
+              "label": "Ordering or referring professional",
+              "units": 1.1
+            },
+            {
+              "key": "requested_service",
+              "label": "Requested service",
+              "units": 1.2
+            },
+            {
+              "key": "authenticated_source",
+              "label": "Authenticated source",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Prior task details",
+          "fields": [
+            {
+              "key": "payer_criteria",
+              "label": "Payer criteria",
+              "units": 1.15
+            },
+            {
+              "key": "supporting_record",
+              "label": "Supporting record",
+              "units": 1.0
+            },
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.25
+            },
+            {
+              "key": "appeal",
+              "label": "Appeal",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Prior exception review and scope choices",
+      "guidance": "Decide each prior scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Prior itemized scope",
+          "fields": [
+            {
+              "key": "requested_service",
+              "label": "Requested service",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "authenticated_source",
+              "label": "Authenticated source",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "payer_criteria",
+              "label": "Payer criteria",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "supporting_record",
+              "label": "Supporting record",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "appeal",
+              "label": "Appeal",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Prior authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Prior effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_care_recipient",
+              "label": "Authorized care recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            },
+            {
+              "key": "revocation_or_update_route",
+              "label": "Revocation or update route",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Prior decision and signer receipt",
+      "guidance": "Only recorded prior choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Prior limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Prior signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "clinical_or_administrative_reviewer_and_date",
+              "label": "Clinical or administrative reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Prior signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Prior authorization boundary",
+          "guidance": "Named prior reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2203__delivery_receipt_report_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2203__delivery_receipt_report_form.pdf",
+  "slug": "delivery-receipt-report-form",
+  "title": "Delivery Receipt Report Form",
+  "subtitle": "Distribution Delivery Receipt: reconciles results, variances, and follow-up.",
+  "description": "Delivery Receipt Report Form covers purchase-order shipment, handling unit, seal, receiving dock, and custody transfer. The receiving lead records Distribution Delivery Receipt source records, totals, variance, and distribution. Delivery Receipt Report Form keeps Distribution Delivery Receipt exceptions visible until the receiving lead handoff.",
+  "use_case": "Use Delivery Receipt Report Form at origin, destination dock, staging zone, and receiving location. Document purchase-order shipment, handling unit, seal, receiving dock, and custody transfer identity before Distribution Delivery Receipt begins. Compare purchase-order shipment, handling unit, seal, receiving dock, and custody transfer findings with stated Distribution Delivery Receipt criteria; route unresolved Distribution Delivery Receipt issues to distribution operations reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Report scope and responsible parties",
+      "guidance": "For Distribution Delivery Receipt, identify responsible parties, origin, destination dock, staging zone, and receiving location, and the linked purchase-order shipment, handling unit, seal, receiving dock, and custody transfer source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Report ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Supplier / receiver",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "location",
+              "label": "Receiving point / dock",
+              "units": 1.2222222222222223
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Distribution Delivery Receipt identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Purchase order, shipment, and appointment",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, vehicle, trailer, and seal",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_3",
+              "label": "Handling-unit, pallet, carton, lot, and item identifiers",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Report lines and recipient controls",
+      "guidance": "Capture Distribution Delivery Receipt facts for purchase-order shipment, handling unit, seal, receiving dock, and custody transfer; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Reported result lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Source record, item, or event",
+              "units": 1.2
+            },
+            {
+              "key": "expected",
+              "label": "Expected state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual result or variance",
+              "units": 1.05
+            },
+            {
+              "key": "follow_up",
+              "label": "Owner, recipient, or follow-up",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Distribution Delivery Receipt report checks",
+          "items": [
+            "Arrival and dock times",
+            "Seal and trailer condition",
+            "Unit count and label match",
+            "Visible damage and packaging condition",
+            "Temperature or special-handling result",
+            "Receiver authority and custody point"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Supporting records and recipient follow-up",
+      "guidance": "Resolve open Distribution Delivery Receipt conditions; have receiving lead assign the next Distribution Delivery Receipt owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Reconciliation exceptions and retained evidence",
+          "items": [
+            "Count or identity mismatch",
+            "Visible damage or compromised seal",
+            "Temperature or handling deviation",
+            "Receiver or dock authority unavailable",
+            "Signed unit-count record",
+            "Seal and trailer photographs",
+            "Damage and shortage evidence",
+            "Receiving-system transaction reference"
+          ],
+          "guidance": "Pause Distribution Delivery Receipt when identity, count, condition, handling, or custody acceptance remains unresolved. Retain the available Distribution Delivery Receipt proof and route unresolved purchase-order shipment, handling unit, seal, receiving dock, and custody transfer scope to receiving lead."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Report status and distribution",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Report review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for distribution",
+                "Distributed with follow-up",
+                "Correction required",
+                "Returned for clarification",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Report preparer and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Receiving Lead",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Distribution Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

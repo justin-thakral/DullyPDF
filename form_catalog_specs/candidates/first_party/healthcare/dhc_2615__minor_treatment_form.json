@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2615__minor_treatment_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2615__minor_treatment_form.pdf",
+  "slug": "minor-treatment-form",
+  "title": "Minor Treatment Form",
+  "subtitle": "Capture requested service, guardian authority, qualified decision, and consent limit; confirm encounter result and follow-up.",
+  "description": "Minor Treatment records requested service, guardian authority, qualified decision, consent limit, encounter result, and follow-up. Minor Treatment evidence stays linked.",
+  "use_case": "Use this minor treatment operational record when staff must document requested service and guardian authority. Reconcile qualified decision, consent limit, encounter result, and follow-up before the minor treatment handoff. Use the service request, minor and guardian identity checks, authority documentation, qualified recommendation, itemized consent, encounter record, aftercare instructions, and follow-up receipt. This authorization centers a minor, guardian or other lawful authority, a named treatment or procedure, qualified explanation, itemized limits, encounter result, aftercare receipt, and guardian follow-up. Ask the assigned minor treatment reviewer to confirm requested service against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "minor_guardian_and_service",
+      "title": "Minor, guardian, and requested service",
+      "guidance": "Identify the minor, lawful decision maker, and named service.",
+      "blocks": [
+        {
+          "key": "minor_and_guardian",
+          "type": "fields",
+          "label": "Minor and guardian identity",
+          "fields": [
+            {
+              "key": "minor_full_legal_name",
+              "label": "Minor full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_phone_or_email",
+              "label": "Guardian phone or email",
+              "units": 1.1
+            },
+            {
+              "key": "guardian_authority_source",
+              "label": "Guardian authority source",
+              "units": 1.2
+            },
+            {
+              "key": "service_date",
+              "label": "Service date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "service_request",
+          "type": "fields",
+          "label": "Requested treatment and qualified source",
+          "fields": [
+            {
+              "key": "requested_service",
+              "label": "Requested service",
+              "units": 1.15
+            },
+            {
+              "key": "qualified_decision_source",
+              "label": "Qualified decision source",
+              "units": 1.0
+            },
+            {
+              "key": "treating_professional",
+              "label": "Treating professional",
+              "units": 1.25
+            },
+            {
+              "key": "service_location",
+              "label": "Service location",
+              "units": 1.1
+            },
+            {
+              "key": "known_consent_limit",
+              "label": "Known consent limit",
+              "units": 1.2
+            },
+            {
+              "key": "consent_end_date_or_event",
+              "label": "Consent end date or event",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "explanation_and_choices",
+      "title": "Explanation, exception review, and itemized consent",
+      "guidance": "Present each treatment choice without preselection.",
+      "blocks": [
+        {
+          "key": "consent_readiness",
+          "type": "checklist",
+          "label": "Minor-treatment consent checks",
+          "items": [
+            "The named treatment or procedure is explained",
+            "Material risks, expected benefit, and practical alternatives are reviewed",
+            "Questions and language or accessibility needs are addressed",
+            "Guardian identity and authority are verified under policy",
+            "Any material treatment change requires renewed consent",
+            "Emergency action follows applicable policy and law"
+          ]
+        },
+        {
+          "key": "treatment_choices",
+          "type": "fields",
+          "label": "Itemized treatment decisions",
+          "fields": [
+            {
+              "key": "named_treatment_or_procedure",
+              "label": "Named treatment or procedure",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "related_medication_or_adjunct_if_separately_explained",
+              "label": "Related medication or adjunct if separately explained",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            },
+            {
+              "key": "alternative_postponement_or_referral_choice",
+              "label": "Alternative, postponement, or referral choice",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Consent",
+                "Consent with limit",
+                "Decline",
+                "Need explanation"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consent_conditions",
+          "type": "fields",
+          "label": "Consent conditions and withdrawal",
+          "fields": [
+            {
+              "key": "question_or_condition",
+              "label": "Question or condition",
+              "units": 1.15
+            },
+            {
+              "key": "consent_effective_date",
+              "label": "Consent effective date",
+              "units": 1.0
+            },
+            {
+              "key": "consent_end_date_or_event",
+              "label": "Consent end date or event",
+              "units": 1.25
+            },
+            {
+              "key": "update_or_withdrawal_contact",
+              "label": "Update or withdrawal contact",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "decision_and_encounter_receipt",
+      "title": "Guardian decision, encounter outcome, and receipt",
+      "guidance": "Keep the consent decision linked to the actual encounter and aftercare.",
+      "blocks": [
+        {
+          "key": "encounter_outcome",
+          "type": "fields",
+          "label": "Encounter outcome and aftercare",
+          "fields": [
+            {
+              "key": "guardian_consent_decision",
+              "label": "Guardian consent decision",
+              "units": 1.15
+            },
+            {
+              "key": "encounter_result",
+              "label": "Encounter result",
+              "units": 1.0
+            },
+            {
+              "key": "material_change_renew_consent",
+              "label": "Material change; renew consent",
+              "units": 1.25
+            },
+            {
+              "key": "aftercare_provided_by",
+              "label": "Aftercare provided by",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_date_or_contact",
+              "label": "Follow-up date or contact",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "treatment_signatures",
+          "type": "signatures",
+          "label": "Guardian consent and care-team receipt",
+          "fields": [
+            {
+              "key": "guardian_signature_and_date",
+              "label": "Guardian signature and date",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_name_and_relationship",
+              "label": "Guardian name and relationship",
+              "units": 1.0
+            },
+            {
+              "key": "care_team_receipt_and_date",
+              "label": "Care-team receipt and date",
+              "units": 1.25
+            }
+          ],
+          "guidance": "The signature applies only to the named treatment and limits recorded above."
+        },
+        {
+          "key": "treatment_boundary",
+          "type": "notice",
+          "label": "Treatment-consent boundary",
+          "guidance": "This template does not replace organization policy, professional explanation, or applicable consent law."
+        }
+      ]
+    }
+  ]
+}

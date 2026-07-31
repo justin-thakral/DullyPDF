@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2625__restaurant_reservation_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2625__restaurant_reservation_form.pdf",
+  "slug": "restaurant-reservation-form",
+  "title": "Restaurant Reservation Form",
+  "subtitle": "Capture the guest request, time, party size, seating needs, waitlist status, and confirmation.",
+  "description": "Coordinates one restaurant booking from guest contact through seating. It records the location, date and time, party size, seating preference, accessibility accommodation, occasion, waitlist position, confirmation, changes, and host receipt.",
+  "use_case": "Use when reservation staff accept, change, waitlist, or confirm a table. The request is not confirmed until its status and reservation owner are recorded. Questions about applicable accessibility or service requirements go to the restaurant's authorized manager.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "people_and_details",
+      "title": "Guest and booking request",
+      "guidance": "Identify restaurant reservation people, dates, and routing.",
+      "blocks": [
+        {
+          "key": "required_details_1",
+          "type": "fields",
+          "label": "Guest contact and booking date",
+          "fields": [
+            {
+              "key": "guest_full_name",
+              "label": "Guest full name",
+              "units": 1.15
+            },
+            {
+              "key": "mobile_phone",
+              "label": "Mobile phone",
+              "units": 1.0
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "units": 1.25
+            },
+            {
+              "key": "reservation_date",
+              "label": "Reservation date",
+              "units": 1.1
+            },
+            {
+              "key": "restaurant_location",
+              "label": "Restaurant location",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "required_details_2",
+          "type": "fields",
+          "label": "Confirmation, timing, and party",
+          "fields": [
+            {
+              "key": "reservation_owner_or_host",
+              "label": "Reservation owner or host",
+              "units": 1.15
+            },
+            {
+              "key": "seating_preference",
+              "label": "Seating preference",
+              "units": 1.0
+            },
+            {
+              "key": "accessibility_accommodation",
+              "label": "Accessibility accommodation",
+              "units": 1.25
+            },
+            {
+              "key": "confirmation_number",
+              "label": "Confirmation number",
+              "units": 1.1
+            },
+            {
+              "key": "reservation_time",
+              "label": "Reservation time",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "required_details_3",
+          "type": "fields",
+          "label": "Seating request, occasion, and waitlist",
+          "fields": [
+            {
+              "key": "party_size",
+              "label": "Party size",
+              "units": 1.15
+            },
+            {
+              "key": "table_need",
+              "label": "Table need",
+              "units": 1.0
+            },
+            {
+              "key": "occasion",
+              "label": "Occasion",
+              "units": 1.25
+            },
+            {
+              "key": "waitlist",
+              "label": "Waitlist",
+              "units": 1.1
+            },
+            {
+              "key": "seating_acceptance",
+              "label": "Seating acceptance",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_workflow",
+      "title": "Seating plan, timing, and waitlist",
+      "guidance": "Record booking changes, waitlist movement, guest communication, and current confirmation.",
+      "blocks": [
+        {
+          "key": "task_controls",
+          "type": "fields",
+          "label": "Confirmation timing and ownership",
+          "fields": [
+            {
+              "key": "request_received_date_and_time",
+              "label": "Request received date and time",
+              "units": 1.15
+            },
+            {
+              "key": "confirmation_status",
+              "label": "Confirmation status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Requested",
+                "Tentative",
+                "Confirmed",
+                "Waitlisted",
+                "Declined"
+              ]
+            },
+            {
+              "key": "confirmation_sent_at",
+              "label": "Confirmation sent at",
+              "units": 1.25
+            },
+            {
+              "key": "waitlist_position",
+              "label": "Waitlist position",
+              "units": 1.1
+            },
+            {
+              "key": "quoted_seating_time",
+              "label": "Quoted seating time",
+              "units": 1.2
+            },
+            {
+              "key": "reservation_owner",
+              "label": "Reservation owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "workflow_rows",
+          "type": "table",
+          "label": "Booking changes, waitlist, and guest communication",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "request_or_change",
+              "label": "Request or change",
+              "units": 1.1
+            },
+            {
+              "key": "seating_or_waitlist",
+              "label": "Seating or waitlist",
+              "units": 1.25
+            },
+            {
+              "key": "guest_notified",
+              "label": "Guest notified",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2,
+          "guidance": "Add a restaurant reservation row for each distinct change."
+        }
+      ]
+    },
+    {
+      "key": "outcome_and_receipt",
+      "title": "Service handoff and guest receipt",
+      "guidance": "Record unresolved restaurant reservation work, outcome, and receipt.",
+      "blocks": [
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Restaurant Reservation outcome and handoff",
+          "fields": [
+            {
+              "key": "reservation_outcome",
+              "label": "Reservation outcome",
+              "units": 1.15
+            },
+            {
+              "key": "guest_facing_note",
+              "label": "Guest-facing note",
+              "units": 1.0
+            },
+            {
+              "key": "next_action_and_owner",
+              "label": "Next action and owner",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up_due",
+              "label": "Follow-up due",
+              "units": 1.1
+            },
+            {
+              "key": "host_handoff_time",
+              "label": "Host handoff time",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "acknowledgments",
+          "type": "signatures",
+          "label": "Restaurant Reservation preparation and receipt",
+          "fields": [
+            {
+              "key": "reservation_owner_and_date",
+              "label": "Reservation owner and date",
+              "units": 1.15
+            },
+            {
+              "key": "host_receipt_and_date",
+              "label": "Host receipt and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Each restaurant reservation signature confirms role and date."
+        },
+        {
+          "key": "task_boundary",
+          "type": "notice",
+          "label": "Restaurant Reservation completion boundary",
+          "guidance": "A reservation request is not confirmed until a confirmation status and owner are recorded. Keep optional occasion and accessibility details separate from required booking information."
+        }
+      ]
+    }
+  ]
+}

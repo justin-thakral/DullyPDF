@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_181__junk_removal_checklist",
+  "source_section": "field_service",
+  "source_filename": "dhs_181__junk_removal_checklist.pdf",
+  "slug": "junk-removal-checklist",
+  "title": "Junk Removal Checklist",
+  "subtitle": "Residential Junk Removal: documents findings, limits, and disposition.",
+  "description": "Junk Removal Checklist covers removal item, load category, access path, protected property, and destination stream. The removal service coordinator records Residential Junk Removal criteria, findings, restrictions, and follow-up. Junk Removal Checklist keeps Residential Junk Removal exceptions visible until the removal service coordinator handoff.",
+  "use_case": "Use Junk Removal Checklist at residence, removal zone, carry path, loading point, and approved destination. Document removal item, load category, access path, protected property, and destination stream identity before Residential Junk Removal begins. Compare removal item, load category, access path, protected property, and destination stream findings with stated Residential Junk Removal criteria; route unresolved Residential Junk Removal issues to waste-routing operations reviewer. For Junk Removal Checklist, confirm requirements for Residential Junk Removal. Ask waste-routing operations reviewer to review Residential Junk Removal conditions beyond the removal service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Residential Junk Removal, identify responsible parties, residence, removal zone, carry path, loading point, and approved destination, and the linked removal item, load category, access path, protected property, and destination stream source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Junk Removal identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and job number",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_2",
+              "label": "Item category, estimated volume, and removal zone",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Access, parking, elevator, property, and destination restriction",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Residential Junk Removal facts for removal item, load category, access path, protected property, and destination stream; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Junk Removal inspection checks",
+          "items": [
+            "Item type, count, volume, weight, and disassembly need",
+            "Reusable, recyclable, donation, trash, and special-handling stream",
+            "Sharp, liquid, battery, electronic, appliance, and unknown-material concern",
+            "Wall, floor, stair, door, and landscaping protection",
+            "Load securement and vehicle capacity",
+            "Final sweep, excluded item, and property condition"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Before closing Residential Junk Removal, identify what failed or was not inspected, who owns correction, and when examination resumes. Removal Service Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Unknown, hazardous, regulated, or prohibited material",
+            "Item weight or access exceeds safe capability",
+            "Property damage or concealed attachment risk",
+            "Destination will not accept the material",
+            "Before-and-after removal-zone photographs",
+            "Load volume and category record",
+            "Destination, receipt, or transfer evidence",
+            "Excluded-item and customer walkthrough"
+          ],
+          "guidance": "Pause Residential Junk Removal when material identity, safe handling, access, property protection, or lawful destination remains unresolved. Retain the available Residential Junk Removal proof and route unresolved removal item, load category, access path, protected property, and destination stream scope to removal service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Removal Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Waste-Routing Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

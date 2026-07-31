@@ -1,0 +1,291 @@
+{
+  "catalog_id": "home_services/dhs_2628__handyman_visit_inspection_checklist",
+  "description": "For handyman visit, this inspection checklist records task sequence, authorized repair boundaries, customer-supplied items, added-work protocol, cleanup, and cost cap. Its supporting evidence includes task-level photos, measurements, parts used, functional checks, inaccessible conditions, and customer decisions.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this handyman visit review to the service record.",
+          "key": "service_review_reference",
+          "label": "Handyman Visit Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Customer account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Rooms",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Task list",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Fixtures",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed handyman visit location and assets.",
+          "key": "service_context",
+          "label": "Handyman Visit Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the handyman visit service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each handyman visit item after direct review.",
+          "items": [
+            "Every authorized visit item is checked separately",
+            "Fit, fastening, finish, and function meet the recorded criterion",
+            "Customer-supplied items and unused materials are reconciled",
+            "Adjacent surfaces, access points, and furnishings are undamaged",
+            "Deferred regulated-trade or hidden-condition work is identified",
+            "Cleanup, photos, customer walkthrough, and follow-up are complete"
+          ],
+          "key": "quality_checks",
+          "label": "Handyman Visit Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one handyman visit row for each reviewed area.",
+          "key": "area_results",
+          "label": "Handyman Visit Area and Task Results",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Stop any item involving hidden hazard, regulated trade work, structural change, unsafe access, or exceeded authority. Route unresolved handyman visit work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Handyman Visit Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Check completed handyman visit work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Recurring Service Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Visit owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each handyman visit concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "Handyman Visit Issue, Photo, and Correction Record",
+          "rows": 7,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Handyman Visit Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved handyman visit expectations here.",
+          "height": 42,
+          "key": "customer_concern",
+          "label": "Handyman Visit Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every handyman visit issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the handyman visit outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "Handyman Visit Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Completed-task reconciliation",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Deferred referrals",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "Materials return",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Property walkthrough",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For handyman visit, record completed-task reconciliation, deferred referrals, materials return, property walkthrough, and customer acceptance.",
+          "key": "quality_followup",
+          "label": "Handyman Visit Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "Handyman Visit Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the handyman visit result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Service Review and Handoff"
+    }
+  ],
+  "slug": "handyman-visit-inspection-checklist",
+  "source_filename": "dhs_2628__handyman_visit_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "Handyman Visit Inspection Checklist: multi-item handyman visit record using customer account, task sequence, and task-level photos.",
+  "title": "Handyman Visit Inspection Checklist",
+  "use_case": "Use the inspection checklist during multi-item handyman visit record when the handyman visit record must identify customer account, rooms, task list, fixtures, materials, access, property protection, and time allowance. Complete the applicable handoff for completed-task reconciliation, deferred referrals, materials return, property walkthrough, and customer acceptance."
+}

@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2600__food_safety_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2600__food_safety_form.pdf",
+  "slug": "food-safety-form",
+  "title": "Food Safety Form",
+  "subtitle": "Food Safety Control: captures actual activity and handoff.",
+  "description": "Food Safety Form covers food lot, process step, sanitation control, monitoring point, and corrective action. The food-safety record owner records Food Safety Control activity, quantities, variance, and handoff. Food Safety Form keeps Food Safety Control exceptions visible until the food-safety record owner handoff.",
+  "use_case": "Use Food Safety Form at receiving, storage, preparation, processing, packing, and service area. Document food lot, process step, sanitation control, monitoring point, and corrective action identity before Food Safety Control begins. Compare food lot, process step, sanitation control, monitoring point, and corrective action findings with stated Food Safety Control criteria; route unresolved Food Safety Control issues to qualified food-safety reviewer. For Food Safety Form, confirm requirements for Food Safety Control. Ask qualified food-safety reviewer to review Food Safety Control conditions beyond the food-safety record owner's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "operation_header",
+      "title": "Farm activity details",
+      "guidance": "Identify the Food Safety Control entry, responsible parties, and operating window.",
+      "blocks": [
+        {
+          "key": "operation_context",
+          "type": "fields",
+          "label": "Record and operating context",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Farm, lot, job, or period ID",
+              "units": 1.0
+            },
+            {
+              "key": "operation_date",
+              "label": "Date or operating period",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Farm, facility, customer, or account",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Farm, field, lot, room, booth, or site",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_person",
+              "label": "Food-Safety Record Owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Food Safety Control identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility, process, shift, and record",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Product, lot, batch, and supplier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Control point, limit, method, and monitoring device",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Food Safety Control identifier printed on food lot, process step, sanitation control, monitoring point, and corrective action or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "activity_record",
+      "title": "Activity observations and production evidence",
+      "guidance": "Enter one Food Safety Control row per task, item, reading, or event.",
+      "blocks": [
+        {
+          "key": "plan_and_window",
+          "type": "fields",
+          "label": "Plan and operating window",
+          "fields": [
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.65
+            },
+            {
+              "key": "planned_result",
+              "label": "Planned result or target",
+              "units": 1.2
+            },
+            {
+              "key": "procedure",
+              "label": "Procedure, order, label, or instruction reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "activity_lines",
+          "type": "table",
+          "label": "Food-safety control results",
+          "columns": [
+            {
+              "key": "control",
+              "label": "Process step or control point",
+              "units": 1.15
+            },
+            {
+              "key": "required",
+              "label": "Required limit or practice",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual time, temperature, or condition",
+              "units": 1.15
+            },
+            {
+              "key": "action",
+              "label": "Correction or disposition",
+              "units": 1.0
+            },
+            {
+              "key": "operator",
+              "label": "Initials / time",
+              "units": 0.75
+            }
+          ],
+          "rows": 7
+        }
+      ]
+    },
+    {
+      "key": "operation_controls",
+      "title": "Operating exception and corrections",
+      "guidance": "Record Food Safety Control variances, affected scope, immediate control, and owner.",
+      "blocks": [
+        {
+          "key": "operating_checks",
+          "type": "checklist",
+          "label": "Food Safety Control operating checks",
+          "items": [
+            "Time and temperature control",
+            "Cross-contact and allergen control",
+            "Sanitation and food-contact condition",
+            "Employee hygiene and illness routing",
+            "Pest, waste, water, and facility condition",
+            "Corrective action and affected-product disposition"
+          ],
+          "guidance": "Complete the Food Safety Control checks that apply to this food lot, process step, sanitation control, monitoring point, and corrective action activity; explain every unchecked required item."
+        },
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when product control, traceability, contamination, corrective action, or qualified disposition remains unresolved. Protect food lot, process step, sanitation control, monitoring point, and corrective action; document the Food Safety Control notification and await qualified food-safety reviewer direction."
+        },
+        {
+          "key": "operation_exceptions",
+          "type": "checklist",
+          "label": "Stop, hold, or correction triggers",
+          "items": [
+            "Control limit missed",
+            "Product identity or trace incomplete",
+            "Contamination or allergen concern",
+            "Qualified disposition unavailable"
+          ],
+          "guidance": "For Food Safety Control, identify affected food lot, process step, sanitation control, monitoring point, and corrective action scope; ask food-safety record owner to document the Food Safety Control immediate control before continuing."
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Exception, change from plan, affected scope, and immediate response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Exception, change from plan, affected scope, and immediate response",
+              "multiline": true
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "operation_result",
+      "title": "Activity outcome and next farm action",
+      "guidance": "State the Food Safety Control outcome, restrictions, next action, and receiving owner.",
+      "blocks": [
+        {
+          "key": "result_evidence",
+          "type": "checklist",
+          "label": "Supporting records retained",
+          "items": [
+            "Monitoring and calibration record",
+            "Lot and supplier trace",
+            "Sanitation or inspection evidence",
+            "Hold, correction, verification, and release decision"
+          ],
+          "guidance": "Attach or link proof for food lot, process step, sanitation control, monitoring point, and corrective action; mark only Food Safety Control evidence present in that record."
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Operation outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed as planned",
+                "Completed with correction",
+                "Follow-up required",
+                "Affected scope held",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "completed_at",
+              "label": "Completion date and time",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_action",
+              "label": "Remaining action or restriction",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner or receiving party",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Due date or trigger",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Food Safety Control outcome details, unresolved constraints, and receiving instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Food Safety Control outcome details, unresolved constraints, and receiving instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Document Food Safety Control outcome facts, unresolved operating limits, receiver directions, and the accountable next action."
+        },
+        {
+          "key": "operation_handoff",
+          "type": "signatures",
+          "label": "Operator and handoff acknowledgment",
+          "fields": [
+            {
+              "key": "operator_signature",
+              "label": "Operator or preparer",
+              "units": 1.1
+            },
+            {
+              "key": "operator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver, supervisor, or customer",
+              "units": 1.2
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "The Food Safety Control acknowledgment records the food lot, process step, sanitation control, monitoring point, and corrective action outcome. It cannot conceal a Food Safety Control hold, exception, or food-safety record owner restriction."
+        }
+      ]
+    }
+  ]
+}

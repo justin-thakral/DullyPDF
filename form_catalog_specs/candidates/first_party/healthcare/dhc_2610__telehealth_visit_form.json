@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2610__telehealth_visit_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2610__telehealth_visit_form.pdf",
+  "slug": "telehealth-visit-form",
+  "title": "Telehealth Visit Form",
+  "subtitle": "Capture patient location, technology check, identity verification, and privacy setting; confirm clinician connection and backup route.",
+  "description": "Telehealth Visit records patient location, technology check, identity verification, privacy setting, clinician connection, and backup route. Telehealth Visit evidence stays linked.",
+  "use_case": "Use this telehealth visit operational record when staff must document patient location and technology check. Reconcile identity verification, privacy setting, clinician connection, and backup route before the telehealth visit handoff. Use the appointment record, identity verification, physical-location confirmation, technology test, privacy check, clinician connection log, emergency backup, and after-visit handoff. This encounter centers remote connection readiness, video or audio platform, patient physical location, private setting, callback reliability, clinician link, local emergency route, and reconnection fallback. Ask the assigned telehealth visit reviewer to confirm patient location against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Telehealth Visit starting details review",
+      "guidance": "Verify patient identity and physical location, callback number, privacy setting, technology readiness, clinician connection, emergency jurisdiction, and backup route. Keep any urgent telehealth visit issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Telehealth Visit people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "patient_location_or_service_site",
+              "label": "Patient location or service site",
+              "units": 1.1
+            },
+            {
+              "key": "patient_callback_number",
+              "label": "Patient callback number",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Telehealth Visit task details",
+          "fields": [
+            {
+              "key": "patient_location",
+              "label": "Patient location",
+              "units": 1.15
+            },
+            {
+              "key": "technology_check",
+              "label": "Technology check",
+              "units": 1.0
+            },
+            {
+              "key": "identity_verification",
+              "label": "Identity verification",
+              "units": 1.25
+            },
+            {
+              "key": "privacy_setting",
+              "label": "Privacy setting",
+              "units": 1.1
+            },
+            {
+              "key": "clinician_connection",
+              "label": "Clinician connection",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_3",
+          "type": "fields",
+          "label": "Telehealth Visit timing and routing",
+          "fields": [
+            {
+              "key": "backup_route",
+              "label": "Backup route",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Telehealth Visit activity",
+      "guidance": "Record each meaningful telehealth visit event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Telehealth Visit activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "patient_location",
+              "label": "Patient location",
+              "units": 1.1
+            },
+            {
+              "key": "identity_verification",
+              "label": "Identity verification",
+              "units": 1.25
+            },
+            {
+              "key": "clinician_connection",
+              "label": "Clinician connection",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Telehealth Visit change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 44
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Telehealth Visit exception review and completion",
+      "guidance": "Leave the current telehealth visit result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Telehealth Visit final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Telehealth Visit completion receipt",
+          "fields": [
+            {
+              "key": "responsible_care_or_administrative_staff_and_date",
+              "label": "Responsible care or administrative staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded telehealth visit task status."
+        }
+      ]
+    }
+  ]
+}

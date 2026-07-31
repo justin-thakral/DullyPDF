@@ -28,9 +28,11 @@ intake through closeout without creating a second shadow document.
    source wording or layout.
 3. Write a one-sentence job statement: who opens the record, what event it
    controls, and what evidence proves it can be closed.
-4. Outline the real lifecycle before writing fields:
-   identity and routing; observations and evidence; decision and authorization;
-   exceptions and escalation; completion, handoff, and accountable closeout.
+4. Outline only the lifecycle stages the named task actually needs. Identity
+   and routing are normally required. Add observations, authorization,
+   exception handling, or closeout only when the user must record or decide
+   those things. A receipt, reservation, or sign-in log must not be expanded
+   into an intake-to-closeout governance packet.
 5. Add domain-specific branches. A strong form asks questions that would not
    make sense on a generic “service request” with only the title changed.
 
@@ -47,20 +49,60 @@ rows that can be completed in the same moment. Prefer:
 - `notice` for a short boundary, stop condition, or routing safeguard;
 - `signatures` for acknowledgment or authorization, not decorative sign-off.
 
-Every form should make unresolved work visible. An exception needs a condition,
-immediate action, owner, due point, escalation path, and final disposition when
-those concepts apply. Closeout should identify the outcome, remaining
-limitations, next action, responsible owner, handoff, and review or acceptance.
+When the document itself grants or withholds permission, consent, a release, a
+waiver, or authorization, it must include both a direct control that records
+the decision and a `signatures` receipt identifying the signer or responsible
+witness. Mentioning “permission” in a title or completion label is not a
+decision. Derivative checklists, intake records, information sheets, logs,
+reports, and worksheets should instead verify or route the underlying decision
+without pretending to grant it.
+
+Choice controls should begin with a neutral prompt such as `Select`. The
+renderer also inserts `Select` when an authored choice list begins with a
+substantive result, so a newly opened form never appears approved, completed,
+acceptable, or otherwise decided before the user makes a selection.
+
+Before drafting, list the irreducible inputs a user needs to perform the job.
+Those values must appear as direct `fields`, `table` columns, or `textarea`
+inputs. A checklist may confirm that a reservation time, patient date of birth,
+inspection reading, authorization choice, or delivery result was verified, but
+it cannot substitute for a place to record that value. A blank rendered form
+must let an operator complete the task named in the title without opening a
+second shadow document.
+
+Do not expose generator IDs, bracketed machine codes, prompt instructions,
+phrases such as “title-swapped,” or other internal authoring commentary in
+customer-visible copy. Do not force unrelated workflows through one fixed
+section/block/control envelope. Shared lifecycle concepts are expected, but
+the direct inputs, repeated rows, decision controls, and overall form size
+should follow the actual task.
+
+When unresolved work is part of the task, make it visible with a condition,
+immediate action, owner, due point, escalation path, and final disposition.
+When closeout is part of the task, identify the outcome, remaining limitations,
+next action, responsible owner, handoff, and review or acceptance. Do not add
+either stage solely to make the form look comprehensive.
 
 Risk tiers may be elevated from the catalog plan when the authored workflow
 requires it; they must never be downgraded. Tier B and C forms need explicit
 qualified-review, stop, escalation, and record-boundary prompts appropriate to
 the subject.
 
-The automated minimums—four sections, 45 controls, three block types, lifecycle
-coverage, and intent-specific language—are rejection floors, not targets.
-Do not add filler fields to satisfy them. A 200-control form is valuable only
-when each control supports the workflow.
+The automated floors are two sections, 12 controls, two block types,
+task-specific lifecycle coverage, and intent-specific language. They are not
+targets. Inherently focused absence notes, reservations, and acknowledgments
+are capped at three sections, 110 controls, and two rendered pages. A Tier-C
+focused task may use four sections, 180 controls, and three pages for required
+review language. Standard operational forms are capped at eight sections, 400
+controls, and six pages; genuinely complex applications, assessments, plans,
+and packets at ten sections, 500 controls, and eight pages.
+
+Those are fail-safe ceilings, not recommended sizes. Ordinary receipts, logs,
+sign-in records, checklists, requests, and work orders should still be one to
+three pages unless repeated rows or real task complexity justify more. The
+approved first-release exemplars show that a detailed custody log or incident
+record can legitimately be longer; a restaurant reservation or absence note
+cannot. Do not add filler fields to meet a floor or use every available page.
 
 ## Required verification
 
@@ -74,7 +116,23 @@ python3 -m scripts.form_catalog_factory qa-spec path/to/spec.json \
 
 Then validate it with its intended peer wave so semantic near-duplicates are
 visible. The final report must have zero errors, zero warnings, and no
-near-duplicate pair.
+near-duplicate pair. Batch QA also rejects customer-visible machine or
+authoring language, a full block/control structure reused across more than 25
+forms, the same task profile and section-role sequence reused across more than
+40 forms, or an eight-word metadata or section/block-guidance phrase reused
+across more than 40 forms. A control label of four or more words also fails when
+it appears in more than 25 percent of a batch, with a 40-form minimum before
+that rule applies. Repeating the same guidance across multiple sections of one
+form also fails; each section must explain its distinct task. Those are safety
+floors: a smaller profile or archetype wave still needs independent semantic
+review for direct core inputs, proportionate length, natural copy, and task
+fit.
+
+Every title, section or block label, field or table label, checklist item, and
+choice must start with polished sentence case. Adjacent repeated words such as
+`Scope Scope` fail QA. Do not evade reuse checks by attaching a task noun to
+generic shorthand such as `Cleaning requester/reporter`; write the natural
+label a real operator would expect.
 
 Render with the current shared renderer:
 
@@ -91,10 +149,24 @@ Run PDF QA with Poppler rendering and synthetic fill enabled. Verify:
 - every supported control fills, saves, reopens, and retains its value;
 - there is no orphan final page or sparse interior spill page.
 
+Release QA also rejects a multi-page form when the lowest widget on the final
+page remains above 45 percent of the page height from the PDF bottom edge. This
+catches a sparse tail even when it contains more than the six controls covered
+by the narrower orphan-page check. Rebalance real workflow content; do not add
+filler fields merely to satisfy the metric.
+
 Finally inspect every rendered page at readable resolution. Check title and
 section continuity, label wrapping, table headers, widget alignment, notices,
 page balance, footer clearance, and the final handoff. Automated QA cannot
-approve visual quality.
+approve visual quality. The independent reviewer must also open a deterministic
+sample spanning every profile and archetype, then confirm that the form records
+the title's core values directly rather than mentioning them only in checklist
+prose.
+
+The current non-legacy theme rejects any one-line title, section, block, notice,
+or field label that would have to be ellipsized at the renderer's minimum font
+size. Shorten the label or give it a wider field; do not rely on the tooltip to
+repair visibly truncated copy.
 
 Only after all checks pass should the worker complete the fenced claim with
 `complete-spec`. A lost or expired lease means discard the publication attempt;

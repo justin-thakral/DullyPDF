@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2638__harvest_record_request_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2638__harvest_record_request_form.pdf",
+  "slug": "harvest-record-request-form",
+  "title": "Harvest Record Request Form",
+  "subtitle": "Harvest Record: defines need, constraints, and assignment.",
+  "description": "Harvest Record Request Form covers crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff. The harvest operations owner records Harvest Record need, timing, access, and assignment. Harvest Record Request Form keeps Harvest Record exceptions visible until the harvest operations owner handoff.",
+  "use_case": "Use Harvest Record Request Form at field, block, harvest zone, loading point, and receiving or cooling location. Document crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff identity before Harvest Record begins. Compare crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff findings with stated Harvest Record criteria; route unresolved Harvest Record issues to farm production reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requester, location, and subject details",
+      "guidance": "For Harvest Record, identify responsible parties, field, block, harvest zone, loading point, and receiving or cooling location, and the linked crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Harvest Record identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Farm, field, block, crop, and variety",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Harvest date, crew, supervisor, and lot",
+              "units": 2.1666666666666665
+            },
+            {
+              "key": "identity_3",
+              "label": "Container, trailer, load, quantity, and destination",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested result, access, and timing",
+      "guidance": "Capture Harvest Record facts for crop, field or block, harvest crew, container, quantity, condition, lot, and receiving handoff; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Harvest Record intake confirmations",
+          "items": [
+            "Requested or already documented: harvest start, stop, and weather",
+            "Requested or already documented: crop maturity and visible condition",
+            "Requested or already documented: crew, tool, container, and hygiene readiness",
+            "Requested or already documented: quantity by container or load",
+            "Requested or already documented: field lot and label assignment",
+            "Requested or already documented: transport, cooling, receiving, rejection, and loss"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request routing and requester follow-up",
+      "guidance": "Resolve open Harvest Record request questions; have harvest operations owner record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Lot identity incomplete",
+            "Crop condition or contamination concern",
+            "Quantity or container count mismatch",
+            "Cooling or receiving handoff delayed",
+            "Prior or requester-supplied: field and lot assignment",
+            "Prior or requester-supplied: container or load count",
+            "Prior or requester-supplied: condition and exception photographs",
+            "Prior or requester-supplied: receiving, cooling, and quantity reconciliation"
+          ],
+          "guidance": "Do not assign or authorize the Harvest Record request when lot identity, crop condition, quantity, cooling, or receiving custody remains unresolved. Retain information supplied with the request and route unresolved constraints to harvest operations owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Harvest Operations Owner",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

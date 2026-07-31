@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2238__proof_of_delivery_report_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2238__proof_of_delivery_report_form.pdf",
+  "slug": "proof-of-delivery-report-form",
+  "title": "Proof of Delivery Report Form",
+  "subtitle": "Proof Of Delivery: reconciles results, variances, and follow-up.",
+  "description": "Proof of Delivery Report Form covers delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof. The delivery verification coordinator records Proof Of Delivery source records, totals, variance, and distribution. Proof of Delivery Report Form keeps Proof Of Delivery exceptions visible until the delivery verification coordinator handoff.",
+  "use_case": "Use Proof of Delivery Report Form at destination address, authorized delivery point, vehicle, and custody handoff. Document delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof identity before Proof Of Delivery begins. Compare delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof findings with stated Proof Of Delivery criteria; route unresolved Proof Of Delivery issues to delivery evidence reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Source records and reporting context",
+      "guidance": "For Proof Of Delivery, identify responsible parties, destination address, authorized delivery point, vehicle, and custody handoff, and the linked delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Report ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Sender / recipient",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Delivery / custody point",
+              "units": 1.3333333333333333
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Proof Of Delivery identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Order, shipment, and tracking",
+              "units": 1.6111111111111112
+            },
+            {
+              "key": "identity_2",
+              "label": "Piece, package, serial, seal, and quantity",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_3",
+              "label": "Recipient, organization, authority, and delivery-point identity",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Report lines and recipient controls",
+      "guidance": "Capture Proof Of Delivery facts for delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Proof Of Delivery report checks",
+          "items": [
+            "Arrival and delivery timestamp",
+            "Delivery point and access instruction",
+            "Recipient or alternate-delivery authority",
+            "Piece count and visible condition",
+            "Signature, photograph, scan, or other permitted proof",
+            "Refusal, unattended delivery, or failed-attempt basis"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Reported result lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Source record, item, or event",
+              "units": 1.2
+            },
+            {
+              "key": "expected",
+              "label": "Expected state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual result or variance",
+              "units": 1.05
+            },
+            {
+              "key": "follow_up",
+              "label": "Owner, recipient, or follow-up",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Reconciled outcome and reviewer acknowledgment",
+      "guidance": "Resolve open Proof Of Delivery conditions; have delivery verification coordinator assign the next Proof Of Delivery owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Reconciliation exceptions and retained evidence",
+          "items": [
+            "Recipient authority uncertain",
+            "Address or delivery point differs",
+            "Piece count or condition exception",
+            "Proof collection would exceed privacy policy",
+            "Tracking and scan events",
+            "Permitted delivery-point photograph",
+            "Recipient acknowledgment or exception reason",
+            "Custody and notification trace"
+          ],
+          "guidance": "Pause Proof Of Delivery when recipient, location, custody, condition, or permitted proof remains unresolved. Retain the available Proof Of Delivery proof and route unresolved delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof scope to delivery verification coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Report status and distribution",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Report review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for distribution",
+                "Distributed with follow-up",
+                "Correction required",
+                "Returned for clarification",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Report preparer and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Delivery Verification Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Delivery Evidence Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

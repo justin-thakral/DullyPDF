@@ -1,0 +1,285 @@
+{
+  "catalog_id": "home_services/dhs_2438__window_cleaning_inspection_checklist",
+  "description": "For window cleaning, this inspection checklist records interior or exterior surfaces, screen and track work, hard-water treatment, ladder or lift plan, exclusions, and price. Its supporting evidence includes count verification, pre-existing damage photos, access assessment, completed panes, and unresolved stain or seal findings.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this window cleaning review to the service record.",
+          "key": "service_review_reference",
+          "label": "Window Cleaning Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Window counts",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Types",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Floors",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Screens",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed window cleaning location and assets.",
+          "key": "service_context",
+          "label": "Window Cleaning Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the window cleaning service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Service Visit Reference"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each window cleaning item after direct review.",
+          "items": [
+            "Scheduled interior and exterior panes are reconciled",
+            "Glass is checked for streaks, residue, and missed edges",
+            "Screens, tracks, sills, and requested detail work are complete",
+            "Pre-existing cracks, failed seals, frames, and hardware are recorded",
+            "Inaccessible or weather-deferred panes have a reason",
+            "Access points, furnishings, floors, and property security are restored"
+          ],
+          "key": "quality_checks",
+          "label": "Window Cleaning Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one window cleaning row for each reviewed area.",
+          "key": "area_results",
+          "label": "Window Cleaning Area and Task Results",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Check completed window cleaning work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Room and Task Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Cleaning owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each window cleaning concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "Window Cleaning Issue, Photo, and Correction Record",
+          "rows": 7,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Window Cleaning Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved window cleaning expectations here.",
+          "height": 42,
+          "key": "customer_concern",
+          "label": "Window Cleaning Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every window cleaning issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the window cleaning outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "Window Cleaning Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Pane",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Screen check",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "Furniture restoration",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Damage exception",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For window cleaning, record pane and screen check, furniture restoration, damage exception, customer walkthrough, and future-service note.",
+          "key": "quality_followup",
+          "label": "Window Cleaning Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "Window Cleaning Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the window cleaning result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Crew and Customer Acknowledgment"
+    }
+  ],
+  "slug": "window-cleaning-inspection-checklist",
+  "source_filename": "dhs_2438__window_cleaning_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "Window Cleaning Inspection Checklist: window cleaning survey and service completion using window counts, interior or exterior surfaces, and count verification.",
+  "title": "Window Cleaning Inspection Checklist",
+  "use_case": "Use the inspection checklist during window cleaning survey and service completion when the window cleaning record must identify window counts, types, floors, screens, tracks, skylights, access, landscaping, and interior protection needs. Complete the applicable handoff for pane and screen check, furniture restoration, damage exception, customer walkthrough, and future-service note."
+}

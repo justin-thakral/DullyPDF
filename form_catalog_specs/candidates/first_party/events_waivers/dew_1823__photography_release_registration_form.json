@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1823__photography_release_registration_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1823__photography_release_registration_form.pdf",
+  "slug": "photography-release-registration-form",
+  "title": "Photography Release Registration Form",
+  "subtitle": "Capture image or audio, capture setting, name use, and publication channel; confirm duration and withdrawal.",
+  "description": "Photography Release records image or audio, capture setting, name use, publication channel, duration, and withdrawal. Photography Release evidence stays linked.",
+  "use_case": "Use this photography release registration and placement when staff must document image or audio and capture setting. Reconcile name use, publication channel, duration, and withdrawal before the photography release handoff. Use the production brief, capture list, subject match, permitted-use matrix, channel inventory, editing and attribution instruction, publication record, and withdrawal log. Ask the assigned photography release reviewer to confirm image or audio against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "subject_and_capture",
+      "title": "Subject identity, authority, and capture details",
+      "guidance": "Identify who may be recorded and the exact capture setting.",
+      "blocks": [
+        {
+          "key": "subject_details",
+          "type": "fields",
+          "label": "Person and release authority",
+          "fields": [
+            {
+              "key": "person_shown_or_recorded",
+              "label": "Person shown or recorded",
+              "units": 1.15
+            },
+            {
+              "key": "person_contact",
+              "label": "Person contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.1
+            },
+            {
+              "key": "contact_for_release_questions",
+              "label": "Contact for release questions",
+              "units": 1.2
+            },
+            {
+              "key": "release_effective_date",
+              "label": "Release effective date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "capture_details",
+          "type": "fields",
+          "label": "Capture and production details",
+          "fields": [
+            {
+              "key": "image_or_audio",
+              "label": "Image or audio",
+              "units": 1.15
+            },
+            {
+              "key": "capture_setting",
+              "label": "Capture setting",
+              "units": 1.0
+            },
+            {
+              "key": "capture_date_or_date_range",
+              "label": "Capture date or date range",
+              "units": 1.25
+            },
+            {
+              "key": "name_use",
+              "label": "Name use",
+              "units": 1.1
+            },
+            {
+              "key": "publication_owner",
+              "label": "Publication owner",
+              "units": 1.2
+            },
+            {
+              "key": "release_end_date_or_event",
+              "label": "Release end date or event",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "media_and_channel_choices",
+      "title": "Media, name-use, and publication decisions",
+      "guidance": "Choose each media type and publication channel independently.",
+      "blocks": [
+        {
+          "key": "media_choices",
+          "type": "fields",
+          "label": "Media and identity use",
+          "fields": [
+            {
+              "key": "still_image_choice",
+              "label": "Still image choice",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "video_choice",
+              "label": "Video choice",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "audio_choice",
+              "label": "Audio choice",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "name_or_quotation_choice",
+              "label": "Name or quotation choice",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "channel_choices",
+          "type": "fields",
+          "label": "Publication channel",
+          "fields": [
+            {
+              "key": "private_participant_or_client_channel",
+              "label": "Private participant or client channel",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "organization_website_or_email",
+              "label": "Organization website or email",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "organization_social_media",
+              "label": "Organization social media",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "print_display_or_program_material",
+              "label": "Print, display, or program material",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            },
+            {
+              "key": "external_partner_or_news_use",
+              "label": "External partner or news use",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Allow",
+                "Allow with limit",
+                "Do not allow"
+              ]
+            }
+          ],
+          "guidance": "Permission for one channel does not authorize another."
+        },
+        {
+          "key": "use_limits",
+          "type": "fields",
+          "label": "Audience, editing, duration, and storage limits",
+          "fields": [
+            {
+              "key": "audience_or_geographic_limit",
+              "label": "Audience or geographic limit",
+              "units": 1.15
+            },
+            {
+              "key": "editing_or_cropping_limit",
+              "label": "Editing or cropping limit",
+              "units": 1.0
+            },
+            {
+              "key": "attribution_preference",
+              "label": "Attribution preference",
+              "units": 1.25
+            },
+            {
+              "key": "duration_or_storage_limit",
+              "label": "Duration or storage limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "limits_withdrawal_and_receipt",
+      "title": "Limits, withdrawal, and release receipt",
+      "guidance": "Record declined uses, the withdrawal route, and the authorized signer.",
+      "blocks": [
+        {
+          "key": "special_limits",
+          "type": "textarea",
+          "label": "Declined uses or special instructions",
+          "fields": [
+            {
+              "key": "media_name_use_publication_channel_audience_or_editing_limit",
+              "label": "Media, name use, publication channel, audience, or editing limit"
+            }
+          ],
+          "height": 38
+        },
+        {
+          "key": "withdrawal_route",
+          "type": "fields",
+          "label": "Withdrawal and update route",
+          "fields": [
+            {
+              "key": "withdrawal_contact",
+              "label": "Withdrawal contact",
+              "units": 1.15
+            },
+            {
+              "key": "withdrawal_request_date",
+              "label": "Withdrawal request date",
+              "units": 1.0
+            },
+            {
+              "key": "published_asset_or_project_reference",
+              "label": "Published asset or project reference",
+              "units": 1.25
+            },
+            {
+              "key": "change_communicated_by",
+              "label": "Change communicated by",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "release_receipt",
+          "type": "signatures",
+          "label": "Release authorization and receipt",
+          "fields": [
+            {
+              "key": "person_or_guardian_signature_and_date",
+              "label": "Person or guardian signature and date",
+              "units": 1.15
+            },
+            {
+              "key": "printed_signer_name_and_authority",
+              "label": "Printed signer name and authority",
+              "units": 1.0
+            },
+            {
+              "key": "release_coordinator_receipt_and_date",
+              "label": "Release coordinator receipt and date",
+              "units": 1.25
+            }
+          ],
+          "guidance": "The signature applies only to the media, channel, duration, and limits selected above."
+        },
+        {
+          "key": "withdrawal_boundary",
+          "type": "notice",
+          "label": "Withdrawal boundary",
+          "guidance": "A later withdrawal stops new authorized use after it is processed, but may not retrieve material already published or distributed."
+        }
+      ]
+    }
+  ]
+}

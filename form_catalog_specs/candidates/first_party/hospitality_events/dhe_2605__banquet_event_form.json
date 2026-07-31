@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2605__banquet_event_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2605__banquet_event_form.pdf",
+  "slug": "banquet-event-form",
+  "title": "Banquet Event Form",
+  "subtitle": "Capture function space, guest count, setup, and banquet timing; confirm service owner and event acceptance.",
+  "description": "Banquet Event records function space, guest count, setup, banquet timing, service owner, and event acceptance. Banquet Event evidence stays linked.",
+  "use_case": "Use this banquet event operational record when staff must document function space and guest count. Reconcile setup, banquet timing, service owner, and event acceptance before the banquet event handoff. Use the function sheet, banquet-event order, floorplan, guaranteed count, menu schedule, audiovisual order, staffing assignment, captain report, and client signoff. Ask the assigned banquet event reviewer to confirm function space against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Banquet Event contact and reference",
+      "guidance": "Connect function space, guaranteed guest count, room setup, banquet-event order timing, meal courses, service captain, audiovisual needs, and client acceptance.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Banquet Event people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "event_stay_or_reservation_date",
+              "label": "Event, stay, or reservation date",
+              "units": 1.1
+            },
+            {
+              "key": "function_space",
+              "label": "Function space",
+              "units": 1.2
+            },
+            {
+              "key": "guest_count",
+              "label": "Guest count",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Banquet Event task details",
+          "fields": [
+            {
+              "key": "setup",
+              "label": "Setup",
+              "units": 1.15
+            },
+            {
+              "key": "banquet_timing",
+              "label": "Banquet timing",
+              "units": 1.0
+            },
+            {
+              "key": "service_owner",
+              "label": "Service owner",
+              "units": 1.25
+            },
+            {
+              "key": "event_acceptance",
+              "label": "Event acceptance",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Banquet Event activity",
+      "guidance": "Record each meaningful banquet event event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Banquet Event activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "function_space",
+              "label": "Function space",
+              "units": 1.1
+            },
+            {
+              "key": "setup",
+              "label": "Setup",
+              "units": 1.25
+            },
+            {
+              "key": "service_owner",
+              "label": "Service owner",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Banquet Event change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Banquet Event decision and completion",
+      "guidance": "Leave the current banquet event result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Banquet Event final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Banquet Event completion receipt",
+          "fields": [
+            {
+              "key": "responsible_service_or_operations_staff_and_date",
+              "label": "Responsible service or operations staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded banquet event task status."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_170__student_absence_note_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_170__student_absence_note_form.pdf",
+  "slug": "student-absence-note-form",
+  "title": "Student Absence Note Form",
+  "subtitle": "Document reported absence dates, attendance coding, missed work, and the return or correction route.",
+  "description": "Keeps the student, guardian source, absence period, attendance code, missed-work route, return condition, and any record correction in one attendance-office record.",
+  "use_case": "Use when a family reports a student absence or asks the school to correct the attendance record. Do not request medical detail that the school does not need. Attendance coding and required documentation follow the school's applicable policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "people_and_details",
+      "title": "Student and absence record",
+      "guidance": "Identify student absence note people, dates, and routing.",
+      "blocks": [
+        {
+          "key": "required_details_1",
+          "type": "fields",
+          "label": "Student, guardian, and school",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "school_name",
+              "label": "School name",
+              "units": 1.2
+            },
+            {
+              "key": "absence_dates",
+              "label": "Absence dates",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "required_details_2",
+          "type": "fields",
+          "label": "Absence dates, attendance, and missed work",
+          "fields": [
+            {
+              "key": "guardian_source",
+              "label": "Guardian source",
+              "units": 1.15
+            },
+            {
+              "key": "attendance_code",
+              "label": "Attendance code",
+              "units": 1.0
+            },
+            {
+              "key": "missed_work_route",
+              "label": "Missed-work route",
+              "units": 1.25
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.1
+            },
+            {
+              "key": "record_correction",
+              "label": "Record correction",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_workflow",
+      "title": "Attendance coding and missed work",
+      "guidance": "Record each absence date, attendance code, missed-work route, return need, and correction.",
+      "blocks": [
+        {
+          "key": "task_controls",
+          "type": "fields",
+          "label": "Attendance intake details",
+          "fields": [
+            {
+              "key": "note_received_date",
+              "label": "Note received date",
+              "units": 1.15
+            },
+            {
+              "key": "absence_start_date",
+              "label": "Absence start date",
+              "units": 1.0
+            },
+            {
+              "key": "absence_end_date",
+              "label": "Absence end date",
+              "units": 1.25
+            },
+            {
+              "key": "school_day_count",
+              "label": "School-day count",
+              "units": 1.1
+            },
+            {
+              "key": "attendance_coding_status",
+              "label": "Attendance coding status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "workflow_rows",
+          "type": "table",
+          "label": "Attendance dates, coding, and missed-work routing",
+          "columns": [
+            {
+              "key": "absence_date_or_period",
+              "label": "Absence date or period",
+              "units": 1.2
+            },
+            {
+              "key": "attendance_code",
+              "label": "Attendance code",
+              "units": 1.1
+            },
+            {
+              "key": "missed_work_route",
+              "label": "Missed-work route",
+              "units": 1.25
+            },
+            {
+              "key": "return_or_correction",
+              "label": "Return or correction",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 3,
+          "guidance": "Add a student absence note row for each distinct change."
+        }
+      ]
+    },
+    {
+      "key": "outcome_and_receipt",
+      "title": "Record outcome and family receipt",
+      "guidance": "Record unresolved student absence note work, outcome, and receipt.",
+      "blocks": [
+        {
+          "key": "final_outcome",
+          "type": "fields",
+          "label": "Student Absence Note outcome and handoff",
+          "fields": [
+            {
+              "key": "attendance_record_outcome",
+              "label": "Attendance record outcome",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_correction",
+              "label": "Remaining correction",
+              "units": 1.0
+            },
+            {
+              "key": "family_or_teacher_follow_up",
+              "label": "Family or teacher follow-up",
+              "units": 1.25
+            },
+            {
+              "key": "attendance_owner",
+              "label": "Attendance owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "acknowledgments",
+          "type": "signatures",
+          "label": "Student Absence Note preparation and receipt",
+          "fields": [
+            {
+              "key": "guardian_or_reporting_source_and_date",
+              "label": "Guardian or reporting source and date",
+              "units": 1.15
+            },
+            {
+              "key": "attendance_office_receipt_and_date",
+              "label": "Attendance office receipt and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Each student absence note signature confirms role and date."
+        },
+        {
+          "key": "task_boundary",
+          "type": "notice",
+          "label": "Student Absence Note completion boundary",
+          "guidance": "Record the guardian-reported dates and reason category without requesting unnecessary medical detail. Attendance coding, documentation requirements, and record corrections must follow applicable school policy."
+        }
+      ]
+    }
+  ]
+}

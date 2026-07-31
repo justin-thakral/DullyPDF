@@ -1,0 +1,291 @@
+{
+  "catalog_id": "home_services/dhs_2443__appliance_installation_inspection_checklist",
+  "description": "For appliance installation, this inspection checklist records connection requirements, code-listed parts, protection, leveling, anchoring, testing, haul-away, and customer orientation. Its supporting evidence includes delivery condition, fit measurements, connection photos, leak or electrical test, serial record, and operation check.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this appliance installation review to the service record.",
+          "key": "service_review_reference",
+          "label": "Appliance Installation Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Appliance model",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Serial",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Dimensions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed appliance installation location and assets.",
+          "key": "service_context",
+          "label": "Appliance Installation Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the appliance installation service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Service Visit Reference"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each appliance installation item after direct review.",
+          "items": [
+            "Model, serial, location, dimensions, level, and anchoring are confirmed",
+            "Water, drain, gas, vent, or electrical connections are checked",
+            "Leak, polarity, clearance, and functional tests are recorded as applicable",
+            "Packaging damage and surrounding property condition are documented",
+            "Manuals, removed parts, warranty details, and haul-away are reconciled",
+            "Customer operation, shutoff, care, and support instructions are reviewed"
+          ],
+          "key": "quality_checks",
+          "label": "Appliance Installation Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one appliance installation row for each reviewed area.",
+          "key": "area_results",
+          "label": "Appliance Installation Area and Task Results",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not connect incompatible, damaged, improperly supplied, poorly vented, leaking, or code-deficient installations. Route unresolved appliance installation work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Appliance Installation Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Check completed appliance installation work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Room and Task Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Appliance owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each appliance installation concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "Appliance Installation Issue, Photo, and Correction Record",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Appliance Installation Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved appliance installation expectations here.",
+          "height": 38,
+          "key": "customer_concern",
+          "label": "Appliance Installation Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every appliance installation issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the appliance installation outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "Appliance Installation Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Installed condition",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Function verification",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "Customer demonstration",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Warranty registration",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For appliance installation, record installed condition, function verification, customer demonstration, warranty registration, debris removal, and signoff.",
+          "key": "quality_followup",
+          "label": "Appliance Installation Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "Appliance Installation Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the appliance installation result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Crew and Customer Acknowledgment"
+    }
+  ],
+  "slug": "appliance-installation-inspection-checklist",
+  "source_filename": "dhs_2443__appliance_installation_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "Appliance Installation Inspection Checklist: residential appliance delivery and installation using appliance model, connection requirements, and delivery condition.",
+  "title": "Appliance Installation Inspection Checklist",
+  "use_case": "Use the inspection checklist during residential appliance delivery and installation when the appliance installation record must identify appliance model, serial, location, dimensions, path, utilities, cabinetry, ventilation, and old-unit disposition. Complete the applicable handoff for installed condition, function verification, customer demonstration, warranty registration, debris removal, and signoff."
+}

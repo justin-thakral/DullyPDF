@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2137__detail_service_authorization_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2137__detail_service_authorization_form.pdf",
+  "slug": "detail-service-authorization-form",
+  "title": "Detail Service Authorization Form",
+  "subtitle": "Vehicle Detailing Service: bounds the decision, conditions, and expiry.",
+  "description": "Detail Service Authorization Form turns vehicle exterior, interior, finish, material, contamination, selected package, and protected feature into a customer-facing Vehicle Detailing Service consent record. The detail service advisor itemizes diagnostics or services, labor, parts or materials, fees, tax, estimated total, maximum cap, and the customer / vehicle owner's signed decision. Work not listed or priced remains on hold.",
+  "use_case": "Use Detail Service Authorization Form at detail bay, wash area, interior work zone, drying area, and delivery point. Verify applicable Vehicle Detailing Service requirements; distinguish diagnostic or inspection authority from listed work, price each operation, and record the customer / vehicle owner's exact approval, conditions, or decline. Follow the selected contact-before-additional-work instruction whenever vehicle exterior, interior, finish, material, contamination, selected package, and protected feature scope or cost changes.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requesting party, authority, and source record",
+      "guidance": "For Vehicle Detailing Service, identify responsible parties, detail bay, wash area, interior work zone, drying area, and delivery point, and the linked vehicle exterior, interior, finish, material, contamination, selected package, and protected feature source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Authorization ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Request date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Requesting party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Vehicle Detailing Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Work order and customer",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN or vehicle, plate, color, and mileage",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Selected package, add-on, material, and customer concern",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Decision evidence, conditions, and limits",
+      "guidance": "Capture Vehicle Detailing Service facts for vehicle exterior, interior, finish, material, contamination, selected package, and protected feature; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Requested scope and decision lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Requested scope or custody action",
+              "units": 1.2
+            },
+            {
+              "key": "basis",
+              "label": "Finding, rate, or source basis",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Limit or condition",
+              "units": 0.95
+            },
+            {
+              "key": "decision",
+              "label": "Decision or required change",
+              "units": 1.1
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Vehicle Detailing Service authorization checks",
+          "items": [
+            "Paint, trim, glass, wheel, and exterior baseline",
+            "Seat, carpet, headliner, console, and interior baseline",
+            "Scratch, chip, stain, odor, damage, and sensitive material",
+            "Product compatibility and test area",
+            "Wash, decontamination, correction, protection, and interior step",
+            "Final lighting inspection and customer walkthrough"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Decision evidence, expiry, and next control",
+      "guidance": "Resolve open Vehicle Detailing Service conditions; have detail service advisor assign the next Vehicle Detailing Service owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Decision limits, holds, and retained evidence",
+          "items": [
+            "Material or coating compatibility uncertain",
+            "Damage could worsen with requested process",
+            "Biohazard or unknown contamination",
+            "Expected correction exceeds approved package",
+            "Intake condition photographs",
+            "Product and test-area record",
+            "Completed-service checklist",
+            "Remaining defect and final walkthrough"
+          ],
+          "guidance": "Pause Vehicle Detailing Service when compatibility, damage, contamination, scope expectation, or final quality concern remains unresolved. Retain the available Vehicle Detailing Service proof and route unresolved vehicle exterior, interior, finish, material, contamination, selected package, and protected feature scope to detail service advisor."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Authorization decision and limits",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Authorization decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved within listed limits",
+                "Approved with listed conditions",
+                "Revision required",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and authorizer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requesting party or authorized representative",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorizing authority: Vehicle Appearance Quality Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,283 @@
+{
+  "catalog_id": "construction_trades/dcf_180__site_visit_request_form",
+  "description": "For site visit, this request form records planned observations, coordination topics, quality checkpoints, progress claims, and unresolved prior items. Its supporting evidence includes field notes, representative photos, measurements, discussion record, and referenced drawing details.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Visit opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Visit site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Visit contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Visit superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Visit due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this site visit record to its evidence.",
+          "key": "record_routing",
+          "label": "Site Visit Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Visit purpose",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Attendees",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Zones observed",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Work in progress",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Current documents",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture visit purpose, attendees, zones observed, work in progress, current documents, weather, and access limitations for this site visit.",
+          "key": "core_identity",
+          "label": "Site Visit Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify visit purpose, attendees, zones observed, work in progress, current documents, weather, and access limitations for this site visit record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Planned observations",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Coordination topics",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Quality checkpoints",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Progress claims",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For site visit, record planned observations, coordination topics, quality checkpoints, progress claims, and unresolved prior items.",
+          "key": "task_inputs",
+          "label": "Site Visit Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Site Visit Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State site visit outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Site Visit Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Visit work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Visit owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate site visit items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Site Visit Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Immediately report observed imminent hazards; distinguish observation from exhaustive inspection or direction. Route unresolved site visit work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Site Visit Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For site visit, capture planned observations, coordination topics, quality checkpoints, progress claims, and unresolved prior items.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Visit decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Visit approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Visit schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate site visit disposition.",
+          "key": "disposition",
+          "label": "Site Visit Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Site Visit Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the site visit decision to evidence.",
+          "height": 116,
+          "key": "decision_basis",
+          "label": "Site Visit Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Observation distribution",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Responsible-party response",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Follow-up dates",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Closed items",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For site visit, record observation distribution, responsible-party response, follow-up dates, closed items, and project-record filing.",
+          "key": "request_handoff",
+          "label": "Site Visit Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Visit requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Visit coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Site Visit Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the site visit next step from field notes, representative photos, measurements, discussion record, and referenced drawing details.",
+      "key": "decision_3",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "site-visit-request-form",
+  "source_filename": "dcf_180__site_visit_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Site Visit Request Form: construction site visit observation and follow-up using visit purpose, planned observations, and field notes.",
+  "title": "Site Visit Request Form",
+  "use_case": "Use the request form during construction site visit observation and follow-up when the site visit record must identify visit purpose, attendees, zones observed, work in progress, current documents, weather, and access limitations. Complete the applicable handoff for observation distribution, responsible-party response, follow-up dates, closed items, and project-record filing."
+}

@@ -1,0 +1,360 @@
+{
+  "catalog_id": "business_operations/dbo_1794__office_supply_tracking_log",
+  "description": "For office supply, this tracking log records operational need, standard-item match, substitution, delivery date, unit cost, order minimum, and storage capacity. Its supporting evidence includes stock count, catalog reference, price comparison, prior usage, approval, receipt, and discrepancy documentation.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Supply opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Supply site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Supply contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Supply process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Supply due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this office supply record to its evidence.",
+          "key": "record_routing",
+          "label": "Office Supply Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Requester",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Worksite",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Supply category",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Item",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Quantity",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Current stock",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture requester, worksite, supply category, item, quantity, current stock, preferred supplier, and accounting code for this office supply.",
+          "key": "core_identity",
+          "label": "Office Supply Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify requester, worksite, supply category, item, quantity, current stock, preferred supplier, and accounting code for this office supply record.",
+      "key": "identity_1",
+      "title": "Portfolio Coverage and Owners"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Operational need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Standard-item match",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Substitution",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Delivery date",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Unit cost",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For office supply, record operational need, standard-item match, substitution, delivery date, unit cost, order minimum, and storage capacity.",
+          "key": "task_inputs",
+          "label": "Office Supply Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.35
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact or event",
+              "units": 2.6
+            },
+            {
+              "key": "action",
+              "label": "Supply action lead",
+              "units": 2.0
+            },
+            {
+              "key": "due",
+              "label": "Due or next review",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.3
+            }
+          ],
+          "guidance": "Keep office supply chronology immutable.",
+          "key": "working_log",
+          "label": "Office Supply Dated Activity Log",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "For office supply, capture operational need, standard-item match, substitution, delivery date, unit cost, order minimum, and storage capacity.",
+      "key": "task_2",
+      "title": "Tracked Commitments"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Supply when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Supply measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Supply evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Supply result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For office supply, record stock count, catalog reference, price comparison, prior usage, approval, receipt, and discrepancy documentation.",
+          "key": "evidence_register",
+          "label": "Office Supply Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Stock count",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Catalog reference",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Price comparison",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Prior usage",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Receipt",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every office supply evidence source.",
+          "key": "evidence_sources",
+          "label": "Office Supply Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Supply dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Supply owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Supply escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep office supply items open through verification.",
+          "key": "open_item_register",
+          "label": "Office Supply Open Items and Next Actions",
+          "rows": 3,
+          "type": "table"
+        }
+      ],
+      "guidance": "Support office supply findings with stock count, catalog reference, price comparison, prior usage, approval, receipt, and discrepancy documentation.",
+      "key": "observation_3",
+      "title": "Milestone Evidence and Progress"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select tracking log disposition",
+                "Advance",
+                "Unblock",
+                "Escalate",
+                "Suspend",
+                "Reject",
+                "Close"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Supply decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Supply approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Supply authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Supply review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate office supply disposition.",
+          "key": "disposition",
+          "label": "Office Supply Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Office Supply Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the office supply decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Office Supply Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Supply record owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Supply process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Office Supply Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the office supply next step from stock count, catalog reference, price comparison, prior usage, approval, receipt, and discrepancy documentation.",
+      "key": "decision_4",
+      "title": "Status and Routing"
+    }
+  ],
+  "slug": "office-supply-tracking-log",
+  "source_filename": "dbo_1794__office_supply_tracking_log.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Office Supply Tracking Log: office supply replenishment and control using requester, operational need, and stock count.",
+  "title": "Office Supply Tracking Log",
+  "use_case": "Use the tracking log during office supply replenishment and control when the office supply record must identify requester, worksite, supply category, item, quantity, current stock, preferred supplier, and accounting code. Complete the applicable handoff for order reference, received quantity, storage location, backorder status, requester notification, and inventory adjustment."
+}

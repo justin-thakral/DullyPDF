@@ -1,0 +1,355 @@
+{
+  "catalog_id": "business_operations/dbo_1784__meeting_action_item_tracking_log",
+  "description": "For meeting action item, this tracking log records discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence. Its supporting evidence includes source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Item opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Item site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Item contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Item process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Item due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this meeting action item record to its evidence.",
+          "key": "record_routing",
+          "label": "Meeting Action Item Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Meeting purpose",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Date",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Facilitator",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Participants",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Agenda",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum for this meeting action item.",
+          "key": "core_identity",
+          "label": "Meeting Action Item Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum for this meeting action item record.",
+      "key": "identity_1",
+      "title": "Portfolio Coverage and Owners"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Discussion outcome",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Decision needed",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Action deliverable",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Item owner",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Dependency",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For meeting action item, record discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence.",
+          "key": "task_inputs",
+          "label": "Meeting Action Item Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.35
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact or event",
+              "units": 2.6
+            },
+            {
+              "key": "action",
+              "label": "Item action lead",
+              "units": 2.0
+            },
+            {
+              "key": "due",
+              "label": "Due or next review",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.3
+            }
+          ],
+          "guidance": "Keep meeting action item chronology immutable.",
+          "key": "working_log",
+          "label": "Meeting Action Item Dated Activity Log",
+          "rows": 7,
+          "type": "table"
+        }
+      ],
+      "guidance": "For meeting action item, capture discussion outcome, decision needed, action deliverable, owner, dependency, due date, priority, and success evidence.",
+      "key": "task_2",
+      "title": "Tracked Commitments"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Item when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Item measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Item evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Item result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For meeting action item, record source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+          "key": "evidence_register",
+          "label": "Meeting Action Item Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Source note",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Linked document",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Decision rationale",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Owner acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Progress updates",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every meeting action item evidence source.",
+          "key": "evidence_sources",
+          "label": "Meeting Action Item Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Item dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Item owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Item escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep meeting action item items open through verification.",
+          "key": "open_item_register",
+          "label": "Meeting Action Item Open Items and Next Actions",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Support meeting action item findings with source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+      "key": "observation_3",
+      "title": "Milestone Evidence and Progress"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select tracking log disposition",
+                "Advance",
+                "Unblock",
+                "Escalate",
+                "Suspend",
+                "Reject",
+                "Close"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Item decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Item approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Item authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Item review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate meeting action item disposition.",
+          "key": "disposition",
+          "label": "Meeting Action Item Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Meeting Action Item Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the meeting action item decision to evidence.",
+          "height": 46,
+          "key": "decision_basis",
+          "label": "Meeting Action Item Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Item record owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Item process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Meeting Action Item Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the meeting action item next step from source note, linked document, decision rationale, owner acknowledgment, progress updates, and completion proof.",
+      "key": "decision_4",
+      "title": "Status and Routing"
+    }
+  ],
+  "slug": "meeting-action-item-tracking-log",
+  "source_filename": "dbo_1784__meeting_action_item_tracking_log.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Meeting Action Item Tracking Log: meeting decision and action-item control using meeting purpose, discussion outcome, and source note.",
+  "title": "Meeting Action Item Tracking Log",
+  "use_case": "Use the tracking log during meeting decision and action-item control when the meeting action item record must identify meeting purpose, date, facilitator, participants, agenda, referenced documents, and decision forum. Complete the applicable handoff for verified completion, accepted deliverable, unresolved carryover, stakeholder notification, and decision-log update."
+}

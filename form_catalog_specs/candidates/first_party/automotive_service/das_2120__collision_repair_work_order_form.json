@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2120__collision_repair_work_order_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2120__collision_repair_work_order_form.pdf",
+  "slug": "collision-repair-work-order-form",
+  "title": "Collision Repair Work Order Form",
+  "subtitle": "Collision Repair: connects authorized scope to results.",
+  "description": "Collision Repair Work Order Form covers damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need. The collision repair coordinator records Collision Repair authorized tasks, materials, results, and changes. Collision Repair Work Order Form keeps Collision Repair exceptions visible until the collision repair coordinator handoff.",
+  "use_case": "Use Collision Repair Work Order Form at intake area, body bay, frame or measurement area, refinish area, and delivery point. Document damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need identity before Collision Repair begins. Compare damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need findings with stated Collision Repair criteria; route unresolved Collision Repair issues to qualified collision and structural repair reviewer. For Collision Repair Work Order Form, confirm requirements for Collision Repair. Ask qualified collision and structural repair reviewer to review Collision Repair conditions beyond the collision repair coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Vehicle repair-order details",
+      "guidance": "Bind Collision Repair to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Customer, fleet, insurer, or payer",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shop, bay, roadside, or site",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Collision Repair Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Collision Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Repair order, owner, insurer, and claim",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, and impact location",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Estimate, supplement, part, procedure, and calibration references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Collision Repair identifier printed on damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need or its linked source record."
+        },
+        {
+          "key": "vehicle_work_context",
+          "type": "fields",
+          "label": "Vehicle work context",
+          "fields": [
+            {
+              "key": "odometer_in",
+              "label": "Odometer or operating hours in",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Vehicle findings and repair evidence",
+      "guidance": "Record authorized Collision Repair activity; separate proposed, declined, deferred, or new Collision Repair scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Collision Repair labor or diagnostic step",
+              "units": 1.25
+            },
+            {
+              "key": "component",
+              "label": "System, component, or position",
+              "units": 1.0
+            },
+            {
+              "key": "part",
+              "label": "Part, fluid, material, or sublet",
+              "units": 1.1
+            },
+            {
+              "key": "qty",
+              "label": "Qty / hours",
+              "units": 0.65
+            },
+            {
+              "key": "result",
+              "label": "Performed result or note",
+              "units": 1.1
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.75
+            }
+          ],
+          "rows": 7
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Collision Repair work and verification points",
+          "items": [
+            "Visible and hidden-damage mapping",
+            "Body, structural, suspension, restraint, and glass concern",
+            "Measurement and repair-method basis",
+            "Part type, fit, corrosion protection, and refinish process",
+            "Scan, calibration, alignment, and system verification",
+            "Quality, appearance, function, and final safety review"
+          ],
+          "guidance": "Use each Collision Repair check to prompt documented damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need execution; enter its actual Collision Repair result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Collision Repair parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Repair exception and added-work limits",
+      "guidance": "Stop Collision Repair at any scope or cost limit; honor collision repair coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when structural, restraint, repair-method, calibration, alignment, or final safety verification remains unresolved. Protect damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need; document the Collision Repair notification and await qualified collision and structural repair reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Hidden damage changes approved scope",
+            "Structural or restraint procedure unavailable",
+            "Calibration or measurement fails",
+            "Vehicle released before safety-related verification"
+          ],
+          "guidance": "For Collision Repair, identify affected damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need scope; ask collision repair coordinator to document the Collision Repair immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Added work, revised diagnosis, cost change, and customer response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Added work, revised diagnosis, cost change, and customer response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Vehicle release decision and completion",
+      "guidance": "Reconcile Collision Repair to authorization; state collision repair coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Intake and disassembly photographs",
+            "Measurement and repair-procedure record",
+            "Part, weld, refinish, and corrosion-protection trace",
+            "Scan, calibration, alignment, and final inspection evidence"
+          ],
+          "guidance": "Attach or link proof for damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need; mark only Collision Repair evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

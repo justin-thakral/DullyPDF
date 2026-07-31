@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2641__staff_shift_swap_request_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2641__staff_shift_swap_request_form.pdf",
+  "slug": "staff-shift-swap-request-form",
+  "title": "Staff Shift Swap Request Form",
+  "subtitle": "Capture original shift, replacement, role qualification, and coverage; confirm manager approval and timekeeping.",
+  "description": "Staff Shift Swap records original shift, replacement, role qualification, coverage, manager approval, and timekeeping. Staff Shift Swap evidence stays linked.",
+  "use_case": "Use this staff shift swap request intake when staff must document original shift and replacement. Reconcile role qualification, coverage, manager approval, and timekeeping before the staff shift swap handoff. Use the published schedule, swap request, role qualification record, coverage check, overtime calculation, manager approval, scheduling-system update, timecard, and team notice. Ask the assigned staff shift swap reviewer to confirm original shift against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Staff Shift Swap contact and reference",
+      "guidance": "Match original and replacement shifts, employee roles and qualifications, coverage gaps, overtime impact, manager approval, schedule update, timekeeping, and team notice.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Staff Shift Swap people and reference",
+          "fields": [
+            {
+              "key": "operational_record_subject",
+              "label": "Operational record subject",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_contact",
+              "label": "Responsible contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_work_area",
+              "label": "Property, venue, or work area",
+              "units": 1.25
+            },
+            {
+              "key": "scheduled_or_discovery_date",
+              "label": "Scheduled or discovery date",
+              "units": 1.1
+            },
+            {
+              "key": "original_shift",
+              "label": "Original shift",
+              "units": 1.2
+            },
+            {
+              "key": "replacement",
+              "label": "Replacement",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Staff Shift Swap task details",
+          "fields": [
+            {
+              "key": "role_qualification",
+              "label": "Role qualification",
+              "units": 1.15
+            },
+            {
+              "key": "coverage",
+              "label": "Coverage",
+              "units": 1.0
+            },
+            {
+              "key": "manager_approval",
+              "label": "Manager approval",
+              "units": 1.25
+            },
+            {
+              "key": "timekeeping",
+              "label": "Timekeeping",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Staff Shift Swap request scope review",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Staff Shift Swap requested items",
+          "columns": [
+            {
+              "key": "requested_original_shift",
+              "label": "Requested original shift",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_replacement",
+              "label": "Need or replacement",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_coverage",
+              "label": "Constraint or coverage",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Staff Shift Swap request checks",
+          "items": [
+            "Original shift is identified for this record",
+            "Replacement matches the current request or source",
+            "Role qualification is ready for point-of-use staff",
+            "Coverage limits or questions are resolved",
+            "Manager approval is communicated to the responsible person",
+            "Timekeeping is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Staff Shift Swap decision and response",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Staff Shift Swap request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Staff Shift Swap request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

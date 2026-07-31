@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_101__field_trip_permission_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dey_101__field_trip_permission_checklist.pdf",
+  "slug": "dey-101-field-trip-permission-checklist-0a202128",
+  "title": "Field Trip Permission Checklist",
+  "subtitle": "Plan the trip, document transport and supervision, and route the guardian permission decision.",
+  "description": "Captures the student and guardian, trip schedule, meeting and pickup locations, transportation, activities, supervision, emergency contact, support needs, permission scope, and return handoff.",
+  "use_case": "Use when school or program staff request guardian permission for a specific trip. A material change to the itinerary, transport, supervision, or return plan requires renewed communication and review. For planning or review use, cite the current itinerary, guardian wording, support plan route, communicated changes, and supersession date. Preserve the permission source, effective date, guardian question, accessibility support, amendment history, distribution list, and replaced version.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Field Trip Permission starting details review",
+      "guidance": "Name the student, guardian, destination, trip date, itinerary, transportation legs, chaperone group, emergency contact, permission choice, and return plan.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Field Trip Permission people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_team",
+              "label": "Grade or team",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "destination",
+              "label": "Destination",
+              "units": 1.1
+            },
+            {
+              "key": "itinerary",
+              "label": "Itinerary",
+              "units": 1.2
+            },
+            {
+              "key": "transport_leg",
+              "label": "Transport leg",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Field Trip Permission task details",
+          "fields": [
+            {
+              "key": "headcount",
+              "label": "Headcount",
+              "units": 1.15
+            },
+            {
+              "key": "chaperone_group",
+              "label": "Chaperone group",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_return",
+              "label": "Authorized return",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Field Trip Permission checks and corrections",
+      "guidance": "Check current field trip permission facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Field Trip Permission required checks",
+          "items": [
+            "Destination is identified for this record",
+            "Itinerary matches the current request or source",
+            "Transport leg is ready for point-of-use staff",
+            "Headcount limits or questions are resolved",
+            "Chaperone group is communicated to the responsible person",
+            "Authorized return is confirmed at handoff",
+            "A changed field trip permission fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Field Trip Permission failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Field Trip Permission readiness and handoff",
+      "guidance": "Hold field trip permission readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Field Trip Permission checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Field Trip Permission reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Field Trip Permission receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

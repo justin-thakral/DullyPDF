@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1465__device_checkout_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1465__device_checkout_form.pdf",
+  "slug": "device-checkout-form",
+  "title": "Device Checkout Form",
+  "subtitle": "Capture asset tag, charger, protective case, and software access; confirm existing damage and return condition.",
+  "description": "Device Checkout records asset tag, charger, protective case, software access, existing damage, and return condition. Device Checkout evidence stays linked.",
+  "use_case": "Use this device checkout operational record when staff must document asset tag and charger. Reconcile protective case, software access, existing damage, and return condition before the device checkout handoff. Use the inventory record, barcode or serial scan, accessory count, condition images, acceptable-use receipt, repair ticket, return scan, and damage disposition. Ask the assigned device checkout reviewer to confirm asset tag against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Device Checkout starting details review",
+      "guidance": "Match asset tag and serial number to charger and case; photograph existing damage, record software access, custody transfer, repair route, and return condition.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Device Checkout people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "asset_tag",
+              "label": "Asset tag",
+              "units": 1.2
+            },
+            {
+              "key": "charger",
+              "label": "Charger",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Device Checkout task details",
+          "fields": [
+            {
+              "key": "protective_case",
+              "label": "Protective case",
+              "units": 1.15
+            },
+            {
+              "key": "software_access",
+              "label": "Software access",
+              "units": 1.0
+            },
+            {
+              "key": "existing_damage",
+              "label": "Existing damage",
+              "units": 1.25
+            },
+            {
+              "key": "return_condition",
+              "label": "Return condition",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Device Checkout activity review",
+      "guidance": "Record each meaningful device checkout event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Device Checkout activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "asset_tag",
+              "label": "Asset tag",
+              "units": 1.1
+            },
+            {
+              "key": "protective_case",
+              "label": "Protective case",
+              "units": 1.25
+            },
+            {
+              "key": "existing_damage",
+              "label": "Existing damage",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Device Checkout change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Device Checkout completion and handoff",
+      "guidance": "Leave the current device checkout result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Device Checkout final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Device Checkout completion receipt",
+          "fields": [
+            {
+              "key": "responsible_teacher_or_program_staff_and_date",
+              "label": "Responsible teacher or program staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded device checkout task status."
+        }
+      ]
+    }
+  ]
+}

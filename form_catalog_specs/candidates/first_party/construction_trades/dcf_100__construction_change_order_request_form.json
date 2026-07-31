@@ -1,0 +1,288 @@
+{
+  "catalog_id": "construction_trades/dcf_100__construction_change_order_request_form",
+  "description": "For construction change order, this request form records origin, changed work boundaries, labor, materials, equipment, allowances, exclusions, and schedule effect. Its supporting evidence includes directive, annotated plan, estimate backup, vendor quote, daily record, and notice history.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Change opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Change site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Change contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Change superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Change due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this construction change order record to its evidence.",
+          "key": "record_routing",
+          "label": "Construction Change Order Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Contract scope",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Affected drawing references",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Schedule milestones",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Cost codes",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture contract scope, affected drawing references, schedule milestones, and cost codes for this construction change order.",
+          "key": "core_identity",
+          "label": "Construction Change Order Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify contract scope, affected drawing references, schedule milestones, and cost codes for this construction change order record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Origin",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Changed work boundaries",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Labor",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Materials",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Allowances",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For construction change order, record origin, changed work boundaries, labor, materials, equipment, allowances, exclusions, and schedule effect.",
+          "key": "task_inputs",
+          "label": "Construction Change Order Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Construction Change Order Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State construction change order outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Construction Change Order Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Change work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Change owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate construction change order items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Construction Change Order Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not proceed without written emergency direction or approval at the applicable authority level. Route unresolved construction change order work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Construction Change Order Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For construction change order, capture origin, changed work boundaries, labor, materials, equipment, allowances, exclusions, and schedule effect.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Change decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Change approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Change schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate construction change order disposition.",
+          "key": "disposition",
+          "label": "Construction Change Order Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Construction Change Order Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the construction change order decision to evidence.",
+          "height": 116,
+          "key": "decision_basis",
+          "label": "Construction Change Order Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Signed disposition",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Revised contract value",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Schedule update",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Distribution record",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For construction change order, record signed disposition, revised contract value, schedule update, distribution record, and cost-code handoff.",
+          "key": "request_handoff",
+          "label": "Construction Change Order Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Change requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Change coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Construction Change Order Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the construction change order next step from directive, annotated plan, estimate backup, vendor quote, daily record, and notice history.",
+      "key": "decision_3",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "construction-change-order-request-form",
+  "source_filename": "dcf_100__construction_change_order_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Construction Change Order Request Form: scope-change pricing and authorization using contract scope, origin, and directive.",
+  "title": "Construction Change Order Request Form",
+  "use_case": "Use the request form during scope-change pricing and authorization when the construction change order record must identify contract scope, affected drawing references, schedule milestones, and cost codes. Complete the applicable handoff for signed disposition, revised contract value, schedule update, distribution record, and cost-code handoff."
+}

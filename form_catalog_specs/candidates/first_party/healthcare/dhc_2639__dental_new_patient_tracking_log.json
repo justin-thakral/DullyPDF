@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2639__dental_new_patient_tracking_log",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2639__dental_new_patient_tracking_log.pdf",
+  "slug": "dental-new-patient-tracking-log",
+  "title": "Dental New Patient Tracking Log",
+  "subtitle": "Capture dental concern, prior records, imaging reference, and care-team review; confirm consent status and follow-up.",
+  "description": "Dental New Patient records dental concern, prior records, imaging reference, care-team review, consent status, and follow-up. Dental New Patient evidence stays linked.",
+  "use_case": "Use this dental new patient time-ordered tracking when staff must document dental concern and prior records. Reconcile imaging reference, care-team review, consent status, and follow-up before the dental new patient handoff. Use the patient-stated concern, prior-dentist contact, records request, radiograph availability, appliance list, care-team intake review, appointment plan, and follow-up note. This intake centers oral-health concerns, tooth or gum location, prior dental office, radiograph transfer, appliance history, hygiene context, operatory access, and dental-team follow-up. Ask the assigned dental new patient reviewer to confirm dental concern against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Dental New Patient contact and reference",
+      "guidance": "Capture dental concern in patient words, prior dentist and records, imaging availability, appliance or accessibility need, care-team review, and follow-up. Keep any urgent dental new patient issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Dental New Patient people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "patient_location_or_service_site",
+              "label": "Patient location or service site",
+              "units": 1.1
+            },
+            {
+              "key": "dental_concern",
+              "label": "Dental concern",
+              "units": 1.2
+            },
+            {
+              "key": "prior_records",
+              "label": "Prior records",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Dental New Patient task details",
+          "fields": [
+            {
+              "key": "imaging_reference",
+              "label": "Imaging reference",
+              "units": 1.15
+            },
+            {
+              "key": "care_team_review",
+              "label": "Care-team review",
+              "units": 1.0
+            },
+            {
+              "key": "consent_status",
+              "label": "Consent status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Dental New Patient exception review and event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Dental New Patient events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "dental_concern",
+              "label": "Dental concern",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "consent_status",
+              "label": "Consent status",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Dental New Patient correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Dental New Patient current state and handoff",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Dental New Patient status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Dental New Patient open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Dental New Patient log receipt",
+          "fields": [
+            {
+              "key": "department_log_custodian_and_date",
+              "label": "Department log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

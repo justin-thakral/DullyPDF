@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_158__club_registration_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_158__club_registration_information_sheet.pdf",
+  "slug": "club-registration-information-sheet",
+  "title": "Club Registration Information Sheet",
+  "subtitle": "Capture club placement, sponsor route, meeting schedule, and participation need; confirm dismissal and membership review.",
+  "description": "Club Registration records club placement, sponsor route, meeting schedule, participation need, dismissal, and membership review. Club Registration evidence stays linked.",
+  "use_case": "Use this club registration controlled information handoff when staff must document club placement and sponsor route. Reconcile meeting schedule, participation need, dismissal, and membership review before the club registration handoff. Use the membership request, capacity roster, sponsor confirmation, meeting schedule, support-routing acknowledgment, dismissal choice, and welcome-message receipt. This registration establishes recurring membership, sponsor governance, meeting cadence, student eligibility, dues handling, after-meeting dismissal, and membership renewal. Ask the assigned club registration reviewer to confirm club placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Club Registration contact and reference",
+      "guidance": "Confirm club capacity, sponsor contact, meeting calendar, participation support, dismissal arrangement, member choice, and first-meeting instructions.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Club Registration people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "club_placement",
+              "label": "Club placement",
+              "units": 1.1
+            },
+            {
+              "key": "sponsor_route",
+              "label": "Sponsor route",
+              "units": 1.2
+            },
+            {
+              "key": "meeting_schedule",
+              "label": "Meeting schedule",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Club Registration task details",
+          "fields": [
+            {
+              "key": "participation_need",
+              "label": "Participation need",
+              "units": 1.15
+            },
+            {
+              "key": "dismissal",
+              "label": "Dismissal",
+              "units": 1.0
+            },
+            {
+              "key": "membership_review",
+              "label": "Membership review",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Club Registration exception review and current instructions",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Club Registration instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Club Registration questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Club Registration update route",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Club Registration effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Club Registration update boundary",
+          "guidance": "Replace outdated club registration instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

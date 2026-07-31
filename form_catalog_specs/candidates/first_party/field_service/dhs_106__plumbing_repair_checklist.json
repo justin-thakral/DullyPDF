@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_106__plumbing_repair_checklist",
+  "source_section": "field_service",
+  "source_filename": "dhs_106__plumbing_repair_checklist.pdf",
+  "slug": "plumbing-repair-checklist",
+  "title": "Plumbing Repair Checklist",
+  "subtitle": "Residential Plumbing Repair: documents findings, limits, and disposition.",
+  "description": "Plumbing Repair Checklist covers fixture, supply, drain, valve, appliance connection, and affected finish. The plumbing service coordinator records Residential Plumbing Repair criteria, findings, restrictions, and follow-up. Plumbing Repair Checklist keeps Residential Plumbing Repair exceptions visible until the plumbing service coordinator handoff.",
+  "use_case": "Use Plumbing Repair Checklist at residence, room, fixture, shutoff point, and affected downstream area. Document fixture, supply, drain, valve, appliance connection, and affected finish identity before Residential Plumbing Repair begins. Compare fixture, supply, drain, valve, appliance connection, and affected finish findings with stated Residential Plumbing Repair criteria; route unresolved Residential Plumbing Repair issues to qualified plumbing service reviewer. For Plumbing Repair Checklist, confirm requirements for Residential Plumbing Repair. Ask qualified plumbing service reviewer to review Residential Plumbing Repair conditions beyond the plumbing service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspection scope and subject identity",
+      "guidance": "For Residential Plumbing Repair, identify responsible parties, residence, room, fixture, shutoff point, and affected downstream area, and the linked fixture, supply, drain, valve, appliance connection, and affected finish source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Plumbing Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer and service address",
+              "units": 1.5555555555555556
+            },
+            {
+              "key": "identity_2",
+              "label": "Fixture, line, valve, appliance, or drain identifier",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Leak or blockage onset, usage condition, and prior repair",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Residential Plumbing Repair facts for fixture, supply, drain, valve, appliance connection, and affected finish; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Plumbing Repair inspection checks",
+          "items": [
+            "Active leak location, rate, and affected materials",
+            "Supply pressure, shutoff, valve, and connection condition",
+            "Drain flow, backup, trap, vent, and cleanout observation",
+            "Fixture mounting, seal, and functional behavior",
+            "Water-heating or appliance connection where in scope",
+            "Post-repair leak, flow, and drainage test"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "List each unresolved Residential Plumbing Repair finding with its restriction, correction owner, and reinspection trigger. Plumbing Service Coordinator records reviewer disposition.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Uncontrolled water flow or contamination concern",
+            "Concealed damage or mold-like condition outside scope",
+            "Gas, electrical, structural, or utility conflict",
+            "Repair requires unavailable shutdown or authority",
+            "Leak and affected-area photographs",
+            "Before-and-after pressure or flow evidence",
+            "Material, fitting, and repair record",
+            "Post-repair test and customer observation"
+          ],
+          "guidance": "Pause Residential Plumbing Repair when water control, contamination, concealed damage, utility conflict, or safe test remains unresolved. Retain the available Residential Plumbing Repair proof and route unresolved fixture, supply, drain, valve, appliance connection, and affected finish scope to plumbing service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Plumbing Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Plumbing Service Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

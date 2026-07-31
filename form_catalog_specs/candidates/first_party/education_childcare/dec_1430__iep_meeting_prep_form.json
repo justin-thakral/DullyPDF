@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1430__iep_meeting_prep_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1430__iep_meeting_prep_form.pdf",
+  "slug": "iep-meeting-prep-form",
+  "title": "IEP Meeting Prep Form",
+  "subtitle": "Capture meeting notice, current plan, progress evidence, and participant role; confirm family priority and proposed action.",
+  "description": "IEP Meeting Prep records meeting notice, current plan, progress evidence, participant role, family priority, and proposed action. IEP Meeting Prep evidence stays linked.",
+  "use_case": "Use this iep meeting prep operational record when staff must document meeting notice and current plan. Reconcile progress evidence, participant role, family priority, and proposed action before the iep meeting prep handoff. Use the meeting notice, current IEP, service log, progress-monitoring data, evaluation reports, family agenda, participant list, draft proposal, and prior written notice route. For iep meeting prep live use, check roster. Reconcile the iep meeting prep schedule and actual handoff times. Preserve the iep meeting prep roster and schedule. Record the iep meeting prep handoff time and instructions. Close the iep meeting prep exception queue. Verify iep meeting prep day-of-service timing. Resolve iep meeting prep real-time changes and operating handoff for iep meeting prep. Ask the assigned iep meeting prep reviewer to confirm meeting notice against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "IEP Meeting Prep contact and reference",
+      "guidance": "Assemble meeting notice, current plan, service and progress records, participant roles, family priorities, proposed actions, accommodations, and follow-up questions.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "IEP Meeting Prep people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "meeting_notice",
+              "label": "Meeting notice",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "IEP Meeting Prep task details",
+          "fields": [
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.15
+            },
+            {
+              "key": "progress_evidence",
+              "label": "Progress evidence",
+              "units": 1.0
+            },
+            {
+              "key": "participant_role",
+              "label": "Participant role",
+              "units": 1.25
+            },
+            {
+              "key": "family_priority",
+              "label": "Family priority",
+              "units": 1.1
+            },
+            {
+              "key": "proposed_action",
+              "label": "Proposed action",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "IEP Meeting Prep exception review and activity",
+      "guidance": "Record each meaningful iep meeting prep event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "IEP Meeting Prep activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "meeting_notice",
+              "label": "Meeting notice",
+              "units": 1.1
+            },
+            {
+              "key": "progress_evidence",
+              "label": "Progress evidence",
+              "units": 1.25
+            },
+            {
+              "key": "family_priority",
+              "label": "Family priority",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "IEP Meeting Prep change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "IEP Meeting Prep exception review and completion",
+      "guidance": "Leave the current iep meeting prep result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "IEP Meeting Prep final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "IEP Meeting Prep completion receipt",
+          "fields": [
+            {
+              "key": "responsible_teacher_or_program_staff_and_date",
+              "label": "Responsible teacher or program staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded iep meeting prep task status."
+        }
+      ]
+    }
+  ]
+}

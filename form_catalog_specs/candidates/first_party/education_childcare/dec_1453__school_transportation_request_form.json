@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1453__school_transportation_request_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1453__school_transportation_request_form.pdf",
+  "slug": "school-transportation-request-form",
+  "title": "School Transportation Request Form",
+  "subtitle": "Capture route number, stop location, rider roster, and mobility support; confirm driver handoff and arrival reconciliation.",
+  "description": "School Transportation records route number, stop location, rider roster, mobility support, driver handoff, and arrival reconciliation. School Transportation evidence stays linked.",
+  "use_case": "Use this school transportation request intake when staff must document route number and stop location. Reconcile rider roster, mobility support, driver handoff, and arrival reconciliation before the school transportation handoff. Use the route sheet, stop map, rider roster, accessibility assignment, driver manifest, guardian transfer record, delay notice, scan or headcount, and arrival exception. Ask the assigned school transportation reviewer to confirm route number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "School Transportation contact and reference",
+      "guidance": "Match rider to route, stop and schedule; record mobility support, driver roster, guardian transfer, bus exception, arrival confirmation, and missed-stop response.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "School Transportation people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "route_number",
+              "label": "Route number",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "School Transportation task details",
+          "fields": [
+            {
+              "key": "stop_location",
+              "label": "Stop location",
+              "units": 1.15
+            },
+            {
+              "key": "rider_roster",
+              "label": "Rider roster",
+              "units": 1.0
+            },
+            {
+              "key": "mobility_support",
+              "label": "Mobility support",
+              "units": 1.25
+            },
+            {
+              "key": "driver_handoff",
+              "label": "Driver handoff",
+              "units": 1.1
+            },
+            {
+              "key": "arrival_reconciliation",
+              "label": "Arrival reconciliation",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "School Transportation request scope",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "School Transportation requested items",
+          "columns": [
+            {
+              "key": "requested_route_number",
+              "label": "Requested route number",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_stop_location",
+              "label": "Need or stop location",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_mobility_support",
+              "label": "Constraint or mobility support",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "School Transportation request checks",
+          "items": [
+            "Route number is identified for this record",
+            "Stop location matches the current request or source",
+            "Rider roster is ready for point-of-use staff",
+            "Mobility support limits or questions are resolved",
+            "Driver handoff is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "School Transportation decision and response",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "School Transportation request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "School Transportation request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

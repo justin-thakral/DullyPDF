@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2646__lab_order_intake_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2646__lab_order_intake_form.pdf",
+  "slug": "lab-order-intake-form",
+  "title": "Lab Order Intake Form",
+  "subtitle": "Capture authenticated order, test code, specimen, and collection window; confirm result route and cancellation.",
+  "description": "Lab Order records authenticated order, test code, specimen, collection window, result route, and cancellation. Lab Order evidence stays linked.",
+  "use_case": "Use this lab order structured intake when staff must document authenticated order and test code. Reconcile specimen, collection window, result route, and cancellation before the lab order handoff. Use the authenticated requisition, ordered test list, diagnosis or reason source as allowed, specimen requirement, collection window, laboratory destination, and cancellation log. Ask the assigned lab order reviewer to confirm authenticated order against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Lab Order starting details",
+      "guidance": "Record ordering professional, test names or codes, specimen and handling, fasting or timing requirement, collection window, result routing, standing-order limit, and cancellation. Keep any urgent lab order issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Lab Order people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "ordering_or_referring_professional",
+              "label": "Ordering or referring professional",
+              "units": 1.1
+            },
+            {
+              "key": "authenticated_order",
+              "label": "Authenticated order",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Lab Order task details",
+          "fields": [
+            {
+              "key": "test_code",
+              "label": "Test code",
+              "units": 1.15
+            },
+            {
+              "key": "specimen",
+              "label": "Specimen",
+              "units": 1.0
+            },
+            {
+              "key": "collection_window",
+              "label": "Collection window",
+              "units": 1.25
+            },
+            {
+              "key": "result_route",
+              "label": "Result route",
+              "units": 1.1
+            },
+            {
+              "key": "cancellation",
+              "label": "Cancellation",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_story",
+      "title": "Lab Order reported needs",
+      "guidance": "Preserve the person's wording and route questions without interpretation.",
+      "blocks": [
+        {
+          "key": "stated_need",
+          "type": "textarea",
+          "label": "Lab Order stated need or goal",
+          "fields": [
+            {
+              "key": "person_s_words_desired_outcome_and_priority",
+              "label": "Person's words, desired outcome, and priority"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "source_facts",
+          "type": "table",
+          "label": "Lab Order facts and questions",
+          "columns": [
+            {
+              "key": "authenticated_order",
+              "label": "Authenticated order",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "specimen",
+              "label": "Specimen",
+              "units": 1.25
+            },
+            {
+              "key": "question_or_route",
+              "label": "Question or route",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "intake_readiness",
+          "type": "checklist",
+          "label": "Lab Order intake readiness",
+          "items": [
+            "Authenticated order is identified for this record",
+            "Test code matches the current request or source",
+            "Specimen is ready for point-of-use staff",
+            "Collection window limits or questions are resolved",
+            "Result route is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_handoff",
+      "title": "Lab Order exception review and receiving route",
+      "guidance": "Assign open questions and confirm where the intake goes next.",
+      "blocks": [
+        {
+          "key": "intake_route",
+          "type": "fields",
+          "label": "Lab Order next step",
+          "fields": [
+            {
+              "key": "receiving_person_or_team",
+              "label": "Receiving person or team",
+              "units": 1.15
+            },
+            {
+              "key": "open_question_or_missing_item",
+              "label": "Open question or missing item",
+              "units": 1.0
+            },
+            {
+              "key": "urgent_route_if_applicable",
+              "label": "Urgent route if applicable",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "intake_receipt",
+          "type": "signatures",
+          "label": "Lab Order intake receipt",
+          "fields": [
+            {
+              "key": "intake_coordinator_and_date",
+              "label": "Intake coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms routing, not professional review."
+        }
+      ]
+    }
+  ]
+}

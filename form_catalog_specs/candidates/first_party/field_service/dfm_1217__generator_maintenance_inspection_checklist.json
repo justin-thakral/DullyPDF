@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1217__generator_maintenance_inspection_checklist",
+  "source_section": "field_service",
+  "source_filename": "dfm_1217__generator_maintenance_inspection_checklist.pdf",
+  "slug": "generator-maintenance-inspection-checklist",
+  "title": "Generator Maintenance Inspection Checklist",
+  "subtitle": "Standby Generator Maintenance: documents findings, limits, and disposition.",
+  "description": "Generator Maintenance Inspection Checklist covers engine-generator, transfer equipment, fuel system, starting system, and load served. The facility emergency-power coordinator records Standby Generator Maintenance criteria, findings, restrictions, and follow-up. Generator Maintenance Inspection Checklist keeps Standby Generator Maintenance exceptions visible until the facility emergency-power coordinator handoff.",
+  "use_case": "Use Generator Maintenance Inspection Checklist at generator enclosure, fuel area, transfer switch, and served distribution. Document engine-generator, transfer equipment, fuel system, starting system, and load served identity before Standby Generator Maintenance begins. Compare engine-generator, transfer equipment, fuel system, starting system, and load served findings with stated Standby Generator Maintenance criteria; route unresolved Standby Generator Maintenance issues to qualified generator service supervisor. For Generator Maintenance Inspection Checklist, confirm requirements for Standby Generator Maintenance. Ask qualified generator service supervisor to review Standby Generator Maintenance conditions beyond the facility emergency-power coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Standby Generator Maintenance, identify responsible parties, generator enclosure, fuel area, transfer switch, and served distribution, and the linked engine-generator, transfer equipment, fuel system, starting system, and load served source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Standby Generator Maintenance identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility and generator asset number",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Make, model, serial, rating, and fuel type",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_3",
+              "label": "Maintenance interval, hour meter, and last-load-test reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist points, conditions, and actions",
+      "guidance": "Capture Standby Generator Maintenance facts for engine-generator, transfer equipment, fuel system, starting system, and load served; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Standby Generator Maintenance inspection checks",
+          "items": [
+            "Fluid levels, leaks, hoses, belts, and exhaust condition",
+            "Battery, charger, terminals, and starting result",
+            "Fuel supply, containment, and visible piping condition",
+            "Cooling, ventilation, louvers, and enclosure condition",
+            "No-load or authorized load operating readings",
+            "Transfer, alarms, shutdowns, and return-to-normal result"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection disposition and reviewer acknowledgment",
+      "guidance": "Before closing Standby Generator Maintenance, identify what failed or was not inspected, who owns correction, and when examination resumes. Facility Emergency-Power Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Fuel or exhaust leak",
+            "Abnormal temperature, pressure, vibration, or noise",
+            "Failed start, transfer, alarm, or shutdown",
+            "Load test requested without safe approved conditions",
+            "Nameplate, hour-meter, and controller photographs",
+            "Oil, coolant, voltage, frequency, and pressure readings",
+            "Consumable and replaced-part record",
+            "Authorized run or transfer-test record"
+          ],
+          "guidance": "Pause Standby Generator Maintenance when fuel, exhaust, electrical, starting, transfer, or shutdown concern prevents safe standby readiness. Retain the available Standby Generator Maintenance proof and route unresolved engine-generator, transfer equipment, fuel system, starting system, and load served scope to facility emergency-power coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Facility Emergency-Power Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Generator Service Supervisor",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

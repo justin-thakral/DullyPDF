@@ -1,0 +1,177 @@
+{
+  "catalog_id": "business_operations/dbo_1799__policy_acknowledgment_tracking_log",
+  "description": "For policy acknowledgment, this tracking log records required reading, training dependency, questions, disclosure or consent boundaries, acknowledgment deadline, and exceptions. Its supporting evidence includes delivery record, training completion, employee questions, accessible-format request, acknowledgment, and manager follow-up.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "policy_id",
+              "label": "Policy identifier",
+              "units": 1.0
+            },
+            {
+              "key": "version",
+              "label": "Version and effective date",
+              "units": 1.0
+            },
+            {
+              "key": "delivery",
+              "label": "Delivery channel",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the exact policy copy assigned for distribution.",
+          "key": "policy_reference",
+          "label": "Policy Assignment Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "recipient",
+              "label": "Employee or audience",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Department or location",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Language or accessible format",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the intended recipient and a usable delivery format.",
+          "key": "policy_recipient",
+          "label": "Recipient and Access Needs",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Set the tracked policy version, audience, and reporting period.",
+      "key": "identity_1",
+      "title": "Tracking Coverage and Policy Version"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "recipient",
+              "label": "Recipient or group",
+              "units": 1.8
+            },
+            {
+              "key": "delivery",
+              "label": "Delivery date and channel",
+              "units": 1.8
+            },
+            {
+              "key": "training",
+              "label": "Training status",
+              "units": 1.5
+            },
+            {
+              "key": "receipt",
+              "label": "Receipt date and status",
+              "units": 1.8
+            },
+            {
+              "key": "record",
+              "label": "Evidence reference",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Use one row per recipient or controlled distribution group.",
+          "key": "distribution_log",
+          "label": "Policy Distribution and Receipt Log",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Question or exception",
+              "units": 2.5
+            },
+            {
+              "key": "owner",
+              "label": "Policy owner",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Due date",
+              "units": 1.4
+            },
+            {
+              "key": "resolution",
+              "label": "Resolution and record",
+              "units": 2.4
+            }
+          ],
+          "guidance": "Keep questions, exceptions, and overdue receipts open to resolution.",
+          "key": "exception_followup",
+          "label": "Question, Exception, and Overdue Follow-Up",
+          "rows": 2,
+          "type": "table"
+        },
+        {
+          "guidance": "Use this record only to document delivery, reading, questions, training, and receipt. Route rights, consent, conflict, or policy interpretation questions for qualified review.",
+          "key": "acknowledgment_boundary",
+          "label": "Acknowledgment Is Not Consent or Waiver",
+          "type": "notice"
+        },
+        {
+          "guidance": "Do not close the period while required receipts, training, questions, or exceptions lack a named follow-up owner.",
+          "key": "tracking_closeout_boundary",
+          "label": "Tracking Period Closeout Boundary",
+          "type": "notice"
+        },
+        {
+          "fields": [
+            {
+              "key": "period_end",
+              "label": "Period end date",
+              "units": 1.0
+            },
+            {
+              "key": "delivered_count",
+              "label": "Delivered count",
+              "units": 1.0
+            },
+            {
+              "key": "outstanding_count",
+              "label": "Outstanding count",
+              "units": 1.0
+            },
+            {
+              "key": "record_location",
+              "label": "HR record location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Reconcile outstanding receipts and retain the version-specific record.",
+          "key": "tracking_closeout",
+          "label": "Tracking Period Reconciliation",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Track delivery, receipt, training, questions, exceptions, and overdue work.",
+      "key": "observation_2",
+      "title": "Tracked Distribution, Receipt, and Exceptions"
+    }
+  ],
+  "slug": "policy-acknowledgment-tracking-log",
+  "source_filename": "dbo_1799__policy_acknowledgment_tracking_log.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Policy Acknowledgment Tracking Log: workplace policy distribution and acknowledgment using policy identifier, required reading, and delivery record.",
+  "title": "Policy Acknowledgment Tracking Log",
+  "use_case": "Use the tracking log during workplace policy distribution and acknowledgment when the policy acknowledgment record must identify policy identifier, version, effective date, audience, employee identity, location, language, and delivery channel. Complete the applicable handoff for acknowledgment timestamp, exception routing, overdue follow-up, version retention, training linkage, and HR record handoff."
+}

@@ -13,6 +13,8 @@ from scripts.form_catalog_factory.ledger import (
 )
 from scripts.form_catalog_factory.release_builder import build_release
 from scripts.form_catalog_factory.release_validation import (
+    ManifestValidationError,
+    validate_frozen_evidence_files,
     validate_frozen_ledger_attestation,
     validate_release_manifest,
 )
@@ -22,6 +24,7 @@ from scripts.form_catalog_factory.reviewed_release import (
     reconcile_reviewed_release,
     write_visual_review_template,
 )
+from scripts.form_catalog_factory.themes import get_theme
 from scripts.form_catalog_factory.worker_control import register_existing_specs
 
 
@@ -34,6 +37,7 @@ EXEMPLAR = (
     / "field_service"
     / "dfs_1100__appliance_repair_service_call_intake_form.json"
 )
+RENDER_THEME = get_theme("charcoal-deep-green-gold-v1").provenance()
 
 
 class FakeClock:
@@ -100,13 +104,43 @@ def _build_reviewed_fixture(
     spec_root = tmp_path / "specs"
     spec_root.mkdir()
     spec_path = spec_root / EXEMPLAR.name
-    spec_path.write_bytes(EXEMPLAR.read_bytes())
-    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    spec = json.loads(EXEMPLAR.read_text(encoding="utf-8"))
+    spec["title"] = "Appliance Repair Service Call Intake Form"
+    spec["description"] = (
+        "A focused intake record for the customer, appliance, service location, "
+        "reported problem, and initial routing decision."
+    )
+    spec["use_case"] = (
+        "Use when a service coordinator needs the facts required to identify "
+        "an appliance request and route the next service action."
+    )
+    # Keep the reconciliation fixture focused on release evidence rather than
+    # inheriting the legacy exemplar's intentionally broad five-page workflow.
+    intake_section = spec["sections"][0]
+    intake_blocks = intake_section["blocks"]
+    spec["sections"] = [
+        {
+            **intake_section,
+            "key": "request_customer",
+            "title": "Request, customer, and service location",
+            "guidance": "Identify the request, customer, and exact service location.",
+            "blocks": intake_blocks[:3],
+        },
+        {
+            **intake_section,
+            "key": "appliance_problem",
+            "title": "Appliance and reported problem",
+            "guidance": "Record the affected appliance and the customer's stated problem.",
+            "blocks": intake_blocks[3:],
+        },
+    ]
+    spec_path.write_text(json.dumps(spec, indent=2) + "\n", encoding="utf-8")
     catalog_id = spec["catalog_id"]
     selection = {
         "schemaVersion": 1,
         "releaseId": "catalog-test-001",
         "targetCount": 1,
+        "renderTheme": RENDER_THEME,
         "items": [
             {
                 "catalogId": catalog_id,
@@ -230,6 +264,8 @@ def test_reconcile_reviewed_release_advances_and_freezes_exact_artifacts(
     }
     assert replay["transitions"] == {}
     assert replay["unchanged"] == [catalog_id]
+    assert result["renderTheme"] == RENDER_THEME
+    assert json.loads(review.read_text(encoding="utf-8"))["renderTheme"] == RENDER_THEME
     batch = ledger.get_batch("catalog-test-001")
     assert batch is not None
     selection_payload = json.loads(selection.read_text(encoding="utf-8"))
@@ -281,6 +317,8 @@ def test_reconcile_reviewed_release_advances_and_freezes_exact_artifacts(
         manifest,
         asset_root=manifest.parent,
     )
+    assert validated_release.render_theme == RENDER_THEME
+    assert validated_release.summary()["renderTheme"] == RENDER_THEME
     validated_attestation = validate_frozen_ledger_attestation(
         frozen_path,
         release=validated_release,
@@ -289,6 +327,65 @@ def test_reconcile_reviewed_release_advances_and_freezes_exact_artifacts(
     assert validated_attestation.release_manifest_hash == hashlib.sha256(
         manifest.read_bytes()
     ).hexdigest()
+    validate_frozen_evidence_files(
+        attestation=validated_attestation,
+        release=validated_release,
+        build_report_path=report,
+    )
+
+    review_payload = json.loads(review.read_text(encoding="utf-8"))
+    review_payload.pop("renderTheme")
+    _write_json(review, review_payload)
+    with pytest.raises(ManifestValidationError, match="renderTheme must be present"):
+        validate_frozen_evidence_files(
+            attestation=validated_attestation,
+            release=validated_release,
+            build_report_path=report,
+        )
+
+
+def test_release_manifest_keeps_historical_theme_absence_readable(
+    tmp_path: Path,
+) -> None:
+    _, _, _, manifest, _, _ = _build_reviewed_fixture(tmp_path)
+    manifest_payload = json.loads(manifest.read_text(encoding="utf-8"))
+    manifest_payload.pop("renderTheme")
+    historical_manifest = manifest.parent / "historical-release.json"
+    _write_json(historical_manifest, manifest_payload)
+
+    validated = validate_release_manifest(
+        historical_manifest,
+        asset_root=manifest.parent,
+    )
+
+    assert validated.render_theme is None
+    assert "renderTheme" not in validated.summary()
+
+
+def test_reconcile_rejects_theme_mismatch_before_ledger_changes(
+    tmp_path: Path,
+) -> None:
+    ledger, selection, report, manifest, review, catalog_id = (
+        _build_reviewed_fixture(tmp_path)
+    )
+    build_report = json.loads(report.read_text(encoding="utf-8"))
+    build_report["renderTheme"] = get_theme("legacy-navy-orange-v1").provenance()
+    _write_json(report, build_report)
+    _refresh_review_build_hash(review, report)
+
+    with pytest.raises(ReviewedReleaseError, match="does not match selection"):
+        reconcile_reviewed_release(
+            ledger,
+            batch_id="catalog-test-001",
+            selection_path=selection,
+            build_report_path=report,
+            release_manifest_path=manifest,
+            visual_review_paths=[review],
+            worker_id="release-review-reconciler",
+            spec_root=tmp_path / "specs",
+        )
+
+    assert ledger.get_item(catalog_id).stage is Stage.SPEC_READY
 
 
 def test_reconcile_rejects_incomplete_page_review_before_ledger_changes(
@@ -298,7 +395,7 @@ def test_reconcile_rejects_incomplete_page_review_before_ledger_changes(
         _build_reviewed_fixture(tmp_path)
     )
     payload = json.loads(review.read_text(encoding="utf-8"))
-    payload["items"][0]["pagesReviewed"] = [1]
+    payload["items"][0]["pagesReviewed"] = []
     review.write_text(json.dumps(payload), encoding="utf-8")
 
     with pytest.raises(ReviewedReleaseError, match="every page exactly once"):

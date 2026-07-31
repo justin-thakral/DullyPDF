@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_154__window_washing_completion_report",
+  "source_section": "field_service",
+  "source_filename": "dhs_154__window_washing_completion_report.pdf",
+  "slug": "window-washing-completion-report",
+  "title": "Window Washing Completion Report",
+  "subtitle": "Residential Window Washing: verifies results and open follow-up.",
+  "description": "Window Washing Completion Report covers window unit, glass, frame, screen, sill, access method, and adjacent finish. The window service coordinator records Residential Window Washing performed work, tests, limits, and acceptance. Window Washing Completion Report keeps Residential Window Washing exceptions visible until the window service coordinator handoff.",
+  "use_case": "Use Window Washing Completion Report at residence interior, exterior elevation, ladder area, roof access, and protected room. Document window unit, glass, frame, screen, sill, access method, and adjacent finish identity before Residential Window Washing begins. Compare window unit, glass, frame, screen, sill, access method, and adjacent finish findings with stated Residential Window Washing criteria; route unresolved Residential Window Washing issues to exterior cleaning supervisor. For Window Washing Completion Report, confirm requirements for Residential Window Washing. Ask exterior cleaning supervisor to review Residential Window Washing conditions beyond the window service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Completed-scope context and subject identity",
+      "guidance": "For Residential Window Washing, identify responsible parties, residence interior, exterior elevation, ladder area, roof access, and protected room, and the linked window unit, glass, frame, screen, sill, access method, and adjacent finish source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Completion record ID",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Window Washing identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and service visit",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Window count, elevation, and unit identifier",
+              "units": 2.4444444444444446
+            },
+            {
+              "key": "identity_3",
+              "label": "Selected interior, exterior, screen, track, and hard-water scope",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Delivered result and verification evidence",
+      "guidance": "Capture Residential Window Washing facts for window unit, glass, frame, screen, sill, access method, and adjacent finish; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Window Washing completion checks",
+          "items": [
+            "Glass soil, coating, scratch, chip, and seal indication",
+            "Frame, sash, lock, screen, track, and sill condition",
+            "Paint, film, tint, treatment, and product restriction",
+            "Ladder, roof, ground, weather, and overhead-line access",
+            "Interior furnishing, floor, wall, and privacy protection",
+            "Completed pane count and quality check"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Completion verification lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Performed task or delivered item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 0.9
+            },
+            {
+              "key": "result",
+              "label": "Verified result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.85
+            },
+            {
+              "key": "follow_up",
+              "label": "Limitation or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Remaining work, evidence, and next owner",
+      "guidance": "Resolve open Residential Window Washing conditions; have window service coordinator assign the next Residential Window Washing owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Limitations, open work, and retained evidence",
+          "items": [
+            "Unsafe height, weather, ground, roof, or electrical proximity",
+            "Damaged glass, frame, lock, or screen",
+            "Coating or tint compatibility uncertain",
+            "Private or restricted area not cleared",
+            "Pre-existing glass and frame condition images",
+            "Unit count and inaccessible-window record",
+            "Product or hard-water test result",
+            "Final walkthrough and secured-opening evidence"
+          ],
+          "guidance": "Pause Residential Window Washing when safe access, damaged glazing, product compatibility, privacy, or opening security remains unresolved. Retain the available Residential Window Washing proof and route unresolved window unit, glass, frame, screen, sill, access method, and adjacent finish scope to window service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Acceptance status and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completion status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Accepted",
+                "Accepted with listed limitation",
+                "Follow-up required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Window Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

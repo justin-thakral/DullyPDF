@@ -1,0 +1,291 @@
+{
+  "catalog_id": "legal_office/dlo_2158__estate_planning_intake_notes_form",
+  "description": "Use this Estate Planning Intake Notes Form for its named administrative intake job while preserving source attribution, qualified review, stop conditions, and secure record custody.",
+  "risk_tier": "C",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "intake_number",
+              "label": "Administrative intake number",
+              "units": 1.0
+            },
+            {
+              "key": "client_name",
+              "label": "Prospective client's full legal name",
+              "units": 1.0
+            },
+            {
+              "key": "domicile",
+              "label": "Current state or country of domicile",
+              "units": 1.0
+            },
+            {
+              "key": "intake_date",
+              "label": "Intake date and local time",
+              "units": 1.0
+            },
+            {
+              "key": "safe_contact",
+              "label": "Safe contact method",
+              "units": 1.0
+            },
+            {
+              "key": "intake_owner",
+              "label": "Intake owner",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use a stable intake number and do not imply that an attorney-client relationship exists.",
+          "key": "intake_identity",
+          "label": "Estate Planning Interview Notes Intake Identity",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "participants",
+              "label": "Participants and stated roles",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "private_interview",
+              "label": "Private interview available",
+              "options": [
+                "Yes",
+                "No",
+                "Not yet requested"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "language_access",
+              "label": "Language support",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "conflict_status",
+              "label": "Conflict-screen status",
+              "options": [
+                "Pending",
+                "Clear to consult",
+                "Attorney review",
+                "Stop"
+              ],
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "engagement_status",
+              "label": "Relationship status",
+              "options": [
+                "Prospective only",
+                "Consultation scheduled",
+                "Engaged separately",
+                "Declined"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Collect only what the current administrative purpose requires.",
+          "key": "participation_boundary",
+          "label": "Estate Planning Interview Notes Participation and Privacy",
+          "type": "fields"
+        },
+        {
+          "guidance": "This intake form does not create representation, legal advice, a testamentary instrument, a power, a transfer, or authority to act.",
+          "key": "legal_boundary",
+          "label": "Administrative Record Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Establish the prospective-client, privacy, conflict, and administrative record boundary.",
+      "key": "identity_boundary",
+      "title": "Estate Planning Interview Notes Identity and Routing"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "interview_date",
+              "label": "Interview date, time, and medium",
+              "units": 1.0
+            },
+            {
+              "key": "note_author",
+              "label": "Note author and role",
+              "units": 1.0
+            },
+            {
+              "key": "participants",
+              "label": "Participants and stated roles",
+              "units": 1.0
+            },
+            {
+              "key": "privacy",
+              "label": "Privacy conditions",
+              "units": 1.0
+            },
+            {
+              "key": "language_support",
+              "label": "Language support",
+              "units": 1.0
+            },
+            {
+              "key": "version",
+              "label": "Note version and correction date",
+              "units": 1.0
+            }
+          ],
+          "key": "interview_context",
+          "label": "Interview Context",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "time_topic",
+              "label": "Time or topic",
+              "units": 1.5
+            },
+            {
+              "key": "speaker",
+              "label": "Speaker",
+              "units": 1.4
+            },
+            {
+              "key": "statement",
+              "label": "Statement or reported event",
+              "units": 2.7
+            },
+            {
+              "key": "source",
+              "label": "Source or document reference",
+              "units": 1.8
+            },
+            {
+              "key": "question",
+              "label": "Open question or contradiction",
+              "units": 2.0
+            }
+          ],
+          "guidance": "Use quotation marks only for words captured accurately; label paraphrase and later correction.",
+          "key": "chronology",
+          "label": "Attributed Interview Chronology",
+          "rows": 8,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Prospective Client's Priorities in Their Own Words",
+              "multiline": true
+            }
+          ],
+          "guidance": "Do not convert client language into a capacity, ownership, tax, validity, or strategy conclusion.",
+          "height": 70,
+          "key": "client_words",
+          "label": "Prospective Client's Priorities in Their Own Words",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Preserve who said what, the sequence of events, and the difference between quoted language and staff summary.",
+      "key": "interview_record",
+      "title": "Estate Planning Interview Notes Observations and Evidence"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Describe observed behavior and attributed statements without diagnosis. An attorney must review ambiguous intent, conflicts, possible coercion, capacity concerns, and legal conclusions.",
+          "key": "notes_boundary",
+          "label": "Objective Notes and Attorney Review",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question requiring qualified judgment",
+              "units": 2.5
+            },
+            {
+              "key": "facts",
+              "label": "Attributed facts and records",
+              "units": 2.2
+            },
+            {
+              "key": "reviewer",
+              "label": "Attorney or specialist",
+              "units": 1.7
+            },
+            {
+              "key": "status",
+              "label": "Response status and limits",
+              "units": 1.8
+            }
+          ],
+          "key": "question_register",
+          "label": "Attorney and Specialist Question Register",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "review_state",
+              "label": "Review state",
+              "options": [
+                "Ready for attorney review",
+                "Private follow-up needed",
+                "Correction needed",
+                "Access restricted",
+                "Stop issue"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Assigned attorney",
+              "units": 1.0
+            },
+            {
+              "key": "client_correction",
+              "label": "Client correction or clarification",
+              "units": 1.0
+            },
+            {
+              "key": "secure_location",
+              "label": "Secure note location",
+              "units": 1.0
+            },
+            {
+              "key": "next_interview",
+              "label": "Next interview or review date",
+              "units": 1.0
+            }
+          ],
+          "key": "notes_handoff",
+          "label": "Notes Review and Handoff",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Route contradictions, privacy concerns, third-party influence, and reserved legal questions.",
+      "key": "notes_review",
+      "title": "Estate Planning Interview Notes Exceptions and Escalation"
+    }
+  ],
+  "slug": "estate-planning-intake-notes-form",
+  "source_filename": "dlo_2158__estate_planning_intake_notes_form.pdf",
+  "source_section": "legal_office",
+  "subtitle": "A bounded Tier-C estate planning interview notes record with direct inputs, attorney-review routing, and privacy safeguards.",
+  "title": "Estate Planning Intake Notes Form",
+  "use_case": "Use before or during attorney-supervised estate-planning intake. The form does not create representation, legal advice, or a legally operative instrument."
+}

@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1210__fire_alarm_inspection_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1210__fire_alarm_inspection_service_request_form.pdf",
+  "slug": "fire-alarm-inspection-service-request-form",
+  "title": "Fire Alarm Inspection Service Request Form",
+  "subtitle": "Fire Alarm Inspection: defines need, constraints, and assignment.",
+  "description": "Fire Alarm Inspection Service Request Form covers fire alarm control unit, initiating devices, notification appliances, and interfaces. The facility fire-alarm coordinator records Fire Alarm Inspection need, timing, access, and assignment. Fire Alarm Inspection Service Request Form keeps Fire Alarm Inspection exceptions visible until the facility fire-alarm coordinator handoff.",
+  "use_case": "Use Fire Alarm Inspection Service Request Form at protected premises, panel location, zones, and sampled device locations. Document fire alarm control unit, initiating devices, notification appliances, and interfaces identity before Fire Alarm Inspection begins. Compare fire alarm control unit, initiating devices, notification appliances, and interfaces findings with stated Fire Alarm Inspection criteria; route unresolved Fire Alarm Inspection issues to qualified fire-alarm inspection supervisor. For Fire Alarm Inspection Service Request Form, confirm requirements for Fire Alarm Inspection. Ask qualified fire-alarm inspection supervisor to review Fire Alarm Inspection conditions beyond the facility fire-alarm coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Request context and subject identity",
+      "guidance": "For Fire Alarm Inspection, identify responsible parties, protected premises, panel location, zones, and sampled device locations, and the linked fire alarm control unit, initiating devices, notification appliances, and interfaces source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Fire Alarm Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Premises and system account",
+              "units": 1.5
+            },
+            {
+              "key": "identity_2",
+              "label": "Panel make, model, and system identifier",
+              "units": 2.2222222222222223
+            },
+            {
+              "key": "identity_3",
+              "label": "Inspection scope, device list, and monitoring reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested scope and practical constraints",
+      "guidance": "Capture Fire Alarm Inspection facts for fire alarm control unit, initiating devices, notification appliances, and interfaces; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Fire Alarm Inspection intake confirmations",
+          "items": [
+            "Requested or already documented: panel normal, trouble, supervisory, and alarm status",
+            "Requested or already documented: sampled initiating-device response",
+            "Requested or already documented: audible and visible notification response",
+            "Requested or already documented: monitoring or supervising-station communication",
+            "Requested or already documented: interface, shutdown, and release function evidence",
+            "Requested or already documented: impairment notice, fire watch, and restoration state"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Supplied evidence and assignment outcome",
+      "guidance": "Resolve open Fire Alarm Inspection request questions; have facility fire-alarm coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Alarm or supervisory signal not received",
+            "Notification appliance or interface fails",
+            "System left impaired or disabled",
+            "Device inventory or prior deficiency cannot be reconciled",
+            "Prior or requester-supplied: panel-event and test-history export",
+            "Prior or requester-supplied: device-by-device result record",
+            "Prior or requester-supplied: notification and transmission test evidence",
+            "Prior or requester-supplied: impairment and restoration notifications"
+          ],
+          "guidance": "Do not assign or authorize the Fire Alarm Inspection request when any required fire-alarm function is impaired without approved interim protection and accountable restoration. Retain information supplied with the request and route unresolved constraints to facility fire-alarm coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Facility Fire-Alarm Coordinator",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

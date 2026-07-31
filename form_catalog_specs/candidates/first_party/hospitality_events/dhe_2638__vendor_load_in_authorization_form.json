@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2638__vendor_load_in_authorization_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2638__vendor_load_in_authorization_form.pdf",
+  "slug": "vendor-load-in-authorization-form",
+  "title": "Vendor Load-In Authorization Form",
+  "subtitle": "Capture vendor vehicle, dock slot, freight, and credential; confirm route and load-out reconciliation.",
+  "description": "Vendor Load In records vendor vehicle, dock slot, freight, credential, route, and load-out reconciliation. Vendor Load In evidence stays linked.",
+  "use_case": "Use this vendor load in authorization decision when staff must document vendor vehicle and dock slot. Reconcile freight, credential, route, and load-out reconciliation before the vendor load in handoff. Use the dock schedule, vehicle and driver list, freight manifest, credential roster, route map, elevator booking, marshal assignment, staging check, and load-out receipt. Ask the assigned vendor load in reviewer to confirm vendor vehicle against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Vendor Load In contact and reference",
+      "guidance": "Schedule vendor vehicle, driver, dock slot, freight dimensions, equipment, credential, approved route, elevator or marshal support, staging, and load-out reconciliation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Vendor Load In people and reference",
+          "fields": [
+            {
+              "key": "operational_record_subject",
+              "label": "Operational record subject",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_contact",
+              "label": "Responsible contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_work_area",
+              "label": "Property, venue, or work area",
+              "units": 1.25
+            },
+            {
+              "key": "scheduled_or_discovery_date",
+              "label": "Scheduled or discovery date",
+              "units": 1.1
+            },
+            {
+              "key": "vendor_vehicle",
+              "label": "Vendor vehicle",
+              "units": 1.2
+            },
+            {
+              "key": "dock_slot",
+              "label": "Dock slot",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Vendor Load In task details",
+          "fields": [
+            {
+              "key": "freight",
+              "label": "Freight",
+              "units": 1.15
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.0
+            },
+            {
+              "key": "route",
+              "label": "Route",
+              "units": 1.25
+            },
+            {
+              "key": "load_out_reconciliation",
+              "label": "Load-out reconciliation",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Vendor Load In exception review and scope choices",
+      "guidance": "Decide each vendor load in scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Vendor Load In primary scope",
+          "fields": [
+            {
+              "key": "vendor_vehicle",
+              "label": "Vendor vehicle",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "dock_slot",
+              "label": "Dock slot",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "freight",
+              "label": "Freight",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Vendor Load In additional scope",
+          "fields": [
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "route",
+              "label": "Route",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "load_out_reconciliation",
+              "label": "Load-out reconciliation",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Vendor Load In authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Vendor Load In effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_service_recipient",
+              "label": "Authorized service recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            },
+            {
+              "key": "revocation_or_update_route",
+              "label": "Revocation or update route",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Vendor Load In contact and reference",
+      "guidance": "Only recorded vendor load in choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Vendor Load In limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Vendor Load In signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Vendor Load In signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Vendor Load In authorization boundary",
+          "guidance": "Named vendor load in reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

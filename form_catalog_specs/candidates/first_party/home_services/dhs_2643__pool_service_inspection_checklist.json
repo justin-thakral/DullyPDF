@@ -1,0 +1,291 @@
+{
+  "catalog_id": "home_services/dhs_2643__pool_service_inspection_checklist",
+  "description": "For pool service, this inspection checklist records water testing, chemical dosing, debris removal, equipment inspection, filter work, seasonal tasks, and customer requests. Its supporting evidence includes free and total sanitizer, pH, alkalinity, stabilizer, temperature, pressure, chemical amounts, and equipment observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this pool service review to the service record.",
+          "key": "service_review_reference",
+          "label": "Pool Service Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Pool",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Spa volume",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Sanitizer system",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed pool service location and assets.",
+          "key": "service_context",
+          "label": "Pool Service Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the pool service service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each pool service item after direct review.",
+          "items": [
+            "Sanitizer, pH, alkalinity, stabilizer, and temperature are recorded",
+            "Chemical amounts and post-treatment swimming restriction are stated",
+            "Circulation, filter pressure, pumps, valves, and visible leaks are checked",
+            "Pool, spa, cover, gates, and service equipment are secured",
+            "Debris removal and scheduled maintenance are reconciled",
+            "Customer alert, repair referral, and next reading target are recorded"
+          ],
+          "key": "quality_checks",
+          "label": "Pool Service Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one pool service row for each reviewed area.",
+          "key": "area_results",
+          "label": "Pool Service Area and Task Results",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Close access and escalate unsafe chemistry, electrical concerns, failed circulation, suction hazard, or uncontrolled leakage. Route unresolved pool service work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Pool Service Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Check completed pool service work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Recurring Service Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Pool owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each pool service concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "Pool Service Issue, Photo, and Correction Record",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pool Service Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved pool service expectations here.",
+          "height": 38,
+          "key": "customer_concern",
+          "label": "Pool Service Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every pool service issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the pool service outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "Pool Service Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Post-treatment readings",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Equipment status",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "Swimming restriction",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Customer alert",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For pool service, record post-treatment readings, equipment status, swimming restriction, customer alert, repair referral, and next-service target.",
+          "key": "quality_followup",
+          "label": "Pool Service Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "Pool Service Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the pool service result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Service Review and Handoff"
+    }
+  ],
+  "slug": "pool-service-inspection-checklist",
+  "source_filename": "dhs_2643__pool_service_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "Pool Service Inspection Checklist: residential pool maintenance and chemistry record using pool, water testing, and free.",
+  "title": "Pool Service Inspection Checklist",
+  "use_case": "Use the inspection checklist during residential pool maintenance and chemistry record when the pool service record must identify pool and spa volume, equipment, sanitizer system, water features, cover, occupancy, gates, and service history. Complete the applicable handoff for post-treatment readings, equipment status, swimming restriction, customer alert, repair referral, and next-service target."
+}

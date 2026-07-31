@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_163__handyman_work_request_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_163__handyman_work_request_estimate_worksheet.pdf",
+  "slug": "handyman-work-request-estimate-worksheet",
+  "title": "Handyman Work Request Estimate Worksheet",
+  "subtitle": "Residential Handyman Work Request: prices observed scope, options, and exclusions.",
+  "description": "Handyman Work Request Estimate Worksheet covers room, fixture, finish, assembly, small repair, and requested improvement. The handyman service coordinator records Residential Handyman Work Request observed scope, costs, options, and terms. Handyman Work Request Estimate Worksheet keeps Residential Handyman Work Request exceptions visible until the handyman service coordinator handoff.",
+  "use_case": "Use Handyman Work Request Estimate Worksheet at residence, room, work area, access path, and protected adjacent finish. Document room, fixture, finish, assembly, small repair, and requested improvement identity before Residential Handyman Work Request begins. Compare room, fixture, finish, assembly, small repair, and requested improvement findings with stated Residential Handyman Work Request criteria; route unresolved Residential Handyman Work Request issues to qualified trade reviewer when scope requires. For Handyman Work Request Estimate Worksheet, confirm requirements for Residential Handyman Work Request. Ask qualified trade reviewer when scope requires to review Residential Handyman Work Request conditions beyond the handyman service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Pricing evidence and service location",
+      "guidance": "For Residential Handyman Work Request, identify responsible parties, residence, room, work area, access path, and protected adjacent finish, and the linked room, fixture, finish, assembly, small repair, and requested improvement source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Estimate ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Estimate date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Customer / party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Estimator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Handyman Work Request identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and request number",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Room, item, and requested result",
+              "units": 1.7777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Dimensions, material, existing condition, and timing constraint",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Pricing basis, allowances, and exclusions",
+      "guidance": "Capture Residential Handyman Work Request facts for room, fixture, finish, assembly, small repair, and requested improvement; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Handyman Work Request estimate checks",
+          "items": [
+            "Visible damage and failure mode",
+            "Mounting surface, substrate, support, and fastener context",
+            "Utility, moisture, structural, and concealed-condition indicators",
+            "Dimensions, fit, finish, and material match",
+            "Access, occupancy, dust, noise, and protection needs",
+            "Completed function and finish result"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Estimate and option lines",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Task, item, or option",
+              "units": 1.15
+            },
+            {
+              "key": "basis",
+              "label": "Quantity or condition basis",
+              "units": 1.05
+            },
+            {
+              "key": "labor",
+              "label": "Labor or time",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Part, material, or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "amount",
+              "label": "Amount or option status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Pricing evidence and next customer action",
+      "guidance": "Resolve open Residential Handyman Work Request conditions; have handyman service coordinator assign the next Residential Handyman Work Request owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Pricing assumptions, exclusions, and retained evidence",
+          "items": [
+            "Electrical, plumbing, gas, structural, roofing, or hazardous-material scope",
+            "Concealed damage changes the work",
+            "Requested attachment lacks suitable support",
+            "Permit or qualified trade review is required",
+            "Request and existing-condition photographs",
+            "Measurement and material record",
+            "Approved scope or change note",
+            "Completion test and customer walkthrough"
+          ],
+          "guidance": "Pause Residential Handyman Work Request when scope requiring a licensed trade, permit, structural decision, or uncontrolled concealed condition remains. Retain the available Residential Handyman Work Request proof and route unresolved room, fixture, finish, assembly, small repair, and requested improvement scope to handyman service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Estimate status and next customer action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Estimate review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for customer review",
+                "Accepted as written",
+                "Accepted with listed option",
+                "Revision required",
+                "Declined"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Estimator and customer review",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Handyman Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2637__dental_new_patient_authorization_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2637__dental_new_patient_authorization_form.pdf",
+  "slug": "dental-new-patient-authorization-form",
+  "title": "Dental New Patient Authorization Form",
+  "subtitle": "Capture dental concern, prior records, imaging reference, and care-team review; confirm consent status and follow-up.",
+  "description": "Dental New Patient records dental concern, prior records, imaging reference, care-team review, consent status, and follow-up. Dental New Patient evidence stays linked.",
+  "use_case": "Use this dental new patient authorization decision when staff must document dental concern and prior records. Reconcile imaging reference, care-team review, consent status, and follow-up before the dental new patient handoff. Use the patient-stated concern, prior-dentist contact, records request, radiograph availability, appliance list, care-team intake review, appointment plan, and follow-up note. This intake centers oral-health concerns, tooth or gum location, prior dental office, radiograph transfer, appliance history, hygiene context, operatory access, and dental-team follow-up. Ask the assigned dental new patient reviewer to confirm dental concern against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Dental New Patient contact and reference",
+      "guidance": "Capture dental concern in patient words, prior dentist and records, imaging availability, appliance or accessibility need, care-team review, and follow-up. Keep any urgent dental new patient issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Dental New Patient people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "patient_location_or_service_site",
+              "label": "Patient location or service site",
+              "units": 1.1
+            },
+            {
+              "key": "dental_concern",
+              "label": "Dental concern",
+              "units": 1.2
+            },
+            {
+              "key": "prior_records",
+              "label": "Prior records",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Dental New Patient task details",
+          "fields": [
+            {
+              "key": "imaging_reference",
+              "label": "Imaging reference",
+              "units": 1.15
+            },
+            {
+              "key": "care_team_review",
+              "label": "Care-team review",
+              "units": 1.0
+            },
+            {
+              "key": "consent_status",
+              "label": "Consent status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Dental New Patient scope choices review",
+      "guidance": "Decide each dental new patient scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "Dental New Patient itemized scope",
+          "fields": [
+            {
+              "key": "dental_concern",
+              "label": "Dental concern",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "prior_records",
+              "label": "Prior records",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "imaging_reference",
+              "label": "Imaging reference",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "care_team_review",
+              "label": "Care-team review",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "consent_status",
+              "label": "Consent status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Dental New Patient authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Dental New Patient effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_care_recipient",
+              "label": "Authorized care recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Dental New Patient exception review and signer receipt",
+      "guidance": "Only recorded dental new patient choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Dental New Patient limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Dental New Patient signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "clinical_or_administrative_reviewer_and_date",
+              "label": "Clinical or administrative reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Dental New Patient signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Dental New Patient authorization boundary",
+          "guidance": "Named dental new patient reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

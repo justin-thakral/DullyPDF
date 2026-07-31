@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1264__copier_service_maintenance_log",
+  "source_section": "field_service",
+  "source_filename": "dfm_1264__copier_service_maintenance_log.pdf",
+  "slug": "copier-service-maintenance-log",
+  "title": "Copier Service Maintenance Log",
+  "subtitle": "Copier And Multifunction-Device Service: preserves changes and next triggers.",
+  "description": "Copier Service Maintenance Log covers copier, feeder, print engine, finishing unit, network interface, and supply system. The office equipment coordinator records Copier And Multifunction-Device Service events, owners, exceptions, and next triggers. Copier Service Maintenance Log keeps Copier And Multifunction-Device Service exceptions visible until the office equipment coordinator handoff.",
+  "use_case": "Use Copier Service Maintenance Log at device location, supply area, network point, and affected workgroup. Document copier, feeder, print engine, finishing unit, network interface, and supply system identity before Copier And Multifunction-Device Service begins. Compare copier, feeder, print engine, finishing unit, network interface, and supply system findings with stated Copier And Multifunction-Device Service criteria; route unresolved Copier And Multifunction-Device Service issues to qualified office-equipment service reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Copier And Multifunction-Device Service, identify responsible parties, device location, supply area, network point, and affected workgroup, and the linked copier, feeder, print engine, finishing unit, network interface, and supply system source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Copier And Multifunction-Device Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Service ticket and site",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "Asset tag, make, model, serial, and meter count",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Fault code, tray, paper, media, and finishing configuration",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status variance and accountable response",
+      "guidance": "Capture Copier And Multifunction-Device Service facts for copier, feeder, print engine, finishing unit, network interface, and supply system; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Copier And Multifunction-Device Service tracked controls",
+          "items": [
+            "Print, copy, scan, feed, duplex, and finish result",
+            "Jam location, roller, feeder, tray, and paper-path condition",
+            "Image quality, registration, density, and defect pattern",
+            "Supply, waste container, and consumable status",
+            "Network, address-book, authentication, and scan destination behavior",
+            "Safety label, cover, interlock, power, and heat-area condition"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Status decision and next trigger",
+      "guidance": "Keep the Copier And Multifunction-Device Service chronology intact through handoff. State the unresolved exception, the owner selected by Office Equipment Coordinator, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Credential or address-book privacy concern",
+            "Heat, odor, smoke, electrical, or damaged-cord concern",
+            "Firmware or network change lacks authorization",
+            "Required function cannot be restored or isolated",
+            "Meter and fault-history record",
+            "Sample output showing before-and-after result",
+            "Part, firmware, and configuration record",
+            "User acceptance for required functions"
+          ],
+          "guidance": "Pause Copier And Multifunction-Device Service when an electrical, heat, privacy, authorization, or failed-function concern remains. Retain the available Copier And Multifunction-Device Service proof and route unresolved copier, feeder, print engine, finishing unit, network interface, and supply system scope to office equipment coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Office Equipment Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Office-Equipment Service Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

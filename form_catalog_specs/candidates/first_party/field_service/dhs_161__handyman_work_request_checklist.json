@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_161__handyman_work_request_checklist",
+  "source_section": "field_service",
+  "source_filename": "dhs_161__handyman_work_request_checklist.pdf",
+  "slug": "handyman-work-request-checklist",
+  "title": "Handyman Work Request Checklist",
+  "subtitle": "Residential Handyman Work Request: documents findings, limits, and disposition.",
+  "description": "Handyman Work Request Checklist covers room, fixture, finish, assembly, small repair, and requested improvement. The handyman service coordinator records Residential Handyman Work Request criteria, findings, restrictions, and follow-up. Handyman Work Request Checklist keeps Residential Handyman Work Request exceptions visible until the handyman service coordinator handoff.",
+  "use_case": "Use Handyman Work Request Checklist at residence, room, work area, access path, and protected adjacent finish. Document room, fixture, finish, assembly, small repair, and requested improvement identity before Residential Handyman Work Request begins. Compare room, fixture, finish, assembly, small repair, and requested improvement findings with stated Residential Handyman Work Request criteria; route unresolved Residential Handyman Work Request issues to qualified trade reviewer when scope requires. For Handyman Work Request Checklist, confirm requirements for Residential Handyman Work Request. Ask qualified trade reviewer when scope requires to review Residential Handyman Work Request conditions beyond the handyman service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspector, location, and subject identity",
+      "guidance": "For Residential Handyman Work Request, identify responsible parties, residence, room, work area, access path, and protected adjacent finish, and the linked room, fixture, finish, assembly, small repair, and requested improvement source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Handyman Work Request identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and request number",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Room, item, and requested result",
+              "units": 1.7777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Dimensions, material, existing condition, and timing constraint",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Residential Handyman Work Request facts for room, fixture, finish, assembly, small repair, and requested improvement; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Handyman Work Request inspection checks",
+          "items": [
+            "Visible damage and failure mode",
+            "Mounting surface, substrate, support, and fastener context",
+            "Utility, moisture, structural, and concealed-condition indicators",
+            "Dimensions, fit, finish, and material match",
+            "Access, occupancy, dust, noise, and protection needs",
+            "Completed function and finish result"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Use observed Residential Handyman Work Request evidence to state disposition. Keep limits visible and give Handyman Service Coordinator both correction and repeat-check responsibility.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Electrical, plumbing, gas, structural, roofing, or hazardous-material scope",
+            "Concealed damage changes the work",
+            "Requested attachment lacks suitable support",
+            "Permit or qualified trade review is required",
+            "Request and existing-condition photographs",
+            "Measurement and material record",
+            "Approved scope or change note",
+            "Completion test and customer walkthrough"
+          ],
+          "guidance": "Pause Residential Handyman Work Request when scope requiring a licensed trade, permit, structural decision, or uncontrolled concealed condition remains. Retain the available Residential Handyman Work Request proof and route unresolved room, fixture, finish, assembly, small repair, and requested improvement scope to handyman service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Handyman Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Trade Reviewer When Scope Requires",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

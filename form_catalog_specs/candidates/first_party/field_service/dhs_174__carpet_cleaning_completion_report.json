@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_174__carpet_cleaning_completion_report",
+  "source_section": "field_service",
+  "source_filename": "dhs_174__carpet_cleaning_completion_report.pdf",
+  "slug": "carpet-cleaning-completion-report",
+  "title": "Carpet Cleaning Completion Report",
+  "subtitle": "Residential Carpet Cleaning: verifies results and open follow-up.",
+  "description": "Carpet Cleaning Completion Report covers carpeted room, fiber, backing, stain, furnishing, transition, and extraction path. The carpet service coordinator records Residential Carpet Cleaning performed work, tests, limits, and acceptance. Carpet Cleaning Completion Report keeps Residential Carpet Cleaning exceptions visible until the carpet service coordinator handoff.",
+  "use_case": "Use Carpet Cleaning Completion Report at residence, room, stair, furniture area, entry path, and drying zone. Document carpeted room, fiber, backing, stain, furnishing, transition, and extraction path identity before Residential Carpet Cleaning begins. Compare carpeted room, fiber, backing, stain, furnishing, transition, and extraction path findings with stated Residential Carpet Cleaning criteria; route unresolved Residential Carpet Cleaning issues to cleaning quality reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Completion parties and source record",
+      "guidance": "For Residential Carpet Cleaning, identify responsible parties, residence, room, stair, furniture area, entry path, and drying zone, and the linked carpeted room, fiber, backing, stain, furnishing, transition, and extraction path source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Completion record ID",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Carpet Cleaning identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and visit",
+              "units": 1.5555555555555556
+            },
+            {
+              "key": "identity_2",
+              "label": "Room, area, carpet type, and approximate size",
+              "units": 2.5
+            },
+            {
+              "key": "identity_3",
+              "label": "Stain history, prior treatment, pet condition, and requested result",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Delivered result and verification evidence",
+      "guidance": "Capture Residential Carpet Cleaning facts for carpeted room, fiber, backing, stain, furnishing, transition, and extraction path; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Carpet Cleaning completion checks",
+          "items": [
+            "Fiber, colorfastness, wear, seam, backing, and pre-existing damage",
+            "Stain type, location, age, and prior chemical use",
+            "Furniture, electronics, floor transition, and protected surface",
+            "Vacuum, precondition, agitation, extraction, and spot-treatment step",
+            "Moisture removal, airflow, drying, and access restriction",
+            "Post-cleaning appearance and remaining limitation"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Completion verification lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Performed task or delivered item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 0.9
+            },
+            {
+              "key": "result",
+              "label": "Verified result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.85
+            },
+            {
+              "key": "follow_up",
+              "label": "Limitation or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Completion limitation, status, and follow-up",
+      "guidance": "Resolve open Residential Carpet Cleaning conditions; have carpet service coordinator assign the next Residential Carpet Cleaning owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Limitations, open work, and retained evidence",
+          "items": [
+            "Unknown spill or contamination",
+            "Fiber, dye, backing, or adhesive compatibility concern",
+            "Damage or stain cannot be safely improved",
+            "Drying or access control cannot be maintained",
+            "Pre-existing condition and stain photographs",
+            "Product and spot-test record",
+            "Room and treatment completion log",
+            "Drying instruction and final walkthrough"
+          ],
+          "guidance": "Pause Residential Carpet Cleaning when contamination, compatibility, damage, drying, or safe-access concern remains. Retain the available Residential Carpet Cleaning proof and route unresolved carpeted room, fiber, backing, stain, furnishing, transition, and extraction path scope to carpet service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Acceptance status and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completion status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Accepted",
+                "Accepted with listed limitation",
+                "Follow-up required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Carpet Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

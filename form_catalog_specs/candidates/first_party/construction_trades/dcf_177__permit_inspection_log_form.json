@@ -1,0 +1,250 @@
+{
+  "catalog_id": "construction_trades/dcf_177__permit_inspection_log_form",
+  "description": "For permit inspection, this log form records prerequisite completion, accessibility, test readiness, correction history, required documents, and representative attendance. Its supporting evidence includes approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Permit opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Permit site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Permit contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Permit superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Permit due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this permit inspection record to its evidence.",
+          "key": "record_routing",
+          "label": "Permit Inspection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Permit number",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Authority",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Inspection type",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Approved plans",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window for this permit inspection.",
+          "key": "core_identity",
+          "label": "Permit Inspection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window for this permit inspection record.",
+      "key": "identity_1",
+      "title": "Log Reference and Review Owner"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Permit when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Permit measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Permit evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Permit result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For permit inspection, record approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+          "key": "evidence_register",
+          "label": "Permit Inspection Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Approved-plan set",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Permit card",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Test results",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Product approvals",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Inspector comments",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every permit inspection evidence source.",
+          "key": "evidence_sources",
+          "label": "Permit Inspection Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Permit dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Permit owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Permit escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep permit inspection items open through verification.",
+          "key": "open_item_register",
+          "label": "Permit Inspection Open Items and Next Actions",
+          "rows": 10,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Permit reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved permit inspection entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Permit Inspection Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Permit Inspection Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For permit inspection, explain inspection result, correction assignment, reinspection date, approval evidence, and downstream release; transfer each permit inspection open entry to the permit inspection successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Permit Inspection Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Do not conceal or energize work before required inspection approval or documented authority direction. Route unresolved permit inspection work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Permit Inspection Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support permit inspection findings with approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+      "key": "observation_2",
+      "title": "Recorded Findings and Actions"
+    }
+  ],
+  "slug": "permit-inspection-log-form",
+  "source_filename": "dcf_177__permit_inspection_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Permit Inspection Log Form: permit inspection readiness and result control using permit number, prerequisite completion, and approved-plan set.",
+  "title": "Permit Inspection Log Form",
+  "use_case": "Use the log form during permit inspection readiness and result control when the permit inspection record must identify permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window. Complete the applicable handoff for inspection result, correction assignment, reinspection date, approval evidence, and downstream release."
+}

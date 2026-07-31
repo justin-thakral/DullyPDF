@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1458__allergy_action_plan_request_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1458__allergy_action_plan_request_form.pdf",
+  "slug": "allergy-action-plan-request-form",
+  "title": "Allergy Action Plan Request Form",
+  "subtitle": "Capture allergen source, exposure route, current plan, and emergency supply; confirm symptom threshold and guardian update.",
+  "description": "Allergy Action Plan records allergen source, exposure route, current plan, emergency supply, symptom threshold, and guardian update. Allergy Action Plan evidence stays linked.",
+  "use_case": "Use this allergy action plan request intake when staff must document allergen source and exposure route. Reconcile current plan, emergency supply, symptom threshold, and guardian update before the allergy action plan handoff. Use the current clinician action-plan reference, allergen list, medication-label match, emergency-supply seal and expiration, exposure record, and guardian receipt. Unlike a medication administration record, this plan centers exposure prevention, recognized threshold signs, emergency-supply access, school response roles, and return to review. Ask the assigned allergy action plan reviewer to confirm allergen source against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Allergy Action Plan contact and reference",
+      "guidance": "Preserve the named allergen, likely exposure setting, current qualified plan, emergency supply location, symptom threshold, and guardian notification route. Keep any urgent allergy action plan issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Allergy Action Plan people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "allergen_source",
+              "label": "Allergen source",
+              "units": 1.2
+            },
+            {
+              "key": "exposure_route",
+              "label": "Exposure route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Allergy Action Plan task details",
+          "fields": [
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.15
+            },
+            {
+              "key": "emergency_supply",
+              "label": "Emergency supply",
+              "units": 1.0
+            },
+            {
+              "key": "symptom_threshold",
+              "label": "Symptom threshold",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_update",
+              "label": "Guardian update",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Allergy Action Plan request scope",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Allergy Action Plan requested items",
+          "columns": [
+            {
+              "key": "requested_allergen_source",
+              "label": "Requested allergen source",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_exposure_route",
+              "label": "Need or exposure route",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_emergency_supply",
+              "label": "Constraint or emergency supply",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Allergy Action Plan request checks",
+          "items": [
+            "Allergen source is identified for this record",
+            "Exposure route matches the current request or source",
+            "Current plan is ready for point-of-use staff",
+            "Emergency supply limits or questions are resolved",
+            "Symptom threshold is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Allergy Action Plan decision and response",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Allergy Action Plan request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Allergy Action Plan request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

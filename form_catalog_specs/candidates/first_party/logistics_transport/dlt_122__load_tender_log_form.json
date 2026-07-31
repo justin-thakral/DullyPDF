@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_122__load_tender_log_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_122__load_tender_log_form.pdf",
+  "slug": "load-tender-log-form",
+  "title": "Load Tender Log Form",
+  "subtitle": "Load Tender: preserves changes and next triggers.",
+  "description": "Load Tender Log Form covers offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance. The transport planning coordinator records Load Tender events, owners, exceptions, and next triggers. Load Tender Log Form keeps Load Tender exceptions visible until the transport planning coordinator handoff.",
+  "use_case": "Use Load Tender Log Form at origin, destination, route, pickup window, delivery window, and equipment location. Document offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance identity before Load Tender begins. Compare offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance findings with stated Load Tender criteria; route unresolved Load Tender issues to authorized carrier-management reviewer. For Load Tender Log Form, confirm requirements for Load Tender. Ask authorized carrier-management reviewer to review Load Tender conditions beyond the transport planning coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For Load Tender, identify responsible parties, origin, destination, route, pickup window, delivery window, and equipment location, and the linked offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Shipper / broker / carrier",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "location",
+              "label": "Origin / destination",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Load Tender identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Tender, load, order, and customer",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, authority, insurance, and contact",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_3",
+              "label": "Equipment, commodity, quantity, weight, and handling references",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status events and next-control history",
+      "guidance": "Capture Load Tender facts for offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Load Tender tracked controls",
+          "items": [
+            "Origin and destination commitments",
+            "Commodity, count, weight, and dimensions",
+            "Equipment and capacity fit",
+            "Carrier authority and current qualification",
+            "Rate, accessorial, and instruction agreement",
+            "Acceptance, rejection, counteroffer, and dispatch handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Reconcile the latest Load Tender event before closeout. Transport Planning Coordinator identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Carrier qualification incomplete",
+            "Equipment or capacity mismatch",
+            "Commitment cannot be met",
+            "Rate or instruction changed without authority",
+            "Source order and customer commitment",
+            "Carrier qualification evidence",
+            "Rate and instruction confirmation",
+            "Tender acceptance and dispatch record"
+          ],
+          "guidance": "Pause Load Tender when carrier, capacity, equipment, commitment, rate, or instruction authorization remains unresolved. Retain the available Load Tender proof and route unresolved offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance scope to transport planning coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Transport Planning Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Authorized Carrier-Management Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

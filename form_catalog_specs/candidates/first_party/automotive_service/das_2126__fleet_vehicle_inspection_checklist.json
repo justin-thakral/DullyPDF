@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2126__fleet_vehicle_inspection_checklist",
+  "source_section": "automotive_service",
+  "source_filename": "das_2126__fleet_vehicle_inspection_checklist.pdf",
+  "slug": "fleet-vehicle-inspection-checklist",
+  "title": "Fleet Vehicle Inspection Checklist",
+  "subtitle": "Fleet Vehicle Service: documents findings, limits, and disposition.",
+  "description": "Fleet Vehicle Inspection Checklist covers fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision. The fleet maintenance coordinator records Fleet Vehicle Service criteria, findings, restrictions, and follow-up. Fleet Vehicle Inspection Checklist keeps Fleet Vehicle Service exceptions visible until the fleet maintenance coordinator handoff.",
+  "use_case": "Use Fleet Vehicle Inspection Checklist at fleet yard, service facility, operating route, and vehicle assignment point. Document fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision identity before Fleet Vehicle Service begins. Compare fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision findings with stated Fleet Vehicle Service criteria; route unresolved Fleet Vehicle Service issues to qualified fleet maintenance reviewer. For Fleet Vehicle Inspection Checklist, confirm requirements for Fleet Vehicle Service. Ask qualified fleet maintenance reviewer to review Fleet Vehicle Service conditions beyond the fleet maintenance coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspector, location, and subject identity",
+      "guidance": "For Fleet Vehicle Service, identify responsible parties, fleet yard, service facility, operating route, and vehicle assignment point, and the linked fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Fleet Vehicle Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Fleet unit, work order, and department",
+              "units": 2.111111111111111
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, engine hours, and assignment",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Driver report, interval, prior defect, and campaign reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Observed conditions and item decisions",
+      "guidance": "Capture Fleet Vehicle Service facts for fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Fleet Vehicle Service inspection checks",
+          "items": [
+            "Driver concern and operating impact",
+            "Scheduled-maintenance status",
+            "Vehicle-system inspection and diagnostic result",
+            "Parts, labor, downtime, and vendor status",
+            "Open campaign, recall, or recurring defect",
+            "Return-to-service restriction and driver handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Use observed Fleet Vehicle Service evidence to state disposition. Keep limits visible and give Fleet Maintenance Coordinator both correction and repeat-check responsibility.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Safety defect or overdue critical service",
+            "Repeat failure lacks escalation",
+            "Repair exceeds authority or downtime commitment",
+            "Return-to-service review incomplete",
+            "Driver report and intake condition",
+            "Maintenance and diagnostic readings",
+            "Part, labor, and vendor trace",
+            "Qualified return-to-service and assignment record"
+          ],
+          "guidance": "Pause Fleet Vehicle Service when safety, maintenance, repeat-defect, authorization, or return-to-service concern remains unresolved. Retain the available Fleet Vehicle Service proof and route unresolved fleet unit, driver report, preventive-maintenance interval, defect, downtime, repair, and return-to-service decision scope to fleet maintenance coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Fleet Maintenance Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Fleet Maintenance Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

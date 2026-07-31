@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2624__pesticide_application_tracking_log",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2624__pesticide_application_tracking_log.pdf",
+  "slug": "pesticide-application-tracking-log",
+  "title": "Pesticide Application Tracking Log",
+  "subtitle": "Pesticide Application: preserves changes and next triggers.",
+  "description": "Pesticide Application Tracking Log covers site, target, product, application equipment, weather condition, buffer, and reentry control. The application record owner records Pesticide Application events, owners, exceptions, and next triggers. Pesticide Application Tracking Log keeps Pesticide Application exceptions visible until the application record owner handoff.",
+  "use_case": "Use Pesticide Application Tracking Log at field, block, structure, treatment zone, mixing area, and buffer boundary. Document site, target, product, application equipment, weather condition, buffer, and reentry control identity before Pesticide Application begins. Compare site, target, product, application equipment, weather condition, buffer, and reentry control findings with stated Pesticide Application criteria; route unresolved Pesticide Application issues to licensed or otherwise qualified pesticide reviewer. For Pesticide Application Tracking Log, confirm requirements for Pesticide Application. Ask licensed or otherwise qualified pesticide reviewer to review Pesticide Application conditions beyond the application record owner's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Pesticide Application, identify responsible parties, field, block, structure, treatment zone, mixing area, and buffer boundary, and the linked site, target, product, application equipment, weather condition, buffer, and reentry control source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Pesticide Application identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Farm, field, block, and treated area",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Target pest and treatment reason",
+              "units": 1.7777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Product, registration reference, lot, and applicator",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status variance and accountable response",
+      "guidance": "Capture Pesticide Application facts for site, target, product, application equipment, weather condition, buffer, and reentry control; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Pesticide Application tracked controls",
+          "items": [
+            "Authorized crop or site and target",
+            "Rate, mixture, carrier, and treated area",
+            "Weather, wind, temperature, and precipitation",
+            "Equipment, nozzle, pressure, and calibration",
+            "Buffer, sensitive area, and drift control",
+            "Start, stop, reentry, preharvest, cleanup, and posting"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Status decision and next trigger",
+      "guidance": "Keep the Pesticide Application chronology intact through handoff. State the unresolved exception, the owner selected by Application Record Owner, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Label or authorization mismatch",
+            "Weather or drift condition unsuitable",
+            "Spill, exposure, or equipment leak",
+            "Restriction cannot be communicated or controlled",
+            "Product and lot record",
+            "Calibration and mixture calculation",
+            "Weather and application log",
+            "Posting, restriction, cleanup, and incident evidence"
+          ],
+          "guidance": "Pause Pesticide Application when authorization, weather, drift, exposure, equipment integrity, or required restriction remains unresolved. Retain the available Pesticide Application proof and route unresolved site, target, product, application equipment, weather condition, buffer, and reentry control scope to application record owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Application Record Owner",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Licensed Or Otherwise Qualified Pesticide Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

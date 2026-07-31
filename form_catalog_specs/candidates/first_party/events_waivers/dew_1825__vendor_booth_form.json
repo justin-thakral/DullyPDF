@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1825__vendor_booth_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1825__vendor_booth_form.pdf",
+  "slug": "vendor-booth-form",
+  "title": "Vendor Booth Form",
+  "subtitle": "Capture booth number, footprint, product type, and power need; confirm load-in and credential.",
+  "description": "Vendor Booth records booth number, footprint, product type, power need, load-in, and credential. Vendor Booth evidence stays linked.",
+  "use_case": "Use this vendor booth operational record when staff must document booth number and footprint. Reconcile product type, power need, load-in, and credential before the vendor booth handoff. Use the exhibitor application, floorplan assignment, product description, utility order, insurance or approval route, load-in schedule, credential list, and load-out signoff. Ask the assigned vendor booth reviewer to confirm booth number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Vendor Booth contact and reference",
+      "guidance": "Assign booth number and footprint; record products, power and internet, load-in slot, fire-lane limit, credentials, waste plan, and load-out.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Vendor Booth people and reference",
+          "fields": [
+            {
+              "key": "organization_legal_or_public_name",
+              "label": "Organization legal or public name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_contact_name",
+              "label": "Primary contact name",
+              "units": 1.0
+            },
+            {
+              "key": "primary_contact_phone",
+              "label": "Primary contact phone",
+              "units": 1.25
+            },
+            {
+              "key": "primary_contact_email",
+              "label": "Primary contact email",
+              "units": 1.1
+            },
+            {
+              "key": "booth_number",
+              "label": "Booth number",
+              "units": 1.2
+            },
+            {
+              "key": "footprint",
+              "label": "Footprint",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Vendor Booth task details",
+          "fields": [
+            {
+              "key": "product_type",
+              "label": "Product type",
+              "units": 1.15
+            },
+            {
+              "key": "power_need",
+              "label": "Power need",
+              "units": 1.0
+            },
+            {
+              "key": "load_in",
+              "label": "Load-in",
+              "units": 1.25
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Vendor Booth activity",
+      "guidance": "Record each meaningful vendor booth event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Vendor Booth activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "booth_number",
+              "label": "Booth number",
+              "units": 1.1
+            },
+            {
+              "key": "product_type",
+              "label": "Product type",
+              "units": 1.25
+            },
+            {
+              "key": "load_in",
+              "label": "Load-in",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Vendor Booth change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Vendor Booth decision and completion",
+      "guidance": "Leave the current vendor booth result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Vendor Booth final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Vendor Booth completion receipt",
+          "fields": [
+            {
+              "key": "responsible_event_staff_and_date",
+              "label": "Responsible event staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded vendor booth task status."
+        }
+      ]
+    }
+  ]
+}

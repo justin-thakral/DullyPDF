@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1829__vendor_booth_sign_in_log",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1829__vendor_booth_sign_in_log.pdf",
+  "slug": "vendor-booth-sign-in-log",
+  "title": "Vendor Booth Sign-In Log",
+  "subtitle": "Capture booth number, footprint, product type, and power need; confirm load-in and credential.",
+  "description": "Vendor Booth records booth number, footprint, product type, power need, load-in, and credential. Vendor Booth evidence stays linked.",
+  "use_case": "Use this vendor booth attendance and custody reconciliation when staff must document booth number and footprint. Reconcile product type, power need, load-in, and credential before the vendor booth handoff. Use the exhibitor application, floorplan assignment, product description, utility order, insurance or approval route, load-in schedule, credential list, and load-out signoff. Ask the assigned vendor booth reviewer to confirm booth number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Vendor Booth details",
+      "guidance": "Assign booth number and footprint; record products, power and internet, load-in slot, fire-lane limit, credentials, waste plan, and load-out.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Vendor Booth people and reference",
+          "fields": [
+            {
+              "key": "organization_legal_or_public_name",
+              "label": "Organization legal or public name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_contact_name",
+              "label": "Primary contact name",
+              "units": 1.0
+            },
+            {
+              "key": "primary_contact_phone",
+              "label": "Primary contact phone",
+              "units": 1.25
+            },
+            {
+              "key": "booth_number",
+              "label": "Booth number",
+              "units": 1.1
+            },
+            {
+              "key": "footprint",
+              "label": "Footprint",
+              "units": 1.2
+            },
+            {
+              "key": "product_type",
+              "label": "Product type",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Vendor Booth task details",
+          "fields": [
+            {
+              "key": "power_need",
+              "label": "Power need",
+              "units": 1.15
+            },
+            {
+              "key": "load_in",
+              "label": "Load-in",
+              "units": 1.0
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance_rows",
+      "title": "Vendor Booth vendor identity, booth access, and load-out",
+      "guidance": "Match each vendor to booth assignment, credentials, utilities, load-in status, and load-out return.",
+      "blocks": [
+        {
+          "key": "sign_in_rows",
+          "type": "table",
+          "label": "Vendor Booth vendor rows",
+          "columns": [
+            {
+              "key": "vendor_and_booth",
+              "label": "Vendor and booth",
+              "units": 1.2
+            },
+            {
+              "key": "check_in_and_credential",
+              "label": "Check-in and credential",
+              "units": 1.1
+            },
+            {
+              "key": "utility_or_access_status",
+              "label": "Utility or access status",
+              "units": 1.25
+            },
+            {
+              "key": "load_out_or_return",
+              "label": "Load-out or return",
+              "units": 1.0
+            },
+            {
+              "key": "exception_and_owner",
+              "label": "Exception and owner",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "roster_boundary",
+          "type": "notice",
+          "label": "Vendor Booth roster boundary",
+          "guidance": "Route an unmatched vendor, booth, credential, utility, or load-out record before closing the log."
+        }
+      ]
+    },
+    {
+      "key": "attendance_close",
+      "title": "Vendor Booth load-out outcome and vendor reconciliation",
+      "guidance": "Reconcile vendor, credential, booth, and load-out status.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Vendor Booth closing counts",
+          "fields": [
+            {
+              "key": "expected_vendor_count",
+              "label": "Expected vendor count",
+              "units": 1.15
+            },
+            {
+              "key": "vendors_checked_in",
+              "label": "Vendors checked in",
+              "units": 1.0
+            },
+            {
+              "key": "load_outs_completed",
+              "label": "Load-outs completed",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_booth_or_credential_and_owner",
+              "label": "Unresolved booth or credential and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "attendance_receipt",
+          "type": "signatures",
+          "label": "Vendor Booth log receipt",
+          "fields": [
+            {
+              "key": "event_coordinator_or_roster_custodian_and_date",
+              "label": "Event coordinator or roster custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Do not close an unreconciled entry without a named owner."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_175__bullying_incident_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_175__bullying_incident_form.pdf",
+  "slug": "bullying-incident-form",
+  "title": "Bullying Incident Form",
+  "subtitle": "Capture reported conduct, exact statement, location pattern, and protective step; confirm retaliation concern and support follow-up.",
+  "description": "Bullying Incident records reported conduct, exact statement, location pattern, protective step, retaliation concern, and support follow-up. Bullying Incident evidence stays linked.",
+  "use_case": "Use this bullying incident operational record when staff must document reported conduct and exact statement. Reconcile location pattern, protective step, retaliation concern, and support follow-up before the bullying incident handoff. Preserve the original report, dated witness accounts, location map or digital-channel reference, protective-action log, retaliation check, and restricted support record. Ask the assigned bullying incident reviewer to confirm reported conduct against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Bullying Incident starting details review",
+      "guidance": "Separate reported conduct and exact statements from observations; record location patterns, protective measures, retaliation concerns, and support follow-up.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Bullying Incident people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "reporting_person_and_role",
+              "label": "Reporting person and role",
+              "units": 1.0
+            },
+            {
+              "key": "date_and_time_first_reported",
+              "label": "Date and time first reported",
+              "units": 1.25
+            },
+            {
+              "key": "school_or_program_location",
+              "label": "School or program location",
+              "units": 1.1
+            },
+            {
+              "key": "reported_conduct",
+              "label": "Reported conduct",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Bullying Incident task details",
+          "fields": [
+            {
+              "key": "exact_statement",
+              "label": "Exact statement",
+              "units": 1.15
+            },
+            {
+              "key": "location_pattern",
+              "label": "Location pattern",
+              "units": 1.0
+            },
+            {
+              "key": "protective_step",
+              "label": "Protective step",
+              "units": 1.25
+            },
+            {
+              "key": "retaliation_concern",
+              "label": "Retaliation concern",
+              "units": 1.1
+            },
+            {
+              "key": "support_follow_up",
+              "label": "Support follow-up",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Bullying Incident activity",
+      "guidance": "Record each meaningful bullying incident event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Bullying Incident activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "reported_conduct",
+              "label": "Reported conduct",
+              "units": 1.1
+            },
+            {
+              "key": "location_pattern",
+              "label": "Location pattern",
+              "units": 1.25
+            },
+            {
+              "key": "retaliation_concern",
+              "label": "Retaliation concern",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Bullying Incident change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 44
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Bullying Incident completion",
+      "guidance": "Leave the current bullying incident result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Bullying Incident final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Bullying Incident completion receipt",
+          "fields": [
+            {
+              "key": "responsible_teacher_or_program_staff_and_date",
+              "label": "Responsible teacher or program staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded bullying incident task status."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2135__detail_service_work_order_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2135__detail_service_work_order_form.pdf",
+  "slug": "detail-service-work-order-form",
+  "title": "Detail Service Work Order Form",
+  "subtitle": "Vehicle Detailing Service: connects authorized scope to results.",
+  "description": "Detail Service Work Order Form covers vehicle exterior, interior, finish, material, contamination, selected package, and protected feature. The detail service advisor records Vehicle Detailing Service authorized tasks, materials, results, and changes. Detail Service Work Order Form keeps Vehicle Detailing Service exceptions visible until the detail service advisor handoff.",
+  "use_case": "Use Detail Service Work Order Form at detail bay, wash area, interior work zone, drying area, and delivery point. Document vehicle exterior, interior, finish, material, contamination, selected package, and protected feature identity before Vehicle Detailing Service begins. Compare vehicle exterior, interior, finish, material, contamination, selected package, and protected feature findings with stated Vehicle Detailing Service criteria; route unresolved Vehicle Detailing Service issues to vehicle appearance quality reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Customer, provider, and approved-work evidence",
+      "guidance": "For Vehicle Detailing Service, identify responsible parties, detail bay, wash area, interior work zone, drying area, and delivery point, and the linked vehicle exterior, interior, finish, material, contamination, selected package, and protected feature source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Record date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "scope_limit",
+              "label": "Scope / amount limit",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Vehicle Detailing Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Work order and customer",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN or vehicle, plate, color, and mileage",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Selected package, add-on, material, and customer concern",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Authorized scope-change decision and tracking",
+      "guidance": "Capture Vehicle Detailing Service facts for vehicle exterior, interior, finish, material, contamination, selected package, and protected feature; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Authorized work lines",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Authorized task or service",
+              "units": 1.25
+            },
+            {
+              "key": "resources",
+              "label": "Part, material, or resource",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Work performed and result",
+              "units": 1.15
+            },
+            {
+              "key": "status",
+              "label": "Change, status, or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Vehicle Detailing Service authorized-work checks",
+          "items": [
+            "Paint, trim, glass, wheel, and exterior baseline",
+            "Seat, carpet, headliner, console, and interior baseline",
+            "Scratch, chip, stain, odor, damage, and sensitive material",
+            "Product compatibility and test area",
+            "Wash, decontamination, correction, protection, and interior step",
+            "Final lighting inspection and customer walkthrough"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Scope exception, work status, and handoff",
+      "guidance": "Resolve open Vehicle Detailing Service conditions; have detail service advisor assign the next Vehicle Detailing Service owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scope changes, holds, and retained evidence",
+          "items": [
+            "Material or coating compatibility uncertain",
+            "Damage could worsen with requested process",
+            "Biohazard or unknown contamination",
+            "Expected correction exceeds approved package",
+            "Intake condition photographs",
+            "Product and test-area record",
+            "Completed-service checklist",
+            "Remaining defect and final walkthrough"
+          ],
+          "guidance": "Pause Vehicle Detailing Service when compatibility, damage, contamination, scope expectation, or final quality concern remains unresolved. Retain the available Vehicle Detailing Service proof and route unresolved vehicle exterior, interior, finish, material, contamination, selected package, and protected feature scope to detail service advisor."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Completion status and open work",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work-order status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed within authorization",
+                "Completed with listed change",
+                "Follow-up work required",
+                "Held for approval",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer work acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Detail Service Advisor",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer, fleet, or vehicle owner",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

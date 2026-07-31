@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1204__hvac_preventive_maintenance_maintenance_log",
+  "source_section": "field_service",
+  "source_filename": "dfm_1204__hvac_preventive_maintenance_maintenance_log.pdf",
+  "slug": "hvac-preventive-maintenance-maintenance-log",
+  "title": "HVAC Preventive Maintenance Log",
+  "subtitle": "Facility HVAC Preventive Maintenance: preserves changes and next triggers.",
+  "description": "HVAC Preventive Maintenance Log covers air handler, condenser, controls, distribution, and served zone. The facility maintenance coordinator records Facility HVAC Preventive Maintenance events, owners, exceptions, and next triggers. HVAC Preventive Maintenance Log keeps Facility HVAC Preventive Maintenance exceptions visible until the facility maintenance coordinator handoff.",
+  "use_case": "Use HVAC Preventive Maintenance Log at equipment room, roof, mechanical area, and occupied zone. Document air handler, condenser, controls, distribution, and served zone identity before Facility HVAC Preventive Maintenance begins. Compare air handler, condenser, controls, distribution, and served zone findings with stated Facility HVAC Preventive Maintenance criteria; route unresolved Facility HVAC Preventive Maintenance issues to qualified HVAC service supervisor. For HVAC Preventive Maintenance Log, confirm requirements for Facility HVAC Preventive Maintenance. Ask qualified HVAC service supervisor to review Facility HVAC Preventive Maintenance conditions beyond the facility maintenance coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Facility HVAC Preventive Maintenance, identify responsible parties, equipment room, roof, mechanical area, and occupied zone, and the linked air handler, condenser, controls, distribution, and served zone source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Facility HVAC Preventive Maintenance identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility and work-order number",
+              "units": 1.6666666666666667
+            },
+            {
+              "key": "identity_2",
+              "label": "Equipment tag, model, serial, and served area",
+              "units": 2.5
+            },
+            {
+              "key": "identity_3",
+              "label": "Maintenance interval and manufacturer plan",
+              "units": 2.3333333333333335
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Tracking review and variance evidence",
+      "guidance": "Capture Facility HVAC Preventive Maintenance facts for air handler, condenser, controls, distribution, and served zone; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Facility HVAC Preventive Maintenance tracked controls",
+          "items": [
+            "Filter condition and differential indication",
+            "Belt, bearing, fan, and motor condition",
+            "Supply and return temperature or airflow result",
+            "Coil, drain pan, trap, and condensate condition",
+            "Refrigerant-circuit visual condition and leak concern",
+            "Thermostat, sensor, alarm, and sequence response"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Status decision and next trigger",
+      "guidance": "Keep the Facility HVAC Preventive Maintenance chronology intact through handoff. State the unresolved exception, the owner selected by Facility Maintenance Coordinator, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Unsafe electrical or rotating exposure",
+            "Refrigerant or combustion concern outside authorization",
+            "Blocked drainage or active water damage",
+            "Required capacity, alarm, or sequence not restored",
+            "Nameplate and asset-tag photograph",
+            "Before-and-after readings tied to instruments",
+            "Replaced-part and consumable record",
+            "Operating-test result by served zone"
+          ],
+          "guidance": "Pause Facility HVAC Preventive Maintenance when energy isolation, refrigerant concern, combustion concern, or failed operating safeguard remains unresolved. Retain the available Facility HVAC Preventive Maintenance proof and route unresolved air handler, condenser, controls, distribution, and served zone scope to facility maintenance coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Facility Maintenance Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified HVAC Service Supervisor",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

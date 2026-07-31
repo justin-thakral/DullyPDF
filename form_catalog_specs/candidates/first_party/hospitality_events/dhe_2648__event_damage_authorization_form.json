@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2648__event_damage_authorization_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2648__event_damage_authorization_form.pdf",
+  "slug": "event-damage-authorization-form",
+  "title": "Event Damage Authorization Form",
+  "subtitle": "Capture affected property, pre-event condition, discovery time, and containment; confirm repair evidence and settlement.",
+  "description": "Event Damage records affected property, pre-event condition, discovery time, containment, repair evidence, and settlement. Event Damage evidence stays linked.",
+  "use_case": "Use this event damage authorization decision when staff must document affected property and pre-event condition. Reconcile discovery time, containment, repair evidence, and settlement before the event damage handoff. Use pre-event and post-event condition photos, inspection notes, vendor report, containment log, repair quote, invoice, insurance reference, settlement record, and venue acceptance. Ask the assigned event damage reviewer to confirm affected property against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Event Damage signer details review",
+      "guidance": "Identify affected property, pre-event condition, discovery time, photographs, containment, vendor involvement, repair estimate, insurance route, settlement, and venue acceptance.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Event Damage people and reference",
+          "fields": [
+            {
+              "key": "operational_record_subject",
+              "label": "Operational record subject",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_contact",
+              "label": "Responsible contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_work_area",
+              "label": "Property, venue, or work area",
+              "units": 1.25
+            },
+            {
+              "key": "scheduled_or_discovery_date",
+              "label": "Scheduled or discovery date",
+              "units": 1.1
+            },
+            {
+              "key": "affected_property",
+              "label": "Affected property",
+              "units": 1.2
+            },
+            {
+              "key": "pre_event_condition",
+              "label": "Pre-event condition",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Event Damage task details",
+          "fields": [
+            {
+              "key": "discovery_time",
+              "label": "Discovery time",
+              "units": 1.15
+            },
+            {
+              "key": "containment",
+              "label": "Containment",
+              "units": 1.0
+            },
+            {
+              "key": "repair_evidence",
+              "label": "Repair evidence",
+              "units": 1.25
+            },
+            {
+              "key": "settlement",
+              "label": "Settlement",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Event Damage decision and scope choices",
+      "guidance": "Decide each event damage scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Event Damage primary scope",
+          "fields": [
+            {
+              "key": "affected_property",
+              "label": "Affected property",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "pre_event_condition",
+              "label": "Pre-event condition",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "discovery_time",
+              "label": "Discovery time",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Event Damage additional scope",
+          "fields": [
+            {
+              "key": "containment",
+              "label": "Containment",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "repair_evidence",
+              "label": "Repair evidence",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "settlement",
+              "label": "Settlement",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Event Damage authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Event Damage effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_service_recipient",
+              "label": "Authorized service recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            },
+            {
+              "key": "revocation_or_update_route",
+              "label": "Revocation or update route",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Event Damage signer receipt and handoff",
+      "guidance": "Only recorded event damage choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Event Damage limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Event Damage signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Event Damage signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Event Damage authorization boundary",
+          "guidance": "Named event damage reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

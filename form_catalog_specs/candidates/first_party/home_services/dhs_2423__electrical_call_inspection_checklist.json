@@ -1,0 +1,291 @@
+{
+  "catalog_id": "home_services/dhs_2423__electrical_call_inspection_checklist",
+  "description": "For electrical call, this inspection checklist records hazard screen, diagnostic boundary, outage plan, repair options, parts, permit needs, and price authorization. Its supporting evidence includes voltage or continuity readings, panel labels, thermal or condition photos, fault findings, and functional test.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this electrical call review to the service record.",
+          "key": "service_review_reference",
+          "label": "Electrical Call Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Panel",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Breaker",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Circuit",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Device",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed electrical call location and assets.",
+          "key": "service_context",
+          "label": "Electrical Call Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the electrical call service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Service Visit Reference"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each electrical call item after direct review.",
+          "items": [
+            "Affected circuits, devices, controls, and loads operate as intended",
+            "Covers, labels, grounding, protection, and enclosures are restored",
+            "No exposed conductor, abnormal heat, odor, arcing, or damage remains",
+            "Required voltage, continuity, polarity, or functional checks are recorded",
+            "Affected finishes and the work area are clean and secure",
+            "Customer limits, shutoff location, and follow-up work are explained"
+          ],
+          "key": "quality_checks",
+          "label": "Electrical Call Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one electrical call row for each reviewed area.",
+          "key": "area_results",
+          "label": "Electrical Call Area and Task Results",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "De-energize and escalate smoke, heat damage, exposed conductors, service issues, arc risk, or work beyond qualification. Route unresolved electrical call work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Electrical Call Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Check completed electrical call work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Room and Task Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Call owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each electrical call concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "Electrical Call Issue, Photo, and Correction Record",
+          "rows": 7,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Electrical Call Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved electrical call expectations here.",
+          "height": 42,
+          "key": "customer_concern",
+          "label": "Electrical Call Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every electrical call issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the electrical call outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "Electrical Call Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Safe re-energization",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Label correction",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "Customer explanation",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Permit status",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For electrical call, record safe re-energization, label correction, customer explanation, permit status, repair warranty, and service record.",
+          "key": "quality_followup",
+          "label": "Electrical Call Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "Electrical Call Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the electrical call result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Crew and Customer Acknowledgment"
+    }
+  ],
+  "slug": "electrical-call-inspection-checklist",
+  "source_filename": "dhs_2423__electrical_call_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "Electrical Call Inspection Checklist: residential electrical service call dispatch using panel, hazard screen, and voltage or continuity readings.",
+  "title": "Electrical Call Inspection Checklist",
+  "use_case": "Use the inspection checklist during residential electrical service call dispatch when the electrical call record must identify panel, breaker, circuit, device, symptom, affected loads, occupancy, access, and prior modifications. Complete the applicable handoff for safe re-energization, label correction, customer explanation, permit status, repair warranty, and service record."
+}

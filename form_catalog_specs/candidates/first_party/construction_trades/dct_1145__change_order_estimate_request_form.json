@@ -1,0 +1,351 @@
+{
+  "catalog_id": "construction_trades/dct_1145__change_order_estimate_request_form",
+  "description": "For change order, this estimate request form records added and deleted work, labor, material, equipment, subcontract, markup, exclusions, and time effect. Its supporting evidence includes field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Change opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Change site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Change contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Change superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Change due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this change order record to its evidence.",
+          "key": "record_routing",
+          "label": "Change Order Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Base work order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Directive",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Affected task",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Pricing basis",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain for this change order.",
+          "key": "core_identity",
+          "label": "Change Order Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain for this change order record.",
+      "key": "identity_1",
+      "title": "Estimate Assignment and Site"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Added",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Deleted work",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Labor",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Material",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Subcontract",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For change order, record added and deleted work, labor, material, equipment, subcontract, markup, exclusions, and time effect.",
+          "key": "task_inputs",
+          "label": "Change Order Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Change Order Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State change order outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Change Order Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Change work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Change owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate change order items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Change Order Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not execute discretionary changed work before written authorization within the approving party's limit. Route unresolved change order work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Change Order Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For change order, capture added and deleted work, labor, material, equipment, subcontract, markup, exclusions, and time effect.",
+      "key": "task_2",
+      "title": "Scope Review and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Change when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Change measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Change evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Change result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For change order, record field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+          "key": "evidence_register",
+          "label": "Change Order Findings, Measurements, and Evidence",
+          "rows": 9,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Field directive",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Estimate sheets",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Quotes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Time records",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Schedule fragment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every change order evidence source.",
+          "key": "evidence_sources",
+          "label": "Change Order Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary change order evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Change Order Evidence Completeness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Support change order findings with field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+      "key": "observation_3",
+      "title": "Pricing Inputs and Site Evidence"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate request form disposition",
+                "Ready to estimate",
+                "Site visit required",
+                "Clarification required",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Change decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Change approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Change schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate change order disposition.",
+          "key": "disposition",
+          "label": "Change Order Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Change Order Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the change order decision to evidence.",
+          "height": 36,
+          "key": "decision_basis",
+          "label": "Change Order Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Change requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Change coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Change Order Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the change order next step from field directive, estimate sheets, quotes, photos, time records, schedule fragment, and coordination notes.",
+      "key": "decision_4",
+      "title": "Estimate Readiness"
+    }
+  ],
+  "slug": "change-order-estimate-request-form",
+  "source_filename": "dct_1145__change_order_estimate_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Change Order Estimate Request Form: trade change-order development and acceptance using base work order, added, and field directive.",
+  "title": "Change Order Estimate Request Form",
+  "use_case": "Use the estimate request form during trade change-order development and acceptance when the change order record must identify base work order, directive, affected task, location, pricing basis, schedule activity, and approval chain. Complete the applicable handoff for accepted price and days, revised work order, cost and schedule posting, field release, and distribution record."
+}

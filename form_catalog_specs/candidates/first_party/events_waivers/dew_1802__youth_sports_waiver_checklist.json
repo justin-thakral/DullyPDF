@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1802__youth_sports_waiver_checklist",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1802__youth_sports_waiver_checklist.pdf",
+  "slug": "youth-sports-waiver-checklist",
+  "title": "Youth Sports Waiver Checklist",
+  "subtitle": "Capture sport, season, guardian authority, and contact level; confirm equipment and coach release.",
+  "description": "Youth Sports Waiver records sport, season, guardian authority, contact level, equipment, and coach release. Youth Sports Waiver evidence stays linked.",
+  "use_case": "Use this youth sports waiver stage-gated verification when staff must document sport and season. Reconcile guardian authority, contact level, equipment, and coach release before the youth sports waiver handoff. Use the season plan, team roster, guardian verification, disclosed contact conditions, equipment issue, coach brief, optional-activity choices, and player release. This acknowledgment concerns a player in a team season with practice and competition, contact level, coach supervision, protective gear, league rules, sideline release, and guardian choice. Ask the assigned youth sports waiver reviewer to confirm sport against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Youth Sports Waiver starting details review",
+      "guidance": "Name sport, season, team, participant and guardian authority, contact level, equipment, coaching supervision, alternative activity, and release. Record the youth sports waiver decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Youth Sports Waiver people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "sport",
+              "label": "Sport",
+              "units": 1.1
+            },
+            {
+              "key": "season",
+              "label": "Season",
+              "units": 1.2
+            },
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Youth Sports Waiver task details",
+          "fields": [
+            {
+              "key": "contact_level",
+              "label": "Contact level",
+              "units": 1.15
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "coach_release",
+              "label": "Coach release",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Youth Sports Waiver exception review: checks and corrections",
+      "guidance": "Check current youth sports waiver facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Youth Sports Waiver required checks",
+          "items": [
+            "Sport is identified for this record",
+            "Season matches the current request or source",
+            "Guardian authority is ready for point-of-use staff",
+            "Contact level limits or questions are resolved",
+            "Equipment is communicated to the responsible person",
+            "Coach release is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Youth Sports Waiver failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Youth Sports Waiver readiness",
+      "guidance": "Hold youth sports waiver readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Youth Sports Waiver checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Youth Sports Waiver reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Youth Sports Waiver receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

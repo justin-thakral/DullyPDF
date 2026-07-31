@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_146__gutter_cleaning_checklist",
+  "source_section": "field_service",
+  "source_filename": "dhs_146__gutter_cleaning_checklist.pdf",
+  "slug": "gutter-cleaning-checklist",
+  "title": "Gutter Cleaning Checklist",
+  "subtitle": "Residential Gutter Cleaning: documents findings, limits, and disposition.",
+  "description": "Gutter Cleaning Checklist covers gutter run, outlet, downspout, discharge, roof edge, and collected debris. The gutter service coordinator records Residential Gutter Cleaning criteria, findings, restrictions, and follow-up. Gutter Cleaning Checklist keeps Residential Gutter Cleaning exceptions visible until the gutter service coordinator handoff.",
+  "use_case": "Use Gutter Cleaning Checklist at residence perimeter, roof edge, ladder position, discharge point, and protected landscaping. Document gutter run, outlet, downspout, discharge, roof edge, and collected debris identity before Residential Gutter Cleaning begins. Compare gutter run, outlet, downspout, discharge, roof edge, and collected debris findings with stated Residential Gutter Cleaning criteria; route unresolved Residential Gutter Cleaning issues to exterior service supervisor. For Gutter Cleaning Checklist, confirm requirements for Residential Gutter Cleaning. Ask exterior service supervisor to review Residential Gutter Cleaning conditions beyond the gutter service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspection scope and subject identity",
+      "guidance": "For Residential Gutter Cleaning, identify responsible parties, residence perimeter, roof edge, ladder position, discharge point, and protected landscaping, and the linked gutter run, outlet, downspout, discharge, roof edge, and collected debris source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Gutter Cleaning identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and visit",
+              "units": 1.5555555555555556
+            },
+            {
+              "key": "identity_2",
+              "label": "Gutter run and downspout identifier",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_3",
+              "label": "Access method, roof height, weather, and discharge expectation",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Observed conditions and item decisions",
+      "guidance": "Capture Residential Gutter Cleaning facts for gutter run, outlet, downspout, discharge, roof edge, and collected debris; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Gutter Cleaning inspection checks",
+          "items": [
+            "Debris load and blockage location",
+            "Gutter pitch, joint, hanger, seam, and visible damage",
+            "Outlet and downspout flow",
+            "Discharge location, erosion, and foundation proximity",
+            "Roof-edge, fascia, soffit, and adjacent condition",
+            "Post-cleaning water-flow result"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "List each unresolved Residential Gutter Cleaning finding with its restriction, correction owner, and reinspection trigger. Gutter Service Coordinator records reviewer disposition.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Unsafe ladder, edge, weather, or power-line proximity",
+            "Loose gutter or damaged fascia cannot support work",
+            "Downspout blockage requires disassembly beyond scope",
+            "Water discharge creates property or erosion concern",
+            "Before-and-after gutter photographs",
+            "Blocked outlet and damage images",
+            "Debris removal and disposal record",
+            "Flow-test and discharge-point evidence"
+          ],
+          "guidance": "Pause Residential Gutter Cleaning when access, edge, weather, electrical proximity, unstable attachment, or unsafe discharge remains. Retain the available Residential Gutter Cleaning proof and route unresolved gutter run, outlet, downspout, discharge, roof edge, and collected debris scope to gutter service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Gutter Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Exterior Service Supervisor",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

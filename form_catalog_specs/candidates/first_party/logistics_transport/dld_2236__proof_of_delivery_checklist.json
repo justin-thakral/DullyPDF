@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2236__proof_of_delivery_checklist",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2236__proof_of_delivery_checklist.pdf",
+  "slug": "proof-of-delivery-checklist",
+  "title": "Proof of Delivery Checklist",
+  "subtitle": "Proof Of Delivery: documents findings, limits, and disposition.",
+  "description": "Proof of Delivery Checklist covers delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof. The delivery verification coordinator records Proof Of Delivery criteria, findings, restrictions, and follow-up. Proof of Delivery Checklist keeps Proof Of Delivery exceptions visible until the delivery verification coordinator handoff.",
+  "use_case": "Use Proof of Delivery Checklist at destination address, authorized delivery point, vehicle, and custody handoff. Document delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof identity before Proof Of Delivery begins. Compare delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof findings with stated Proof Of Delivery criteria; route unresolved Proof Of Delivery issues to delivery evidence reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspection scope and subject identity",
+      "guidance": "For Proof Of Delivery, identify responsible parties, destination address, authorized delivery point, vehicle, and custody handoff, and the linked delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Sender / recipient",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Delivery / custody point",
+              "units": 1.3333333333333333
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Proof Of Delivery identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Order, shipment, and tracking",
+              "units": 1.6111111111111112
+            },
+            {
+              "key": "identity_2",
+              "label": "Piece, package, serial, seal, and quantity",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_3",
+              "label": "Recipient, organization, authority, and delivery-point identity",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist points, conditions, and actions",
+      "guidance": "Capture Proof Of Delivery facts for delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Proof Of Delivery inspection checks",
+          "items": [
+            "Arrival and delivery timestamp",
+            "Delivery point and access instruction",
+            "Recipient or alternate-delivery authority",
+            "Piece count and visible condition",
+            "Signature, photograph, scan, or other permitted proof",
+            "Refusal, unattended delivery, or failed-attempt basis"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection exception, restriction, and reinspection",
+      "guidance": "List each unresolved Proof Of Delivery finding with its restriction, correction owner, and reinspection trigger. Delivery Verification Coordinator records reviewer disposition.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Recipient authority uncertain",
+            "Address or delivery point differs",
+            "Piece count or condition exception",
+            "Proof collection would exceed privacy policy",
+            "Tracking and scan events",
+            "Permitted delivery-point photograph",
+            "Recipient acknowledgment or exception reason",
+            "Custody and notification trace"
+          ],
+          "guidance": "Pause Proof Of Delivery when recipient, location, custody, condition, or permitted proof remains unresolved. Retain the available Proof Of Delivery proof and route unresolved delivered unit, recipient, delivery point, timestamp, condition, and privacy-conscious proof scope to delivery verification coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Delivery Verification Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Delivery Evidence Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

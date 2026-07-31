@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2613__farm_labor_onboarding_request_form",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2613__farm_labor_onboarding_request_form.pdf",
+  "slug": "farm-labor-onboarding-request-form",
+  "title": "Farm Labor Onboarding Request Form",
+  "subtitle": "Farm Labor Onboarding: defines need, constraints, and assignment.",
+  "description": "Farm Labor Onboarding Request Form covers worker assignment, age or eligibility record, training, equipment authorization, housing or transport need, and supervisor handoff. The farm workforce coordinator records Farm Labor Onboarding need, timing, access, and assignment. Farm Labor Onboarding Request Form keeps Farm Labor Onboarding exceptions visible until the farm workforce coordinator handoff.",
+  "use_case": "Use Farm Labor Onboarding Request Form at farm office, field assignment, packing area, equipment zone, and worker support location. Document worker assignment, age or eligibility record, training, equipment authorization, housing or transport need, and supervisor handoff identity before Farm Labor Onboarding begins. Compare worker assignment, age or eligibility record, training, equipment authorization, housing or transport need, and supervisor handoff findings with stated Farm Labor Onboarding criteria; route unresolved Farm Labor Onboarding issues to authorized human-resources or safety reviewer. For Farm Labor Onboarding Request Form, confirm requirements for Farm Labor Onboarding. Ask authorized human-resources or safety reviewer to review Farm Labor Onboarding conditions beyond the farm workforce coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requester, location, and subject details",
+      "guidance": "For Farm Labor Onboarding, identify responsible parties, farm office, field assignment, packing area, equipment zone, and worker support location, and the linked worker assignment, age or eligibility record, training, equipment authorization, housing or transport need, and supervisor handoff source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Farm Labor Onboarding identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Worker and internal identifier",
+              "units": 1.6666666666666667
+            },
+            {
+              "key": "identity_2",
+              "label": "Employer, crew, supervisor, and start date",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_3",
+              "label": "Job, field, equipment, language, and training assignment",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Requested result, access, and timing",
+      "guidance": "Capture Farm Labor Onboarding facts for worker assignment, age or eligibility record, training, equipment authorization, housing or transport need, and supervisor handoff; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Farm Labor Onboarding intake confirmations",
+          "items": [
+            "Requested or already documented: identity and work-eligibility document routing without excess copying",
+            "Requested or already documented: job duties, pay basis, schedule, and contact route",
+            "Requested or already documented: language and comprehension support",
+            "Requested or already documented: hazard, heat, sanitation, emergency, and reporting orientation",
+            "Requested or already documented: equipment or vehicle authorization",
+            "Requested or already documented: housing, transport, or accommodation routing when offered"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Farm Labor Onboarding request questions; have farm workforce coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Required authorization incomplete",
+            "Training not understood or available in needed language",
+            "Assignment exceeds age, qualification, or restriction",
+            "Retaliation-free reporting or emergency route unclear",
+            "Prior or requester-supplied: required document verification record",
+            "Prior or requester-supplied: training topic and comprehension evidence",
+            "Prior or requester-supplied: equipment authorization",
+            "Prior or requester-supplied: worker acknowledgment and supervisor handoff"
+          ],
+          "guidance": "Do not assign or authorize the Farm Labor Onboarding request when authorization, comprehension, job restriction, safety orientation, or accountable supervisor handoff remains unresolved. Retain information supplied with the request and route unresolved constraints to farm workforce coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Farm Workforce Coordinator",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

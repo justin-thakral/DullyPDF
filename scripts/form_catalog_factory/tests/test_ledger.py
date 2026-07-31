@@ -626,6 +626,107 @@ def test_open_batch_source_retarget_is_fenced_audited_and_idempotent(
     assert events[0]["details"]["new_source_renderer_commit"] == "c" * 40
 
 
+def test_spec_revision_reopen_is_fenced_audited_and_idempotent(tmp_path) -> None:
+    ledger = build_ledger(tmp_path)
+    fence = prepare_spec_ready_batch(ledger)
+    original = ledger.get_item("retarget-form")
+    assert original is not None
+    request = {
+        "batch_id": "batch-retarget",
+        "expected_base_commit": fence["base_commit"],
+        "expected_renderer_commit": fence["renderer_commit"],
+        "expected_batch_version": fence["batch_version"],
+        "expected_state_digest": fence["state_digest"],
+        "expected_spec_hashes": {"retarget-form": "1" * 64},
+        "reason": "Independent usability review rejected customer-visible copy.",
+        "actor": "release-controller",
+        "idempotency_key": "revise:batch-retarget:copy-review",
+    }
+
+    result = ledger.reopen_spec_ready_items_for_revision(**request)
+
+    reopened = ledger.get_item("retarget-form")
+    assert reopened is not None
+    assert result.idempotent_replay is False
+    assert result.reopened_count == 1
+    assert result.batch.version == 1
+    assert result.previous_state_digest == fence["state_digest"]
+    assert result.current_state_digest != result.previous_state_digest
+    assert reopened.stage is Stage.QUEUED
+    assert reopened.spec_hash is None
+    assert reopened.fence_epoch == original.fence_epoch + 1
+
+    replay = ledger.reopen_spec_ready_items_for_revision(**request)
+    assert replay.idempotent_replay is True
+    assert replay.current_state_digest == result.current_state_digest
+    assert ledger.get_batch("batch-retarget").version == 1
+    events = [
+        event
+        for event in ledger.list_events(batch_id="batch-retarget")
+        if event["event_type"] == "spec_reopened_for_revision"
+    ]
+    assert len(events) == 1
+    assert events[0]["details"]["previous_spec_hash"] == "1" * 64
+
+    revised_lease = ledger.claim_next(
+        worker_id="revision-author",
+        claimed_stage=Stage.SPEC_CLAIMED,
+        batch_id="batch-retarget",
+        catalog_id="retarget-form",
+    )
+    assert revised_lease is not None
+    revised = ledger.complete_lease(
+        revised_lease,
+        idempotency_key="revise:batch-retarget:complete",
+        artifact_updates={"spec_hash": "2" * 64},
+    )
+    assert revised.item.stage is Stage.SPEC_READY
+    assert revised.item.spec_hash == "2" * 64
+
+
+def test_spec_revision_reopen_rejects_hash_or_state_drift_atomically(
+    tmp_path,
+) -> None:
+    ledger = build_ledger(tmp_path)
+    fence = prepare_spec_ready_batch(ledger)
+    request = {
+        "batch_id": "batch-retarget",
+        "expected_base_commit": fence["base_commit"],
+        "expected_renderer_commit": fence["renderer_commit"],
+        "expected_batch_version": fence["batch_version"],
+        "expected_state_digest": fence["state_digest"],
+        "expected_spec_hashes": {"retarget-form": "9" * 64},
+        "reason": "Correct rejected specification.",
+        "actor": "release-controller",
+        "idempotency_key": "revise:batch-retarget:wrong-hash",
+    }
+
+    with pytest.raises(ConflictError, match="hashes changed"):
+        ledger.reopen_spec_ready_items_for_revision(**request)
+    unchanged = ledger.get_item("retarget-form")
+    assert unchanged is not None
+    assert unchanged.stage is Stage.SPEC_READY
+    assert unchanged.spec_hash == "1" * 64
+    assert ledger.get_batch("batch-retarget").version == 0
+
+    lease = ledger.claim_next(
+        worker_id="render-worker",
+        claimed_stage=Stage.RENDER_CLAIMED,
+        batch_id="batch-retarget",
+        catalog_id="retarget-form",
+    )
+    assert lease is not None
+    with pytest.raises(ConflictError, match="state digest changed"):
+        ledger.reopen_spec_ready_items_for_revision(
+            **{
+                **request,
+                "expected_spec_hashes": {"retarget-form": "1" * 64},
+                "idempotency_key": "revise:batch-retarget:active-lease",
+            }
+        )
+    assert ledger.get_item("retarget-form").stage is Stage.RENDER_CLAIMED
+
+
 def test_open_batch_source_retarget_can_correct_evidence_free_provenance(
     tmp_path,
 ) -> None:

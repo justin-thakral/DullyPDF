@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -11,6 +12,13 @@ from reportlab.pdfgen import canvas
 from scripts.form_catalog_factory.models import FormSpec, SpecValidationError
 from scripts.form_catalog_factory.pdf_qa import validate_pdf
 from scripts.form_catalog_factory.renderer import FormRenderer, render_form
+from scripts.form_catalog_factory.themes import (
+    CHARCOAL_DEEP_GREEN_GOLD,
+    DEFAULT_THEME_ID,
+    LEGACY_NAVY_ORANGE,
+    ThemeError,
+    get_theme,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -129,6 +137,196 @@ def test_render_form_produces_unique_fillable_fields(tmp_path: Path) -> None:
     assert all(field.get("/TU") for field in fields.values())
 
 
+def test_choice_fields_render_with_a_neutral_initial_value(tmp_path: Path) -> None:
+    spec = FormSpec.from_dict(sample_payload())
+    output = render_form(spec, tmp_path / "neutral-choice.pdf")
+    fields = PdfReader(output).get_fields() or {}
+    priority = next(
+        field for field in fields.values() if field.get("/TU") == "Priority"
+    )
+
+    assert priority["/V"] == "Select"
+    assert priority["/Opt"] == ["Select", "Routine", "Urgent", "Emergency"]
+
+
+def test_choice_prompt_matching_does_not_treat_selected_as_neutral(
+    tmp_path: Path,
+) -> None:
+    payload = sample_payload()
+    priority = payload["sections"][0]["blocks"][0]["fields"][2]
+    priority["options"] = ["Selected by requester", "Declined"]
+    spec = FormSpec.from_dict(payload)
+
+    output = render_form(spec, tmp_path / "selected-is-substantive.pdf")
+    fields = PdfReader(output).get_fields() or {}
+    rendered_priority = next(
+        field for field in fields.values() if field.get("/TU") == "Priority"
+    )
+
+    assert rendered_priority["/V"] == "Select"
+    assert rendered_priority["/Opt"] == [
+        "Select",
+        "Selected by requester",
+        "Declined",
+    ]
+
+
+@pytest.mark.parametrize(
+    ("options", "expected"),
+    [
+        (
+            ["Select approved", "Declined"],
+            ["Select", "Select approved", "Declined"],
+        ),
+        (
+            ["Approve", "Decline", "Select"],
+            ["Select", "Approve", "Decline"],
+        ),
+        (
+            ["Select priority", "Routine", "Urgent"],
+            ["Select", "Routine", "Urgent"],
+        ),
+    ],
+)
+def test_choice_prompt_normalization_preserves_outcomes_and_unique_values(
+    tmp_path: Path,
+    options: list[str],
+    expected: list[str],
+) -> None:
+    payload = sample_payload()
+    payload["sections"][0]["blocks"][0]["fields"][2]["options"] = options
+    spec = FormSpec.from_dict(payload)
+
+    output = render_form(spec, tmp_path / "normalized-choice-prompt.pdf")
+    fields = PdfReader(output).get_fields() or {}
+    rendered_priority = next(
+        field for field in fields.values() if field.get("/TU") == "Priority"
+    )
+
+    assert rendered_priority["/V"] == "Select"
+    assert rendered_priority["/Opt"] == expected
+
+
+def test_new_theme_rejects_ellipsized_customer_visible_labels(
+    tmp_path: Path,
+) -> None:
+    payload = sample_payload()
+    payload["sections"][0]["blocks"][0]["fields"][2]["label"] = (
+        "This intentionally overlong priority label cannot fit in its narrow field"
+    )
+    spec = FormSpec.from_dict(payload)
+
+    with pytest.raises(ValueError, match="customer-visible line does not fit"):
+        render_form(
+            spec,
+            tmp_path / "truncated-label.pdf",
+            theme_id="charcoal-deep-green-gold-v1",
+        )
+
+    legacy = render_form(
+        spec,
+        tmp_path / "legacy-allows-historical-ellipsis.pdf",
+        theme_id=DEFAULT_THEME_ID,
+    )
+    assert legacy.exists()
+
+
+def test_versioned_theme_registry_has_reviewable_stable_provenance() -> None:
+    legacy = get_theme(DEFAULT_THEME_ID)
+    themed = get_theme("charcoal-deep-green-gold-v1")
+
+    assert legacy is LEGACY_NAVY_ORANGE
+    assert themed is CHARCOAL_DEEP_GREEN_GOLD
+    assert themed.provenance() == {
+        "schemaVersion": 1,
+        "id": "charcoal-deep-green-gold-v1",
+        "paletteSha256": hashlib.sha256(
+            json.dumps(
+                themed.palette(),
+                ensure_ascii=True,
+                separators=(",", ":"),
+                sort_keys=True,
+            ).encode("utf-8")
+        ).hexdigest(),
+        "palette": themed.palette(),
+    }
+    assert themed.accent == "#C49A3A"
+    assert themed.header_background == "#173C32"
+    assert themed.title_text == "#202824"
+
+    with pytest.raises(ThemeError, match="unknown form theme"):
+        get_theme("unreviewed-theme")
+
+
+def test_theme_changes_only_visual_pdf_surface_and_remains_deterministic(
+    tmp_path: Path,
+) -> None:
+    spec = FormSpec.from_dict(sample_payload())
+    default_pdf = render_form(spec, tmp_path / "default.pdf")
+    explicit_legacy_pdf = render_form(
+        spec,
+        tmp_path / "legacy.pdf",
+        theme_id=DEFAULT_THEME_ID,
+    )
+    themed_first = render_form(
+        spec,
+        tmp_path / "themed-first.pdf",
+        theme_id="charcoal-deep-green-gold-v1",
+    )
+    themed_second = render_form(
+        spec,
+        tmp_path / "themed-second.pdf",
+        theme_id="charcoal-deep-green-gold-v1",
+    )
+
+    assert default_pdf.read_bytes() == explicit_legacy_pdf.read_bytes()
+    assert themed_first.read_bytes() == themed_second.read_bytes()
+    assert themed_first.read_bytes() != default_pdf.read_bytes()
+
+    default_reader = PdfReader(default_pdf)
+    themed_reader = PdfReader(themed_first)
+    default_text = "\n".join(page.extract_text() or "" for page in default_reader.pages)
+    themed_text = "\n".join(page.extract_text() or "" for page in themed_reader.pages)
+    assert spec.catalog_id[-22:] in default_text
+    assert "DullyPDF Fillable Form" in themed_text
+    assert spec.catalog_id[-22:] not in themed_text
+    assert "Confirm applicable legal, safety, privacy" in default_text
+    assert "Adapt this form to your organization's policies" in themed_text
+    assert "Confirm applicable legal, safety, privacy" not in themed_text
+    assert len(default_reader.pages) == len(themed_reader.pages)
+    assert [
+        tuple(float(value) for value in page.mediabox)
+        for page in default_reader.pages
+    ] == [
+        tuple(float(value) for value in page.mediabox)
+        for page in themed_reader.pages
+    ]
+    default_fields = default_reader.get_fields()
+    themed_fields = themed_reader.get_fields()
+    assert set(default_fields) == set(themed_fields)
+    for field_name in default_fields:
+        default_field = default_fields[field_name]
+        themed_field = themed_fields[field_name]
+        assert default_field.get("/FT") == themed_field.get("/FT")
+        assert default_field.get("/TU") == themed_field.get("/TU")
+
+    def widget_geometry(reader: PdfReader) -> list[tuple[int, str, tuple[float, ...]]]:
+        geometry: list[tuple[int, str, tuple[float, ...]]] = []
+        for page_index, page in enumerate(reader.pages):
+            for annotation_ref in page.get("/Annots") or []:
+                annotation = annotation_ref.get_object()
+                if annotation.get("/Subtype") != "/Widget":
+                    continue
+                parent = annotation.get("/Parent")
+                parent_object = parent.get_object() if parent is not None else {}
+                field_name = str(annotation.get("/T") or parent_object.get("/T") or "")
+                rectangle = tuple(float(value) for value in annotation["/Rect"])
+                geometry.append((page_index, field_name, rectangle))
+        return geometry
+
+    assert widget_geometry(default_reader) == widget_geometry(themed_reader)
+
+
 def test_rejects_duplicate_section_keys() -> None:
     payload = sample_payload()
     payload["sections"][1]["key"] = payload["sections"][0]["key"]
@@ -161,6 +359,18 @@ def test_section_heading_moves_with_first_block(tmp_path: Path) -> None:
         "This heading must move with the first substantive block.",
         first_block_height=60,
     )
+
+    assert renderer.page_number == 2
+    document.save()
+
+
+def test_compact_section_moves_to_avoid_a_sparse_continuation(tmp_path: Path) -> None:
+    spec = FormSpec.from_dict(sample_payload())
+    document = canvas.Canvas(str(tmp_path / "balanced-section.pdf"), invariant=1)
+    renderer = FormRenderer(document, spec)
+    renderer.y = renderer.bottom_y + 0.2 * inch + 100
+
+    renderer._start_balanced_section(spec.sections[0].blocks)
 
     assert renderer.page_number == 2
     document.save()

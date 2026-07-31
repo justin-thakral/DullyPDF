@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_155__club_registration_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_155__club_registration_form.pdf",
+  "slug": "club-registration-form",
+  "title": "Club Registration Form",
+  "subtitle": "Capture club sponsor, meeting cycle, eligibility, and dues route; confirm dismissal plan and activity agreement.",
+  "description": "Club records club sponsor, meeting cycle, eligibility, dues route, dismissal plan, and activity agreement. Club evidence stays linked.",
+  "use_case": "Use this club registration and placement when staff must document club sponsor and meeting cycle. Reconcile eligibility, dues route, dismissal plan, and activity agreement before the club handoff. Use the sponsor charter, eligibility roster, meeting calendar, dues receipt reference, activity rules, dismissal authorization, attendance, and end-of-term status. Ask the assigned club reviewer to confirm club sponsor against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Club contact and reference",
+      "guidance": "Record sponsor, meeting cycle, eligibility basis, dues route, dismissal plan, activity expectations, and membership end state.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Club people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "club_sponsor",
+              "label": "Club sponsor",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Club task details",
+          "fields": [
+            {
+              "key": "meeting_cycle",
+              "label": "Meeting cycle",
+              "units": 1.15
+            },
+            {
+              "key": "eligibility",
+              "label": "Eligibility",
+              "units": 1.0
+            },
+            {
+              "key": "dues_route",
+              "label": "Dues route",
+              "units": 1.25
+            },
+            {
+              "key": "dismissal_plan",
+              "label": "Dismissal plan",
+              "units": 1.1
+            },
+            {
+              "key": "activity_agreement",
+              "label": "Activity agreement",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_choices",
+      "title": "Club requested options and readiness",
+      "guidance": "Record requested options, prerequisites, availability, and conditions without assuming an outcome.",
+      "blocks": [
+        {
+          "key": "registration_options",
+          "type": "table",
+          "label": "Club requested options",
+          "columns": [
+            {
+              "key": "requested_option_or_scope",
+              "label": "Requested option or scope",
+              "units": 1.2
+            },
+            {
+              "key": "availability_or_prerequisite",
+              "label": "Availability or prerequisite",
+              "units": 1.1
+            },
+            {
+              "key": "registration_status",
+              "label": "Registration status",
+              "units": 1.25
+            },
+            {
+              "key": "condition_support_or_owner",
+              "label": "Condition, support, or owner",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "start_readiness",
+          "type": "checklist",
+          "label": "Club registration readiness",
+          "items": [
+            "Club sponsor is identified for this record",
+            "Meeting cycle matches the current request or source",
+            "Eligibility is ready for point-of-use staff",
+            "Dues route limits or questions are resolved",
+            "Dismissal plan is communicated to the responsible person",
+            "Activity agreement is confirmed at handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "registration_result",
+      "title": "Club exception review: confirmation and next steps",
+      "guidance": "Confirm the accepted scope, reference, open condition, and instructions.",
+      "blocks": [
+        {
+          "key": "registration_confirmation",
+          "type": "fields",
+          "label": "Club registration result",
+          "fields": [
+            {
+              "key": "registration_outcome",
+              "label": "Registration outcome",
+              "units": 1.15
+            },
+            {
+              "key": "confirmed_class_unit_club_or_session",
+              "label": "Confirmed class, unit, club, or session",
+              "units": 1.0
+            },
+            {
+              "key": "confirmed_start_or_orientation_date",
+              "label": "Confirmed start or orientation date",
+              "units": 1.25
+            },
+            {
+              "key": "open_condition_and_owner",
+              "label": "Open condition and owner",
+              "units": 1.1
+            },
+            {
+              "key": "start_or_orientation_instructions_sent",
+              "label": "Start or orientation instructions sent",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Club registration receipt",
+          "fields": [
+            {
+              "key": "registration_coordinator_and_date",
+              "label": "Registration coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded registration result and open condition."
+        }
+      ]
+    }
+  ]
+}

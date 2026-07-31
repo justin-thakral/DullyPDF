@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1819__volunteer_event_sign_in_log",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1819__volunteer_event_sign_in_log.pdf",
+  "slug": "volunteer-event-sign-in-log",
+  "title": "Volunteer Event Sign-In Log",
+  "subtitle": "Capture service role, shift, site lead, and task boundary; confirm equipment and hours confirmation.",
+  "description": "Volunteer Event records service role, shift, site lead, task boundary, equipment, and hours confirmation. Volunteer Event evidence stays linked.",
+  "use_case": "Use this volunteer event attendance and custody reconciliation when staff must document service role and shift. Reconcile site lead, task boundary, equipment, and hours confirmation before the volunteer event handoff. Use the role description, shift roster, site-lead brief, safety equipment issue, task completion sheet, break record, hours verification, and departure log. This record assigns a service contributor to a nonprofit or community shift with a task brief, site supervisor, tools, protective equipment, break coverage, verified hours, and service exit. Ask the assigned volunteer event reviewer to confirm service role against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Volunteer Event details",
+      "guidance": "Assign service role, shift, site lead, task boundary, tool or protective equipment, breaks, accessibility route, completed hours, and departure.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Volunteer Event people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "service_role",
+              "label": "Service role",
+              "units": 1.1
+            },
+            {
+              "key": "shift",
+              "label": "Shift",
+              "units": 1.2
+            },
+            {
+              "key": "site_lead",
+              "label": "Site lead",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Volunteer Event task details",
+          "fields": [
+            {
+              "key": "task_boundary",
+              "label": "Task boundary",
+              "units": 1.15
+            },
+            {
+              "key": "equipment",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "hours_confirmation",
+              "label": "Hours confirmation",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance_rows",
+      "title": "Volunteer Event roster identity, check-in, assignment, and departure",
+      "guidance": "Match each person to the accepted registration, credential, role or session, and departure status.",
+      "blocks": [
+        {
+          "key": "sign_in_rows",
+          "type": "table",
+          "label": "Volunteer Event roster rows",
+          "columns": [
+            {
+              "key": "person_or_registrant",
+              "label": "Person or registrant",
+              "units": 1.2
+            },
+            {
+              "key": "check_in_and_identity",
+              "label": "Check-in and identity",
+              "units": 1.1
+            },
+            {
+              "key": "credential_role_or_session",
+              "label": "Credential, role, or session",
+              "units": 1.25
+            },
+            {
+              "key": "departure_or_completion",
+              "label": "Departure or completion",
+              "units": 1.0
+            },
+            {
+              "key": "exception_and_owner",
+              "label": "Exception and owner",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "roster_boundary",
+          "type": "notice",
+          "label": "Volunteer Event roster boundary",
+          "guidance": "Route any unmatched registration, credential, role, session, or departure to its named owner before closing the roster."
+        }
+      ]
+    },
+    {
+      "key": "attendance_close",
+      "title": "Volunteer Event roster outcome and reconciliation",
+      "guidance": "Reconcile expected, checked-in, departed, and unresolved roster entries.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Volunteer Event closing counts",
+          "fields": [
+            {
+              "key": "expected_roster_count",
+              "label": "Expected roster count",
+              "units": 1.15
+            },
+            {
+              "key": "checked_in_count",
+              "label": "Checked-in count",
+              "units": 1.0
+            },
+            {
+              "key": "departed_or_completed_count",
+              "label": "Departed or completed count",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_entry_and_owner",
+              "label": "Unresolved entry and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "attendance_receipt",
+          "type": "signatures",
+          "label": "Volunteer Event log receipt",
+          "fields": [
+            {
+              "key": "event_coordinator_or_roster_custodian_and_date",
+              "label": "Event coordinator or roster custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Do not close an unreconciled entry without a named owner."
+        }
+      ]
+    }
+  ]
+}

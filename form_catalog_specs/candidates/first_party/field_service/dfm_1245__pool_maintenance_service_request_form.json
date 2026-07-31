@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1245__pool_maintenance_service_request_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1245__pool_maintenance_service_request_form.pdf",
+  "slug": "pool-maintenance-service-request-form",
+  "title": "Pool Maintenance Service Request Form",
+  "subtitle": "Facility Pool Maintenance: defines need, constraints, and assignment.",
+  "description": "Pool Maintenance Service Request Form covers pool, spa, circulation, filtration, disinfection, controls, and deck area. The aquatics facility coordinator records Facility Pool Maintenance need, timing, access, and assignment. Pool Maintenance Service Request Form keeps Facility Pool Maintenance exceptions visible until the aquatics facility coordinator handoff.",
+  "use_case": "Use Pool Maintenance Service Request Form at pool vessel, equipment room, chemical storage, deck, and user-access point. Document pool, spa, circulation, filtration, disinfection, controls, and deck area identity before Facility Pool Maintenance begins. Compare pool, spa, circulation, filtration, disinfection, controls, and deck area findings with stated Facility Pool Maintenance criteria; route unresolved Facility Pool Maintenance issues to qualified pool-operations reviewer. For Pool Maintenance Service Request Form, confirm requirements for Facility Pool Maintenance. Ask qualified pool-operations reviewer to review Facility Pool Maintenance conditions beyond the aquatics facility coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Requester, location, and subject details",
+      "guidance": "For Facility Pool Maintenance, identify responsible parties, pool vessel, equipment room, chemical storage, deck, and user-access point, and the linked pool, spa, circulation, filtration, disinfection, controls, and deck area source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Request ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date received",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "basis",
+              "label": "Priority / response window",
+              "units": 1.4444444444444444
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Facility Pool Maintenance identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility and body-of-water identifier",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Equipment, controller, and treatment-system identifier",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Operating target, prior reading, and service interval",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Intake checks and assignment readiness",
+      "guidance": "Capture Facility Pool Maintenance facts for pool, spa, circulation, filtration, disinfection, controls, and deck area; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "requested_need",
+          "type": "textarea",
+          "label": "Requested result, condition, access, and timing",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Requested result, condition, access, and timing",
+              "multiline": true
+            }
+          ],
+          "height": 34
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Facility Pool Maintenance intake confirmations",
+          "items": [
+            "Requested or already documented: disinfectant, pH, temperature, and clarity reading",
+            "Requested or already documented: circulation, filter pressure, flow, and leak condition",
+            "Requested or already documented: chemical feed, container, labeling, and storage condition",
+            "Requested or already documented: drain cover, barrier, gate, sign, and rescue-equipment observation",
+            "Requested or already documented: deck, handrail, ladder, lighting, and trip condition",
+            "Requested or already documented: controller alarm, dosing response, and retest result"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Request constraints, assignment, and response",
+      "guidance": "Resolve open Facility Pool Maintenance request questions; have aquatics facility coordinator record the assignment, response owner, and requester follow-up while keeping the record strictly at the intake and routing stage.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scheduling constraints, holds, and supplied evidence",
+          "items": [
+            "Water quality or clarity outside operating criteria",
+            "Chemical leak, incompatible storage, or uncontrolled feed",
+            "Barrier, drain-cover, or rescue-equipment concern",
+            "Required closure or qualified review not implemented",
+            "Prior or requester-supplied: time-stamped water-quality readings",
+            "Prior or requester-supplied: instrument and reagent identification",
+            "Prior or requester-supplied: equipment and safety-feature photographs",
+            "Prior or requester-supplied: closure, correction, reopening, and notification record"
+          ],
+          "guidance": "Do not assign or authorize the Facility Pool Maintenance request when water quality, chemical control, circulation, visibility, or user-protection concern remains. Retain information supplied with the request and route unresolved constraints to aquatics facility coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Assignment and requester follow-up",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Request routing status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Assigned",
+                "Scheduled",
+                "Pending clarification",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and coordinator acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requester or contact",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Aquatics Facility Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

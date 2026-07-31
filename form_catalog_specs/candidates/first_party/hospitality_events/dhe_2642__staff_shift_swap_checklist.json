@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2642__staff_shift_swap_checklist",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2642__staff_shift_swap_checklist.pdf",
+  "slug": "staff-shift-swap-checklist",
+  "title": "Staff Shift Swap Checklist",
+  "subtitle": "Capture original shift, replacement, role qualification, and coverage; confirm manager approval and timekeeping.",
+  "description": "Staff Shift Swap records original shift, replacement, role qualification, coverage, manager approval, and timekeeping. Staff Shift Swap evidence stays linked.",
+  "use_case": "Use this staff shift swap stage-gated verification when staff must document original shift and replacement. Reconcile role qualification, coverage, manager approval, and timekeeping before the staff shift swap handoff. Use the published schedule, swap request, role qualification record, coverage check, overtime calculation, manager approval, scheduling-system update, timecard, and team notice. Ask the assigned staff shift swap reviewer to confirm original shift against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Staff Shift Swap starting details review",
+      "guidance": "Match original and replacement shifts, employee roles and qualifications, coverage gaps, overtime impact, manager approval, schedule update, timekeeping, and team notice.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Staff Shift Swap people and reference",
+          "fields": [
+            {
+              "key": "operational_record_subject",
+              "label": "Operational record subject",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_contact",
+              "label": "Responsible contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_work_area",
+              "label": "Property, venue, or work area",
+              "units": 1.25
+            },
+            {
+              "key": "original_shift",
+              "label": "Original shift",
+              "units": 1.1
+            },
+            {
+              "key": "replacement",
+              "label": "Replacement",
+              "units": 1.2
+            },
+            {
+              "key": "role_qualification",
+              "label": "Role qualification",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Staff Shift Swap task details",
+          "fields": [
+            {
+              "key": "coverage",
+              "label": "Coverage",
+              "units": 1.15
+            },
+            {
+              "key": "manager_approval",
+              "label": "Manager approval",
+              "units": 1.0
+            },
+            {
+              "key": "timekeeping",
+              "label": "Timekeeping",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Staff Shift Swap checks and corrections review",
+      "guidance": "Check current staff shift swap facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Staff Shift Swap required checks",
+          "items": [
+            "Original shift is identified for this record",
+            "Replacement matches the current request or source",
+            "Role qualification is ready for point-of-use staff",
+            "Coverage limits or questions are resolved",
+            "Manager approval is communicated to the responsible person",
+            "Timekeeping is confirmed at handoff",
+            "A changed staff shift swap fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Staff Shift Swap failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Staff Shift Swap decision and readiness",
+      "guidance": "Hold staff shift swap readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Staff Shift Swap checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Staff Shift Swap reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "service_lead_or_responsible_manager_and_date",
+              "label": "Service lead or responsible manager and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Staff Shift Swap receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

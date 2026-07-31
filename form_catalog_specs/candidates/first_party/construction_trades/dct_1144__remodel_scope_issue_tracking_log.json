@@ -1,0 +1,374 @@
+{
+  "catalog_id": "construction_trades/dct_1144__remodel_scope_issue_tracking_log",
+  "description": "For remodel scope, this issue tracking log records demolition, new work, allowances, selections, exclusions, temporary conditions, sequence, and responsibility boundaries. Its supporting evidence includes existing-condition photos, measurements, sketches, investigation notes, product selections, and utility observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Scope opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Scope site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Scope contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Scope superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Scope due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this remodel scope record to its evidence.",
+          "key": "record_routing",
+          "label": "Remodel Scope Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Existing spaces",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Owner objectives",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Fixtures",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Finishes",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Structural interfaces",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Utilities",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture existing spaces, owner objectives, fixtures, finishes, structural interfaces, utilities, access, and occupied operations for this remodel scope.",
+          "key": "core_identity",
+          "label": "Remodel Scope Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify existing spaces, owner objectives, fixtures, finishes, structural interfaces, utilities, access, and occupied operations for this remodel scope record.",
+      "key": "identity_1",
+      "title": "Issue Register Coverage"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Demolition",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "New work",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Allowances",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Selections",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Temporary conditions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For remodel scope, record demolition, new work, allowances, selections, exclusions, temporary conditions, sequence, and responsibility boundaries.",
+          "key": "task_inputs",
+          "label": "Remodel Scope Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.35
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact or event",
+              "units": 2.6
+            },
+            {
+              "key": "action",
+              "label": "Scope action lead",
+              "units": 2.0
+            },
+            {
+              "key": "due",
+              "label": "Due or next review",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.3
+            }
+          ],
+          "guidance": "Keep remodel scope chronology immutable.",
+          "key": "working_log",
+          "label": "Remodel Scope Dated Activity Log",
+          "rows": 7,
+          "type": "table"
+        },
+        {
+          "guidance": "Escalate concealed hazards, structural changes, code triggers, owner-supplied conflicts, or undefined existing conditions. Route unresolved remodel scope work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Remodel Scope Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For remodel scope, capture demolition, new work, allowances, selections, exclusions, temporary conditions, sequence, and responsibility boundaries.",
+      "key": "task_2",
+      "title": "Issue Definition and Priority"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Scope when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Scope measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Scope evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Scope result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For remodel scope, record existing-condition photos, measurements, sketches, investigation notes, product selections, and utility observations.",
+          "key": "evidence_register",
+          "label": "Remodel Scope Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Existing-condition photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Sketches",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Investigation notes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Product selections",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every remodel scope evidence source.",
+          "key": "evidence_sources",
+          "label": "Remodel Scope Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Scope dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Scope owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Scope escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep remodel scope items open through verification.",
+          "key": "open_item_register",
+          "label": "Remodel Scope Open Items and Next Actions",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Support remodel scope findings with existing-condition photos, measurements, sketches, investigation notes, product selections, and utility observations.",
+      "key": "observation_3",
+      "title": "Investigation Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Escalate concealed hazards, structural changes, code triggers, owner-supplied conflicts, or undefined existing conditions. Do not release affected remodel scope work.",
+          "key": "stop_boundary",
+          "label": "Remodel Scope Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Scope exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Scope correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Scope escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close remodel scope exceptions with verification.",
+          "key": "exception_register",
+          "label": "Remodel Scope Exception and Corrective Action",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Scope notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Scope notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Scope interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Scope review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Scope release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep remodel scope controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Remodel Scope Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Remodel Scope Resolution Verification Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For remodel scope, compare the retest with existing-condition photos, measurements, sketches, investigation notes, product selections, and utility observations; preserve each remodel scope limitation and name its remodel scope restart or closure authority.",
+          "height": 55,
+          "key": "resolution_verification_notes",
+          "label": "Remodel Scope Resolution Verification Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Escalate concealed hazards, structural changes, code triggers, owner-supplied conflicts, or undefined existing conditions. Control and route each remodel scope exception.",
+      "key": "exception_4",
+      "title": "Controls, Corrections, and Escalation"
+    }
+  ],
+  "slug": "remodel-scope-issue-tracking-log",
+  "source_filename": "dct_1144__remodel_scope_issue_tracking_log.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Remodel Scope Issue Tracking Log: residential or commercial remodel scope definition using existing spaces, demolition, and existing-condition photos.",
+  "title": "Remodel Scope Issue Tracking Log",
+  "use_case": "Use the issue tracking log during residential or commercial remodel scope definition when the remodel scope record must identify existing spaces, owner objectives, fixtures, finishes, structural interfaces, utilities, access, and occupied operations. Complete the applicable handoff for agreed scope, assumptions and exclusions, budget handoff, design questions, milestone plan, and owner acknowledgment."
+}

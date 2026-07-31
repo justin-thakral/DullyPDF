@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2103__vehicle_repair_estimate_worksheet",
+  "source_section": "automotive_service",
+  "source_filename": "das_2103__vehicle_repair_estimate_worksheet.pdf",
+  "slug": "vehicle-repair-estimate-worksheet",
+  "title": "Vehicle Repair Estimate Worksheet",
+  "subtitle": "General Vehicle Repair: prices observed scope, options, and exclusions.",
+  "description": "Vehicle Repair Estimate Worksheet covers vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision. The service advisor records General Vehicle Repair observed scope, costs, options, and terms. Vehicle Repair Estimate Worksheet keeps General Vehicle Repair exceptions visible until the service advisor handoff.",
+  "use_case": "Use Vehicle Repair Estimate Worksheet at repair facility, service bay, test area, and customer handoff point. Document vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision identity before General Vehicle Repair begins. Compare vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision findings with stated General Vehicle Repair criteria; route unresolved General Vehicle Repair issues to qualified automotive repair reviewer. For Vehicle Repair Estimate Worksheet, confirm requirements for General Vehicle Repair. Ask qualified automotive repair reviewer to review General Vehicle Repair conditions beyond the service advisor's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "estimate_context",
+      "title": "Vehicle, customer, and estimate identity",
+      "guidance": "Identify the customer, asset or property, estimator, and basis date before pricing the work.",
+      "blocks": [
+        {
+          "key": "estimate_header",
+          "type": "fields",
+          "label": "Estimate header",
+          "fields": [
+            {
+              "key": "estimate_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "estimate_date",
+              "label": "Estimate date",
+              "units": 0.65
+            },
+            {
+              "key": "valid_until",
+              "label": "Valid until",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Customer, fleet, insurer, or payer",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shop, bay, roadside, or site",
+              "units": 1.1
+            },
+            {
+              "key": "estimator",
+              "label": "Service Advisor",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "General Vehicle Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Repair order, customer, and contact",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, year, make, model, and mileage",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Reported symptom, operating condition, and prior repair",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the General Vehicle Repair identifier printed on vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "estimate_scope",
+      "title": "Vehicle findings and pricing evidence",
+      "guidance": "Price the observable work and options. Keep concealed conditions and unconfirmed quantities out of fixed scope.",
+      "blocks": [
+        {
+          "key": "scope_observations",
+          "type": "checklist",
+          "label": "General Vehicle Repair scope observations",
+          "items": [
+            "Symptom verification and baseline condition",
+            "Diagnostic trouble code and test result",
+            "Affected system and root-cause basis",
+            "Approved repair and part compatibility",
+            "Post-repair function and warning-light state",
+            "Road test or stationary verification within authority"
+          ],
+          "guidance": "Mark what was observed or supplied as estimate input; explain anything material that could not be inspected."
+        },
+        {
+          "key": "price_lines",
+          "type": "table",
+          "label": "Scope, quantities, options, and pricing",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Operation, diagnostic, or option",
+              "units": 1.25
+            },
+            {
+              "key": "labor",
+              "label": "Labor hours / amount",
+              "units": 0.85
+            },
+            {
+              "key": "parts",
+              "label": "Parts or materials amount",
+              "units": 0.95
+            },
+            {
+              "key": "fees",
+              "label": "Sublet, fee, tax, or allowance",
+              "units": 0.95
+            },
+            {
+              "key": "total",
+              "label": "Line total",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Required, option, or declined",
+              "units": 0.95
+            }
+          ],
+          "rows": 9
+        },
+        {
+          "key": "estimate_totals",
+          "type": "fields",
+          "label": "Estimate totals",
+          "fields": [
+            {
+              "key": "subtotal",
+              "label": "Subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "taxes",
+              "label": "Taxes",
+              "units": 0.7
+            },
+            {
+              "key": "fees",
+              "label": "Fees or disposal",
+              "units": 0.8
+            },
+            {
+              "key": "allowances",
+              "label": "Allowances",
+              "units": 0.8
+            },
+            {
+              "key": "discounts",
+              "label": "Discount or credit",
+              "units": 0.8
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "estimate_terms",
+      "title": "Estimate exception and change conditions",
+      "guidance": "State what could change the price, timing, method, or scope before the customer or responsible party decides.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when a safety-critical condition, uncertain diagnosis, authorization gap, or failed verification remains. Protect vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision; document the General Vehicle Repair notification and await qualified automotive repair reviewer direction."
+        },
+        {
+          "key": "estimate_uncertainty",
+          "type": "checklist",
+          "label": "Conditions that may require a revised estimate or specialist review",
+          "items": [
+            "Safety-critical condition",
+            "Diagnosis remains uncertain",
+            "Additional work exceeds authorization",
+            "Vehicle cannot be safely tested or released"
+          ],
+          "guidance": "For General Vehicle Repair, identify affected vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision scope; ask service advisor to document the General Vehicle Repair immediate control before continuing."
+        },
+        {
+          "key": "assumptions_exclusions",
+          "type": "textarea",
+          "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "estimate_decision",
+      "title": "Estimate decision and selected repair scope",
+      "guidance": "Record the selected option and spending limit. Approval of an estimate authorizes only the stated scope and terms.",
+      "blocks": [
+        {
+          "key": "estimate_support",
+          "type": "checklist",
+          "label": "Estimate support retained",
+          "items": [
+            "Vehicle intake and condition photographs",
+            "Diagnostic readings and fault record",
+            "Part and repair-operation trace",
+            "Post-repair test and customer handoff"
+          ],
+          "guidance": "Attach or link proof for vehicle system, reported symptom, diagnostic result, repair operation, part, and roadworthiness decision; mark only General Vehicle Repair evidence present in that record."
+        },
+        {
+          "key": "estimate_status",
+          "type": "fields",
+          "label": "Decision and selected scope",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Estimate decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved",
+                "Approved with selected options",
+                "Revision requested",
+                "Declined",
+                "Expired"
+              ]
+            },
+            {
+              "key": "selected_scope",
+              "label": "Selected option, scope, or limit",
+              "units": 1.2
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "follow_up",
+              "label": "Scheduling or revision next step",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "General Vehicle Repair selected scope, exclusions, and scheduling notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "General Vehicle Repair selected scope, exclusions, and scheduling notes",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Explain the selected General Vehicle Repair option, retained exclusion, pricing assumption, and scheduling dependency."
+        },
+        {
+          "key": "estimate_signatures",
+          "type": "signatures",
+          "label": "Estimate preparation and decision",
+          "fields": [
+            {
+              "key": "estimator_signature",
+              "label": "Estimator",
+              "units": 1.1
+            },
+            {
+              "key": "estimator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer or authorized decision maker",
+              "units": 1.25
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

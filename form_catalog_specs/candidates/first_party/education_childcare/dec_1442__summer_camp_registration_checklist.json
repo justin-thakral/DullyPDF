@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1442__summer_camp_registration_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1442__summer_camp_registration_checklist.pdf",
+  "slug": "summer-camp-registration-checklist",
+  "title": "Summer Camp Registration Checklist",
+  "subtitle": "Capture session placement, unit assignment, activity choices, and support route; confirm supplies and guardian handoff.",
+  "description": "Summer Camp Registration records session placement, unit assignment, activity choices, support route, supplies, and guardian handoff. Summer Camp Registration evidence stays linked.",
+  "use_case": "Use this summer camp registration stage-gated verification when staff must document session placement and unit assignment. Reconcile activity choices, support route, supplies, and guardian handoff before the summer camp registration handoff. Use the application, session-capacity report, unit list, bus choice, activity permissions, support-route receipt, payment reference, packing notice, and placement confirmation. Ask the assigned summer camp registration reviewer to confirm session placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Summer Camp Registration starting details review",
+      "guidance": "Confirm session placement, unit assignment, optional activities, support routing, supplies, fee reference, orientation, transportation, and guardian handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Summer Camp Registration people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "session_placement",
+              "label": "Session placement",
+              "units": 1.1
+            },
+            {
+              "key": "unit_assignment",
+              "label": "Unit assignment",
+              "units": 1.2
+            },
+            {
+              "key": "activity_choices",
+              "label": "Activity choices",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Include",
+                "Include with limit",
+                "Do not include",
+                "Pending"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Summer Camp Registration task details",
+          "fields": [
+            {
+              "key": "support_route",
+              "label": "Support route",
+              "units": 1.15
+            },
+            {
+              "key": "supplies",
+              "label": "Supplies",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_handoff",
+              "label": "Guardian handoff",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Summer Camp Registration checks and corrections",
+      "guidance": "Check current summer camp registration facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Summer Camp Registration required checks",
+          "items": [
+            "Session placement is identified for this record",
+            "Unit assignment matches the current request or source",
+            "Activity choices is ready for point-of-use staff",
+            "Support route limits or questions are resolved",
+            "Supplies is communicated to the responsible person",
+            "Guardian handoff is confirmed at handoff",
+            "A changed summer camp registration fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Summer Camp Registration failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Summer Camp Registration exception review and readiness",
+      "guidance": "Hold summer camp registration readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Summer Camp Registration checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Summer Camp Registration reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_teacher_or_program_coordinator_and_date",
+              "label": "Responsible teacher or program coordinator and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Summer Camp Registration receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

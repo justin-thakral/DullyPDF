@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_137__after_school_program_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_137__after_school_program_authorization_form.pdf",
+  "slug": "after-school-program-authorization-form",
+  "title": "After School Program Authorization Form",
+  "subtitle": "Capture activity block, homework period, snack service, and dismissal roster; confirm late pickup and family communication.",
+  "description": "After School Program records activity block, homework period, snack service, dismissal roster, late pickup, and family communication. After School Program evidence stays linked.",
+  "use_case": "Use this after school program authorization decision when staff must document activity block and homework period. Reconcile snack service, dismissal roster, late pickup, and family communication before the after school program handoff. Useful evidence includes the activity calendar, homework plan, snack roster, dismissal sheet, family message, and end-of-day pickup log. Ask the assigned after school program reviewer to confirm activity block against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "After School Program contact and reference",
+      "guidance": "Plan the activity block, homework period, snack service, dismissal roster, family message channel, and end-of-day pickup reconciliation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "After School Program people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_team",
+              "label": "Grade or team",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "activity_block",
+              "label": "Activity block",
+              "units": 1.2
+            },
+            {
+              "key": "homework_period",
+              "label": "Homework period",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "After School Program task details",
+          "fields": [
+            {
+              "key": "snack_service",
+              "label": "Snack service",
+              "units": 1.15
+            },
+            {
+              "key": "dismissal_roster",
+              "label": "Dismissal roster",
+              "units": 1.0
+            },
+            {
+              "key": "late_pickup",
+              "label": "Late pickup",
+              "units": 1.25
+            },
+            {
+              "key": "family_communication",
+              "label": "Family communication",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "After School Program decision and scope choices",
+      "guidance": "Decide each after school program scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "scope_choices",
+          "type": "fields",
+          "label": "After School Program itemized scope",
+          "fields": [
+            {
+              "key": "activity_block",
+              "label": "Activity block",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "homework_period",
+              "label": "Homework period",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "snack_service",
+              "label": "Snack service",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "dismissal_roster",
+              "label": "Dismissal roster",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "late_pickup",
+              "label": "Late pickup",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "family_communication",
+              "label": "Family communication",
+              "units": 1.05,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "After School Program authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "After School Program effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "After School Program decision and signer receipt",
+      "guidance": "Only recorded after school program choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "After School Program limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "After School Program signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "school_or_program_reviewer_and_date",
+              "label": "School or program reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "After School Program signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "After School Program authorization boundary",
+          "guidance": "Named after school program reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+{
+  "catalog_id": "business_operations/dbo_1775__customer_complaint_intake_form",
+  "description": "For customer complaint, this intake form records customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits. Its supporting evidence includes communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Complaint opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Complaint site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Complaint contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Complaint process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Complaint due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this customer complaint record to its evidence.",
+          "key": "record_routing",
+          "label": "Customer Complaint Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Customer account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Contact",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Product or service",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Transaction",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Channel",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture customer account, contact, product or service, transaction, channel, affected location, and prior complaint history for this customer complaint.",
+          "key": "core_identity",
+          "label": "Customer Complaint Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify customer account, contact, product or service, transaction, channel, affected location, and prior complaint history for this customer complaint record.",
+      "key": "identity_1",
+      "title": "Intake Contact and Ownership"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Customer statement",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Desired resolution",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Urgency",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Safety or privacy screen",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Ownership",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For customer complaint, record customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits.",
+          "key": "task_inputs",
+          "label": "Customer Complaint Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer Complaint Desired Outcome and Service Fit",
+              "multiline": true
+            }
+          ],
+          "guidance": "State customer complaint outcomes, dependencies, timing, and sensitive-data limits.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Customer Complaint Desired Outcome and Service Fit",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Route each unresolved customer complaint qualification item.",
+          "items": [
+            "Identity, authority, and primary contacts are verified",
+            "Desired outcome and service fit are understood",
+            "Sensitive information is limited to a stated purpose",
+            "Conflicts, dependencies, and risk screens are complete",
+            "Commitments remain within policy and capacity",
+            "Intake disposition and retention path are explicit"
+          ],
+          "key": "qualification_readiness",
+          "label": "Customer Complaint Qualification Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Escalate threats, injury, discrimination, fraud, privacy exposure, regulator contact, media risk, or remedy beyond authority. Route unresolved customer complaint work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Customer Complaint Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For customer complaint, capture customer statement, desired resolution, urgency, safety or privacy screen, ownership, response commitment, and remedy limits.",
+      "key": "task_2",
+      "title": "Qualification Inputs"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Escalate threats, injury, discrimination, fraud, privacy exposure, regulator contact, media risk, or remedy beyond authority. Do not release affected customer complaint work.",
+          "key": "stop_boundary",
+          "label": "Customer Complaint Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Complaint exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Complaint correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Complaint escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close customer complaint exceptions with verification.",
+          "key": "exception_register",
+          "label": "Customer Complaint Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Complaint notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Complaint notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Complaint interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Complaint review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Complaint release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep customer complaint controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Customer Complaint Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Escalate threats, injury, discrimination, fraud, privacy exposure, regulator contact, media risk, or remedy beyond authority. Control and route each customer complaint exception.",
+      "key": "exception_3",
+      "title": "Intake Risk and Referrals"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select intake form disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Qualified review",
+                "Hold",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Complaint decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Complaint approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Complaint schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate customer complaint disposition.",
+          "key": "disposition",
+          "label": "Customer Complaint Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Customer Complaint Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the customer complaint decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Customer Complaint Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Complaint requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Complaint process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Customer Complaint Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the customer complaint next step from communications, order or service record, photos, logs, staff statements, policy references, and resolution evidence.",
+      "key": "decision_4",
+      "title": "Intake Decision"
+    }
+  ],
+  "slug": "customer-complaint-intake-form",
+  "source_filename": "dbo_1775__customer_complaint_intake_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Customer Complaint Intake Form: customer complaint intake, investigation, and recovery using customer account, customer statement, and communications.",
+  "title": "Customer Complaint Intake Form",
+  "use_case": "Use the intake form during customer complaint intake, investigation, and recovery when the customer complaint record must identify customer account, contact, product or service, transaction, channel, affected location, and prior complaint history. Complete the applicable handoff for approved response, customer confirmation, credit or corrective action, root-cause referral, trend coding, and closure."
+}

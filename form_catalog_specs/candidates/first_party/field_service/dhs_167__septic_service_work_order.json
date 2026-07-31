@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_167__septic_service_work_order",
+  "source_section": "field_service",
+  "source_filename": "dhs_167__septic_service_work_order.pdf",
+  "slug": "septic-service-work-order",
+  "title": "Septic Service Work Order",
+  "subtitle": "Residential Septic Service: connects authorized scope to results.",
+  "description": "Septic Service Work Order covers tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area. The septic service coordinator records Residential Septic Service authorized tasks, materials, results, and changes. Septic Service Work Order keeps Residential Septic Service exceptions visible until the septic service coordinator handoff.",
+  "use_case": "Use Septic Service Work Order at property, tank access, pump chamber, distribution area, and protected ground surface. Document tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area identity before Residential Septic Service begins. Compare tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area findings with stated Residential Septic Service criteria; route unresolved Residential Septic Service issues to qualified septic-system reviewer. For Septic Service Work Order, confirm requirements for Residential Septic Service. Ask qualified septic-system reviewer to review Residential Septic Service conditions beyond the septic service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Residential work-order scope review",
+      "guidance": "Bind Residential Septic Service to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Septic job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Septic customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Septic address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Septic Service Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Septic Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and service reference",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "System type, tank or component identifier, and access point",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Occupancy, last service, symptom, and weather history",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Septic Service identifier printed on tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized residential work details",
+      "guidance": "Record authorized Residential Septic Service activity; separate proposed, declined, deferred, or new Residential Septic Service scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Residential Septic Service task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Property area, unit, item, or component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method, part, or material",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Actual result or reading",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Technician or crew",
+              "units": 0.8
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Residential Septic Service work and verification points",
+          "items": [
+            "Access cover, riser, seal, and surface condition",
+            "Liquid level, scum, sludge, inlet, outlet, and baffle observation",
+            "Pump, float, alarm, control, and electrical indication",
+            "Backup, odor, surfacing effluent, and wet-area evidence",
+            "Vehicle, excavation, fall, biological, and confined-space boundary",
+            "Post-service level, closure, alarm, and flow observation"
+          ],
+          "guidance": "Use each Residential Septic Service check to prompt documented tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area execution; enter its actual Residential Septic Service result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Residential Septic Service parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Residential work exception and changes",
+      "guidance": "Stop Residential Septic Service at any scope or cost limit; honor septic service coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when access safety, containment, backup, structural integrity, disposal, or qualified escalation remains unresolved. Protect tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area; document the Residential Septic Service notification and await qualified septic-system reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Unsafe opening, fall, biological, or confined-space exposure",
+            "Backup or surfacing effluent threatens occupancy",
+            "Damaged tank or component requires excavation",
+            "Electrical, structural, or regulatory work outside scope"
+          ],
+          "guidance": "For Residential Septic Service, identify affected tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area scope; ask septic service coordinator to document the Residential Septic Service immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected condition, scope change, added cost, and authorization response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, scope change, added cost, and authorization response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work completion and customer handoff",
+      "guidance": "Reconcile Residential Septic Service to authorization; state septic service coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Access and component photographs",
+            "Measured level or service quantity",
+            "Waste transport or disposal record",
+            "Cover closure, alarm, and customer restriction evidence"
+          ],
+          "guidance": "Attach or link proof for tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area; mark only Residential Septic Service evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

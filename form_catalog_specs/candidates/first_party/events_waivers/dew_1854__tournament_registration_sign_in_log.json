@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1854__tournament_registration_sign_in_log",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1854__tournament_registration_sign_in_log.pdf",
+  "slug": "tournament-registration-sign-in-log",
+  "title": "Tournament Registration Sign-In Log",
+  "subtitle": "Capture division placement, roster, schedule, and rules acknowledgment; confirm credential and result route.",
+  "description": "Tournament Registration records division placement, roster, schedule, rules acknowledgment, credential, and result route. Tournament Registration evidence stays linked.",
+  "use_case": "Use this tournament registration attendance and custody reconciliation when staff must document division placement and roster. Reconcile schedule, rules acknowledgment, credential, and result route before the tournament registration handoff. Use the entry application, eligibility source, roster and substitutes, division capacity, schedule acknowledgment, rules receipt, credential record, and placement notice. This registration places a team or entrant into a competitive division using eligibility, roster and substitutes, seeding inputs, bracket capacity, rules receipt, and credential issue. Capture team-manager authority, age or weight classification where applicable, roster lock, jersey or bib assignment, club affiliation, ranking evidence, and officials' packet readiness. Ask the assigned tournament registration reviewer to confirm division placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Tournament Registration details",
+      "guidance": "Confirm division eligibility, roster and substitutes, schedule availability, rules receipt, credential issuance, seeding source, payment reference, and result route.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Tournament Registration people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "division_placement",
+              "label": "Division placement",
+              "units": 1.1
+            },
+            {
+              "key": "roster",
+              "label": "Roster",
+              "units": 1.2
+            },
+            {
+              "key": "schedule",
+              "label": "Schedule",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Tournament Registration task details",
+          "fields": [
+            {
+              "key": "rules_acknowledgment",
+              "label": "Rules acknowledgment",
+              "units": 1.15
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.0
+            },
+            {
+              "key": "result_route",
+              "label": "Result route",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance_rows",
+      "title": "Tournament Registration entrant identity, credentials, and departure",
+      "guidance": "Match each entrant or team to division, roster eligibility, credential, schedule, and departure or result receipt.",
+      "blocks": [
+        {
+          "key": "sign_in_rows",
+          "type": "table",
+          "label": "Tournament Registration entrant rows",
+          "columns": [
+            {
+              "key": "entrant_or_team",
+              "label": "Entrant or team",
+              "units": 1.2
+            },
+            {
+              "key": "check_in_and_eligibility",
+              "label": "Check-in and eligibility",
+              "units": 1.1
+            },
+            {
+              "key": "division_or_credential",
+              "label": "Division or credential",
+              "units": 1.25
+            },
+            {
+              "key": "departure_or_result_receipt",
+              "label": "Departure or result receipt",
+              "units": 1.0
+            },
+            {
+              "key": "exception_and_owner",
+              "label": "Exception and owner",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "roster_boundary",
+          "type": "notice",
+          "label": "Tournament Registration roster boundary",
+          "guidance": "Route an unmatched entrant, roster, division, credential, schedule, or departure before closing the log."
+        }
+      ]
+    },
+    {
+      "key": "attendance_close",
+      "title": "Tournament Registration entrant outcome and reconciliation",
+      "guidance": "Reconcile expected entrants, credentials, departures, and unresolved eligibility.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Tournament Registration closing counts",
+          "fields": [
+            {
+              "key": "expected_entrant_count",
+              "label": "Expected entrant count",
+              "units": 1.15
+            },
+            {
+              "key": "entrants_checked_in",
+              "label": "Entrants checked in",
+              "units": 1.0
+            },
+            {
+              "key": "departed_or_results_received",
+              "label": "Departed or results received",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_entrant_and_owner",
+              "label": "Unresolved entrant and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "attendance_receipt",
+          "type": "signatures",
+          "label": "Tournament Registration log receipt",
+          "fields": [
+            {
+              "key": "event_coordinator_or_roster_custodian_and_date",
+              "label": "Event coordinator or roster custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Do not close an unreconciled entry without a named owner."
+        }
+      ]
+    }
+  ]
+}

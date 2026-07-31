@@ -1,0 +1,245 @@
+{
+  "catalog_id": "construction_trades/dcf_147__incident_log_form",
+  "description": "For incident, this log form records immediate care, scene control, notification chain, evidence preservation, preliminary classification, and reporting duties. Its supporting evidence includes firsthand statements, scene photos, equipment status, training record, timeline, and corrective-action evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Incident opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Incident site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Incident contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Incident superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Incident due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this incident record to its evidence.",
+          "key": "record_routing",
+          "label": "Incident Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "People involved",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Exact location",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Activity",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Witnesses",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture people involved, exact location, activity, equipment, witnesses, environmental conditions, and emergency response for this incident.",
+          "key": "core_identity",
+          "label": "Incident Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify people involved, exact location, activity, equipment, witnesses, environmental conditions, and emergency response for this incident record.",
+      "key": "identity_1",
+      "title": "Log Reference and Review Owner"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Incident when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Incident measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Incident evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Incident result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For incident, record firsthand statements, scene photos, equipment status, training record, timeline, and corrective-action evidence.",
+          "key": "evidence_register",
+          "label": "Incident Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Firsthand statements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Scene photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Equipment status",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Training record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Timeline",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every incident evidence source.",
+          "key": "evidence_sources",
+          "label": "Incident Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Incident dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Incident owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Incident escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep incident items open through verification.",
+          "key": "open_item_register",
+          "label": "Incident Open Items and Next Actions",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Incident reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved incident entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Incident Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Incident Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For incident, explain qualified review, required notifications, corrective actions, return-to-work authority, and record retention; transfer each incident open entry to the incident successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Incident Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Preserve the scene and stop related work when required for emergency response, investigation, or uncontrolled risk. Route unresolved incident work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Incident Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support incident findings with firsthand statements, scene photos, equipment status, training record, timeline, and corrective-action evidence.",
+      "key": "observation_2",
+      "title": "Recorded Findings and Actions"
+    }
+  ],
+  "slug": "incident-log-form",
+  "source_filename": "dcf_147__incident_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Incident Log Form: construction incident stabilization and fact record using people involved, immediate care, and firsthand statements.",
+  "title": "Incident Log Form",
+  "use_case": "Use the log form during construction incident stabilization and fact record when the incident record must identify people involved, exact location, activity, equipment, witnesses, environmental conditions, and emergency response. Complete the applicable handoff for qualified review, required notifications, corrective actions, return-to-work authority, and record retention."
+}

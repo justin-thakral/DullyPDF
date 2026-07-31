@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2622__room_block_checklist",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2622__room_block_checklist.pdf",
+  "slug": "room-block-checklist",
+  "title": "Room Block Checklist",
+  "subtitle": "Capture group code, room types, cutoff, and pickup pace; confirm attrition review and housing handoff.",
+  "description": "Room Block records group code, room types, cutoff, pickup pace, attrition review, and housing handoff. Room Block evidence stays linked.",
+  "use_case": "Use this room block stage-gated verification when staff must document group code and room types. Reconcile cutoff, pickup pace, attrition review, and housing handoff before the room block handoff. Use the group agreement reference, inventory grid, rate sheet, booking link, rooming list, pickup report, cutoff reminder, attrition review, and housing reconciliation. Ask the assigned room block reviewer to confirm group code against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Room Block starting details",
+      "guidance": "Define group code, room types and nightly inventory, rate, cutoff, pickup pace, rooming-list owner, attrition checkpoint, special routing, and housing handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Room Block people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "group_code",
+              "label": "Group code",
+              "units": 1.1
+            },
+            {
+              "key": "room_types",
+              "label": "Room types",
+              "units": 1.2
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Room Block task details",
+          "fields": [
+            {
+              "key": "pickup_pace",
+              "label": "Pickup pace",
+              "units": 1.15
+            },
+            {
+              "key": "attrition_review",
+              "label": "Attrition review",
+              "units": 1.0
+            },
+            {
+              "key": "housing_handoff",
+              "label": "Housing handoff",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Room Block checks and corrections",
+      "guidance": "Check current room block facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Room Block required checks",
+          "items": [
+            "Group code is identified for this record",
+            "Room types matches the current request or source",
+            "Cutoff is ready for point-of-use staff",
+            "Pickup pace limits or questions are resolved",
+            "Attrition review is communicated to the responsible person",
+            "Housing handoff is confirmed at handoff",
+            "A changed room block fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Room Block failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Room Block readiness",
+      "guidance": "Hold room block readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Room Block checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Room Block reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "service_lead_or_responsible_manager_and_date",
+              "label": "Service lead or responsible manager and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Room Block receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

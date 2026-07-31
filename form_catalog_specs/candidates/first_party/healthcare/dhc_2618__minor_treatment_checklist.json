@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2618__minor_treatment_checklist",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2618__minor_treatment_checklist.pdf",
+  "slug": "minor-treatment-checklist",
+  "title": "Minor Treatment Checklist",
+  "subtitle": "Capture requested service, guardian authority, qualified decision, and consent limit; confirm encounter result and follow-up.",
+  "description": "Minor Treatment records requested service, guardian authority, qualified decision, consent limit, encounter result, and follow-up. Minor Treatment evidence stays linked.",
+  "use_case": "Use this minor treatment stage-gated verification when staff must document requested service and guardian authority. Reconcile qualified decision, consent limit, encounter result, and follow-up before the minor treatment handoff. Use the service request, minor and guardian identity checks, authority documentation, qualified recommendation, itemized consent, encounter record, aftercare instructions, and follow-up receipt. This authorization centers a minor, guardian or other lawful authority, a named treatment or procedure, qualified explanation, itemized limits, encounter result, aftercare receipt, and guardian follow-up. Ask the assigned minor treatment reviewer to confirm requested service against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Minor Treatment starting details review",
+      "guidance": "Name requested service, minor and guardian, custody or authority source, qualified decision maker, consent limits, encounter outcome, aftercare route, and follow-up. Keep any urgent minor treatment issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Minor Treatment people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "requested_service",
+              "label": "Requested service",
+              "units": 1.1
+            },
+            {
+              "key": "guardian_authority",
+              "label": "Guardian authority",
+              "units": 1.2
+            },
+            {
+              "key": "qualified_decision",
+              "label": "Qualified decision",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Minor Treatment task details",
+          "fields": [
+            {
+              "key": "consent_limit",
+              "label": "Consent limit",
+              "units": 1.15
+            },
+            {
+              "key": "encounter_result",
+              "label": "Encounter result",
+              "units": 1.0
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Minor Treatment exception review: checks and corrections",
+      "guidance": "Check current minor treatment facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Minor Treatment required checks",
+          "items": [
+            "Requested service is identified for this record",
+            "Guardian authority matches the current request or source",
+            "Qualified decision is ready for point-of-use staff",
+            "Consent limit limits or questions are resolved",
+            "Encounter result is communicated to the responsible person",
+            "Follow-up is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Minor Treatment failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Minor Treatment readiness and handoff",
+      "guidance": "Hold minor treatment readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Minor Treatment checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Minor Treatment reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "receiving_department_or_clinical_reviewer_and_date",
+              "label": "Receiving department or clinical reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Minor Treatment receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

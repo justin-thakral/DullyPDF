@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_144__roof_inspection_completion_report",
+  "source_section": "field_service",
+  "source_filename": "dhs_144__roof_inspection_completion_report.pdf",
+  "slug": "roof-inspection-completion-report",
+  "title": "Roof Inspection Completion Report",
+  "subtitle": "Residential Roof Inspection: verifies results and open follow-up.",
+  "description": "Roof Inspection Completion Report covers roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area. The roof inspection coordinator records Residential Roof Inspection performed work, tests, limits, and acceptance. Roof Inspection Completion Report keeps Residential Roof Inspection exceptions visible until the roof inspection coordinator handoff.",
+  "use_case": "Use Roof Inspection Completion Report at residence, roof plane, edge, penetration, attic area, and reported leak zone. Document roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area identity before Residential Roof Inspection begins. Compare roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area findings with stated Residential Roof Inspection criteria; route unresolved Residential Roof Inspection issues to qualified roofing reviewer. For Roof Inspection Completion Report, confirm requirements for Residential Roof Inspection. Ask qualified roofing reviewer to review Residential Roof Inspection conditions beyond the roof inspection coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Completion parties and source record",
+      "guidance": "For Residential Roof Inspection, identify responsible parties, residence, roof plane, edge, penetration, attic area, and reported leak zone, and the linked roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Completion record ID",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Roof Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and inspection reference",
+              "units": 2.4444444444444446
+            },
+            {
+              "key": "identity_2",
+              "label": "Roof type, approximate age, slope, and area",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Weather event, leak history, prior repair, and access method",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Performed scope and verification results",
+      "guidance": "Capture Residential Roof Inspection facts for roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Roof Inspection completion checks",
+          "items": [
+            "Covering wear, displacement, breakage, and fastening indication",
+            "Flashing, valley, penetration, wall, and transition condition",
+            "Ridge, edge, gutter, downspout, and drainage path",
+            "Sealant, membrane, coating, and visible repair condition",
+            "Attic, deck, insulation, staining, and moisture indication",
+            "Ground or limited-access observation and unobserved scope"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Completion verification lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Performed task or delivered item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 0.9
+            },
+            {
+              "key": "result",
+              "label": "Verified result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.85
+            },
+            {
+              "key": "follow_up",
+              "label": "Limitation or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Completion limitation, status, and follow-up",
+      "guidance": "Resolve open Residential Roof Inspection conditions; have roof inspection coordinator assign the next Residential Roof Inspection owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Limitations, open work, and retained evidence",
+          "items": [
+            "Unsafe slope, weather, surface, ladder, or edge condition",
+            "Active structural movement or collapse concern",
+            "Concealed moisture extent cannot be determined",
+            "Temporary protection or qualified escalation needed",
+            "Overview and defect-location photographs",
+            "Annotated roof-plane or area sketch",
+            "Moisture indication and interior correlation",
+            "Access limitation and recommendation record"
+          ],
+          "guidance": "Pause Residential Roof Inspection when safe access, weather, structural stability, water entry, or required qualified assessment remains unresolved. Retain the available Residential Roof Inspection proof and route unresolved roof covering, flashing, penetration, drainage edge, attic indicator, and affected interior area scope to roof inspection coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Acceptance status and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completion status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Accepted",
+                "Accepted with listed limitation",
+                "Follow-up required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Roof Inspection Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

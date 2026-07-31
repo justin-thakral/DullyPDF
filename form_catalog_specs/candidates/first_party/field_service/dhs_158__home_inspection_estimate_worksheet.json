@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_158__home_inspection_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_158__home_inspection_estimate_worksheet.pdf",
+  "slug": "home-inspection-estimate-worksheet",
+  "title": "Home Inspection Estimate Worksheet",
+  "subtitle": "Home Condition Inspection: prices observed scope, options, and exclusions.",
+  "description": "Home Inspection Estimate Worksheet covers visible building system, component, room, exterior area, and reported concern. The home inspection coordinator records Home Condition Inspection observed scope, costs, options, and terms. Home Inspection Estimate Worksheet keeps Home Condition Inspection exceptions visible until the home inspection coordinator handoff.",
+  "use_case": "Use Home Inspection Estimate Worksheet at residence exterior, interior, accessible attic, visible foundation, and installed systems. Document visible building system, component, room, exterior area, and reported concern identity before Home Condition Inspection begins. Compare visible building system, component, room, exterior area, and reported concern findings with stated Home Condition Inspection criteria; route unresolved Home Condition Inspection issues to qualified home-condition reviewer. For Home Inspection Estimate Worksheet, confirm requirements for Home Condition Inspection. Ask qualified home-condition reviewer to review Home Condition Inspection conditions beyond the home inspection coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "estimate_context",
+      "title": "Property estimate review and customer identity",
+      "guidance": "Identify the customer, asset or property, estimator, and basis date before pricing the work.",
+      "blocks": [
+        {
+          "key": "estimate_header",
+          "type": "fields",
+          "label": "Estimate header",
+          "fields": [
+            {
+              "key": "estimate_number",
+              "label": "Home job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "estimate_date",
+              "label": "Estimate date",
+              "units": 0.65
+            },
+            {
+              "key": "valid_until",
+              "label": "Valid until",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Home customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Home address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "estimator",
+              "label": "Home Inspection Coordinator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Home Condition Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Client, property, and inspection number",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Occupancy, weather, utilities, and access status",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "System age or identifier when visible",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Home Condition Inspection identifier printed on visible building system, component, room, exterior area, and reported concern or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "estimate_scope",
+      "title": "Pricing options and customer decision inputs",
+      "guidance": "Price the observable work and options. Keep concealed conditions and unconfirmed quantities out of fixed scope.",
+      "blocks": [
+        {
+          "key": "scope_observations",
+          "type": "checklist",
+          "label": "Home Condition Inspection scope observations",
+          "items": [
+            "Site drainage, exterior, roof, and visible structure",
+            "Interior rooms, windows, doors, stairs, and finishes",
+            "Electrical, plumbing, heating, cooling, and installed equipment",
+            "Attic, insulation, ventilation, and moisture indication",
+            "Visible foundation, crawlspace, basement, and drainage",
+            "Limitations, inaccessible areas, and specialist referral triggers"
+          ],
+          "guidance": "Mark what was observed or supplied as estimate input; explain anything material that could not be inspected."
+        },
+        {
+          "key": "price_lines",
+          "type": "table",
+          "label": "Scope, quantities, options, and pricing",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Task, area, or option",
+              "units": 1.25
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity, size, or hours",
+              "units": 0.9
+            },
+            {
+              "key": "rate",
+              "label": "Rate or unit price",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Material or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "total",
+              "label": "Line total",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Included, option, or excluded",
+              "units": 0.95
+            }
+          ],
+          "rows": 10
+        },
+        {
+          "key": "estimate_totals",
+          "type": "fields",
+          "label": "Estimate totals",
+          "fields": [
+            {
+              "key": "subtotal",
+              "label": "Subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "taxes",
+              "label": "Taxes",
+              "units": 0.7
+            },
+            {
+              "key": "fees",
+              "label": "Fees or disposal",
+              "units": 0.8
+            },
+            {
+              "key": "allowances",
+              "label": "Allowances",
+              "units": 0.8
+            },
+            {
+              "key": "discounts",
+              "label": "Discount or credit",
+              "units": 0.8
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "estimate_terms",
+      "title": "Estimate exception and change conditions",
+      "guidance": "State what could change the price, timing, method, or scope before the customer or responsible party decides.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when a safety hazard, access limitation, active damage, or required specialist escalation remains uncommunicated. Protect visible building system, component, room, exterior area, and reported concern; document the Home Condition Inspection notification and await qualified home-condition reviewer direction."
+        },
+        {
+          "key": "estimate_uncertainty",
+          "type": "checklist",
+          "label": "Conditions that may require a revised estimate or specialist review",
+          "items": [
+            "Unsafe or inaccessible area",
+            "Active electrical, fuel, structural, or water hazard",
+            "Concealed condition cannot be characterized",
+            "Specialist evaluation or immediate protection needed"
+          ],
+          "guidance": "For Home Condition Inspection, identify affected visible building system, component, room, exterior area, and reported concern scope; ask home inspection coordinator to document the Home Condition Inspection immediate control before continuing."
+        },
+        {
+          "key": "assumptions_exclusions",
+          "type": "textarea",
+          "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "estimate_decision",
+      "title": "Estimate decision and selected service scope",
+      "guidance": "Record the selected option and spending limit. Approval of an estimate authorizes only the stated scope and terms.",
+      "blocks": [
+        {
+          "key": "estimate_support",
+          "type": "checklist",
+          "label": "Estimate support retained",
+          "items": [
+            "Representative and defect-location photographs",
+            "System or component identification",
+            "Operating observation and measurement where appropriate",
+            "Limitation and referral record"
+          ],
+          "guidance": "Attach or link proof for visible building system, component, room, exterior area, and reported concern; mark only Home Condition Inspection evidence present in that record."
+        },
+        {
+          "key": "estimate_status",
+          "type": "fields",
+          "label": "Decision and selected scope",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Estimate decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved",
+                "Approved with selected options",
+                "Revision requested",
+                "Declined",
+                "Expired"
+              ]
+            },
+            {
+              "key": "selected_scope",
+              "label": "Selected option, scope, or limit",
+              "units": 1.2
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "follow_up",
+              "label": "Scheduling or revision next step",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Home Condition Inspection selected scope, exclusions, and scheduling notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Condition Inspection selected scope, exclusions, and scheduling notes",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Explain the selected Home Condition Inspection option, retained exclusion, pricing assumption, and scheduling dependency."
+        },
+        {
+          "key": "estimate_signatures",
+          "type": "signatures",
+          "label": "Estimate preparation and decision",
+          "fields": [
+            {
+              "key": "estimator_signature",
+              "label": "Estimator",
+              "units": 1.1
+            },
+            {
+              "key": "estimator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer or authorized decision maker",
+              "units": 1.25
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

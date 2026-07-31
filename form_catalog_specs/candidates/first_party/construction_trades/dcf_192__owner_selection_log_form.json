@@ -1,0 +1,234 @@
+{
+  "catalog_id": "construction_trades/dcf_192__owner_selection_log_form",
+  "description": "For owner selection, this log form records available options, performance criteria, finish attributes, lead time, cost delta, maintenance, and alternates. Its supporting evidence includes sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Selection opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Selection site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Selection contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Selection superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Selection due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this owner selection record to its evidence.",
+          "key": "record_routing",
+          "label": "Owner Selection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Selection category",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Rooms or systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Allowance",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Vendor",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities for this owner selection.",
+          "key": "core_identity",
+          "label": "Owner Selection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities for this owner selection record.",
+      "key": "identity_1",
+      "title": "Log Coverage and Custodian"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Selection when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Selection measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Selection evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Selection result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For owner selection, record sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+          "key": "evidence_register",
+          "label": "Owner Selection Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Sample approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Product data",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Pricing",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Mockup photo",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Designer recommendation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every owner selection evidence source.",
+          "key": "evidence_sources",
+          "label": "Owner Selection Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Selection dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Selection owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Selection escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep owner selection items open through verification.",
+          "key": "open_item_register",
+          "label": "Owner Selection Open Items and Next Actions",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Selection reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved owner selection entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Owner Selection Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Owner Selection Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For owner selection, explain signed selection, budget and schedule update, procurement release, substitution rule, and field distribution; transfer each owner selection open entry to the owner selection successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Owner Selection Period Transfer Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support owner selection findings with sample approval, product data, pricing, mockup photo, designer recommendation, and prior selection record.",
+      "key": "observation_2",
+      "title": "Dated Events and Supporting Facts"
+    }
+  ],
+  "slug": "owner-selection-log-form",
+  "source_filename": "dcf_192__owner_selection_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Owner Selection Log Form: owner finish or product selection control using selection category, available options, and sample approval.",
+  "title": "Owner Selection Log Form",
+  "use_case": "Use the log form during owner finish or product selection control when the owner selection record must identify selection category, rooms or systems, allowance, vendor, required-by date, and dependent procurement activities. Complete the applicable handoff for signed selection, budget and schedule update, procurement release, substitution rule, and field distribution."
+}

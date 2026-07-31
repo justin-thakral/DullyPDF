@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_125__carrier_onboarding_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_125__carrier_onboarding_form.pdf",
+  "slug": "carrier-onboarding-form",
+  "title": "Carrier Onboarding Form",
+  "subtitle": "Carrier Onboarding: captures actual activity and handoff.",
+  "description": "Carrier Onboarding Form covers carrier organization, operating authority, insurance, contacts, equipment, controls, and approval. The carrier onboarding coordinator records Carrier Onboarding activity, quantities, variance, and handoff. Carrier Onboarding Form keeps Carrier Onboarding exceptions visible until the carrier onboarding coordinator handoff.",
+  "use_case": "Use Carrier Onboarding Form at carrier file, qualification system, dispatch access, and document repository. Document carrier organization, operating authority, insurance, contacts, equipment, controls, and approval identity before Carrier Onboarding begins. Compare carrier organization, operating authority, insurance, contacts, equipment, controls, and approval findings with stated Carrier Onboarding criteria; route unresolved Carrier Onboarding issues to authorized carrier-compliance reviewer. For Carrier Onboarding Form, confirm requirements for Carrier Onboarding. Ask authorized carrier-compliance reviewer to review Carrier Onboarding conditions beyond the carrier onboarding coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "operation_header",
+      "title": "Transport record and carrier details",
+      "guidance": "Identify the Carrier Onboarding entry, responsible parties, and operating window.",
+      "blocks": [
+        {
+          "key": "operation_context",
+          "type": "fields",
+          "label": "Record and operating context",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Carrier onboarding record ID",
+              "units": 1.0
+            },
+            {
+              "key": "operation_date",
+              "label": "Date or operating period",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Carrier / vendor account",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Qualification file / dispatch access",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_person",
+              "label": "Carrier Onboarding Coordinator",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Carrier Onboarding identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Carrier legal and operating names",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Authority, tax, insurance, and vendor identifiers",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Dispatch, safety, claims, billing, and after-hours contacts",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Carrier Onboarding identifier printed on carrier organization, operating authority, insurance, contacts, equipment, controls, and approval or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "activity_record",
+      "title": "Transport activity and task details",
+      "guidance": "Enter one Carrier Onboarding row per task, item, reading, or event.",
+      "blocks": [
+        {
+          "key": "plan_and_window",
+          "type": "fields",
+          "label": "Plan and operating window",
+          "fields": [
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.65
+            },
+            {
+              "key": "planned_result",
+              "label": "Planned result or target",
+              "units": 1.2
+            },
+            {
+              "key": "procedure",
+              "label": "Procedure, order, label, or instruction reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "activity_lines",
+          "type": "table",
+          "label": "Transport events, quantities, condition, and custody",
+          "columns": [
+            {
+              "key": "event",
+              "label": "Load, stop, document, or custody event",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition, variance, or delay",
+              "units": 1.0
+            },
+            {
+              "key": "custody",
+              "label": "Party / driver initials",
+              "units": 0.9
+            }
+          ],
+          "rows": 7
+        }
+      ]
+    },
+    {
+      "key": "operation_controls",
+      "title": "Transport exception and restrictions",
+      "guidance": "Record Carrier Onboarding variances, affected scope, immediate control, and owner.",
+      "blocks": [
+        {
+          "key": "operating_checks",
+          "type": "checklist",
+          "label": "Carrier Onboarding operating checks",
+          "items": [
+            "Authority and operating scope",
+            "Insurance type, limit, term, and source",
+            "Equipment and service capability",
+            "Safety, security, tracking, and cargo controls",
+            "Payment, fraud, identity, and communication verification",
+            "Approval scope, conditions, expiration, and re-review"
+          ],
+          "guidance": "Complete the Carrier Onboarding checks that apply to this carrier organization, operating authority, insurance, contacts, equipment, controls, and approval activity; explain every unchecked required item."
+        },
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when carrier identity, authority, insurance, fraud control, or authorized approval remains unresolved. Protect carrier organization, operating authority, insurance, contacts, equipment, controls, and approval; document the Carrier Onboarding notification and await authorized carrier-compliance reviewer direction."
+        },
+        {
+          "key": "operation_exceptions",
+          "type": "checklist",
+          "label": "Stop, hold, or correction triggers",
+          "items": [
+            "Identity or ownership cannot be verified",
+            "Authority or insurance incomplete",
+            "Fraud or contact inconsistency",
+            "Approval requested beyond reviewer authority"
+          ],
+          "guidance": "For Carrier Onboarding, identify affected carrier organization, operating authority, insurance, contacts, equipment, controls, and approval scope; ask carrier onboarding coordinator to document the Carrier Onboarding immediate control before continuing."
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Exception, change from plan, affected scope, and immediate response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Exception, change from plan, affected scope, and immediate response",
+              "multiline": true
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "operation_result",
+      "title": "Transport status decision and next action",
+      "guidance": "State the Carrier Onboarding outcome, restrictions, next action, and receiving owner.",
+      "blocks": [
+        {
+          "key": "result_evidence",
+          "type": "checklist",
+          "label": "Supporting records retained",
+          "items": [
+            "Source authority and insurance evidence",
+            "Verified contact and identity record",
+            "Capability and control questionnaire",
+            "Approval decision and expiry monitoring"
+          ],
+          "guidance": "Attach or link proof for carrier organization, operating authority, insurance, contacts, equipment, controls, and approval; mark only Carrier Onboarding evidence present in that record."
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Operation outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Received or completed",
+                "Completed with exception",
+                "Partially completed",
+                "Held",
+                "Refused or returned"
+              ]
+            },
+            {
+              "key": "completed_at",
+              "label": "Completion date and time",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_action",
+              "label": "Remaining action or restriction",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner or receiving party",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Due date or trigger",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "operation_handoff",
+          "type": "signatures",
+          "label": "Operator and handoff acknowledgment",
+          "fields": [
+            {
+              "key": "operator_signature",
+              "label": "Operator or preparer",
+              "units": 1.1
+            },
+            {
+              "key": "operator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver, supervisor, or customer",
+              "units": 1.2
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "The Carrier Onboarding acknowledgment records the carrier organization, operating authority, insurance, contacts, equipment, controls, and approval outcome. It cannot conceal a Carrier Onboarding hold, exception, or carrier onboarding coordinator restriction."
+        }
+      ]
+    }
+  ]
+}

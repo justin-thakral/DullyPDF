@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_133__volunteer_chaperone_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_133__volunteer_chaperone_information_sheet.pdf",
+  "slug": "volunteer-chaperone-information-sheet",
+  "title": "Volunteer Chaperone Information Sheet",
+  "subtitle": "Capture trip assignment, student group, screening status, and supervision boundary; confirm emergency route and return handoff.",
+  "description": "Volunteer Chaperone records trip assignment, student group, screening status, supervision boundary, emergency route, and return handoff. Volunteer Chaperone evidence stays linked.",
+  "use_case": "Use this volunteer chaperone controlled information handoff when staff must document trip assignment and student group. Reconcile screening status, supervision boundary, emergency route, and return handoff before the volunteer chaperone handoff. Use screening evidence, assignment roster, student-group list, supervision brief, emergency card route, transport seat list, checkpoint headcounts, and return handoff. This assignment places a screened adult with a student group using ratio and supervision boundaries, bus position, checkpoint headcounts, emergency response role, prohibited tasks, and return handoff. Ask the assigned volunteer chaperone reviewer to confirm trip assignment against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Volunteer Chaperone audience details review",
+      "guidance": "Assign trip, student group, screening evidence, supervision boundary, transport position, emergency route, headcount responsibility, and return handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Volunteer Chaperone people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "trip_assignment",
+              "label": "Trip assignment",
+              "units": 1.1
+            },
+            {
+              "key": "student_group",
+              "label": "Student group",
+              "units": 1.2
+            },
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Volunteer Chaperone task details",
+          "fields": [
+            {
+              "key": "supervision_boundary",
+              "label": "Supervision boundary",
+              "units": 1.15
+            },
+            {
+              "key": "emergency_route",
+              "label": "Emergency route",
+              "units": 1.0
+            },
+            {
+              "key": "return_handoff",
+              "label": "Return handoff",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Volunteer Chaperone current instructions review",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Volunteer Chaperone instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Volunteer Chaperone questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 64
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Volunteer Chaperone decision and update route",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Volunteer Chaperone effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Volunteer Chaperone update boundary",
+          "guidance": "Replace outdated volunteer chaperone instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

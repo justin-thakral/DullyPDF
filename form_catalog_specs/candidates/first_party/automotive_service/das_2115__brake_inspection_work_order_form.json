@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2115__brake_inspection_work_order_form",
+  "source_section": "automotive_service",
+  "source_filename": "das_2115__brake_inspection_work_order_form.pdf",
+  "slug": "brake-inspection-work-order-form",
+  "title": "Brake Inspection Work Order Form",
+  "subtitle": "Brake Inspection And Service: connects authorized scope to results.",
+  "description": "Brake Inspection Work Order Form covers brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification. The brake service advisor records Brake Inspection And Service authorized tasks, materials, results, and changes. Brake Inspection Work Order Form keeps Brake Inspection And Service exceptions visible until the brake service advisor handoff.",
+  "use_case": "Use Brake Inspection Work Order Form at service bay, lift, wheel positions, controlled test area, and customer handoff. Document brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification identity before Brake Inspection And Service begins. Compare brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification findings with stated Brake Inspection And Service criteria; route unresolved Brake Inspection And Service issues to qualified brake-system reviewer. For Brake Inspection Work Order Form, confirm requirements for Brake Inspection And Service. Ask qualified brake-system reviewer to review Brake Inspection And Service conditions beyond the brake service advisor's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Vehicle repair-order details",
+      "guidance": "Bind Brake Inspection And Service to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Repair, claim, fleet, or dispatch ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Customer, fleet, insurer, or payer",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shop, bay, roadside, or site",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Brake Service Advisor",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Brake Inspection And Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Repair order and complaint",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, and vehicle configuration",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Wheel position, component, prior work, and warning indication",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Brake Inspection And Service identifier printed on brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification or its linked source record."
+        },
+        {
+          "key": "vehicle_work_context",
+          "type": "fields",
+          "label": "Vehicle work context",
+          "fields": [
+            {
+              "key": "odometer_in",
+              "label": "Odometer or operating hours in",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Vehicle findings and repair evidence",
+      "guidance": "Record authorized Brake Inspection And Service activity; separate proposed, declined, deferred, or new Brake Inspection And Service scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "operation",
+              "label": "Brake Inspection And Service labor or diagnostic step",
+              "units": 1.25
+            },
+            {
+              "key": "component",
+              "label": "System, component, or position",
+              "units": 1.0
+            },
+            {
+              "key": "part",
+              "label": "Part, fluid, material, or sublet",
+              "units": 1.1
+            },
+            {
+              "key": "qty",
+              "label": "Qty / hours",
+              "units": 0.65
+            },
+            {
+              "key": "result",
+              "label": "Performed result or note",
+              "units": 1.1
+            },
+            {
+              "key": "technician",
+              "label": "Technician",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Brake Inspection And Service work and verification points",
+          "items": [
+            "Friction thickness and wear pattern",
+            "Rotor or drum condition and measurement",
+            "Caliper, wheel cylinder, hose, line, and leak condition",
+            "Fluid condition and reservoir level",
+            "Parking brake and warning-system response",
+            "Controlled stopping, noise, pull, and pedal result"
+          ],
+          "guidance": "Use each Brake Inspection And Service check to prompt documented brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification execution; enter its actual Brake Inspection And Service result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Brake Inspection And Service parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Repair exception and added-work limits",
+      "guidance": "Stop Brake Inspection And Service at any scope or cost limit; honor brake service advisor access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when braking capacity, hydraulic integrity, component condition, authorization, or safe verification remains unresolved. Protect brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification; document the Brake Inspection And Service notification and await qualified brake-system reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Measurement below service criterion",
+            "Hydraulic leak or damaged line",
+            "Unsafe road test condition",
+            "Customer declines safety-related recommendation"
+          ],
+          "guidance": "For Brake Inspection And Service, identify affected brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification scope; ask brake service advisor to document the Brake Inspection And Service immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Added work, revised diagnosis, cost change, and customer response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Added work, revised diagnosis, cost change, and customer response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Vehicle release decision and completion",
+      "guidance": "Reconcile Brake Inspection And Service to authorization; state brake service advisor limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Position-specific measurements",
+            "Component and leak photographs",
+            "Part and repair trace",
+            "Post-service brake verification"
+          ],
+          "guidance": "Attach or link proof for brake assembly, friction material, rotor or drum, hydraulic control, parking brake, and stopping verification; mark only Brake Inspection And Service evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

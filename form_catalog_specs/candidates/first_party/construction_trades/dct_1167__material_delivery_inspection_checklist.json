@@ -1,0 +1,330 @@
+{
+  "catalog_id": "construction_trades/dct_1167__material_delivery_inspection_checklist",
+  "description": "For material delivery, this inspection checklist records expected quantities, unloading plan, inspection criteria, documentation, protected storage, and installation need date. Its supporting evidence includes packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Delivery opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Delivery site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Delivery contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Delivery superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Delivery due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this material delivery record to its evidence.",
+          "key": "record_routing",
+          "label": "Material Delivery Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Purchase order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Supplier",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Carrier",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Delivery location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Product identifiers",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements for this material delivery.",
+          "key": "core_identity",
+          "label": "Material Delivery Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements for this material delivery record.",
+      "key": "identity_1",
+      "title": "Site Reference and Inspector"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Expected quantities",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Unloading plan",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Inspection criteria",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Documentation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For material delivery, record expected quantities, unloading plan, inspection criteria, documentation, protected storage, and installation need date.",
+          "key": "task_inputs",
+          "label": "Material Delivery Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the material delivery condition before marking.",
+          "items": [
+            "Verify expected quantities",
+            "Verify unloading plan",
+            "Verify inspection criteria",
+            "Verify documentation",
+            "Verify protected storage"
+          ],
+          "key": "task_checks",
+          "label": "Material Delivery Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Delivery checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Delivery review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Delivery qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Delivery check time",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the material delivery criteria and inspector.",
+          "key": "checkpoint_result",
+          "label": "Material Delivery Inspection Reference",
+          "type": "fields"
+        }
+      ],
+      "guidance": "For material delivery, capture expected quantities, unloading plan, inspection criteria, documentation, protected storage, and installation need date.",
+      "key": "task_2",
+      "title": "Scope, Criteria, and Test Method"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Delivery when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Delivery measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Delivery evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Delivery result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For material delivery, record packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+          "key": "evidence_register",
+          "label": "Material Delivery Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Packing slip",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Count",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Condition photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Certificate",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Temperature or moisture reading",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every material delivery evidence source.",
+          "key": "evidence_sources",
+          "label": "Material Delivery Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Material Delivery Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State material delivery limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Material Delivery Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support material delivery findings with packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+      "key": "observation_3",
+      "title": "Measured Finding Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select inspection checklist disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Correct and reinspect",
+                "Unsafe—do not release"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Delivery decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Inspector and qualification",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Criteria or release authority",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Correction or released next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate material delivery disposition.",
+          "key": "disposition",
+          "label": "Material Delivery Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Material Delivery Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the material delivery decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Material Delivery Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Delivery qualified inspector and date",
+              "units": 1.0
+            },
+            {
+              "key": "release_authority",
+              "label": "Delivery release authority and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Material Delivery Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the material delivery next step from packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+      "key": "decision_4",
+      "title": "Release Decision"
+    }
+  ],
+  "slug": "material-delivery-inspection-checklist",
+  "source_filename": "dct_1167__material_delivery_inspection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Material Delivery Inspection Checklist: material delivery receipt and condition control using purchase order, expected quantities, and packing slip.",
+  "title": "Material Delivery Inspection Checklist",
+  "use_case": "Use the inspection checklist during material delivery receipt and condition control when the material delivery record must identify purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements. Complete the applicable handoff for accepted quantity, shortage or damage claim, inventory location, responsible custodian, and procurement update."
+}

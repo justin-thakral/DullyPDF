@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_108__plumbing_repair_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_108__plumbing_repair_estimate_worksheet.pdf",
+  "slug": "plumbing-repair-estimate-worksheet",
+  "title": "Plumbing Repair Estimate Worksheet",
+  "subtitle": "Residential Plumbing Repair: prices observed scope, options, and exclusions.",
+  "description": "Plumbing Repair Estimate Worksheet covers fixture, supply, drain, valve, appliance connection, and affected finish. The plumbing service coordinator records Residential Plumbing Repair observed scope, costs, options, and terms. Plumbing Repair Estimate Worksheet keeps Residential Plumbing Repair exceptions visible until the plumbing service coordinator handoff.",
+  "use_case": "Use Plumbing Repair Estimate Worksheet at residence, room, fixture, shutoff point, and affected downstream area. Document fixture, supply, drain, valve, appliance connection, and affected finish identity before Residential Plumbing Repair begins. Compare fixture, supply, drain, valve, appliance connection, and affected finish findings with stated Residential Plumbing Repair criteria; route unresolved Residential Plumbing Repair issues to qualified plumbing service reviewer. For Plumbing Repair Estimate Worksheet, confirm requirements for Residential Plumbing Repair. Ask qualified plumbing service reviewer to review Residential Plumbing Repair conditions beyond the plumbing service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "estimate_context",
+      "title": "Property estimate review and customer identity",
+      "guidance": "Identify the customer, asset or property, estimator, and basis date before pricing the work.",
+      "blocks": [
+        {
+          "key": "estimate_header",
+          "type": "fields",
+          "label": "Estimate header",
+          "fields": [
+            {
+              "key": "estimate_number",
+              "label": "Plumbing job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "estimate_date",
+              "label": "Estimate date",
+              "units": 0.65
+            },
+            {
+              "key": "valid_until",
+              "label": "Valid until",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Plumbing customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Plumbing address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "estimator",
+              "label": "Plumbing Service Coordinator",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Plumbing Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Fixture, line, valve, appliance, or drain identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Leak or blockage onset, usage condition, and prior repair",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Plumbing Repair identifier printed on fixture, supply, drain, valve, appliance connection, and affected finish or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "estimate_scope",
+      "title": "Pricing options and customer decision inputs",
+      "guidance": "Price the observable work and options. Keep concealed conditions and unconfirmed quantities out of fixed scope.",
+      "blocks": [
+        {
+          "key": "scope_observations",
+          "type": "checklist",
+          "label": "Residential Plumbing Repair scope observations",
+          "items": [
+            "Active leak location, rate, and affected materials",
+            "Supply pressure, shutoff, valve, and connection condition",
+            "Drain flow, backup, trap, vent, and cleanout observation",
+            "Fixture mounting, seal, and functional behavior",
+            "Water-heating or appliance connection where in scope",
+            "Post-repair leak, flow, and drainage test"
+          ],
+          "guidance": "Mark what was observed or supplied as estimate input; explain anything material that could not be inspected."
+        },
+        {
+          "key": "price_lines",
+          "type": "table",
+          "label": "Scope, quantities, options, and pricing",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Task, area, or option",
+              "units": 1.25
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity, size, or hours",
+              "units": 0.9
+            },
+            {
+              "key": "rate",
+              "label": "Rate or unit price",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Material or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "total",
+              "label": "Line total",
+              "units": 0.75
+            },
+            {
+              "key": "status",
+              "label": "Included, option, or excluded",
+              "units": 0.95
+            }
+          ],
+          "rows": 8
+        },
+        {
+          "key": "estimate_totals",
+          "type": "fields",
+          "label": "Estimate totals",
+          "fields": [
+            {
+              "key": "subtotal",
+              "label": "Subtotal",
+              "units": 0.8
+            },
+            {
+              "key": "taxes",
+              "label": "Taxes",
+              "units": 0.7
+            },
+            {
+              "key": "fees",
+              "label": "Fees or disposal",
+              "units": 0.8
+            },
+            {
+              "key": "allowances",
+              "label": "Allowances",
+              "units": 0.8
+            },
+            {
+              "key": "discounts",
+              "label": "Discount or credit",
+              "units": 0.8
+            },
+            {
+              "key": "estimated_total",
+              "label": "Estimated total",
+              "units": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "estimate_terms",
+      "title": "Estimate exception and change conditions",
+      "guidance": "State what could change the price, timing, method, or scope before the customer or responsible party decides.",
+      "blocks": [
+        {
+          "key": "estimate_uncertainty",
+          "type": "checklist",
+          "label": "Conditions that may require a revised estimate or specialist review",
+          "items": [
+            "Uncontrolled water flow or contamination concern",
+            "Concealed damage or mold-like condition outside scope",
+            "Gas, electrical, structural, or utility conflict",
+            "Repair requires unavailable shutdown or authority"
+          ],
+          "guidance": "Pause Residential Plumbing Repair and notify plumbing service coordinator when water control, contamination, concealed damage, utility conflict, or safe test remains unresolved."
+        },
+        {
+          "key": "assumptions_exclusions",
+          "type": "textarea",
+          "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Assumptions, exclusions, access limits, allowances, and change-order terms",
+              "multiline": true
+            }
+          ],
+          "height": 62
+        }
+      ]
+    },
+    {
+      "key": "estimate_decision",
+      "title": "Estimate decision and selected service scope",
+      "guidance": "Record the selected option and spending limit. Approval of an estimate authorizes only the stated scope and terms.",
+      "blocks": [
+        {
+          "key": "estimate_support",
+          "type": "checklist",
+          "label": "Estimate support retained",
+          "items": [
+            "Leak and affected-area photographs",
+            "Before-and-after pressure or flow evidence",
+            "Material, fitting, and repair record",
+            "Post-repair test and customer observation"
+          ],
+          "guidance": "Attach or link proof for fixture, supply, drain, valve, appliance connection, and affected finish; mark only Residential Plumbing Repair evidence present in that record."
+        },
+        {
+          "key": "estimate_status",
+          "type": "fields",
+          "label": "Decision and selected scope",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Estimate decision",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved",
+                "Approved with selected options",
+                "Revision requested",
+                "Declined",
+                "Expired"
+              ]
+            },
+            {
+              "key": "selected_scope",
+              "label": "Selected option, scope, or limit",
+              "units": 1.2
+            },
+            {
+              "key": "decision_date",
+              "label": "Decision date",
+              "units": 0.7
+            },
+            {
+              "key": "follow_up",
+              "label": "Scheduling or revision next step",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Residential Plumbing Repair selected scope, exclusions, and scheduling notes",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Residential Plumbing Repair selected scope, exclusions, and scheduling notes",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Explain the selected Residential Plumbing Repair option, retained exclusion, pricing assumption, and scheduling dependency."
+        },
+        {
+          "key": "estimate_signatures",
+          "type": "signatures",
+          "label": "Estimate preparation and decision",
+          "fields": [
+            {
+              "key": "estimator_signature",
+              "label": "Estimator",
+              "units": 1.1
+            },
+            {
+              "key": "estimator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer or authorized decision maker",
+              "units": 1.25
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

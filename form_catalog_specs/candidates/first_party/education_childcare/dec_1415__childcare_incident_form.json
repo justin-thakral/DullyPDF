@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1415__childcare_incident_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1415__childcare_incident_form.pdf",
+  "slug": "childcare-incident-form",
+  "title": "Childcare Incident Form",
+  "subtitle": "Capture room headcount, care transition, observed condition, and immediate comfort; confirm guardian notice and center review.",
+  "description": "Childcare Incident records room headcount, care transition, observed condition, immediate comfort, guardian notice, and center review. Childcare Incident evidence stays linked.",
+  "use_case": "Use this childcare incident operational record when staff must document room headcount and care transition. Reconcile observed condition, immediate comfort, guardian notice, and center review before the childcare incident handoff. Use the room attendance sheet, staffing ratio record, care-transition timestamp, objective observation, first-aid supply record, guardian call log, and director review. Ask the assigned childcare incident reviewer to confirm room headcount against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Childcare Incident starting details review",
+      "guidance": "Reconcile room headcount and care transitions; document observed condition, comfort provided, guardian notice, staff response, and center-level review.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Childcare Incident people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "reporting_person_and_role",
+              "label": "Reporting person and role",
+              "units": 1.0
+            },
+            {
+              "key": "date_and_time_first_reported",
+              "label": "Date and time first reported",
+              "units": 1.25
+            },
+            {
+              "key": "school_or_program_location",
+              "label": "School or program location",
+              "units": 1.1
+            },
+            {
+              "key": "room_headcount",
+              "label": "Room headcount",
+              "units": 1.2
+            },
+            {
+              "key": "care_transition",
+              "label": "Care transition",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Childcare Incident task details",
+          "fields": [
+            {
+              "key": "observed_condition",
+              "label": "Observed condition",
+              "units": 1.15
+            },
+            {
+              "key": "immediate_comfort",
+              "label": "Immediate comfort",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_notice",
+              "label": "Guardian notice",
+              "units": 1.25
+            },
+            {
+              "key": "center_review",
+              "label": "Center review",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Childcare Incident activity",
+      "guidance": "Record each meaningful childcare incident event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Childcare Incident activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "room_headcount",
+              "label": "Room headcount",
+              "units": 1.1
+            },
+            {
+              "key": "observed_condition",
+              "label": "Observed condition",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_notice",
+              "label": "Guardian notice",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Childcare Incident change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Childcare Incident decision and completion",
+      "guidance": "Leave the current childcare incident result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Childcare Incident final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Childcare Incident completion receipt",
+          "fields": [
+            {
+              "key": "responsible_teacher_or_program_staff_and_date",
+              "label": "Responsible teacher or program staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded childcare incident task status."
+        }
+      ]
+    }
+  ]
+}

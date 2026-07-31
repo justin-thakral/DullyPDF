@@ -1,0 +1,239 @@
+{
+  "catalog_id": "construction_trades/dcf_137__material_delivery_log_form",
+  "description": "For material delivery, this log form records expected quantities, unloading plan, inspection criteria, documentation, protected storage, and installation need date. Its supporting evidence includes packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Delivery opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Delivery site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Delivery contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Delivery superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Delivery due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this material delivery record to its evidence.",
+          "key": "record_routing",
+          "label": "Material Delivery Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Purchase order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Supplier",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Carrier",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Delivery location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Product identifiers",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements for this material delivery.",
+          "key": "core_identity",
+          "label": "Material Delivery Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements for this material delivery record.",
+      "key": "identity_1",
+      "title": "Log Reference and Review Owner"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Delivery when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Delivery measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Delivery evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Delivery result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For material delivery, record packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+          "key": "evidence_register",
+          "label": "Material Delivery Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Packing slip",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Count",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Condition photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Certificate",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Temperature or moisture reading",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every material delivery evidence source.",
+          "key": "evidence_sources",
+          "label": "Material Delivery Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Delivery dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Delivery owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Delivery escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep material delivery items open through verification.",
+          "key": "open_item_register",
+          "label": "Material Delivery Open Items and Next Actions",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Delivery reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved material delivery entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Material Delivery Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Material Delivery Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For material delivery, explain accepted quantity, shortage or damage claim, inventory location, responsible custodian, and procurement update; transfer each material delivery open entry to the material delivery successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Material Delivery Period Transfer Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support material delivery findings with packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+      "key": "observation_2",
+      "title": "Recorded Findings and Actions"
+    }
+  ],
+  "slug": "material-delivery-log-form",
+  "source_filename": "dcf_137__material_delivery_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Material Delivery Log Form: material delivery receipt and condition control using purchase order, expected quantities, and packing slip.",
+  "title": "Material Delivery Log Form",
+  "use_case": "Use the log form during material delivery receipt and condition control when the material delivery record must identify purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements. Complete the applicable handoff for accepted quantity, shortage or damage claim, inventory location, responsible custodian, and procurement update."
+}

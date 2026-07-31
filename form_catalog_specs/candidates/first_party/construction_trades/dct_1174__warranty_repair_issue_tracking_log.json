@@ -1,0 +1,369 @@
+{
+  "catalog_id": "construction_trades/dct_1174__warranty_repair_issue_tracking_log",
+  "description": "For warranty repair, this issue tracking log records reported defect, diagnostic plan, coverage, access, parts, repair method, collateral restoration, and scheduling. Its supporting evidence includes intake photos, installation record, diagnostic readings, removed-part findings, repair photos, and functional test.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Warranty opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Warranty site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Warranty contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Warranty superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Warranty due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this warranty repair record to its evidence.",
+          "key": "record_routing",
+          "label": "Warranty Repair Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Original work order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Installed component",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Completion date",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Warranty term",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture original work order, installed component, location, completion date, warranty term, customer, and prior callbacks for this warranty repair.",
+          "key": "core_identity",
+          "label": "Warranty Repair Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify original work order, installed component, location, completion date, warranty term, customer, and prior callbacks for this warranty repair record.",
+      "key": "identity_1",
+      "title": "Issue Register Coverage"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Reported defect",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Diagnostic plan",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Coverage",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Access",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Parts",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Repair method",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For warranty repair, record reported defect, diagnostic plan, coverage, access, parts, repair method, collateral restoration, and scheduling.",
+          "key": "task_inputs",
+          "label": "Warranty Repair Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.35
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact or event",
+              "units": 2.6
+            },
+            {
+              "key": "action",
+              "label": "Warranty action lead",
+              "units": 2.0
+            },
+            {
+              "key": "due",
+              "label": "Due or next review",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.3
+            }
+          ],
+          "guidance": "Keep warranty repair chronology immutable.",
+          "key": "working_log",
+          "label": "Warranty Repair Dated Activity Log",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Escalate hazards, active property damage, repeated failure, disputed responsibility, or work outside trade qualification. Route unresolved warranty repair work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Warranty Repair Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For warranty repair, capture reported defect, diagnostic plan, coverage, access, parts, repair method, collateral restoration, and scheduling.",
+      "key": "task_2",
+      "title": "Issue Definition and Priority"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Warranty when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Warranty measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Warranty evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Warranty result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For warranty repair, record intake photos, installation record, diagnostic readings, removed-part findings, repair photos, and functional test.",
+          "key": "evidence_register",
+          "label": "Warranty Repair Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Intake photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Installation record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Diagnostic readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Removed-part findings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Repair photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every warranty repair evidence source.",
+          "key": "evidence_sources",
+          "label": "Warranty Repair Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Warranty dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Warranty owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Warranty escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep warranty repair items open through verification.",
+          "key": "open_item_register",
+          "label": "Warranty Repair Open Items and Next Actions",
+          "rows": 4,
+          "type": "table"
+        }
+      ],
+      "guidance": "Support warranty repair findings with intake photos, installation record, diagnostic readings, removed-part findings, repair photos, and functional test.",
+      "key": "observation_3",
+      "title": "Investigation Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Escalate hazards, active property damage, repeated failure, disputed responsibility, or work outside trade qualification. Do not release affected warranty repair work.",
+          "key": "stop_boundary",
+          "label": "Warranty Repair Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Warranty exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Warranty correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Warranty escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close warranty repair exceptions with verification.",
+          "key": "exception_register",
+          "label": "Warranty Repair Exception and Corrective Action",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Warranty notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Warranty notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Warranty interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Warranty review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Warranty release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep warranty repair controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Warranty Repair Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Warranty Repair Resolution Verification Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For warranty repair, compare the retest with intake photos, installation record, diagnostic readings, removed-part findings, repair photos, and functional test; preserve each warranty repair limitation and name its warranty repair restart or closure authority.",
+          "height": 55,
+          "key": "resolution_verification_notes",
+          "label": "Warranty Repair Resolution Verification Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Escalate hazards, active property damage, repeated failure, disputed responsibility, or work outside trade qualification. Control and route each warranty repair exception.",
+      "key": "exception_4",
+      "title": "Controls, Corrections, and Escalation"
+    }
+  ],
+  "slug": "warranty-repair-issue-tracking-log",
+  "source_filename": "dct_1174__warranty_repair_issue_tracking_log.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Warranty Repair Issue Tracking Log: trade warranty repair dispatch and verification using original work order, reported defect, and intake photos.",
+  "title": "Warranty Repair Issue Tracking Log",
+  "use_case": "Use the issue tracking log during trade warranty repair dispatch and verification when the warranty repair record must identify original work order, installed component, location, completion date, warranty term, customer, and prior callbacks. Complete the applicable handoff for repair verification, customer acceptance, coverage disposition, recurrence action, costs, and warranty-record update."
+}

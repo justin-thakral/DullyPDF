@@ -1,0 +1,335 @@
+{
+  "catalog_id": "construction_trades/dcf_175__permit_inspection_request_form",
+  "description": "For permit inspection, this request form records prerequisite completion, accessibility, test readiness, correction history, required documents, and representative attendance. Its supporting evidence includes approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Permit opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Permit site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Permit contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Permit superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Permit due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this permit inspection record to its evidence.",
+          "key": "record_routing",
+          "label": "Permit Inspection Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Permit number",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Authority",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Inspection type",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Approved plans",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window for this permit inspection.",
+          "key": "core_identity",
+          "label": "Permit Inspection Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window for this permit inspection record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Prerequisite completion",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Accessibility",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Test readiness",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Correction history",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For permit inspection, record prerequisite completion, accessibility, test readiness, correction history, required documents, and representative attendance.",
+          "key": "task_inputs",
+          "label": "Permit Inspection Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Permit Inspection Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State permit inspection outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Permit Inspection Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Permit work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Permit owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate permit inspection items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Permit Inspection Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not conceal or energize work before required inspection approval or documented authority direction. Route unresolved permit inspection work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Permit Inspection Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For permit inspection, capture prerequisite completion, accessibility, test readiness, correction history, required documents, and representative attendance.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not conceal or energize work before required inspection approval or documented authority direction. Do not release affected permit inspection work.",
+          "key": "stop_boundary",
+          "label": "Permit Inspection Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Permit exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Permit correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Permit escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close permit inspection exceptions with verification.",
+          "key": "exception_register",
+          "label": "Permit Inspection Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Permit notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Permit notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Permit interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Permit review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Permit release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep permit inspection controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Permit Inspection Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Do not conceal or energize work before required inspection approval or documented authority direction. Control and route each permit inspection exception.",
+      "key": "exception_3",
+      "title": "Request Risk and Constraints"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Permit decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Permit approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Permit schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate permit inspection disposition.",
+          "key": "disposition",
+          "label": "Permit Inspection Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Permit Inspection Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the permit inspection decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Permit Inspection Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Permit requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Permit coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Permit Inspection Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the permit inspection next step from approved-plan set, permit card, photos, test results, product approvals, inspector comments, and correction proof.",
+      "key": "decision_4",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "permit-inspection-request-form",
+  "source_filename": "dcf_175__permit_inspection_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Permit Inspection Request Form: permit inspection readiness and result control using permit number, prerequisite completion, and approved-plan set.",
+  "title": "Permit Inspection Request Form",
+  "use_case": "Use the request form during permit inspection readiness and result control when the permit inspection record must identify permit number, authority, inspection type, location, approved plans, responsible contractor, and requested window. Complete the applicable handoff for inspection result, correction assignment, reinspection date, approval evidence, and downstream release."
+}

@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1842__room_rental_checklist",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1842__room_rental_checklist.pdf",
+  "slug": "room-rental-checklist",
+  "title": "Room Rental Checklist",
+  "subtitle": "Capture room, occupancy, access key, and setup; confirm use restriction and reset.",
+  "description": "Room Rental records room, occupancy, access key, setup, use restriction, and reset. Room Rental evidence stays linked.",
+  "use_case": "Use this room rental stage-gated verification when staff must document room and occupancy. Reconcile access key, setup, use restriction, and reset before the room rental handoff. Use the room diagram, occupancy limit, key or code custody log, setup inventory, audiovisual test, use restrictions, cleaning check, reset photos, and access return. This rental follows a fixed space by occupancy, key or fob access, furniture layout, audiovisual setup, building restrictions, cleaning, room reset, lockup, and facilities inspection. Ask the assigned room rental reviewer to confirm room against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Room Rental contact and reference",
+      "guidance": "Identify room, occupancy, access keys, setup layout, audiovisual inventory, permitted use, cleaning expectation, reset evidence, and key return.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Room Rental people and reference",
+          "fields": [
+            {
+              "key": "renter_or_responsible_party",
+              "label": "Renter or responsible party",
+              "units": 1.15
+            },
+            {
+              "key": "renter_phone",
+              "label": "Renter phone",
+              "units": 1.0
+            },
+            {
+              "key": "renter_email",
+              "label": "Renter email",
+              "units": 1.25
+            },
+            {
+              "key": "room",
+              "label": "Room",
+              "units": 1.1
+            },
+            {
+              "key": "occupancy",
+              "label": "Occupancy",
+              "units": 1.2
+            },
+            {
+              "key": "access_key",
+              "label": "Access key",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Room Rental task details",
+          "fields": [
+            {
+              "key": "setup",
+              "label": "Setup",
+              "units": 1.15
+            },
+            {
+              "key": "use_restriction",
+              "label": "Use restriction",
+              "units": 1.0
+            },
+            {
+              "key": "reset",
+              "label": "Reset",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Room Rental exception review: checks and corrections",
+      "guidance": "Check current room rental facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Room Rental required checks",
+          "items": [
+            "Room is identified for this record",
+            "Occupancy matches the current request or source",
+            "Access key is ready for point-of-use staff",
+            "Setup limits or questions are resolved",
+            "Use restriction is communicated to the responsible person",
+            "Reset is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Room Rental failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Room Rental exception review and readiness",
+      "guidance": "Hold room rental readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Room Rental checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Room Rental reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Room Rental receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

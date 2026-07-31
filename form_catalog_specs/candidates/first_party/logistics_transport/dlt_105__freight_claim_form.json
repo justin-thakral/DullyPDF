@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_105__freight_claim_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_105__freight_claim_form.pdf",
+  "slug": "freight-claim-form",
+  "title": "Freight Claim Form",
+  "subtitle": "Freight Claim Intake: captures actual activity and handoff.",
+  "description": "Freight Claim Form covers claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation. The freight claims coordinator records Freight Claim Intake activity, quantities, variance, and handoff. Freight Claim Form keeps Freight Claim Intake exceptions visible until the freight claims coordinator handoff.",
+  "use_case": "Use Freight Claim Form at origin, transit custody points, destination, inspection location, and evidence repository. Document claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation identity before Freight Claim Intake begins. Compare claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation findings with stated Freight Claim Intake criteria; route unresolved Freight Claim Intake issues to authorized claims reviewer. For Freight Claim Form, confirm requirements for Freight Claim Intake. Ask authorized claims reviewer to review Freight Claim Intake conditions beyond the freight claims coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "operation_header",
+      "title": "Transport record and carrier details",
+      "guidance": "Identify the Freight Claim Intake entry, responsible parties, and operating window.",
+      "blocks": [
+        {
+          "key": "operation_context",
+          "type": "fields",
+          "label": "Record and operating context",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Claim, shipment, or evidence ID",
+              "units": 1.0
+            },
+            {
+              "key": "operation_date",
+              "label": "Date or operating period",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Claimant / liable party",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Custody point / evidence repository",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_person",
+              "label": "Freight Claims Coordinator",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Freight Claim Intake identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Claim, bill, shipment, order, and invoice",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Claimant, carrier, shipper, and consignee",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, lot, serial, package, quantity, and amount",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Freight Claim Intake identifier printed on claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "activity_record",
+      "title": "Transport activity and task details",
+      "guidance": "Enter one Freight Claim Intake row per task, item, reading, or event.",
+      "blocks": [
+        {
+          "key": "plan_and_window",
+          "type": "fields",
+          "label": "Plan and operating window",
+          "fields": [
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.65
+            },
+            {
+              "key": "planned_result",
+              "label": "Planned result or target",
+              "units": 1.2
+            },
+            {
+              "key": "procedure",
+              "label": "Procedure, order, label, or instruction reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "activity_lines",
+          "type": "table",
+          "label": "Transport events, quantities, condition, and custody",
+          "columns": [
+            {
+              "key": "event",
+              "label": "Load, stop, document, or custody event",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition, variance, or delay",
+              "units": 1.0
+            },
+            {
+              "key": "custody",
+              "label": "Party / driver initials",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "operation_controls",
+      "title": "Transport exception and restrictions",
+      "guidance": "Record Freight Claim Intake variances, affected scope, immediate control, and owner.",
+      "blocks": [
+        {
+          "key": "operating_checks",
+          "type": "checklist",
+          "label": "Freight Claim Intake operating checks",
+          "items": [
+            "Loss, damage, delay, or expense allegation",
+            "Delivery notation and discovery timing",
+            "Affected quantity and amount calculation",
+            "Packaging, handling, and custody evidence",
+            "Mitigation, salvage, repair, and retained goods",
+            "Notice, document completeness, and investigation owner"
+          ],
+          "guidance": "Complete the Freight Claim Intake checks that apply to this claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation activity; explain every unchecked required item."
+        },
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when claim identity, determinable amount, evidence preservation, notice, or authorized investigation remains unresolved. Protect claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation; document the Freight Claim Intake notification and await authorized claims reviewer direction."
+        },
+        {
+          "key": "operation_exceptions",
+          "type": "checklist",
+          "label": "Stop, hold, or correction triggers",
+          "items": [
+            "Claimant or shipment identity incomplete",
+            "Amount lacks traceable support",
+            "Evidence or goods not preserved",
+            "Intake treated as liability or payment decision"
+          ],
+          "guidance": "For Freight Claim Intake, identify affected claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation scope; ask freight claims coordinator to document the Freight Claim Intake immediate control before continuing."
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Exception, change from plan, affected scope, and immediate response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Exception, change from plan, affected scope, and immediate response",
+              "multiline": true
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "operation_result",
+      "title": "Transport status decision and next action",
+      "guidance": "State the Freight Claim Intake outcome, restrictions, next action, and receiving owner.",
+      "blocks": [
+        {
+          "key": "result_evidence",
+          "type": "checklist",
+          "label": "Supporting records retained",
+          "items": [
+            "Bill, invoice, packing, and delivery documents",
+            "Damage and packaging images",
+            "Amount worksheet and mitigation receipts",
+            "Notice, inspection, and custody chronology"
+          ],
+          "guidance": "Attach or link proof for claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation; mark only Freight Claim Intake evidence present in that record."
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Operation outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Received or completed",
+                "Completed with exception",
+                "Partially completed",
+                "Held",
+                "Refused or returned"
+              ]
+            },
+            {
+              "key": "completed_at",
+              "label": "Completion date and time",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_action",
+              "label": "Remaining action or restriction",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner or receiving party",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Due date or trigger",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "operation_handoff",
+          "type": "signatures",
+          "label": "Operator and handoff acknowledgment",
+          "fields": [
+            {
+              "key": "operator_signature",
+              "label": "Operator or preparer",
+              "units": 1.1
+            },
+            {
+              "key": "operator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver, supervisor, or customer",
+              "units": 1.2
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "The Freight Claim Intake acknowledgment records the claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation outcome. It cannot conceal a Freight Claim Intake hold, exception, or freight claims coordinator restriction."
+        }
+      ]
+    }
+  ]
+}

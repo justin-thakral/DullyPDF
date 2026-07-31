@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2214__courier_pickup_tracking_log",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2214__courier_pickup_tracking_log.pdf",
+  "slug": "courier-pickup-tracking-log",
+  "title": "Courier Pickup Tracking Log",
+  "subtitle": "Courier Pickup: preserves changes and next triggers.",
+  "description": "Courier Pickup Tracking Log covers parcel, envelope, service level, pickup window, label, and custody handoff. The courier dispatch coordinator records Courier Pickup events, owners, exceptions, and next triggers. Courier Pickup Tracking Log keeps Courier Pickup exceptions visible until the courier dispatch coordinator handoff.",
+  "use_case": "Use Courier Pickup Tracking Log at pickup address, secure collection point, vehicle, and destination route. Document parcel, envelope, service level, pickup window, label, and custody handoff identity before Courier Pickup begins. Compare parcel, envelope, service level, pickup window, label, and custody handoff findings with stated Courier Pickup criteria; route unresolved Courier Pickup issues to courier operations reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Courier Pickup, identify responsible parties, pickup address, secure collection point, vehicle, and destination route, and the linked parcel, envelope, service level, pickup window, label, and custody handoff source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Sender / courier account",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Pickup point / route",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Courier Pickup identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Requester, account, and pickup number",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Piece, label, tracking, and seal identifiers",
+              "units": 2.4444444444444446
+            },
+            {
+              "key": "identity_3",
+              "label": "Origin, destination, service level, and pickup window",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Tracking review and variance evidence",
+      "guidance": "Capture Courier Pickup facts for parcel, envelope, service level, pickup window, label, and custody handoff; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Courier Pickup tracked controls",
+          "items": [
+            "Piece count and label match",
+            "Packaging and closure condition",
+            "Restricted-content declaration and handling note",
+            "Pickup contact and authority",
+            "Custody timestamp and courier identity",
+            "Failed-pickup or alternate-routing reason"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Current status outcome and next update",
+      "guidance": "Keep the Courier Pickup chronology intact through handoff. State the unresolved exception, the owner selected by Courier Dispatch Coordinator, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Package identity or count mismatch",
+            "Unsafe or prohibited contents concern",
+            "Pickup authority or secure access unavailable",
+            "Service commitment cannot be met",
+            "Pickup request and label record",
+            "Piece and packaging photograph when needed",
+            "Time-and-location custody evidence",
+            "Failed-attempt and notification record"
+          ],
+          "guidance": "Pause Courier Pickup when content, identity, authority, security, or service-level exception remains unresolved. Retain the available Courier Pickup proof and route unresolved parcel, envelope, service level, pickup window, label, and custody handoff scope to courier dispatch coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Courier Dispatch Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Courier Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

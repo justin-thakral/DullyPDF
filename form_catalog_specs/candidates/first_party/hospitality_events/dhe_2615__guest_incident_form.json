@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2615__guest_incident_form",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2615__guest_incident_form.pdf",
+  "slug": "guest-incident-form",
+  "title": "Guest Incident Form",
+  "subtitle": "Capture guest account, scene condition, witness, and immediate response; confirm evidence custody and follow-up.",
+  "description": "Guest Incident records guest account, scene condition, witness, immediate response, evidence custody, and follow-up. Guest Incident evidence stays linked.",
+  "use_case": "Use this guest incident operational record when staff must document guest account and scene condition. Reconcile witness, immediate response, evidence custody, and follow-up before the guest incident handoff. Use the guest statement, witness contacts, scene photographs, camera-footage custody reference, first-response log, security report, property action, claim route, and follow-up call. Ask the assigned guest incident reviewer to confirm guest account against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Guest Incident starting details review",
+      "guidance": "Preserve guest account and exact time, scene condition, witnesses, immediate care or security response, photographs, evidence custody, property action, and follow-up contact.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Guest Incident people and reference",
+          "fields": [
+            {
+              "key": "guest_full_name",
+              "label": "Guest full name",
+              "units": 1.15
+            },
+            {
+              "key": "guest_contact",
+              "label": "Guest contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_service_area",
+              "label": "Property, venue, or service area",
+              "units": 1.25
+            },
+            {
+              "key": "event_or_service_date",
+              "label": "Event or service date",
+              "units": 1.1
+            },
+            {
+              "key": "guest_account",
+              "label": "Guest account",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Guest Incident task details",
+          "fields": [
+            {
+              "key": "scene_condition",
+              "label": "Scene condition",
+              "units": 1.15
+            },
+            {
+              "key": "witness",
+              "label": "Witness",
+              "units": 1.0
+            },
+            {
+              "key": "immediate_response",
+              "label": "Immediate response",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_custody",
+              "label": "Evidence custody",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Guest Incident exception review and activity",
+      "guidance": "Record each meaningful guest incident event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Guest Incident activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "guest_account",
+              "label": "Guest account",
+              "units": 1.1
+            },
+            {
+              "key": "witness",
+              "label": "Witness",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_custody",
+              "label": "Evidence custody",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Guest Incident change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Guest Incident exception review and completion",
+      "guidance": "Leave the current guest incident result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Guest Incident final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Guest Incident completion receipt",
+          "fields": [
+            {
+              "key": "responsible_service_or_operations_staff_and_date",
+              "label": "Responsible service or operations staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded guest incident task status."
+        }
+      ]
+    }
+  ]
+}

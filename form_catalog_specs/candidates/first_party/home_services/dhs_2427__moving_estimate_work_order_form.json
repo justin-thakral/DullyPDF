@@ -1,0 +1,384 @@
+{
+  "catalog_id": "home_services/dhs_2427__moving_estimate_work_order_form",
+  "description": "For moving estimate, this work order form records packing, disassembly, labor, vehicle, valuation, storage, third-party services, exclusions, and estimate assumptions. Its supporting evidence includes inventory survey, item photos, access measurements, building rules, weight basis, and customer-declared value.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Moving opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Moving site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Moving contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Moving service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Moving due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this moving estimate record to its evidence.",
+          "key": "record_routing",
+          "label": "Moving Estimate Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Origin",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Destination",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Dates",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Access",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Stairs",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Elevators",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture origin, destination, dates, access, stairs, elevators, parking, inventory, special items, and customer contacts for this moving estimate.",
+          "key": "core_identity",
+          "label": "Moving Estimate Core Identifiers",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Packing",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Disassembly",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Labor",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Vehicle",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Valuation",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Storage",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For moving estimate, record packing, disassembly, labor, vehicle, valuation, storage, third-party services, exclusions, and estimate assumptions.",
+          "key": "task_inputs",
+          "label": "Moving Estimate Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Moving work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized moving estimate work from additions.",
+          "key": "assigned_work",
+          "label": "Moving Estimate Assigned Work and Acceptance Criteria",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Moving arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Moving access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Moving added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Moving inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop moving estimate work at recorded limits.",
+          "key": "work_window",
+          "label": "Moving Estimate Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Moving when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Moving measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Moving evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Moving result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For moving estimate, record inventory survey, item photos, access measurements, building rules, weight basis, and customer-declared value.",
+          "key": "evidence_register",
+          "label": "Moving Estimate Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Inventory survey",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Item photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Access measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Building rules",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Weight basis",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every moving estimate evidence source.",
+          "key": "evidence_sources",
+          "label": "Moving Estimate Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary moving estimate evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Moving Estimate Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Moving open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Moving owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Moving acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer moving estimate items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Moving Estimate Remaining Work and Handoff",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Moving completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Accepted estimate",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Inventory acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Schedule reservation",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Access confirmations",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the moving estimate outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Moving Estimate Final Outcome",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the moving estimate assignment, authorize its moving estimate plan, and record each field finding.",
+      "key": "identity_1",
+      "title": "Work Reference, Plan, and Field Finding"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Moving Estimate Completion, Care, and Operating Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For moving estimate, record accepted estimate, inventory acknowledgment, schedule reservation, access confirmations, change protocol, and move handoff; give the moving estimate care or operating instruction, identify moving estimate access restoration and recipient.",
+          "height": 40,
+          "key": "completion_care_notes",
+          "label": "Moving Estimate Completion, Care, and Operating Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Moving technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Moving customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Moving Estimate Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the moving estimate record with accepted estimate, inventory acknowledgment, schedule reservation, access confirmations, change protocol, and move handoff.",
+      "key": "closeout_4",
+      "title": "Completed Work Handoff"
+    }
+  ],
+  "slug": "moving-estimate-work-order-form",
+  "source_filename": "dhs_2427__moving_estimate_work_order_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Moving Estimate Work Order Form: household move survey and estimate development using origin, packing, and inventory survey.",
+  "title": "Moving Estimate Work Order Form",
+  "use_case": "Use the work order form during household move survey and estimate development when the moving estimate record must identify origin, destination, dates, access, stairs, elevators, parking, inventory, special items, and customer contacts. Complete the applicable handoff for accepted estimate, inventory acknowledgment, schedule reservation, access confirmations, change protocol, and move handoff."
+}

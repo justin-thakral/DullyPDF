@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2247__shipment_exception_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2247__shipment_exception_authorization_form.pdf",
+  "slug": "shipment-exception-authorization-form",
+  "title": "Shipment Exception Authorization Form",
+  "subtitle": "Shipment Exception: bounds the decision, conditions, and expiry.",
+  "description": "Shipment Exception Authorization Form controls shipment, affected unit, route event, service commitment, evidence, and recovery action by tying each Shipment Exception custody, document, or movement decision to the shipper / recovery authority, a stated boundary, and an expiry. The shipment exception coordinator preserves conditions, exceptions, confirmation, and both sides of the handoff.",
+  "use_case": "Use Shipment Exception Authorization Form at origin, in-transit node, destination, vehicle, and recovery location. Check applicable Shipment Exception requirements, list the affected quantity, value, document, route, or custody action, and state its limit. Record whether the shipper / recovery authority approves, conditions, holds, or declines the request; obtain renewed consent before changing shipment, affected unit, route event, service commitment, evidence, and recovery action scope.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "authorization_request",
+      "title": "Shipment and party details",
+      "guidance": "Identify the Shipment Exception request, named decision maker, contact, effective time, and subject.",
+      "blocks": [
+        {
+          "key": "authorization_header",
+          "type": "fields",
+          "label": "Request and decision-maker details",
+          "fields": [
+            {
+              "key": "authorization_number",
+              "label": "Shipment exception or load ID",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "requesting_party",
+              "label": "Shipper / consignee / custodian",
+              "units": 1.15
+            },
+            {
+              "key": "decision_maker",
+              "label": "Shipper / recovery authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_contact",
+              "label": "Decision-maker contact",
+              "units": 1.05
+            },
+            {
+              "key": "requested_effective_time",
+              "label": "Requested effective time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Shipment Exception identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Shipment, order, tracking, and service level",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, vehicle, route, and event",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Affected item, piece, lot, serial, and quantity",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Shipment Exception identifier printed on shipment, affected unit, route event, service commitment, evidence, and recovery action or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Custody findings and authorization evidence",
+      "guidance": "List each Shipment Exception action with its quantity, amount, route, custody, or time limit.",
+      "blocks": [
+        {
+          "key": "authorization_basis",
+          "type": "checklist",
+          "label": "Shipment Exception authorization checks",
+          "items": [
+            "Exception type and discovery time",
+            "Last confirmed custody and location",
+            "Affected and unaffected quantity",
+            "Condition, delay, and customer impact",
+            "Containment, reroute, recovery, or return action",
+            "Notice, owner, target, and final service outcome"
+          ],
+          "guidance": "Confirm the Shipment Exception facts supporting each listed action."
+        },
+        {
+          "key": "authorized_actions",
+          "type": "table",
+          "label": "Requested and authorized actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Claim, recovery, or mitigation action",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Affected goods, route, or event",
+              "units": 1.1
+            },
+            {
+              "key": "amount",
+              "label": "Amount, quantity, or value",
+              "units": 0.95
+            },
+            {
+              "key": "condition",
+              "label": "Evidence or settlement condition",
+              "units": 1.05
+            },
+            {
+              "key": "expiry",
+              "label": "Effective time or expiry",
+              "units": 0.85
+            },
+            {
+              "key": "initials",
+              "label": "Authority initials",
+              "units": 0.7
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "fields",
+          "label": "Authorization boundary",
+          "fields": [
+            {
+              "key": "primary_limit",
+              "label": "Maximum claim / settlement amount",
+              "units": 1.1
+            },
+            {
+              "key": "secondary_limit",
+              "label": "Affected quantity / value",
+              "units": 1.1
+            },
+            {
+              "key": "effective_time",
+              "label": "Effective date and time",
+              "units": 0.95
+            },
+            {
+              "key": "expiry_reference",
+              "label": "Claim / approval reference",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_conditions",
+      "title": "Authorization exception and retained limits",
+      "guidance": "Stop Shipment Exception at the stated boundary and obtain renewed consent for a material variance.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without renewed authorization",
+          "guidance": "Stop normal processing when location, custody, condition, customer communication, or authorized recovery remains unresolved. Protect shipment, affected unit, route event, service commitment, evidence, and recovery action; record the Shipment Exception notification and obtain renewed authorization from shipper / recovery authority before continuing."
+        },
+        {
+          "key": "authorization_stops",
+          "type": "checklist",
+          "label": "Conditions requiring a hold or renewed authorization",
+          "items": [
+            "Shipment cannot be located",
+            "Condition or quantity cannot be established",
+            "Unsafe cargo or handling concern",
+            "Customer commitment changes without authority"
+          ],
+          "guidance": "Identify the affected shipment, affected unit, route event, service commitment, evidence, and recovery action scope, preserve the stated limit, and contact shipper / recovery authority before continuing."
+        },
+        {
+          "key": "authorization_variance_instructions",
+          "type": "fields",
+          "label": "Variance and contact instructions",
+          "fields": [
+            {
+              "key": "variance_instruction",
+              "label": "Variance instruction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contact decision maker before any variance",
+                "Proceed only within stated limits",
+                "Hold and request new authorization",
+                "No substitution or route change"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Decision-maker contact / method",
+              "units": 1.15
+            },
+            {
+              "key": "revocation_trigger",
+              "label": "Revocation or hold trigger",
+              "units": 1.0
+            },
+            {
+              "key": "variance_reference",
+              "label": "New-authorization reference",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "conditions_and_limits",
+          "type": "textarea",
+          "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_decision",
+      "title": "Distribution authorization decision",
+      "guidance": "Record the Shipment Exception consent, final limit, effective time, confirmation, and signatures.",
+      "blocks": [
+        {
+          "key": "authorization_evidence",
+          "type": "checklist",
+          "label": "Evidence reviewed with the decision maker",
+          "items": [
+            "Tracking and custody chronology",
+            "Condition or location photographs",
+            "Customer and carrier notification",
+            "Recovery action and final disposition"
+          ],
+          "guidance": "Attach or link proof for shipment, affected unit, route event, service commitment, evidence, and recovery action; mark only Shipment Exception evidence present in that record."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Claim or recovery authorization outcome",
+          "fields": [
+            {
+              "key": "authorization_result",
+              "label": "Claim or recovery authorization",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Listed action authorized",
+                "Settlement or mitigation within limit",
+                "Additional evidence required",
+                "Held pending review",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_limit",
+              "label": "Authorized amount / recovery limit",
+              "units": 1.15
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation / PO / message reference",
+              "units": 1.05
+            },
+            {
+              "key": "verification_owner",
+              "label": "Verification / release owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Decision-maker consent and operator acknowledgment",
+          "fields": [
+            {
+              "key": "decision_maker_signature",
+              "label": "Authorizing authority: Shipper / recovery authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_maker_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "operator_signature",
+              "label": "Claims / operations representative",
+              "units": 1.15
+            },
+            {
+              "key": "operator_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

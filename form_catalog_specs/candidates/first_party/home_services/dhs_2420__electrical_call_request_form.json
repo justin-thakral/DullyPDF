@@ -1,0 +1,293 @@
+{
+  "catalog_id": "home_services/dhs_2420__electrical_call_request_form",
+  "description": "For electrical call, this request form records hazard screen, diagnostic boundary, outage plan, repair options, parts, permit needs, and price authorization. Its supporting evidence includes voltage or continuity readings, panel labels, thermal or condition photos, fault findings, and functional test.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Call opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Call site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Call contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Call service lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Call due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this electrical call record to its evidence.",
+          "key": "record_routing",
+          "label": "Electrical Call Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Panel",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Breaker",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Circuit",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Device",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Symptom",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Affected loads",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture panel, breaker, circuit, device, symptom, affected loads, occupancy, access, and prior modifications for this electrical call.",
+          "key": "core_identity",
+          "label": "Electrical Call Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify panel, breaker, circuit, device, symptom, affected loads, occupancy, access, and prior modifications for this electrical call record.",
+      "key": "identity_1",
+      "title": "Customer Contact and Address"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Hazard screen",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Diagnostic boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Outage plan",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Repair options",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Parts",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For electrical call, record hazard screen, diagnostic boundary, outage plan, repair options, parts, permit needs, and price authorization.",
+          "key": "task_inputs",
+          "label": "Electrical Call Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Electrical Call Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State electrical call outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Electrical Call Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Call work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Call owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate electrical call items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Electrical Call Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "De-energize and escalate smoke, heat damage, exposed conductors, service issues, arc risk, or work beyond qualification. Route unresolved electrical call work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Electrical Call Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For electrical call, capture hazard screen, diagnostic boundary, outage plan, repair options, parts, permit needs, and price authorization.",
+      "key": "task_2",
+      "title": "Requested Service and Access"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Call decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Call scheduler",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Call schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate electrical call disposition.",
+          "key": "disposition",
+          "label": "Electrical Call Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Electrical Call Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the electrical call decision to evidence.",
+          "height": 112,
+          "key": "decision_basis",
+          "label": "Electrical Call Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Safe re-energization",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Label correction",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Customer explanation",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Permit status",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For electrical call, record safe re-energization, label correction, customer explanation, permit status, repair warranty, and service record.",
+          "key": "request_handoff",
+          "label": "Electrical Call Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Call customer confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Call service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Electrical Call Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the electrical call next step from voltage or continuity readings, panel labels, thermal or condition photos, fault findings, and functional test.",
+      "key": "decision_3",
+      "title": "Schedule Decision"
+    }
+  ],
+  "slug": "electrical-call-request-form",
+  "source_filename": "dhs_2420__electrical_call_request_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Electrical Call Request Form: residential electrical service call dispatch using panel, hazard screen, and voltage or continuity readings.",
+  "title": "Electrical Call Request Form",
+  "use_case": "Use the request form during residential electrical service call dispatch when the electrical call record must identify panel, breaker, circuit, device, symptom, affected loads, occupancy, access, and prior modifications. Complete the applicable handoff for safe re-energization, label correction, customer explanation, permit status, repair warranty, and service record."
+}

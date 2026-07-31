@@ -1,0 +1,284 @@
+{
+  "catalog_id": "construction_trades/dct_1169__material_delivery_issue_tracking_log",
+  "description": "For material delivery, this issue tracking log records expected quantities, unloading plan, inspection criteria, documentation, protected storage, and installation need date. Its supporting evidence includes packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Delivery opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Delivery site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Delivery contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Delivery superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Delivery due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this material delivery record to its evidence.",
+          "key": "record_routing",
+          "label": "Material Delivery Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Purchase order",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Supplier",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Carrier",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Delivery location",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Product identifiers",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements for this material delivery.",
+          "key": "core_identity",
+          "label": "Material Delivery Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements for this material delivery record.",
+      "key": "identity_1",
+      "title": "Issue Register Coverage"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Delivery when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Delivery measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Delivery evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Delivery result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For material delivery, record packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+          "key": "evidence_register",
+          "label": "Material Delivery Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Packing slip",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Count",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Condition photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Certificate",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Temperature or moisture reading",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every material delivery evidence source.",
+          "key": "evidence_sources",
+          "label": "Material Delivery Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Delivery dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Delivery owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Delivery escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep material delivery items open through verification.",
+          "key": "open_item_register",
+          "label": "Material Delivery Open Items and Next Actions",
+          "rows": 4,
+          "type": "table"
+        }
+      ],
+      "guidance": "Support material delivery findings with packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice.",
+      "key": "observation_2",
+      "title": "Investigation Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Quarantine damaged, incorrect, undocumented, contaminated, or out-of-tolerance material pending disposition. Do not release affected material delivery work.",
+          "key": "stop_boundary",
+          "label": "Material Delivery Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Delivery exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Delivery correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Delivery escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close material delivery exceptions with verification.",
+          "key": "exception_register",
+          "label": "Material Delivery Exception and Corrective Action",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Delivery notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Delivery notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Delivery interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Delivery review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Delivery release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep material delivery controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Material Delivery Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Material Delivery Resolution Verification Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For material delivery, compare the retest with packing slip, count, condition photos, certificate, temperature or moisture reading, and discrepancy notice; preserve each material delivery limitation and name its material delivery restart or closure authority.",
+          "height": 55,
+          "key": "resolution_verification_notes",
+          "label": "Material Delivery Resolution Verification Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Quarantine damaged, incorrect, undocumented, contaminated, or out-of-tolerance material pending disposition. Control and route each material delivery exception.",
+      "key": "exception_3",
+      "title": "Controls, Corrections, and Escalation"
+    }
+  ],
+  "slug": "material-delivery-issue-tracking-log",
+  "source_filename": "dct_1169__material_delivery_issue_tracking_log.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Material Delivery Issue Tracking Log: material delivery receipt and condition control using purchase order, expected quantities, and packing slip.",
+  "title": "Material Delivery Issue Tracking Log",
+  "use_case": "Use the issue tracking log during material delivery receipt and condition control when the material delivery record must identify purchase order, supplier, carrier, delivery location, product identifiers, lot numbers, and storage requirements. Complete the applicable handoff for accepted quantity, shortage or damage claim, inventory location, responsible custodian, and procurement update."
+}

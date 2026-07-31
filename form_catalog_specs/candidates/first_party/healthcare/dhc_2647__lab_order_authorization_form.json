@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2647__lab_order_authorization_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2647__lab_order_authorization_form.pdf",
+  "slug": "lab-order-authorization-form",
+  "title": "Lab Order Authorization Form",
+  "subtitle": "Capture authenticated order, test code, specimen, and collection window; confirm result route and cancellation.",
+  "description": "Lab Order records authenticated order, test code, specimen, collection window, result route, and cancellation. Lab Order evidence stays linked.",
+  "use_case": "Use this lab order authorization decision when staff must document authenticated order and test code. Reconcile specimen, collection window, result route, and cancellation before the lab order handoff. Use the authenticated requisition, ordered test list, diagnosis or reason source as allowed, specimen requirement, collection window, laboratory destination, and cancellation log. Ask the assigned lab order reviewer to confirm authenticated order against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Lab Order contact and reference",
+      "guidance": "Record ordering professional, test names or codes, specimen and handling, fasting or timing requirement, collection window, result routing, standing-order limit, and cancellation. Keep any urgent lab order issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Lab Order people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "ordering_or_referring_professional",
+              "label": "Ordering or referring professional",
+              "units": 1.1
+            },
+            {
+              "key": "authenticated_order",
+              "label": "Authenticated order",
+              "units": 1.2
+            },
+            {
+              "key": "test_code",
+              "label": "Test code",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Lab Order task details",
+          "fields": [
+            {
+              "key": "specimen",
+              "label": "Specimen",
+              "units": 1.15
+            },
+            {
+              "key": "collection_window",
+              "label": "Collection window",
+              "units": 1.0
+            },
+            {
+              "key": "result_route",
+              "label": "Result route",
+              "units": 1.25
+            },
+            {
+              "key": "cancellation",
+              "label": "Cancellation",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Lab Order exception review and scope choices",
+      "guidance": "Decide each lab order scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Lab Order primary scope",
+          "fields": [
+            {
+              "key": "authenticated_order",
+              "label": "Authenticated order",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "test_code",
+              "label": "Test code",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "specimen",
+              "label": "Specimen",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Lab Order additional scope",
+          "fields": [
+            {
+              "key": "collection_window",
+              "label": "Collection window",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "result_route",
+              "label": "Result route",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "cancellation",
+              "label": "Cancellation",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Lab Order authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Lab Order effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_care_recipient",
+              "label": "Authorized care recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Lab Order contact and reference",
+      "guidance": "Only recorded lab order choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Lab Order limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Lab Order signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Lab Order signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Lab Order authorization boundary",
+          "guidance": "Named lab order reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

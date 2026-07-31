@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_124__load_tender_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_124__load_tender_authorization_form.pdf",
+  "slug": "load-tender-authorization-form",
+  "title": "Load Tender Authorization Form",
+  "subtitle": "Load Tender: bounds the decision, conditions, and expiry.",
+  "description": "Load Tender Authorization Form binds offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance to a named transport decision, commercial or operating limit, effective time, and the shipper / broker tender authority's confirmation. The transport planning coordinator records the requested Load Tender action and keeps any variance outside the granted authority.",
+  "use_case": "Use Load Tender Authorization Form at origin, destination, route, pickup window, delivery window, and equipment location. Reconcile applicable Load Tender requirements with the load, carrier, rate, claim, equipment, document, or inventory boundary that applies. Capture the shipper / broker tender authority's approval, counteroffer, hold, or decline, then reauthorize any change to offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "authorization_request",
+      "title": "Carrier and shipment identity",
+      "guidance": "Identify the Load Tender request, named decision maker, contact, effective time, and subject.",
+      "blocks": [
+        {
+          "key": "authorization_header",
+          "type": "fields",
+          "label": "Request and decision-maker details",
+          "fields": [
+            {
+              "key": "authorization_number",
+              "label": "Load tender or shipment ID",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "requesting_party",
+              "label": "Shipper / broker / carrier",
+              "units": 1.15
+            },
+            {
+              "key": "decision_maker",
+              "label": "Shipper / broker tender authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_contact",
+              "label": "Decision-maker contact",
+              "units": 1.05
+            },
+            {
+              "key": "requested_effective_time",
+              "label": "Requested effective time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Load Tender identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Tender, load, order, and customer",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, authority, insurance, and contact",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Equipment, commodity, quantity, weight, and handling references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Load Tender identifier printed on offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Requested authorization and task details",
+      "guidance": "List each Load Tender action with its quantity, amount, route, custody, or time limit.",
+      "blocks": [
+        {
+          "key": "authorization_basis",
+          "type": "checklist",
+          "label": "Load Tender authorization checks",
+          "items": [
+            "Origin and destination commitments",
+            "Commodity, count, weight, and dimensions",
+            "Equipment and capacity fit",
+            "Carrier authority and current qualification",
+            "Rate, accessorial, and instruction agreement",
+            "Acceptance, rejection, counteroffer, and dispatch handoff"
+          ],
+          "guidance": "Confirm the Load Tender facts supporting each listed action."
+        },
+        {
+          "key": "authorized_actions",
+          "type": "table",
+          "label": "Requested and authorized actions",
+          "columns": [
+            {
+              "key": "load",
+              "label": "Load, route, or equipment",
+              "units": 1.2
+            },
+            {
+              "key": "service",
+              "label": "Capacity or service commitment",
+              "units": 1.1
+            },
+            {
+              "key": "commercial",
+              "label": "Rate, fuel, or accessorial",
+              "units": 1.0
+            },
+            {
+              "key": "limit",
+              "label": "Capacity, time, or amount limit",
+              "units": 1.0
+            },
+            {
+              "key": "expiry",
+              "label": "Response deadline or expiry",
+              "units": 0.9
+            },
+            {
+              "key": "initials",
+              "label": "Authority initials",
+              "units": 0.7
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "fields",
+          "label": "Authorization boundary",
+          "fields": [
+            {
+              "key": "primary_limit",
+              "label": "Maximum rate / amount",
+              "units": 1.1
+            },
+            {
+              "key": "secondary_limit",
+              "label": "Capacity / equipment limit",
+              "units": 1.1
+            },
+            {
+              "key": "effective_time",
+              "label": "Response deadline",
+              "units": 0.95
+            },
+            {
+              "key": "expiry_reference",
+              "label": "Dispatch / acceptance reference",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_conditions",
+      "title": "Authorization exception and restrictions",
+      "guidance": "Stop Load Tender at the stated boundary and obtain renewed consent for a material variance.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without renewed authorization",
+          "guidance": "Stop normal processing when carrier, capacity, equipment, commitment, rate, or instruction authorization remains unresolved. Protect offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance; record the Load Tender notification and obtain renewed authorization from shipper / broker tender authority before continuing."
+        },
+        {
+          "key": "authorization_stops",
+          "type": "checklist",
+          "label": "Conditions requiring a hold or renewed authorization",
+          "items": [
+            "Carrier qualification incomplete",
+            "Equipment or capacity mismatch",
+            "Commitment cannot be met",
+            "Rate or instruction changed without authority"
+          ],
+          "guidance": "Identify the affected offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance scope, preserve the stated limit, and contact shipper / broker tender authority before continuing."
+        },
+        {
+          "key": "authorization_variance_instructions",
+          "type": "fields",
+          "label": "Variance and contact instructions",
+          "fields": [
+            {
+              "key": "variance_instruction",
+              "label": "Variance instruction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contact decision maker before any variance",
+                "Proceed only within stated limits",
+                "Hold and request new authorization",
+                "No substitution or route change"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Decision-maker contact / method",
+              "units": 1.15
+            },
+            {
+              "key": "revocation_trigger",
+              "label": "Revocation or hold trigger",
+              "units": 1.0
+            },
+            {
+              "key": "variance_reference",
+              "label": "New-authorization reference",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "conditions_and_limits",
+          "type": "textarea",
+          "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_decision",
+      "title": "Transport authorization decision",
+      "guidance": "Record the Load Tender consent, final limit, effective time, confirmation, and signatures.",
+      "blocks": [
+        {
+          "key": "authorization_evidence",
+          "type": "checklist",
+          "label": "Evidence reviewed with the decision maker",
+          "items": [
+            "Source order and customer commitment",
+            "Carrier qualification evidence",
+            "Rate and instruction confirmation",
+            "Tender acceptance and dispatch record"
+          ],
+          "guidance": "Attach or link proof for offered load, carrier capacity, equipment, route, rate, handling requirement, and acceptance; mark only Load Tender evidence present in that record."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Load-tender authorization outcome",
+          "fields": [
+            {
+              "key": "authorization_result",
+              "label": "Load-tender authorization",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Tender accepted as listed",
+                "Accepted with listed conditions",
+                "Counteroffer recorded",
+                "Held pending confirmation",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_limit",
+              "label": "Authorized rate / service limit",
+              "units": 1.15
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation / PO / message reference",
+              "units": 1.05
+            },
+            {
+              "key": "verification_owner",
+              "label": "Verification / release owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Decision-maker consent and operator acknowledgment",
+          "fields": [
+            {
+              "key": "decision_maker_signature",
+              "label": "Authorizing authority: Shipper / broker tender authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_maker_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "operator_signature",
+              "label": "Carrier / dispatch representative",
+              "units": 1.15
+            },
+            {
+              "key": "operator_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

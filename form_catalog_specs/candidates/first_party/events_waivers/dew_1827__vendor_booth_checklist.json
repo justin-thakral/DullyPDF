@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1827__vendor_booth_checklist",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1827__vendor_booth_checklist.pdf",
+  "slug": "vendor-booth-checklist",
+  "title": "Vendor Booth Checklist",
+  "subtitle": "Capture booth number, footprint, product type, and power need; confirm load-in and credential.",
+  "description": "Vendor Booth records booth number, footprint, product type, power need, load-in, and credential. Vendor Booth evidence stays linked.",
+  "use_case": "Use this vendor booth stage-gated verification when staff must document booth number and footprint. Reconcile product type, power need, load-in, and credential before the vendor booth handoff. Use the exhibitor application, floorplan assignment, product description, utility order, insurance or approval route, load-in schedule, credential list, and load-out signoff. Ask the assigned vendor booth reviewer to confirm booth number against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Vendor Booth starting details review",
+      "guidance": "Assign booth number and footprint; record products, power and internet, load-in slot, fire-lane limit, credentials, waste plan, and load-out.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Vendor Booth people and reference",
+          "fields": [
+            {
+              "key": "organization_legal_or_public_name",
+              "label": "Organization legal or public name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_contact_name",
+              "label": "Primary contact name",
+              "units": 1.0
+            },
+            {
+              "key": "primary_contact_phone",
+              "label": "Primary contact phone",
+              "units": 1.25
+            },
+            {
+              "key": "booth_number",
+              "label": "Booth number",
+              "units": 1.1
+            },
+            {
+              "key": "footprint",
+              "label": "Footprint",
+              "units": 1.2
+            },
+            {
+              "key": "product_type",
+              "label": "Product type",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Vendor Booth task details",
+          "fields": [
+            {
+              "key": "power_need",
+              "label": "Power need",
+              "units": 1.15
+            },
+            {
+              "key": "load_in",
+              "label": "Load-in",
+              "units": 1.0
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Vendor Booth exception review: checks and corrections",
+      "guidance": "Check current vendor booth facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Vendor Booth required checks",
+          "items": [
+            "Booth number is identified for this record",
+            "Footprint matches the current request or source",
+            "Product type is ready for point-of-use staff",
+            "Power need limits or questions are resolved",
+            "Load-in is communicated to the responsible person",
+            "Credential is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Vendor Booth failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Vendor Booth exception review and readiness",
+      "guidance": "Hold vendor booth readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Vendor Booth checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Vendor Booth reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Vendor Booth receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

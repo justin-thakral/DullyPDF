@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1840__room_rental_form",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1840__room_rental_form.pdf",
+  "slug": "room-rental-form",
+  "title": "Room Rental Form",
+  "subtitle": "Capture room, occupancy, access key, and setup; confirm use restriction and reset.",
+  "description": "Room Rental records room, occupancy, access key, setup, use restriction, and reset. Room Rental evidence stays linked.",
+  "use_case": "Use this room rental operational record when staff must document room and occupancy. Reconcile access key, setup, use restriction, and reset before the room rental handoff. Use the room diagram, occupancy limit, key or code custody log, setup inventory, audiovisual test, use restrictions, cleaning check, reset photos, and access return. This rental follows a fixed space by occupancy, key or fob access, furniture layout, audiovisual setup, building restrictions, cleaning, room reset, lockup, and facilities inspection. Ask the assigned room rental reviewer to confirm room against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Room Rental contact and reference",
+      "guidance": "Identify room, occupancy, access keys, setup layout, audiovisual inventory, permitted use, cleaning expectation, reset evidence, and key return.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Room Rental people and reference",
+          "fields": [
+            {
+              "key": "renter_or_responsible_party",
+              "label": "Renter or responsible party",
+              "units": 1.15
+            },
+            {
+              "key": "renter_phone",
+              "label": "Renter phone",
+              "units": 1.0
+            },
+            {
+              "key": "renter_email",
+              "label": "Renter email",
+              "units": 1.25
+            },
+            {
+              "key": "rental_item_or_room",
+              "label": "Rental item or room",
+              "units": 1.1
+            },
+            {
+              "key": "room",
+              "label": "Room",
+              "units": 1.2
+            },
+            {
+              "key": "occupancy",
+              "label": "Occupancy",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Room Rental task details",
+          "fields": [
+            {
+              "key": "access_key",
+              "label": "Access key",
+              "units": 1.15
+            },
+            {
+              "key": "setup",
+              "label": "Setup",
+              "units": 1.0
+            },
+            {
+              "key": "use_restriction",
+              "label": "Use restriction",
+              "units": 1.25
+            },
+            {
+              "key": "reset",
+              "label": "Reset",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Room Rental exception review and activity",
+      "guidance": "Record each meaningful room rental event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Room Rental activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "room",
+              "label": "Room",
+              "units": 1.1
+            },
+            {
+              "key": "access_key",
+              "label": "Access key",
+              "units": 1.25
+            },
+            {
+              "key": "use_restriction",
+              "label": "Use restriction",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Room Rental change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Room Rental decision and completion",
+      "guidance": "Leave the current room rental result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Room Rental final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Room Rental completion receipt",
+          "fields": [
+            {
+              "key": "responsible_event_staff_and_date",
+              "label": "Responsible event staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded room rental task status."
+        }
+      ]
+    }
+  ]
+}

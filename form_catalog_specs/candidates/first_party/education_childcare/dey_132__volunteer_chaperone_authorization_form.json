@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_132__volunteer_chaperone_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_132__volunteer_chaperone_authorization_form.pdf",
+  "slug": "volunteer-chaperone-authorization-form",
+  "title": "Volunteer Chaperone Authorization Form",
+  "subtitle": "Capture trip assignment, student group, screening status, and supervision boundary; confirm emergency route and return handoff.",
+  "description": "Volunteer Chaperone records trip assignment, student group, screening status, supervision boundary, emergency route, and return handoff. Volunteer Chaperone evidence stays linked.",
+  "use_case": "Use this volunteer chaperone authorization decision when staff must document trip assignment and student group. Reconcile screening status, supervision boundary, emergency route, and return handoff before the volunteer chaperone handoff. Use screening evidence, assignment roster, student-group list, supervision brief, emergency card route, transport seat list, checkpoint headcounts, and return handoff. This assignment places a screened adult with a student group using ratio and supervision boundaries, bus position, checkpoint headcounts, emergency response role, prohibited tasks, and return handoff. Ask the assigned volunteer chaperone reviewer to confirm trip assignment against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Volunteer Chaperone signer details review",
+      "guidance": "Assign trip, student group, screening evidence, supervision boundary, transport position, emergency route, headcount responsibility, and return handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Volunteer Chaperone people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "assigned_staff_owner",
+              "label": "Assigned staff owner",
+              "units": 1.1
+            },
+            {
+              "key": "trip_assignment",
+              "label": "Trip assignment",
+              "units": 1.2
+            },
+            {
+              "key": "student_group",
+              "label": "Student group",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Volunteer Chaperone task details",
+          "fields": [
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "supervision_boundary",
+              "label": "Supervision boundary",
+              "units": 1.0
+            },
+            {
+              "key": "emergency_route",
+              "label": "Emergency route",
+              "units": 1.25
+            },
+            {
+              "key": "return_handoff",
+              "label": "Return handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Volunteer Chaperone exception review and scope choices",
+      "guidance": "Decide each volunteer chaperone scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Volunteer Chaperone primary scope",
+          "fields": [
+            {
+              "key": "trip_assignment",
+              "label": "Trip assignment",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "student_group",
+              "label": "Student group",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "screening_status",
+              "label": "Screening status",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Volunteer Chaperone additional scope",
+          "fields": [
+            {
+              "key": "supervision_boundary",
+              "label": "Supervision boundary",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "emergency_route",
+              "label": "Emergency route",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "return_handoff",
+              "label": "Return handoff",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Volunteer Chaperone authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Volunteer Chaperone effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Volunteer Chaperone contact and reference",
+      "guidance": "Only recorded volunteer chaperone choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Volunteer Chaperone limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Volunteer Chaperone signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Volunteer Chaperone signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Volunteer Chaperone authorization boundary",
+          "guidance": "Named volunteer chaperone reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

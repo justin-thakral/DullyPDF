@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_119__driver_vehicle_inspection_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_119__driver_vehicle_inspection_authorization_form.pdf",
+  "slug": "driver-vehicle-inspection-authorization-form",
+  "title": "Driver Vehicle Inspection Authorization Form",
+  "subtitle": "Driver Vehicle Inspection: bounds the decision, conditions, and expiry.",
+  "description": "Driver Vehicle Inspection Authorization Form binds power unit, trailer, safety equipment, visible defect, driver report, and release status to a named transport decision, commercial or operating limit, effective time, and the carrier / fleet safety authority's confirmation. The fleet dispatch coordinator records the requested Driver Vehicle Inspection action and keeps any variance outside the granted authority.",
+  "use_case": "Use Driver Vehicle Inspection Authorization Form at yard, roadside safe area, vehicle cab, exterior walkaround, and trailer. Reconcile applicable Driver Vehicle Inspection requirements with the load, carrier, rate, claim, equipment, document, or inventory boundary that applies. Capture the carrier / fleet safety authority's approval, counteroffer, hold, or decline, then reauthorize any change to power unit, trailer, safety equipment, visible defect, driver report, and release status.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "authorization_request",
+      "title": "Carrier and shipment identity",
+      "guidance": "Identify the Driver Vehicle Inspection request, named decision maker, contact, effective time, and subject.",
+      "blocks": [
+        {
+          "key": "authorization_header",
+          "type": "fields",
+          "label": "Request and decision-maker details",
+          "fields": [
+            {
+              "key": "authorization_number",
+              "label": "Vehicle inspection or shift ID",
+              "units": 1.0
+            },
+            {
+              "key": "request_date",
+              "label": "Request date",
+              "units": 0.65
+            },
+            {
+              "key": "requesting_party",
+              "label": "Driver / fleet / vehicle owner",
+              "units": 1.15
+            },
+            {
+              "key": "decision_maker",
+              "label": "Carrier / fleet safety authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_contact",
+              "label": "Decision-maker contact",
+              "units": 1.05
+            },
+            {
+              "key": "requested_effective_time",
+              "label": "Requested effective time",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Driver Vehicle Inspection identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Inspection, route, driver, and date",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle, unit, plate, odometer, and trailer",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Prior defect, repair, and release references",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Driver Vehicle Inspection identifier printed on power unit, trailer, safety equipment, visible defect, driver report, and release status or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Requested authorization and task details",
+      "guidance": "List each Driver Vehicle Inspection action with its quantity, amount, route, custody, or time limit.",
+      "blocks": [
+        {
+          "key": "authorization_basis",
+          "type": "checklist",
+          "label": "Driver Vehicle Inspection authorization checks",
+          "items": [
+            "Tires, wheels, fasteners, and visible inflation",
+            "Lights, reflectors, mirrors, glazing, and wipers",
+            "Brakes, steering, suspension, coupling, and visible leaks",
+            "Horn, warning devices, emergency equipment, and restraints",
+            "Load securement, doors, landing gear, and trailer condition",
+            "Defect classification, restriction, repair, and release"
+          ],
+          "guidance": "Confirm the Driver Vehicle Inspection facts supporting each listed action."
+        },
+        {
+          "key": "authorized_actions",
+          "type": "table",
+          "label": "Requested and authorized actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Driver, carrier, or inspection action",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Vehicle, route, account, or party",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Safety, service, or authority limit",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Schedule or qualification condition",
+              "units": 1.0
+            },
+            {
+              "key": "expiry",
+              "label": "Effective time or expiry",
+              "units": 0.85
+            },
+            {
+              "key": "initials",
+              "label": "Authority initials",
+              "units": 0.7
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "fields",
+          "label": "Authorization boundary",
+          "fields": [
+            {
+              "key": "primary_limit",
+              "label": "Vehicle / route / account limit",
+              "units": 1.1
+            },
+            {
+              "key": "secondary_limit",
+              "label": "Safety / qualification boundary",
+              "units": 1.1
+            },
+            {
+              "key": "effective_time",
+              "label": "Effective date and time",
+              "units": 0.95
+            },
+            {
+              "key": "expiry_reference",
+              "label": "Expiry / next review",
+              "units": 1.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_conditions",
+      "title": "Authorization exception and restrictions",
+      "guidance": "Stop Driver Vehicle Inspection at the stated boundary and obtain renewed consent for a material variance.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without renewed authorization",
+          "guidance": "Stop normal processing when a safety-critical defect, inspection limitation, repair verification, or qualified release remains unresolved. Protect power unit, trailer, safety equipment, visible defect, driver report, and release status; record the Driver Vehicle Inspection notification and obtain renewed authorization from carrier / fleet safety authority before continuing."
+        },
+        {
+          "key": "authorization_stops",
+          "type": "checklist",
+          "label": "Conditions requiring a hold or renewed authorization",
+          "items": [
+            "Safety-critical defect",
+            "Inspection area unsafe",
+            "Repair status cannot be verified",
+            "Vehicle released without required authority"
+          ],
+          "guidance": "Identify the affected power unit, trailer, safety equipment, visible defect, driver report, and release status scope, preserve the stated limit, and contact carrier / fleet safety authority before continuing."
+        },
+        {
+          "key": "authorization_variance_instructions",
+          "type": "fields",
+          "label": "Variance and contact instructions",
+          "fields": [
+            {
+              "key": "variance_instruction",
+              "label": "Variance instruction",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contact decision maker before any variance",
+                "Proceed only within stated limits",
+                "Hold and request new authorization",
+                "No substitution or route change"
+              ]
+            },
+            {
+              "key": "contact_method",
+              "label": "Decision-maker contact / method",
+              "units": 1.15
+            },
+            {
+              "key": "revocation_trigger",
+              "label": "Revocation or hold trigger",
+              "units": 1.0
+            },
+            {
+              "key": "variance_reference",
+              "label": "New-authorization reference",
+              "units": 0.95
+            }
+          ]
+        },
+        {
+          "key": "conditions_and_limits",
+          "type": "textarea",
+          "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Conditions, exclusions, retained approvals, and revocation instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "authorization_decision",
+      "title": "Transport authorization decision",
+      "guidance": "Record the Driver Vehicle Inspection consent, final limit, effective time, confirmation, and signatures.",
+      "blocks": [
+        {
+          "key": "authorization_evidence",
+          "type": "checklist",
+          "label": "Evidence reviewed with the decision maker",
+          "items": [
+            "Vehicle and defect photographs",
+            "Driver inspection and odometer record",
+            "Repair or maintenance reference",
+            "Qualified release or out-of-service evidence"
+          ],
+          "guidance": "Attach or link proof for power unit, trailer, safety equipment, visible defect, driver report, and release status; mark only Driver Vehicle Inspection evidence present in that record."
+        },
+        {
+          "key": "decision_record",
+          "type": "fields",
+          "label": "Operations authorization outcome",
+          "fields": [
+            {
+              "key": "authorization_result",
+              "label": "Operations authorization",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Listed operations authorized",
+                "Authorized with stated restrictions",
+                "Conditional release or assignment",
+                "Held pending evidence",
+                "Declined"
+              ]
+            },
+            {
+              "key": "authorized_limit",
+              "label": "Authorized route / service limit",
+              "units": 1.15
+            },
+            {
+              "key": "authorization_time",
+              "label": "Authorization date and time",
+              "units": 0.95
+            },
+            {
+              "key": "confirmation_reference",
+              "label": "Confirmation / PO / message reference",
+              "units": 1.05
+            },
+            {
+              "key": "verification_owner",
+              "label": "Verification / release owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Decision-maker consent and operator acknowledgment",
+          "fields": [
+            {
+              "key": "decision_maker_signature",
+              "label": "Authorizing authority: Carrier / fleet safety authority",
+              "units": 1.2
+            },
+            {
+              "key": "decision_maker_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "operator_signature",
+              "label": "Fleet / operations representative",
+              "units": 1.15
+            },
+            {
+              "key": "operator_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

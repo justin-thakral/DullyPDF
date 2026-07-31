@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_116__pest_control_treatment_checklist",
+  "source_section": "field_service",
+  "source_filename": "dhs_116__pest_control_treatment_checklist.pdf",
+  "slug": "pest-control-treatment-checklist",
+  "title": "Pest Control Treatment Checklist",
+  "subtitle": "Residential Pest-Control Treatment: documents findings, limits, and disposition.",
+  "description": "Pest Control Treatment Checklist covers target pest, activity zone, entry point, treatment location, and contributing condition. The residential pest-service coordinator records Residential Pest-Control Treatment criteria, findings, restrictions, and follow-up. Pest Control Treatment Checklist keeps Residential Pest-Control Treatment exceptions visible until the residential pest-service coordinator handoff.",
+  "use_case": "Use Pest Control Treatment Checklist at residence, room, exterior perimeter, attic, crawlspace, and occupied area. Document target pest, activity zone, entry point, treatment location, and contributing condition identity before Residential Pest-Control Treatment begins. Compare target pest, activity zone, entry point, treatment location, and contributing condition findings with stated Residential Pest-Control Treatment criteria; route unresolved Residential Pest-Control Treatment issues to licensed or otherwise qualified pest-control reviewer. For Pest Control Treatment Checklist, confirm requirements for Residential Pest-Control Treatment. Ask licensed or otherwise qualified pest-control reviewer to review Residential Pest-Control Treatment conditions beyond the residential pest-service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspector, location, and subject identity",
+      "guidance": "For Residential Pest-Control Treatment, identify responsible parties, residence, room, exterior perimeter, attic, crawlspace, and occupied area, and the linked target pest, activity zone, entry point, treatment location, and contributing condition source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Pest-Control Treatment identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and service agreement",
+              "units": 2.2222222222222223
+            },
+            {
+              "key": "identity_2",
+              "label": "Target pest and identification basis",
+              "units": 2.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Occupant, pet, sensitive-area, and prior-treatment context",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Residential Pest-Control Treatment facts for target pest, activity zone, entry point, treatment location, and contributing condition; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Pest-Control Treatment inspection checks",
+          "items": [
+            "Activity evidence, count, location, and freshness",
+            "Entry, moisture, food, waste, and harborage condition",
+            "Device or treatment placement and accessibility",
+            "Occupant, child, pet, food, and water exposure boundary",
+            "Sanitation, exclusion, and structural action needed",
+            "Follow-up threshold and trend result"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection disposition and reviewer acknowledgment",
+      "guidance": "Use observed Residential Pest-Control Treatment evidence to state disposition. Keep limits visible and give Residential Pest-Service Coordinator both correction and repeat-check responsibility.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Target pest cannot be reliably identified",
+            "Occupied-area or non-target exposure cannot be controlled",
+            "Required preparation or vacancy not completed",
+            "Structural or sanitation cause prevents effective treatment",
+            "Activity and entry-point photographs",
+            "Treatment and device location record",
+            "Material, amount, and restriction record",
+            "Occupant instruction and follow-up evidence"
+          ],
+          "guidance": "Pause Residential Pest-Control Treatment when identification, exposure control, required preparation, or a contributing condition remains unresolved. Retain the available Residential Pest-Control Treatment proof and route unresolved target pest, activity zone, entry point, treatment location, and contributing condition scope to residential pest-service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Residential Pest-Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Licensed Or Otherwise Qualified Pest-Control Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

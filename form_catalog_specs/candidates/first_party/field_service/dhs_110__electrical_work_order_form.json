@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_110__electrical_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dhs_110__electrical_work_order_form.pdf",
+  "slug": "dhs-110-electrical-work-order-form-7f1b15a5",
+  "title": "Electrical Work Order Form",
+  "subtitle": "Residential Electrical Work: captures actual activity and handoff.",
+  "description": "Electrical Work Order Form covers branch circuit, panel position, device, conductor, load, and affected area. The electrical service coordinator records Residential Electrical Work activity, quantities, variance, and handoff. Electrical Work Order Form keeps Residential Electrical Work exceptions visible until the electrical service coordinator handoff.",
+  "use_case": "Use Electrical Work Order Form at residence, panel, circuit, room, device, and equipment connection. Document branch circuit, panel position, device, conductor, load, and affected area identity before Residential Electrical Work begins. Compare branch circuit, panel position, device, conductor, load, and affected area findings with stated Residential Electrical Work criteria; route unresolved Residential Electrical Work issues to qualified electrical reviewer. For Electrical Work Order Form, confirm requirements for Residential Electrical Work. Ask qualified electrical reviewer to review Residential Electrical Work conditions beyond the electrical service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "operation_header",
+      "title": "Customer and asset identity",
+      "guidance": "Identify the Residential Electrical Work entry, responsible parties, and operating window.",
+      "blocks": [
+        {
+          "key": "operation_context",
+          "type": "fields",
+          "label": "Record and operating context",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Electrical job / quote ID",
+              "units": 1.0
+            },
+            {
+              "key": "operation_date",
+              "label": "Date or operating period",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Electrical customer / contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Electrical address / work area",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_person",
+              "label": "Electrical Service Coordinator",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Residential Electrical Work identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Panel, circuit, device, and load identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Reported trip, outage, heat, damage, or performance history",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Residential Electrical Work identifier printed on branch circuit, panel position, device, conductor, load, and affected area or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "activity_record",
+      "title": "Service observation and activity evidence",
+      "guidance": "Enter one Residential Electrical Work row per task, item, reading, or event.",
+      "blocks": [
+        {
+          "key": "plan_and_window",
+          "type": "fields",
+          "label": "Plan and operating window",
+          "fields": [
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.65
+            },
+            {
+              "key": "planned_result",
+              "label": "Planned result or target",
+              "units": 1.2
+            },
+            {
+              "key": "procedure",
+              "label": "Procedure, order, label, or instruction reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "activity_lines",
+          "type": "table",
+          "label": "Service actions, materials, readings, and results",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Service action or task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Area, unit, or component",
+              "units": 1.0
+            },
+            {
+              "key": "part",
+              "label": "Part, material, or method",
+              "units": 1.0
+            },
+            {
+              "key": "result",
+              "label": "Reading or actual result",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Performed by",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "operation_controls",
+      "title": "Service variance and exception handling",
+      "guidance": "Record Residential Electrical Work variances, affected scope, immediate control, and owner.",
+      "blocks": [
+        {
+          "key": "operating_checks",
+          "type": "checklist",
+          "label": "Residential Electrical Work operating checks",
+          "items": [
+            "De-energization and absence-of-voltage control within scope",
+            "Panel, breaker, conductor, termination, and enclosure condition",
+            "Device, receptacle, switch, fixture, and grounding observation",
+            "Load, rating, labeling, and overcurrent-protection match",
+            "Heat, odor, arcing, moisture, and physical-damage signs",
+            "Post-work energization and functional test"
+          ],
+          "guidance": "Complete the Residential Electrical Work checks that apply to this branch circuit, panel position, device, conductor, load, and affected area activity; explain every unchecked required item."
+        },
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when energization, grounding, overcurrent, conductor, panel, or authorization concern remains. Protect branch circuit, panel position, device, conductor, load, and affected area; document the Residential Electrical Work notification and await qualified electrical reviewer direction."
+        },
+        {
+          "key": "operation_exceptions",
+          "type": "checklist",
+          "label": "Stop, hold, or correction triggers",
+          "items": [
+            "Energized work not specifically controlled",
+            "Service or panel condition outside authorization",
+            "Heat, arcing, damaged conductor, or moisture concern",
+            "Required permit or qualified authority unavailable"
+          ],
+          "guidance": "For Residential Electrical Work, identify affected branch circuit, panel position, device, conductor, load, and affected area scope; ask electrical service coordinator to document the Residential Electrical Work immediate control before continuing."
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Exception, change from plan, affected scope, and immediate response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Exception, change from plan, affected scope, and immediate response",
+              "multiline": true
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "operation_result",
+      "title": "Service outcome and customer handoff",
+      "guidance": "State the Residential Electrical Work outcome, restrictions, next action, and receiving owner.",
+      "blocks": [
+        {
+          "key": "result_evidence",
+          "type": "checklist",
+          "label": "Supporting records retained",
+          "items": [
+            "Panel and circuit identification",
+            "Authorized meter or test readings",
+            "Repair material and labeling record",
+            "Energization and functional-test evidence"
+          ],
+          "guidance": "Attach or link proof for branch circuit, panel position, device, conductor, load, and affected area; mark only Residential Electrical Work evidence present in that record."
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Operation outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Service completed",
+                "Completed with limitation",
+                "Additional work proposed",
+                "Temporarily restored",
+                "Stopped or not completed"
+              ]
+            },
+            {
+              "key": "completed_at",
+              "label": "Completion date and time",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_action",
+              "label": "Remaining action or restriction",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner or receiving party",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Due date or trigger",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Residential Electrical Work outcome details, unresolved constraints, and receiving instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Residential Electrical Work outcome details, unresolved constraints, and receiving instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Document Residential Electrical Work outcome facts, unresolved operating limits, receiver directions, and the accountable next action."
+        },
+        {
+          "key": "operation_handoff",
+          "type": "signatures",
+          "label": "Operator and handoff acknowledgment",
+          "fields": [
+            {
+              "key": "operator_signature",
+              "label": "Operator or preparer",
+              "units": 1.1
+            },
+            {
+              "key": "operator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver, supervisor, or customer",
+              "units": 1.2
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "The Residential Electrical Work acknowledgment records the branch circuit, panel position, device, conductor, load, and affected area outcome. It cannot conceal a Residential Electrical Work hold, exception, or electrical service coordinator restriction."
+        }
+      ]
+    }
+  ]
+}

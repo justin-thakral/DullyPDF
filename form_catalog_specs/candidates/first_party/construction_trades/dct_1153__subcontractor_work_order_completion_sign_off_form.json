@@ -1,0 +1,292 @@
+{
+  "catalog_id": "construction_trades/dct_1153__subcontractor_work_order_completion_sign_off_form",
+  "description": "For subcontractor work order, this completion sign-off form records deliverables, inclusions, exclusions, quantities, materials, interfaces, safety duties, cleanup, and payment terms. Its supporting evidence includes scope exhibits, drawings, quote, qualification record, schedule commitment, and compliance documents.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Subcontractor opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Subcontractor site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Subcontractor contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Subcontractor superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Subcontractor due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this subcontractor work order record to its evidence.",
+          "key": "record_routing",
+          "label": "Subcontractor Work Order Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Project",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Trade package",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Work locations",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Contract references",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Schedule window",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture project, trade package, work locations, contract references, schedule window, site contacts, and insurance status for this subcontractor work order.",
+          "key": "core_identity",
+          "label": "Subcontractor Work Order Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify project, trade package, work locations, contract references, schedule window, site contacts, and insurance status for this subcontractor work order record.",
+      "key": "identity_1",
+      "title": "Walkthrough Reference"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Subcontractor when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Subcontractor measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Subcontractor evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Subcontractor result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For subcontractor work order, record scope exhibits, drawings, quote, qualification record, schedule commitment, and compliance documents.",
+          "key": "evidence_register",
+          "label": "Subcontractor Work Order Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Scope exhibits",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Drawings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Quote",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Qualification record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Schedule commitment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every subcontractor work order evidence source.",
+          "key": "evidence_sources",
+          "label": "Subcontractor Work Order Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary subcontractor work order evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Subcontractor Work Order Evidence Completeness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not mobilize without executed terms, required insurance, approved safety readiness, access, and prerequisite release. Route unresolved subcontractor work order work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Subcontractor Work Order Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support subcontractor work order findings with scope exhibits, drawings, quote, qualification record, schedule commitment, and compliance documents.",
+      "key": "observation_2",
+      "title": "Walkthrough Finding Review"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Subcontractor completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Authorized work order",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Notice to proceed",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Distribution",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Change protocol",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the subcontractor work order outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Subcontractor Work Order Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Subcontractor open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Subcontractor owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Subcontractor acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer subcontractor work order items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Subcontractor Work Order Remaining Work and Handoff",
+          "rows": 9,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Subcontractor Work Order Acceptance Reservations and Care Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For subcontractor work order, document authorized work order, notice to proceed, distribution, change protocol, progress reporting, and closeout duties; identify each subcontractor work order reservation and subcontractor work order follow-up trigger, then record the subcontractor work order instruction recipient.",
+          "height": 48,
+          "key": "acceptance_reservations",
+          "label": "Subcontractor Work Order Acceptance Reservations and Care Notes",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Subcontractor trade lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Subcontractor site acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Subcontractor Work Order Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the subcontractor work order record with authorized work order, notice to proceed, distribution, change protocol, progress reporting, and closeout duties.",
+      "key": "closeout_3",
+      "title": "Customer Acceptance and Handoff"
+    }
+  ],
+  "slug": "subcontractor-work-order-completion-sign-off-form",
+  "source_filename": "dct_1153__subcontractor_work_order_completion_sign_off_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Subcontractor Work Order Completion Sign-Off Form: subcontractor work-order scoping and release using project, deliverables, and scope exhibits.",
+  "title": "Subcontractor Work Order Completion Sign-Off Form",
+  "use_case": "Use the completion sign-off form during subcontractor work-order scoping and release when the subcontractor work order record must identify project, trade package, work locations, contract references, schedule window, site contacts, and insurance status. Complete the applicable handoff for authorized work order, notice to proceed, distribution, change protocol, progress reporting, and closeout duties."
+}

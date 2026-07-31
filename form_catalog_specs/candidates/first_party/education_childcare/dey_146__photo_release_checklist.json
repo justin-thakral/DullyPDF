@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_146__photo_release_checklist",
+  "source_section": "education_childcare",
+  "source_filename": "dey_146__photo_release_checklist.pdf",
+  "slug": "photo-release-checklist",
+  "title": "Photo Release Checklist",
+  "subtitle": "Capture capture type, event setting, audience, and channel; confirm attribution and withdrawal route.",
+  "description": "Photo Release records capture type, event setting, audience, channel, attribution, and withdrawal route. Photo Release evidence stays linked.",
+  "use_case": "Use this photo release stage-gated verification when staff must document capture type and event setting. Reconcile audience, channel, attribution, and withdrawal route before the photo release handoff. Use the capture plan, shot list, subject or roster match, approved channel list, production exclusion list, published-asset reference, and withdrawal request log. Ask the assigned photo release reviewer to confirm capture type against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Photo Release starting details",
+      "guidance": "Separate still image, video, audio, name use, event setting, audience, channel, editing, attribution, duration, declined uses, and withdrawal route. Record the photo release decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Photo Release people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "capture_type",
+              "label": "Capture type",
+              "units": 1.1
+            },
+            {
+              "key": "event_setting",
+              "label": "Event setting",
+              "units": 1.2
+            },
+            {
+              "key": "audience",
+              "label": "Audience",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Photo Release task details",
+          "fields": [
+            {
+              "key": "channel",
+              "label": "Channel",
+              "units": 1.15
+            },
+            {
+              "key": "attribution",
+              "label": "Attribution",
+              "units": 1.0
+            },
+            {
+              "key": "withdrawal_route",
+              "label": "Withdrawal route",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Photo Release checks and corrections",
+      "guidance": "Check current photo release facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Photo Release required checks",
+          "items": [
+            "Capture type is identified for this record",
+            "Event setting matches the current request or source",
+            "Audience is ready for point-of-use staff",
+            "Channel limits or questions are resolved",
+            "Attribution is communicated to the responsible person",
+            "Withdrawal route is confirmed at handoff",
+            "A changed photo release fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Photo Release failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Photo Release exception review and readiness",
+      "guidance": "Hold photo release readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Photo Release checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Photo Release reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Photo Release receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

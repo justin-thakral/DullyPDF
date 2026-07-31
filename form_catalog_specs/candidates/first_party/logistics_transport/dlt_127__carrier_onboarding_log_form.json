@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_127__carrier_onboarding_log_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_127__carrier_onboarding_log_form.pdf",
+  "slug": "carrier-onboarding-log-form",
+  "title": "Carrier Onboarding Log Form",
+  "subtitle": "Carrier Onboarding: preserves changes and next triggers.",
+  "description": "Carrier Onboarding Log Form covers carrier organization, operating authority, insurance, contacts, equipment, controls, and approval. The carrier onboarding coordinator records Carrier Onboarding events, owners, exceptions, and next triggers. Carrier Onboarding Log Form keeps Carrier Onboarding exceptions visible until the carrier onboarding coordinator handoff.",
+  "use_case": "Use Carrier Onboarding Log Form at carrier file, qualification system, dispatch access, and document repository. Document carrier organization, operating authority, insurance, contacts, equipment, controls, and approval identity before Carrier Onboarding begins. Compare carrier organization, operating authority, insurance, contacts, equipment, controls, and approval findings with stated Carrier Onboarding criteria; route unresolved Carrier Onboarding issues to authorized carrier-compliance reviewer. For Carrier Onboarding Log Form, confirm requirements for Carrier Onboarding. Ask authorized carrier-compliance reviewer to review Carrier Onboarding conditions beyond the carrier onboarding coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For Carrier Onboarding, identify responsible parties, carrier file, qualification system, dispatch access, and document repository, and the linked carrier organization, operating authority, insurance, contacts, equipment, controls, and approval source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Carrier / vendor account",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Qualification file",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Carrier Onboarding identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Carrier legal and operating names",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_2",
+              "label": "Authority, tax, insurance, and vendor identifiers",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Dispatch, safety, claims, billing, and after-hours contacts",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Tracking review and variance evidence",
+      "guidance": "Capture Carrier Onboarding facts for carrier organization, operating authority, insurance, contacts, equipment, controls, and approval; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Carrier Onboarding tracked controls",
+          "items": [
+            "Authority and operating scope",
+            "Insurance type, limit, term, and source",
+            "Equipment and service capability",
+            "Safety, security, tracking, and cargo controls",
+            "Payment, fraud, identity, and communication verification",
+            "Approval scope, conditions, expiration, and re-review"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Reconcile the latest Carrier Onboarding event before closeout. Carrier Onboarding Coordinator identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Identity or ownership cannot be verified",
+            "Authority or insurance incomplete",
+            "Fraud or contact inconsistency",
+            "Approval requested beyond reviewer authority",
+            "Source authority and insurance evidence",
+            "Verified contact and identity record",
+            "Capability and control questionnaire",
+            "Approval decision and expiry monitoring"
+          ],
+          "guidance": "Pause Carrier Onboarding when carrier identity, authority, insurance, fraud control, or authorized approval remains unresolved. Retain the available Carrier Onboarding proof and route unresolved carrier organization, operating authority, insurance, contacts, equipment, controls, and approval scope to carrier onboarding coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Carrier Onboarding Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorized Carrier-Compliance Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2227__warehouse_transfer_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2227__warehouse_transfer_authorization_form.pdf",
+  "slug": "warehouse-transfer-authorization-form",
+  "title": "Warehouse Transfer Authorization Form",
+  "subtitle": "Warehouse Transfer: bounds the decision, conditions, and expiry.",
+  "description": "Warehouse Transfer Authorization Form controls inventory unit, source bin, destination bin, transfer order, handling unit, and posting by tying each Warehouse Transfer custody, document, or movement decision to the inventory / custody authority, a stated boundary, and an expiry. The inventory transfer coordinator preserves conditions, exceptions, confirmation, and both sides of the handoff.",
+  "use_case": "Use Warehouse Transfer Authorization Form at source warehouse, staging lane, vehicle or conveyance, and destination warehouse. Check applicable Warehouse Transfer requirements, list the affected quantity, value, document, route, or custody action, and state its limit. Record whether the inventory / custody authority approves, conditions, holds, or declines the request; obtain renewed consent before changing inventory unit, source bin, destination bin, transfer order, handling unit, and posting scope.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Authorization request and subject identity",
+      "guidance": "For Warehouse Transfer, identify responsible parties, source warehouse, staging lane, vehicle or conveyance, and destination warehouse, and the linked inventory unit, source bin, destination bin, transfer order, handling unit, and posting source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Authorization ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Request date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Requesting party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Source / destination zone",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "basis",
+              "label": "Requested limit",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Warehouse Transfer identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Transfer order and reason",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "identity_2",
+              "label": "Item, lot, serial, quantity, and unit of measure",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Source, destination, handling-unit, and seal identifiers",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Authorization basis and bounded decision",
+      "guidance": "Capture Warehouse Transfer facts for inventory unit, source bin, destination bin, transfer order, handling unit, and posting; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Requested scope and decision lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Requested scope or custody action",
+              "units": 1.2
+            },
+            {
+              "key": "basis",
+              "label": "Finding, rate, or source basis",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Limit or condition",
+              "units": 0.95
+            },
+            {
+              "key": "decision",
+              "label": "Decision or required change",
+              "units": 1.1
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Warehouse Transfer authorization checks",
+          "items": [
+            "Source-system and physical quantity",
+            "Pick and load confirmation",
+            "Handling-unit and seal integrity",
+            "Custody departure and arrival events",
+            "Destination receipt and variance",
+            "Source and destination posting result"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Bounded approval and authorizer acknowledgment",
+      "guidance": "Resolve open Warehouse Transfer conditions; have inventory transfer coordinator assign the next Warehouse Transfer owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Decision limits, holds, and retained evidence",
+          "items": [
+            "Source quantity mismatch",
+            "Wrong item, lot, serial, or destination",
+            "Seal or custody interruption",
+            "Posting fails or duplicates movement",
+            "Source count and transfer transaction",
+            "Handling-unit and seal record",
+            "Custody and arrival timestamps",
+            "Destination count and posting confirmation"
+          ],
+          "guidance": "Pause Warehouse Transfer when physical quantity, identity, custody, destination receipt, or system posting remains unresolved. Retain the available Warehouse Transfer proof and route unresolved inventory unit, source bin, destination bin, transfer order, handling unit, and posting scope to inventory transfer coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Authorization decision and limits",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Authorization decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved within listed limits",
+                "Approved with listed conditions",
+                "Revision required",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and authorizer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requesting party or authorized representative",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorizing authority: Warehouse Control Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

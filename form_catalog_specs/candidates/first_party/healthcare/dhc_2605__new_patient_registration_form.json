@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2605__new_patient_registration_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2605__new_patient_registration_form.pdf",
+  "slug": "new-patient-registration-form",
+  "title": "New Patient Registration Form",
+  "subtitle": "Capture patient identity, contact route, registration source, and communication need; confirm record match and first appointment.",
+  "description": "New Patient records patient identity, contact route, registration source, communication need, record match, and first appointment. New Patient evidence stays linked.",
+  "use_case": "Use this new patient registration and placement when staff must document patient identity and contact route. Reconcile registration source, communication need, record match, and first appointment before the new patient handoff. Use identity documents under approved policy, duplicate-chart search, contact confirmation, communication preference, accessibility request, appointment record, and welcome receipt. Ask the assigned new patient reviewer to confirm patient identity against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "patient_and_registration_source",
+      "title": "Patient identity and registration source",
+      "guidance": "Match the patient to the source record before creating or updating a chart.",
+      "blocks": [
+        {
+          "key": "patient_identity",
+          "type": "fields",
+          "label": "Patient identity and contact",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_identity_source",
+              "label": "Patient identity source",
+              "units": 1.25
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.1
+            },
+            {
+              "key": "patient_email",
+              "label": "Patient email",
+              "units": 1.2
+            },
+            {
+              "key": "preferred_contact_route",
+              "label": "Preferred contact route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "registration_source",
+          "type": "fields",
+          "label": "Registration source and first appointment",
+          "fields": [
+            {
+              "key": "registration_source",
+              "label": "Registration source",
+              "units": 1.15
+            },
+            {
+              "key": "communication_need",
+              "label": "Communication need",
+              "units": 1.0
+            },
+            {
+              "key": "representative_name_if_applicable",
+              "label": "Representative name if applicable",
+              "units": 1.25
+            },
+            {
+              "key": "representative_authority",
+              "label": "Representative authority",
+              "units": 1.1
+            },
+            {
+              "key": "record_match_or_duplicate_chart_result",
+              "label": "Record match or duplicate-chart result",
+              "units": 1.2
+            },
+            {
+              "key": "first_appointment",
+              "label": "First appointment",
+              "units": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "record_and_communication_readiness",
+      "title": "Record, communication, and privacy readiness review",
+      "guidance": "Preserve the source of each fact and route anything that cannot be verified.",
+      "blocks": [
+        {
+          "key": "communication_and_access",
+          "type": "fields",
+          "label": "Communication and access setup",
+          "fields": [
+            {
+              "key": "preferred_language",
+              "label": "Preferred language",
+              "units": 1.15
+            },
+            {
+              "key": "interpreter_or_accessibility_need",
+              "label": "Interpreter or accessibility need",
+              "units": 1.0
+            },
+            {
+              "key": "preferred_communication_method",
+              "label": "Preferred communication method",
+              "units": 1.25
+            },
+            {
+              "key": "guarantor_or_billing_route",
+              "label": "Guarantor or billing route",
+              "units": 1.1
+            },
+            {
+              "key": "privacy_notice_provided_date",
+              "label": "Privacy notice provided date",
+              "units": 1.2
+            },
+            {
+              "key": "registration_question_owner",
+              "label": "Registration question owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "registration_readiness",
+          "type": "checklist",
+          "label": "New-patient registration checks",
+          "items": [
+            "Legal name and date of birth match the source presented",
+            "Duplicate-chart search is completed before chart creation",
+            "Contact route is confirmed with the patient or representative",
+            "Representative authority is routed when applicable",
+            "Communication and accessibility needs are recorded",
+            "Privacy notice is provided or routed under policy",
+            "First appointment matches the intended service"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "first_visit_handoff",
+      "title": "First appointment and registration handoff",
+      "guidance": "Leave every open registration item with an owner and due date.",
+      "blocks": [
+        {
+          "key": "visit_handoff",
+          "type": "fields",
+          "label": "First-visit handoff",
+          "fields": [
+            {
+              "key": "first_appointment_date_and_time",
+              "label": "First appointment date and time",
+              "units": 1.15
+            },
+            {
+              "key": "department_service_or_clinician",
+              "label": "Department, service, or clinician",
+              "units": 1.0
+            },
+            {
+              "key": "arrival_or_telehealth_instructions_sent",
+              "label": "Arrival or telehealth instructions sent",
+              "units": 1.25
+            },
+            {
+              "key": "outstanding_registration_item",
+              "label": "Outstanding registration item",
+              "units": 1.1
+            },
+            {
+              "key": "outstanding_item_owner_and_due_date",
+              "label": "Outstanding-item owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "registration_receipt",
+          "type": "signatures",
+          "label": "Registration receipt",
+          "fields": [
+            {
+              "key": "registration_staff_receipt_and_date",
+              "label": "Registration staff receipt and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms administrative handoff, not clinical assessment or eligibility."
+        }
+      ]
+    }
+  ]
+}

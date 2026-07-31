@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1429__tutoring_intake_tracking_log",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1429__tutoring_intake_tracking_log.pdf",
+  "slug": "tutoring-intake-tracking-log",
+  "title": "Tutoring Intake Tracking Log",
+  "subtitle": "Capture learner goal, source work, session schedule, and support need; confirm tutor match and progress checkpoint.",
+  "description": "Tutoring Intake records learner goal, source work, session schedule, support need, tutor match, and progress checkpoint. Tutoring Intake evidence stays linked.",
+  "use_case": "Use this tutoring intake time-ordered tracking when staff must document learner goal and source work. Reconcile session schedule, support need, tutor match, and progress checkpoint before the tutoring intake handoff. Use the intake request, learner work sample, teacher referral if provided, availability calendar, tutor-match rationale, support-route acknowledgment, and first-session plan. For tutoring intake live use, check roster. Reconcile the tutoring intake schedule and actual handoff times. Preserve the tutoring intake roster and schedule. Record the tutoring intake handoff time and instructions. Close the tutoring intake exception queue. Verify tutoring intake day-of-service timing. Resolve tutoring intake real-time changes and operating handoff for tutoring intake. Ask the assigned tutoring intake reviewer to confirm learner goal against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Tutoring Intake starting details",
+      "guidance": "Preserve learner goal, source assignment or assessment, preferred schedule, support need, tutor match factors, session plan, and initial progress checkpoint.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Tutoring Intake people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "learner_goal",
+              "label": "Learner goal",
+              "units": 1.2
+            },
+            {
+              "key": "source_work",
+              "label": "Source work",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Tutoring Intake task details",
+          "fields": [
+            {
+              "key": "session_schedule",
+              "label": "Session schedule",
+              "units": 1.15
+            },
+            {
+              "key": "support_need",
+              "label": "Support need",
+              "units": 1.0
+            },
+            {
+              "key": "tutor_match",
+              "label": "Tutor match",
+              "units": 1.25
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Tutoring Intake event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Tutoring Intake events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "learner_goal",
+              "label": "Learner goal",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "tutor_match",
+              "label": "Tutor match",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Tutoring Intake correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 48
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Tutoring Intake current state",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Tutoring Intake status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Tutoring Intake open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Tutoring Intake log receipt",
+          "fields": [
+            {
+              "key": "school_or_program_log_custodian_and_date",
+              "label": "School or program log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

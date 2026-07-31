@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_107__student_medication_authorization_form",
+  "source_section": "education_childcare",
+  "source_filename": "dey_107__student_medication_authorization_form.pdf",
+  "slug": "dey-107-student-medication-authorization-form-27703c2f",
+  "title": "Student Medication Authorization Form",
+  "subtitle": "Capture medication identity, label match, dose schedule source, and storage custody; confirm administration record and return.",
+  "description": "Student Medication records medication identity, label match, dose schedule source, storage custody, administration record, and return. Student Medication evidence stays linked.",
+  "use_case": "Use this student medication authorization decision when staff must document medication identity and label match. Reconcile dose schedule source, storage custody, administration record, and return before the student medication handoff. Use the prescriber order, pharmacy label, guardian authorization, administration schedule, locked-storage inventory, dose log, variance report, expiration check, and return receipt. This record centers the pharmacy label, prescriber or qualified order, scheduled dose, staff administration entry, supply quantity, locked custody, missed or refused event, and medication return. For student medication review use, cite source. Match the student medication family or learner wording. Preserve the student medication amendment history and supersession date. Link the student medication source version and meeting notes. Record the student medication learner response and accessibility support. Close the student medication recipient list. Verify student medication documentary provenance. Resolve student medication amendments, superseded wording, and archival distribution for student medication. Ask the assigned student medication reviewer to confirm medication identity against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Student Medication contact and reference",
+      "guidance": "Match student, medication label, qualified dose schedule, administration time, supply count, storage custody, variance record, expiration, and return. Keep any urgent student medication issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Student Medication people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "medication_identity",
+              "label": "Medication identity",
+              "units": 1.2
+            },
+            {
+              "key": "label_match",
+              "label": "Label match",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Student Medication task details",
+          "fields": [
+            {
+              "key": "dose_schedule_source",
+              "label": "Dose schedule source",
+              "units": 1.15
+            },
+            {
+              "key": "storage_custody",
+              "label": "Storage custody",
+              "units": 1.0
+            },
+            {
+              "key": "administration_record",
+              "label": "Administration record",
+              "units": 1.25
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Student Medication scope choices review",
+      "guidance": "Decide each student medication scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Student Medication primary scope",
+          "fields": [
+            {
+              "key": "medication_identity",
+              "label": "Medication identity",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "label_match",
+              "label": "Label match",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "dose_schedule_source",
+              "label": "Dose schedule source",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Student Medication additional scope",
+          "fields": [
+            {
+              "key": "storage_custody",
+              "label": "Storage custody",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "administration_record",
+              "label": "Administration record",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Student Medication authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Student Medication effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_school_recipient",
+              "label": "Authorized school recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Student Medication signer receipt and handoff",
+      "guidance": "Only recorded student medication choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Student Medication limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Student Medication signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Student Medication signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Student Medication authorization boundary",
+          "guidance": "This record does not create medication directions. Use only current guardian authorization and qualified instructions; stop on identity, label, dose-source, storage, supply, or expiration mismatch."
+        }
+      ]
+    }
+  ]
+}

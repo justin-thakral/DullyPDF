@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2623__insurance_verification_checklist",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2623__insurance_verification_checklist.pdf",
+  "slug": "insurance-verification-checklist",
+  "title": "Insurance Verification Checklist",
+  "subtitle": "Capture coverage source, member reference, service date, and network status; confirm benefit response and patient notice.",
+  "description": "Insurance Verification records coverage source, member reference, service date, network status, benefit response, and patient notice. Insurance Verification evidence stays linked.",
+  "use_case": "Use this insurance verification stage-gated verification when staff must document coverage source and member reference. Reconcile service date, network status, benefit response, and patient notice before the insurance verification handoff. Use the payer response, portal screenshot or call reference, representative name, benefit summary, network response, authorization indicator, patient estimate route, and notice receipt. This administrative record centers payer eligibility, plan dates, network response, benefit limitation, deductible or cost-share source, authorization indicator, representative reference, and patient notice. Ask the assigned insurance verification reviewer to confirm coverage source against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Insurance Verification contact and reference",
+      "guidance": "Record payer and plan source, member reference, service date, network response, benefit limitation, authorization indicator, call reference, and patient notice.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Insurance Verification people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "coverage_source",
+              "label": "Coverage source",
+              "units": 1.1
+            },
+            {
+              "key": "member_reference",
+              "label": "Member reference",
+              "units": 1.2
+            },
+            {
+              "key": "service_date",
+              "label": "Service date",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Insurance Verification task details",
+          "fields": [
+            {
+              "key": "network_status",
+              "label": "Network status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "benefit_response",
+              "label": "Benefit response",
+              "units": 1.0
+            },
+            {
+              "key": "patient_notice",
+              "label": "Patient notice",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Insurance Verification exception review: checks and corrections",
+      "guidance": "Check current insurance verification facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Insurance Verification required checks",
+          "items": [
+            "Coverage source is identified for this record",
+            "Member reference matches the current request or source",
+            "Service date is ready for point-of-use staff",
+            "Network status limits or questions are resolved",
+            "Benefit response is communicated to the responsible person",
+            "Patient notice is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Insurance Verification failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Insurance Verification readiness",
+      "guidance": "Hold insurance verification readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Insurance Verification checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Insurance Verification reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "receiving_department_or_clinical_reviewer_and_date",
+              "label": "Receiving department or clinical reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Insurance Verification receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2636__dental_new_patient_intake_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2636__dental_new_patient_intake_form.pdf",
+  "slug": "dental-new-patient-intake-form",
+  "title": "Dental New Patient Intake Form",
+  "subtitle": "Capture dental concern, prior records, imaging reference, and care-team review; confirm consent status and follow-up.",
+  "description": "Dental New Patient records dental concern, prior records, imaging reference, care-team review, consent status, and follow-up. Dental New Patient evidence stays linked.",
+  "use_case": "Use this dental new patient structured intake when staff must document dental concern and prior records. Reconcile imaging reference, care-team review, consent status, and follow-up before the dental new patient handoff. Use the patient-stated concern, prior-dentist contact, records request, radiograph availability, appliance list, care-team intake review, appointment plan, and follow-up note. This intake centers oral-health concerns, tooth or gum location, prior dental office, radiograph transfer, appliance history, hygiene context, operatory access, and dental-team follow-up. Ask the assigned dental new patient reviewer to confirm dental concern against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Dental New Patient starting details",
+      "guidance": "Capture dental concern in patient words, prior dentist and records, imaging availability, appliance or accessibility need, care-team review, and follow-up. Keep any urgent dental new patient issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Dental New Patient people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "patient_phone",
+              "label": "Patient phone",
+              "units": 1.25
+            },
+            {
+              "key": "patient_location_or_service_site",
+              "label": "Patient location or service site",
+              "units": 1.1
+            },
+            {
+              "key": "dental_concern",
+              "label": "Dental concern",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Dental New Patient task details",
+          "fields": [
+            {
+              "key": "prior_records",
+              "label": "Prior records",
+              "units": 1.15
+            },
+            {
+              "key": "imaging_reference",
+              "label": "Imaging reference",
+              "units": 1.0
+            },
+            {
+              "key": "care_team_review",
+              "label": "Care-team review",
+              "units": 1.25
+            },
+            {
+              "key": "consent_status",
+              "label": "Consent status",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_story",
+      "title": "Dental New Patient reported needs",
+      "guidance": "Preserve the person's wording and route questions without interpretation.",
+      "blocks": [
+        {
+          "key": "stated_need",
+          "type": "textarea",
+          "label": "Dental New Patient stated need or goal",
+          "fields": [
+            {
+              "key": "person_s_words_desired_outcome_and_priority",
+              "label": "Person's words, desired outcome, and priority"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "source_facts",
+          "type": "table",
+          "label": "Dental New Patient facts and questions",
+          "columns": [
+            {
+              "key": "dental_concern",
+              "label": "Dental concern",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "imaging_reference",
+              "label": "Imaging reference",
+              "units": 1.25
+            },
+            {
+              "key": "question_or_route",
+              "label": "Question or route",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "intake_readiness",
+          "type": "checklist",
+          "label": "Dental New Patient intake readiness",
+          "items": [
+            "Dental concern is identified for this record",
+            "Prior records matches the current request or source",
+            "Imaging reference is ready for point-of-use staff",
+            "Care-team review limits or questions are resolved",
+            "Consent status is communicated to the responsible person"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "intake_handoff",
+      "title": "Dental New Patient receiving route and handoff",
+      "guidance": "Assign open questions and confirm where the intake goes next.",
+      "blocks": [
+        {
+          "key": "intake_route",
+          "type": "fields",
+          "label": "Dental New Patient next step",
+          "fields": [
+            {
+              "key": "receiving_person_or_team",
+              "label": "Receiving person or team",
+              "units": 1.15
+            },
+            {
+              "key": "open_question_or_missing_item",
+              "label": "Open question or missing item",
+              "units": 1.0
+            },
+            {
+              "key": "urgent_route_if_applicable",
+              "label": "Urgent route if applicable",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "intake_receipt",
+          "type": "signatures",
+          "label": "Dental New Patient intake receipt",
+          "fields": [
+            {
+              "key": "intake_coordinator_and_date",
+              "label": "Intake coordinator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms routing, not professional review."
+        }
+      ]
+    }
+  ]
+}

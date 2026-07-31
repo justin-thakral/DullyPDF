@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_159__club_registration_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_159__club_registration_review_worksheet.pdf",
+  "slug": "club-registration-review-worksheet",
+  "title": "Club Registration Review Worksheet",
+  "subtitle": "Capture club placement, sponsor route, meeting schedule, and participation need; confirm dismissal and membership review.",
+  "description": "Club Registration records club placement, sponsor route, meeting schedule, participation need, dismissal, and membership review. Club Registration evidence stays linked.",
+  "use_case": "Use this club registration evidence-based review when staff must document club placement and sponsor route. Reconcile meeting schedule, participation need, dismissal, and membership review before the club registration handoff. Use the membership request, capacity roster, sponsor confirmation, meeting schedule, support-routing acknowledgment, dismissal choice, and welcome-message receipt. This registration establishes recurring membership, sponsor governance, meeting cadence, student eligibility, dues handling, after-meeting dismissal, and membership renewal. Ask the assigned club registration reviewer to confirm club placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Club Registration meeting details",
+      "guidance": "Confirm club capacity, sponsor contact, meeting calendar, participation support, dismissal arrangement, member choice, and first-meeting instructions.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Club Registration people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "club_placement",
+              "label": "Club placement",
+              "units": 1.1
+            },
+            {
+              "key": "sponsor_route",
+              "label": "Sponsor route",
+              "units": 1.2
+            },
+            {
+              "key": "meeting_schedule",
+              "label": "Meeting schedule",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Club Registration task details",
+          "fields": [
+            {
+              "key": "participation_need",
+              "label": "Participation need",
+              "units": 1.15
+            },
+            {
+              "key": "dismissal",
+              "label": "Dismissal",
+              "units": 1.0
+            },
+            {
+              "key": "membership_review",
+              "label": "Membership review",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "Club Registration exception review and discussion",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "Club Registration strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_club_placement",
+              "label": "Strength, progress, or successful support related to club placement"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Club Registration questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_meeting_schedule",
+              "label": "Concern, missing context, or question about meeting schedule"
+            }
+          ],
+          "height": 40
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "Club Registration participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_participation_need",
+              "label": "Priority, preference, or proposed support for participation need"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "Club Registration action plan and handoff",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "Club Registration agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "Club Registration follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "Club Registration review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

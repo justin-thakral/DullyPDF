@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1241__landscaping_visit_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1241__landscaping_visit_work_order_form.pdf",
+  "slug": "landscaping-visit-work-order-form",
+  "title": "Landscaping Visit Work Order Form",
+  "subtitle": "Commercial Landscaping Visit: connects authorized scope to results.",
+  "description": "Landscaping Visit Work Order Form covers grounds zone, plant material, irrigation interface, hardscape edge, and assigned task. The grounds service coordinator records Commercial Landscaping Visit authorized tasks, materials, results, and changes. Landscaping Visit Work Order Form keeps Commercial Landscaping Visit exceptions visible until the grounds service coordinator handoff.",
+  "use_case": "Use Landscaping Visit Work Order Form at property zone, bed, lawn area, slope, walkway, and equipment access route. Document grounds zone, plant material, irrigation interface, hardscape edge, and assigned task identity before Commercial Landscaping Visit begins. Compare grounds zone, plant material, irrigation interface, hardscape edge, and assigned task findings with stated Commercial Landscaping Visit criteria; route unresolved Commercial Landscaping Visit issues to landscape operations supervisor.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Work-order reference and subject identity",
+      "guidance": "For Commercial Landscaping Visit, identify responsible parties, property zone, bed, lawn area, slope, walkway, and equipment access route, and the linked grounds zone, plant material, irrigation interface, hardscape edge, and assigned task source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Record date",
+              "units": 0.75
+            },
+            {
+              "key": "authorized_by",
+              "label": "Authorized by",
+              "units": 1.0
+            },
+            {
+              "key": "scope_limit",
+              "label": "Scope / amount limit",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Commercial Landscaping Visit identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Property and service route",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Zone, plant, irrigation, or task identifier",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Approved seasonal scope and visit number",
+              "units": 2.2222222222222223
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Work-order tasks, resources, and results",
+      "guidance": "Capture Commercial Landscaping Visit facts for grounds zone, plant material, irrigation interface, hardscape edge, and assigned task; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Commercial Landscaping Visit authorized-work checks",
+          "items": [
+            "Turf, bed, tree, shrub, and plant-health condition",
+            "Irrigation coverage, leak, runoff, and controller observation",
+            "Walkway, curb, visibility, and access impact",
+            "Weed, debris, erosion, and drainage condition",
+            "Weather, soil moisture, and seasonal constraint",
+            "Completed quantity compared with contracted scope"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Authorized work lines",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Authorized task or service",
+              "units": 1.25
+            },
+            {
+              "key": "resources",
+              "label": "Part, material, or resource",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Work performed and result",
+              "units": 1.15
+            },
+            {
+              "key": "status",
+              "label": "Change, status, or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Scope exception, work status, and handoff",
+      "guidance": "Resolve open Commercial Landscaping Visit conditions; have grounds service coordinator assign the next Commercial Landscaping Visit owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Scope changes, holds, and retained evidence",
+          "items": [
+            "Unsafe tree, slope, equipment, or pedestrian condition",
+            "Weather prevents safe or effective work",
+            "Irrigation leak or runoff requires separate authority",
+            "Requested treatment outside approved scope",
+            "Before-and-after zone photographs",
+            "Visit quantity and material record",
+            "Irrigation or plant-health observation",
+            "Deferred-work and property-contact notice"
+          ],
+          "guidance": "Pause Commercial Landscaping Visit when a public-access hazard, weather stop, chemical boundary, or uncontrolled property condition remains. Retain the available Commercial Landscaping Visit proof and route unresolved grounds zone, plant material, irrigation interface, hardscape edge, and assigned task scope to grounds service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Completion status and open work",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work-order status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed within authorization",
+                "Completed with listed change",
+                "Follow-up work required",
+                "Held for approval",
+                "Stopped"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer work acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Grounds Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Site contact or service reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

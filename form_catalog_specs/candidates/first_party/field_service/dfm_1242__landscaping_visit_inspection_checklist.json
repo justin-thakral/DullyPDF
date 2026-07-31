@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1242__landscaping_visit_inspection_checklist",
+  "source_section": "field_service",
+  "source_filename": "dfm_1242__landscaping_visit_inspection_checklist.pdf",
+  "slug": "landscaping-visit-inspection-checklist",
+  "title": "Landscaping Visit Inspection Checklist",
+  "subtitle": "Commercial Landscaping Visit: documents findings, limits, and disposition.",
+  "description": "Landscaping Visit Inspection Checklist covers grounds zone, plant material, irrigation interface, hardscape edge, and assigned task. The grounds service coordinator records Commercial Landscaping Visit criteria, findings, restrictions, and follow-up. Landscaping Visit Inspection Checklist keeps Commercial Landscaping Visit exceptions visible until the grounds service coordinator handoff.",
+  "use_case": "Use Landscaping Visit Inspection Checklist at property zone, bed, lawn area, slope, walkway, and equipment access route. Document grounds zone, plant material, irrigation interface, hardscape edge, and assigned task identity before Commercial Landscaping Visit begins. Compare grounds zone, plant material, irrigation interface, hardscape edge, and assigned task findings with stated Commercial Landscaping Visit criteria; route unresolved Commercial Landscaping Visit issues to landscape operations supervisor.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Commercial Landscaping Visit, identify responsible parties, property zone, bed, lawn area, slope, walkway, and equipment access route, and the linked grounds zone, plant material, irrigation interface, hardscape edge, and assigned task source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Commercial Landscaping Visit identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Property and service route",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Zone, plant, irrigation, or task identifier",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_3",
+              "label": "Approved seasonal scope and visit number",
+              "units": 2.2222222222222223
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist points, conditions, and actions",
+      "guidance": "Capture Commercial Landscaping Visit facts for grounds zone, plant material, irrigation interface, hardscape edge, and assigned task; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Commercial Landscaping Visit inspection checks",
+          "items": [
+            "Turf, bed, tree, shrub, and plant-health condition",
+            "Irrigation coverage, leak, runoff, and controller observation",
+            "Walkway, curb, visibility, and access impact",
+            "Weed, debris, erosion, and drainage condition",
+            "Weather, soil moisture, and seasonal constraint",
+            "Completed quantity compared with contracted scope"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection exception, restriction, and reinspection",
+      "guidance": "Before closing Commercial Landscaping Visit, identify what failed or was not inspected, who owns correction, and when examination resumes. Grounds Service Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Unsafe tree, slope, equipment, or pedestrian condition",
+            "Weather prevents safe or effective work",
+            "Irrigation leak or runoff requires separate authority",
+            "Requested treatment outside approved scope",
+            "Before-and-after zone photographs",
+            "Visit quantity and material record",
+            "Irrigation or plant-health observation",
+            "Deferred-work and property-contact notice"
+          ],
+          "guidance": "Pause Commercial Landscaping Visit when a public-access hazard, weather stop, chemical boundary, or uncontrolled property condition remains. Retain the available Commercial Landscaping Visit proof and route unresolved grounds zone, plant material, irrigation interface, hardscape edge, and assigned task scope to grounds service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Grounds Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Landscape Operations Supervisor",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

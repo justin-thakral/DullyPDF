@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1844__room_rental_sign_in_log",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1844__room_rental_sign_in_log.pdf",
+  "slug": "room-rental-sign-in-log",
+  "title": "Room Rental Sign-In Log",
+  "subtitle": "Capture room, occupancy, access key, and setup; confirm use restriction and reset.",
+  "description": "Room Rental records room, occupancy, access key, setup, use restriction, and reset. Room Rental evidence stays linked.",
+  "use_case": "Use this room rental attendance and custody reconciliation when staff must document room and occupancy. Reconcile access key, setup, use restriction, and reset before the room rental handoff. Use the room diagram, occupancy limit, key or code custody log, setup inventory, audiovisual test, use restrictions, cleaning check, reset photos, and access return. This rental follows a fixed space by occupancy, key or fob access, furniture layout, audiovisual setup, building restrictions, cleaning, room reset, lockup, and facilities inspection. Ask the assigned room rental reviewer to confirm room against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Room Rental details",
+      "guidance": "Identify room, occupancy, access keys, setup layout, audiovisual inventory, permitted use, cleaning expectation, reset evidence, and key return.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Room Rental people and reference",
+          "fields": [
+            {
+              "key": "renter_or_responsible_party",
+              "label": "Renter or responsible party",
+              "units": 1.15
+            },
+            {
+              "key": "renter_phone",
+              "label": "Renter phone",
+              "units": 1.0
+            },
+            {
+              "key": "renter_email",
+              "label": "Renter email",
+              "units": 1.25
+            },
+            {
+              "key": "room",
+              "label": "Room",
+              "units": 1.1
+            },
+            {
+              "key": "occupancy",
+              "label": "Occupancy",
+              "units": 1.2
+            },
+            {
+              "key": "access_key",
+              "label": "Access key",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Room Rental task details",
+          "fields": [
+            {
+              "key": "setup",
+              "label": "Setup",
+              "units": 1.15
+            },
+            {
+              "key": "use_restriction",
+              "label": "Use restriction",
+              "units": 1.0
+            },
+            {
+              "key": "reset",
+              "label": "Reset",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance_rows",
+      "title": "Room Rental renter identity, custody, and return",
+      "guidance": "Match the renter to the accepted reservation, issued access or item, starting condition, and completed return.",
+      "blocks": [
+        {
+          "key": "sign_in_rows",
+          "type": "table",
+          "label": "Room Rental custody rows",
+          "columns": [
+            {
+              "key": "renter_and_rental",
+              "label": "Renter and rental",
+              "units": 1.2
+            },
+            {
+              "key": "identity_and_handoff",
+              "label": "Identity and handoff",
+              "units": 1.1
+            },
+            {
+              "key": "access_item_or_condition",
+              "label": "Access, item, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "return_and_final_condition",
+              "label": "Return and final condition",
+              "units": 1.0
+            },
+            {
+              "key": "exception_and_owner",
+              "label": "Exception and owner",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "roster_boundary",
+          "type": "notice",
+          "label": "Room Rental roster boundary",
+          "guidance": "Route any unmatched renter, access method, item, condition, or return before closing the custody log."
+        }
+      ]
+    },
+    {
+      "key": "attendance_close",
+      "title": "Room Rental return outcome and custody reconciliation",
+      "guidance": "Reconcile issued access or items, returns, condition, and unresolved custody.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Room Rental closing counts",
+          "fields": [
+            {
+              "key": "expected_rental_count",
+              "label": "Expected rental count",
+              "units": 1.15
+            },
+            {
+              "key": "access_or_items_issued",
+              "label": "Access or items issued",
+              "units": 1.0
+            },
+            {
+              "key": "returns_completed",
+              "label": "Returns completed",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_custody_and_owner",
+              "label": "Unresolved custody and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "attendance_receipt",
+          "type": "signatures",
+          "label": "Room Rental log receipt",
+          "fields": [
+            {
+              "key": "event_coordinator_or_roster_custodian_and_date",
+              "label": "Event coordinator or roster custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Do not close an unreconciled entry without a named owner."
+        }
+      ]
+    }
+  ]
+}

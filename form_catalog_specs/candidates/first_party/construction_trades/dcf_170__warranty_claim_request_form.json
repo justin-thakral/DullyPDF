@@ -1,0 +1,288 @@
+{
+  "catalog_id": "construction_trades/dcf_170__warranty_claim_request_form",
+  "description": "For warranty claim, this request form records reported symptom, occurrence pattern, operating conditions, urgency, access, coverage question, and requested remedy. Its supporting evidence includes customer report, dated photos, startup record, maintenance history, diagnostic readings, and installer notes.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Claim opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Claim site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Claim contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Claim superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Claim due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this warranty claim record to its evidence.",
+          "key": "record_routing",
+          "label": "Warranty Claim Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Installed asset",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Serial or model",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Location",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Installer",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Completion date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture installed asset, serial or model, location, installer, completion date, warranty terms, and prior service for this warranty claim.",
+          "key": "core_identity",
+          "label": "Warranty Claim Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify installed asset, serial or model, location, installer, completion date, warranty terms, and prior service for this warranty claim record.",
+      "key": "identity_1",
+      "title": "Request Reference and Origin"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Reported symptom",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Occurrence pattern",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Operating conditions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Urgency",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Access",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For warranty claim, record reported symptom, occurrence pattern, operating conditions, urgency, access, coverage question, and requested remedy.",
+          "key": "task_inputs",
+          "label": "Warranty Claim Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Warranty Claim Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State warranty claim outcomes, exclusions, timing, and assumptions.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Warranty Claim Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Claim work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Claim owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate warranty claim items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Warranty Claim Items, Quantity, and Responsibility",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "guidance": "Escalate active leakage, electrical hazard, structural movement, unsafe operation, or disputed coverage before repair. Route unresolved warranty claim work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Warranty Claim Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For warranty claim, capture reported symptom, occurrence pattern, operating conditions, urgency, access, coverage question, and requested remedy.",
+      "key": "task_2",
+      "title": "Requested Scope and Outcome"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Claim decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Claim approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Claim schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate warranty claim disposition.",
+          "key": "disposition",
+          "label": "Warranty Claim Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Warranty Claim Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the warranty claim decision to evidence.",
+          "height": 112,
+          "key": "decision_basis",
+          "label": "Warranty Claim Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "request_handoff_1",
+              "label": "Coverage decision",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_2",
+              "label": "Repair record",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_3",
+              "label": "Parts disposition",
+              "units": 1.0
+            },
+            {
+              "key": "request_handoff_4",
+              "label": "Customer verification",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For warranty claim, record coverage decision, repair record, parts disposition, customer verification, recurrence monitoring, and warranty history.",
+          "key": "request_handoff",
+          "label": "Warranty Claim Confirmation and Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Claim requester signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Claim coordinator decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Warranty Claim Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the warranty claim next step from customer report, dated photos, startup record, maintenance history, diagnostic readings, and installer notes.",
+      "key": "decision_3",
+      "title": "Routing Decision"
+    }
+  ],
+  "slug": "warranty-claim-request-form",
+  "source_filename": "dcf_170__warranty_claim_request_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Warranty Claim Request Form: construction warranty claim intake and disposition using installed asset, reported symptom, and customer report.",
+  "title": "Warranty Claim Request Form",
+  "use_case": "Use the request form during construction warranty claim intake and disposition when the warranty claim record must identify installed asset, serial or model, location, installer, completion date, warranty terms, and prior service. Complete the applicable handoff for coverage decision, repair record, parts disposition, customer verification, recurrence monitoring, and warranty history."
+}

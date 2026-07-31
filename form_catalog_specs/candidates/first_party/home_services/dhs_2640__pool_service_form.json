@@ -1,0 +1,390 @@
+{
+  "catalog_id": "home_services/dhs_2640__pool_service_form",
+  "description": "For pool service, this service record records water testing, chemical dosing, debris removal, equipment inspection, filter work, seasonal tasks, and customer requests. Its supporting evidence includes free and total sanitizer, pH, alkalinity, stabilizer, temperature, pressure, chemical amounts, and equipment observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Pool opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Pool site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Pool contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Pool account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Pool due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this pool service record to its evidence.",
+          "key": "record_routing",
+          "label": "Pool Service Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Pool",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Spa volume",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Sanitizer system",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Water features",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Cover",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture pool and spa volume, equipment, sanitizer system, water features, cover, occupancy, gates, and service history for this pool service.",
+          "key": "core_identity",
+          "label": "Pool Service Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify pool and spa volume, equipment, sanitizer system, water features, cover, occupancy, gates, and service history for this pool service record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Water testing",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Chemical dosing",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Debris removal",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Equipment inspection",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Filter work",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For pool service, record water testing, chemical dosing, debris removal, equipment inspection, filter work, seasonal tasks, and customer requests.",
+          "key": "task_inputs",
+          "label": "Pool Service Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "task",
+              "label": "Task or location",
+              "units": 2.2
+            },
+            {
+              "key": "method",
+              "label": "Pool work method",
+              "units": 2.0
+            },
+            {
+              "key": "assigned",
+              "label": "Assigned person",
+              "units": 1.5
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 2.1
+            }
+          ],
+          "guidance": "Separate authorized pool service work from additions.",
+          "key": "assigned_work",
+          "label": "Pool Service Assigned Work and Acceptance Criteria",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "start_window",
+              "label": "Pool arrival window",
+              "units": 1.0
+            },
+            {
+              "key": "finish_window",
+              "label": "Required completion window",
+              "units": 1.0
+            },
+            {
+              "key": "access",
+              "label": "Pool access contact",
+              "units": 1.0
+            },
+            {
+              "key": "spend_limit",
+              "label": "Pool added-work limit",
+              "units": 1.0
+            },
+            {
+              "key": "hold_point",
+              "label": "Pool inspection hold",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Stop pool service work at recorded limits.",
+          "key": "work_window",
+          "label": "Pool Service Work Window and Limits",
+          "type": "fields"
+        },
+        {
+          "guidance": "Close access and escalate unsafe chemistry, electrical concerns, failed circulation, suction hazard, or uncontrolled leakage. Route unresolved pool service work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Pool Service Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For pool service, capture water testing, chemical dosing, debris removal, equipment inspection, filter work, seasonal tasks, and customer requests.",
+      "key": "task_2",
+      "title": "Scheduled Service and Limits"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Pool when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Pool measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Pool evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Pool result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For pool service, record free and total sanitizer, pH, alkalinity, stabilizer, temperature, pressure, chemical amounts, and equipment observations.",
+          "key": "evidence_register",
+          "label": "Pool Service Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Free",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Total sanitizer",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Alkalinity",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Stabilizer",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Temperature",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Pressure",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every pool service evidence source.",
+          "key": "evidence_sources",
+          "label": "Pool Service Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Explain each unnecessary pool service evidence item.",
+          "items": [
+            "Source, date, author, and version can be identified",
+            "Measurements include units and test conditions",
+            "Photos or attachments identify their location and purpose",
+            "Unknown or inaccessible conditions are conspicuous"
+          ],
+          "key": "evidence_completeness",
+          "label": "Pool Service Evidence Completeness",
+          "type": "checklist"
+        }
+      ],
+      "guidance": "Support pool service findings with free and total sanitizer, pH, alkalinity, stabilizer, temperature, pressure, chemical amounts, and equipment observations.",
+      "key": "observation_3",
+      "title": "Service Findings and Results"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Outcome",
+              "options": [
+                "Select final outcome",
+                "Complete",
+                "Complete with listed exceptions",
+                "Follow-up required",
+                "Unable to complete"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "completion_date",
+              "label": "Pool completion date",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_1",
+              "label": "Post-treatment readings",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_2",
+              "label": "Equipment status",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_3",
+              "label": "Swimming restriction",
+              "units": 1.0
+            },
+            {
+              "key": "closeout_4",
+              "label": "Customer alert",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the pool service outcome to evidence.",
+          "key": "final_outcome",
+          "label": "Pool Service Final Outcome",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Pool open item",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Pool owner",
+              "units": 1.4
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 1.4
+            },
+            {
+              "key": "acceptance",
+              "label": "Pool acceptance evidence",
+              "units": 2.3
+            }
+          ],
+          "guidance": "Transfer pool service items to named owners.",
+          "key": "remaining_handoff",
+          "label": "Pool Service Remaining Work and Handoff",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "completed_by",
+              "label": "Pool technician completion and date",
+              "units": 1.0
+            },
+            {
+              "key": "accepted_by",
+              "label": "Pool customer acceptance and date",
+              "units": 1.0
+            }
+          ],
+          "key": "handoff_signatures",
+          "label": "Pool Service Completion and Acceptance",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Close the pool service record with post-treatment readings, equipment status, swimming restriction, customer alert, repair referral, and next-service target.",
+      "key": "closeout_4",
+      "title": "Property Handoff"
+    }
+  ],
+  "slug": "dhs-2640-pool-service-form",
+  "source_filename": "dhs_2640__pool_service_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Pool Service Service Record: residential pool maintenance and chemistry record using pool, water testing, and free.",
+  "title": "Pool Service Form",
+  "use_case": "Use the service record during residential pool maintenance and chemistry record when the pool service record must identify pool and spa volume, equipment, sanitizer system, water features, cover, occupancy, gates, and service history. Complete the applicable handoff for post-treatment readings, equipment status, swimming restriction, customer alert, repair referral, and next-service target."
+}

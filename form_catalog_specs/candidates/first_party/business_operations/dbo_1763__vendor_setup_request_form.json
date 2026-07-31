@@ -1,0 +1,362 @@
+{
+  "catalog_id": "business_operations/dbo_1763__vendor_setup_request_form",
+  "description": "For vendor setup, this request form records business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification. Its supporting evidence includes tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Setup opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Setup site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Setup contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Setup process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Setup due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this vendor setup record to its evidence.",
+          "key": "record_routing",
+          "label": "Vendor Setup Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Vendor legal name",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Tax",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Banking data",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Ownership",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Contacts",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Goods or services",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status for this vendor setup.",
+          "key": "core_identity",
+          "label": "Vendor Setup Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status for this vendor setup record.",
+      "key": "identity_1",
+      "title": "Business Request Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Business need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Sourcing decision",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Contract status",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Payment terms",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Insurance",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For vendor setup, record business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification.",
+          "key": "task_inputs",
+          "label": "Vendor Setup Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Vendor Setup Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State vendor setup outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Vendor Setup Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Setup work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Setup owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate vendor setup items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Vendor Setup Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not activate or pay vendors with unverified bank changes, missing screening, expired insurance, conflicts, or exceeded authority. Route unresolved vendor setup work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Vendor Setup Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For vendor setup, capture business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification.",
+      "key": "task_2",
+      "title": "Requested Commitment and Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Setup decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Setup approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Setup schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate vendor setup disposition.",
+          "key": "disposition",
+          "label": "Vendor Setup Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Vendor Setup Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the vendor setup decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Vendor Setup Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Setup requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Setup process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Vendor Setup Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the vendor setup next step from tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+      "key": "decision_3",
+      "title": "Sponsor Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "response_status",
+              "label": "Response status",
+              "options": [
+                "Select response status",
+                "Approved for next step",
+                "Scheduled",
+                "More information required",
+                "Declined with reason",
+                "Escalated for review"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "response_date",
+              "label": "Response date",
+              "units": 1.0
+            },
+            {
+              "key": "response_owner",
+              "label": "Responding process owner",
+              "units": 1.0
+            },
+            {
+              "key": "requester_notice",
+              "label": "Requester notice date",
+              "units": 1.0
+            },
+            {
+              "key": "notice_method",
+              "label": "Notice method",
+              "units": 1.0
+            },
+            {
+              "key": "response_record",
+              "label": "Response record location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Return the vendor setup response to the requester and record.",
+          "key": "request_response",
+          "label": "Vendor Setup Response and Notice",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question or information needed",
+              "units": 2.6
+            },
+            {
+              "key": "owner",
+              "label": "Assigned process owner",
+              "units": 1.7
+            },
+            {
+              "key": "due",
+              "label": "Due or response date",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Response or decision evidence",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Keep unresolved vendor setup questions visible to closure.",
+          "key": "request_followup",
+          "label": "Vendor Setup Open Questions and Follow-Up",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Vendor Setup Requester Message and Conditions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State the vendor setup response, conditions, next action, and contact for questions.",
+          "height": 43,
+          "key": "requester_message",
+          "label": "Vendor Setup Requester Message and Conditions",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close the vendor setup record with approved vendor ID, controls applied, payment method, renewal dates, document retention, and requester notification.",
+      "key": "closeout_4",
+      "title": "Requester Notice and Next Step"
+    }
+  ],
+  "slug": "vendor-setup-request-form",
+  "source_filename": "dbo_1763__vendor_setup_request_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Vendor Setup Request Form: vendor due diligence and system setup using vendor legal name, business need, and tax form.",
+  "title": "Vendor Setup Request Form",
+  "use_case": "Use the request form during vendor due diligence and system setup when the vendor setup record must identify vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status. Complete the applicable handoff for approved vendor ID, controls applied, payment method, renewal dates, document retention, and requester notification."
+}

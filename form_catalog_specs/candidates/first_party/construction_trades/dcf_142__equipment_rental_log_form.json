@@ -1,0 +1,245 @@
+{
+  "catalog_id": "construction_trades/dcf_142__equipment_rental_log_form",
+  "description": "For equipment rental, this log form records task need, site constraints, utilization period, fuel or charging plan, inspection, and off-rent criteria. Its supporting evidence includes delivery condition, meter photos, inspection sheet, damage record, service tickets, and operator acknowledgment.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Rental opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Rental site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Rental contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Rental superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Rental due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this equipment rental record to its evidence.",
+          "key": "record_routing",
+          "label": "Equipment Rental Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Equipment class",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Capacity",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Attachments",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Operator qualification",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Delivery window",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture equipment class, capacity, attachments, operator qualification, delivery window, meter, and rental agreement for this equipment rental.",
+          "key": "core_identity",
+          "label": "Equipment Rental Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify equipment class, capacity, attachments, operator qualification, delivery window, meter, and rental agreement for this equipment rental record.",
+      "key": "identity_1",
+      "title": "Log Coverage and Custodian"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Rental when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Rental measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Rental evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Rental result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For equipment rental, record delivery condition, meter photos, inspection sheet, damage record, service tickets, and operator acknowledgment.",
+          "key": "evidence_register",
+          "label": "Equipment Rental Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Delivery condition",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Meter photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Inspection sheet",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Damage record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Service tickets",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every equipment rental evidence source.",
+          "key": "evidence_sources",
+          "label": "Equipment Rental Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Rental dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Rental owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Rental escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep equipment rental items open through verification.",
+          "key": "open_item_register",
+          "label": "Equipment Rental Open Items and Next Actions",
+          "rows": 11,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "period_status",
+              "label": "Period status",
+              "options": [
+                "Select period status",
+                "Reconciled",
+                "Open items transferred",
+                "Review required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_through",
+              "label": "Reviewed through date and time",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Successor record or log",
+              "units": 1.0
+            },
+            {
+              "key": "review_owner",
+              "label": "Rental reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Transfer unresolved equipment rental entries by reference.",
+          "key": "period_reconciliation",
+          "label": "Equipment Rental Period Reconciliation",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Equipment Rental Period Transfer Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For equipment rental, explain off-rent confirmation, final meter, fuel level, damage allocation, pickup receipt, and cost-code reconciliation; transfer each equipment rental open entry to the equipment rental successor record and named owner.",
+          "height": 70,
+          "key": "period_transfer_notes",
+          "label": "Equipment Rental Period Transfer Notes",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Remove from service for missing safeguards, leaks, damage, overdue inspection, or unsuitable capacity. Route unresolved equipment rental work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Equipment Rental Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support equipment rental findings with delivery condition, meter photos, inspection sheet, damage record, service tickets, and operator acknowledgment.",
+      "key": "observation_2",
+      "title": "Dated Events and Supporting Facts"
+    }
+  ],
+  "slug": "equipment-rental-log-form",
+  "source_filename": "dcf_142__equipment_rental_log_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Equipment Rental Log Form: rental equipment request, custody, and return using equipment class, task need, and delivery condition.",
+  "title": "Equipment Rental Log Form",
+  "use_case": "Use the log form during rental equipment request, custody, and return when the equipment rental record must identify equipment class, capacity, attachments, operator qualification, delivery window, meter, and rental agreement. Complete the applicable handoff for off-rent confirmation, final meter, fuel level, damage allocation, pickup receipt, and cost-code reconciliation."
+}

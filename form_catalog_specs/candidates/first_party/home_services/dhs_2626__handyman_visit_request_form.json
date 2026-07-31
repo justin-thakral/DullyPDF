@@ -1,0 +1,340 @@
+{
+  "catalog_id": "home_services/dhs_2626__handyman_visit_request_form",
+  "description": "For handyman visit, this request form records task sequence, authorized repair boundaries, customer-supplied items, added-work protocol, cleanup, and cost cap. Its supporting evidence includes task-level photos, measurements, parts used, functional checks, inaccessible conditions, and customer decisions.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Visit opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Visit site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Visit contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Visit account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Visit due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this handyman visit record to its evidence.",
+          "key": "record_routing",
+          "label": "Handyman Visit Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Customer account",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Rooms",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Task list",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Fixtures",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Materials",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Access",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture customer account, rooms, task list, fixtures, materials, access, property protection, and time allowance for this handyman visit.",
+          "key": "core_identity",
+          "label": "Handyman Visit Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify customer account, rooms, task list, fixtures, materials, access, property protection, and time allowance for this handyman visit record.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Task sequence",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Authorized repair boundaries",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Customer-supplied items",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Added-work protocol",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For handyman visit, record task sequence, authorized repair boundaries, customer-supplied items, added-work protocol, cleanup, and cost cap.",
+          "key": "task_inputs",
+          "label": "Handyman Visit Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Handyman Visit Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State handyman visit outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Handyman Visit Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Visit work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Visit owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate handyman visit items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Handyman Visit Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Stop any item involving hidden hazard, regulated trade work, structural change, unsafe access, or exceeded authority. Route unresolved handyman visit work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Handyman Visit Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For handyman visit, capture task sequence, authorized repair boundaries, customer-supplied items, added-work protocol, cleanup, and cost cap.",
+      "key": "task_2",
+      "title": "Requested Record Change"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Stop any item involving hidden hazard, regulated trade work, structural change, unsafe access, or exceeded authority. Do not release affected handyman visit work.",
+          "key": "stop_boundary",
+          "label": "Handyman Visit Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Visit exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Visit correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Visit escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close handyman visit exceptions with verification.",
+          "key": "exception_register",
+          "label": "Handyman Visit Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Visit notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Visit notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Visit interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Visit review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Visit release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep handyman visit controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Handyman Visit Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Stop any item involving hidden hazard, regulated trade work, structural change, unsafe access, or exceeded authority. Control and route each handyman visit exception.",
+      "key": "exception_3",
+      "title": "Service Risk and Exception"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Visit decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Visit service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Visit schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate handyman visit disposition.",
+          "key": "disposition",
+          "label": "Handyman Visit Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Handyman Visit Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the handyman visit decision to evidence.",
+          "height": 38,
+          "key": "decision_basis",
+          "label": "Handyman Visit Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Visit customer confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Visit service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Handyman Visit Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the handyman visit next step from task-level photos, measurements, parts used, functional checks, inaccessible conditions, and customer decisions.",
+      "key": "decision_4",
+      "title": "Request Decision"
+    }
+  ],
+  "slug": "handyman-visit-request-form",
+  "source_filename": "dhs_2626__handyman_visit_request_form.pdf",
+  "source_section": "home_services",
+  "subtitle": "Handyman Visit Request Form: multi-item handyman visit record using customer account, task sequence, and task-level photos.",
+  "title": "Handyman Visit Request Form",
+  "use_case": "Use the request form during multi-item handyman visit record when the handyman visit record must identify customer account, rooms, task list, fixtures, materials, access, property protection, and time allowance. Complete the applicable handoff for completed-task reconciliation, deferred referrals, materials return, property walkthrough, and customer acceptance."
+}

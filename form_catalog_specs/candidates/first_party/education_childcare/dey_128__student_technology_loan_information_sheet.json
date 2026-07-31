@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_128__student_technology_loan_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_128__student_technology_loan_information_sheet.pdf",
+  "slug": "student-technology-loan-information-sheet",
+  "title": "Student Technology Loan Information Sheet",
+  "subtitle": "Capture device serial, charger, acceptable use, and connectivity support; confirm repair route and end-of-term return.",
+  "description": "Student Technology Loan records device serial, charger, acceptable use, connectivity support, repair route, and end-of-term return. Student Technology Loan evidence stays linked.",
+  "use_case": "Use this student technology loan controlled information handoff when staff must document device serial and charger. Reconcile acceptable use, connectivity support, repair route, and end-of-term return before the student technology loan handoff. Use the asset inventory, serial scan, charger and case count, acceptable-use agreement, connectivity request, help-desk ticket, repair estimate, and return inspection. Ask the assigned student technology loan reviewer to confirm device serial against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Student Technology Loan audience details",
+      "guidance": "Match device serial to charger and accessories; record acceptable-use receipt, connectivity need, filtering or access route, repair ticket, and end-of-term return.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Student Technology Loan people and reference",
+          "fields": [
+            {
+              "key": "student_or_responsible_person",
+              "label": "Student or responsible person",
+              "units": 1.15
+            },
+            {
+              "key": "guardian_or_supervisor_contact",
+              "label": "Guardian or supervisor contact",
+              "units": 1.0
+            },
+            {
+              "key": "school_route_or_asset_location",
+              "label": "School, route, or asset location",
+              "units": 1.25
+            },
+            {
+              "key": "device_serial",
+              "label": "Device serial",
+              "units": 1.1
+            },
+            {
+              "key": "charger",
+              "label": "Charger",
+              "units": 1.2
+            },
+            {
+              "key": "acceptable_use",
+              "label": "Acceptable use",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Student Technology Loan task details",
+          "fields": [
+            {
+              "key": "connectivity_support",
+              "label": "Connectivity support",
+              "units": 1.15
+            },
+            {
+              "key": "repair_route",
+              "label": "Repair route",
+              "units": 1.0
+            },
+            {
+              "key": "end_of_term_return",
+              "label": "End-of-term return",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Student Technology Loan current instructions review",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Student Technology Loan instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Student Technology Loan questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 60
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Student Technology Loan decision and update route",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Student Technology Loan effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Student Technology Loan update boundary",
+          "guidance": "Replace outdated student technology loan instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

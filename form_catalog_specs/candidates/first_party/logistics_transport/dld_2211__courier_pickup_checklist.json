@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2211__courier_pickup_checklist",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2211__courier_pickup_checklist.pdf",
+  "slug": "courier-pickup-checklist",
+  "title": "Courier Pickup Checklist",
+  "subtitle": "Courier Pickup: documents findings, limits, and disposition.",
+  "description": "Courier Pickup Checklist covers parcel, envelope, service level, pickup window, label, and custody handoff. The courier dispatch coordinator records Courier Pickup criteria, findings, restrictions, and follow-up. Courier Pickup Checklist keeps Courier Pickup exceptions visible until the courier dispatch coordinator handoff.",
+  "use_case": "Use Courier Pickup Checklist at pickup address, secure collection point, vehicle, and destination route. Document parcel, envelope, service level, pickup window, label, and custody handoff identity before Courier Pickup begins. Compare parcel, envelope, service level, pickup window, label, and custody handoff findings with stated Courier Pickup criteria; route unresolved Courier Pickup issues to courier operations reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspection scope and subject identity",
+      "guidance": "For Courier Pickup, identify responsible parties, pickup address, secure collection point, vehicle, and destination route, and the linked parcel, envelope, service level, pickup window, label, and custody handoff source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Sender / courier account",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Pickup point / route",
+              "units": 1.1111111111111112
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Courier Pickup identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Requester, account, and pickup number",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Piece, label, tracking, and seal identifiers",
+              "units": 2.4444444444444446
+            },
+            {
+              "key": "identity_3",
+              "label": "Origin, destination, service level, and pickup window",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Observed conditions and item decisions",
+      "guidance": "Capture Courier Pickup facts for parcel, envelope, service level, pickup window, label, and custody handoff; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Courier Pickup inspection checks",
+          "items": [
+            "Piece count and label match",
+            "Packaging and closure condition",
+            "Restricted-content declaration and handling note",
+            "Pickup contact and authority",
+            "Custody timestamp and courier identity",
+            "Failed-pickup or alternate-routing reason"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "List each unresolved Courier Pickup finding with its restriction, correction owner, and reinspection trigger. Courier Dispatch Coordinator records reviewer disposition.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Package identity or count mismatch",
+            "Unsafe or prohibited contents concern",
+            "Pickup authority or secure access unavailable",
+            "Service commitment cannot be met",
+            "Pickup request and label record",
+            "Piece and packaging photograph when needed",
+            "Time-and-location custody evidence",
+            "Failed-attempt and notification record"
+          ],
+          "guidance": "Pause Courier Pickup when content, identity, authority, security, or service-level exception remains unresolved. Retain the available Courier Pickup proof and route unresolved parcel, envelope, service level, pickup window, label, and custody handoff scope to courier dispatch coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Courier Dispatch Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Courier Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

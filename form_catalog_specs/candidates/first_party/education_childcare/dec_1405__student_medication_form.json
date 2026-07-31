@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1405__student_medication_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1405__student_medication_form.pdf",
+  "slug": "student-medication-form",
+  "title": "Student Medication Form",
+  "subtitle": "Capture medication identity, label match, dose schedule source, and storage custody; confirm administration record and return.",
+  "description": "Student Medication records medication identity, label match, dose schedule source, storage custody, administration record, and return. Student Medication evidence stays linked.",
+  "use_case": "Use this student medication operational record when staff must document medication identity and label match. Reconcile dose schedule source, storage custody, administration record, and return before the student medication handoff. Use the prescriber order, pharmacy label, guardian authorization, administration schedule, locked-storage inventory, dose log, variance report, expiration check, and return receipt. This record centers the pharmacy label, prescriber or qualified order, scheduled dose, staff administration entry, supply quantity, locked custody, missed or refused event, and medication return. For student medication live use, check roster. Reconcile the student medication schedule and actual handoff times. Preserve the student medication roster and schedule. Record the student medication handoff time and instructions. Close the student medication exception queue. Verify student medication day-of-service timing. Resolve student medication real-time changes and operating handoff for student medication. Ask the assigned student medication reviewer to confirm medication identity against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Student Medication contact and reference",
+      "guidance": "Match student, medication label, qualified dose schedule, administration time, supply count, storage custody, variance record, expiration, and return. Keep any urgent student medication issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Student Medication people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "guardian_full_name_and_phone",
+              "label": "Guardian full name and phone",
+              "units": 1.2
+            },
+            {
+              "key": "medication_identity",
+              "label": "Medication identity",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Student Medication task details",
+          "fields": [
+            {
+              "key": "label_match",
+              "label": "Label match",
+              "units": 1.15
+            },
+            {
+              "key": "dose_schedule_source",
+              "label": "Dose schedule source",
+              "units": 1.0
+            },
+            {
+              "key": "storage_custody",
+              "label": "Storage custody",
+              "units": 1.25
+            },
+            {
+              "key": "administration_record",
+              "label": "Administration record",
+              "units": 1.1
+            },
+            {
+              "key": "return",
+              "label": "Return",
+              "units": 1.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "operating_record",
+      "title": "Student Medication activity review",
+      "guidance": "Record each meaningful student medication event, change, or handoff once.",
+      "blocks": [
+        {
+          "key": "activity_rows",
+          "type": "table",
+          "label": "Student Medication activity and status",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "medication_identity",
+              "label": "Medication identity",
+              "units": 1.1
+            },
+            {
+              "key": "dose_schedule_source",
+              "label": "Dose schedule source",
+              "units": 1.25
+            },
+            {
+              "key": "administration_record",
+              "label": "Administration record",
+              "units": 1.0
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.15
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "change_note",
+          "type": "textarea",
+          "label": "Student Medication change or instruction",
+          "fields": [
+            {
+              "key": "changed_fact_instruction_approval_and_affected_person",
+              "label": "Changed fact, instruction, approval, and affected person"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "operating_handoff",
+      "title": "Student Medication exception review and completion",
+      "guidance": "Leave the current student medication result and next responsible person clear.",
+      "blocks": [
+        {
+          "key": "operating_outcome",
+          "type": "fields",
+          "label": "Student Medication final status",
+          "fields": [
+            {
+              "key": "current_outcome",
+              "label": "Current outcome",
+              "units": 1.15
+            },
+            {
+              "key": "unfinished_task",
+              "label": "Unfinished task",
+              "units": 1.0
+            },
+            {
+              "key": "next_responsible_person",
+              "label": "Next responsible person",
+              "units": 1.25
+            },
+            {
+              "key": "handoff_date_and_time",
+              "label": "Handoff date and time",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "operating_receipt",
+          "type": "signatures",
+          "label": "Student Medication completion receipt",
+          "fields": [
+            {
+              "key": "responsible_teacher_or_program_staff_and_date",
+              "label": "Responsible teacher or program staff and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms the recorded student medication task status."
+        }
+      ]
+    }
+  ]
+}

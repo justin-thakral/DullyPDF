@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_153__window_washing_estimate_worksheet",
+  "source_section": "field_service",
+  "source_filename": "dhs_153__window_washing_estimate_worksheet.pdf",
+  "slug": "window-washing-estimate-worksheet",
+  "title": "Window Washing Estimate Worksheet",
+  "subtitle": "Residential Window Washing: prices observed scope, options, and exclusions.",
+  "description": "Window Washing Estimate Worksheet covers window unit, glass, frame, screen, sill, access method, and adjacent finish. The window service coordinator records Residential Window Washing observed scope, costs, options, and terms. Window Washing Estimate Worksheet keeps Residential Window Washing exceptions visible until the window service coordinator handoff.",
+  "use_case": "Use Window Washing Estimate Worksheet at residence interior, exterior elevation, ladder area, roof access, and protected room. Document window unit, glass, frame, screen, sill, access method, and adjacent finish identity before Residential Window Washing begins. Compare window unit, glass, frame, screen, sill, access method, and adjacent finish findings with stated Residential Window Washing criteria; route unresolved Residential Window Washing issues to exterior cleaning supervisor. For Window Washing Estimate Worksheet, confirm requirements for Residential Window Washing. Ask exterior cleaning supervisor to review Residential Window Washing conditions beyond the window service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Pricing evidence and service location",
+      "guidance": "For Residential Window Washing, identify responsible parties, residence interior, exterior elevation, ladder area, roof access, and protected room, and the linked window unit, glass, frame, screen, sill, access method, and adjacent finish source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Estimate ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Estimate date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Customer / party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Service location",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Window Washing identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, address, and service visit",
+              "units": 2.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Window count, elevation, and unit identifier",
+              "units": 2.4444444444444446
+            },
+            {
+              "key": "identity_3",
+              "label": "Selected interior, exterior, screen, track, and hard-water scope",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Pricing basis, allowances, and exclusions",
+      "guidance": "Capture Residential Window Washing facts for window unit, glass, frame, screen, sill, access method, and adjacent finish; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Estimate and option lines",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Task, item, or option",
+              "units": 1.15
+            },
+            {
+              "key": "basis",
+              "label": "Quantity or condition basis",
+              "units": 1.05
+            },
+            {
+              "key": "labor",
+              "label": "Labor or time",
+              "units": 0.8
+            },
+            {
+              "key": "material",
+              "label": "Part, material, or allowance",
+              "units": 1.0
+            },
+            {
+              "key": "amount",
+              "label": "Amount or option status",
+              "units": 0.9
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Window Washing estimate checks",
+          "items": [
+            "Glass soil, coating, scratch, chip, and seal indication",
+            "Frame, sash, lock, screen, track, and sill condition",
+            "Paint, film, tint, treatment, and product restriction",
+            "Ladder, roof, ground, weather, and overhead-line access",
+            "Interior furnishing, floor, wall, and privacy protection",
+            "Completed pane count and quality check"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Estimate review, options, and acknowledgment",
+      "guidance": "Resolve open Residential Window Washing conditions; have window service coordinator assign the next Residential Window Washing owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Pricing assumptions, exclusions, and retained evidence",
+          "items": [
+            "Unsafe height, weather, ground, roof, or electrical proximity",
+            "Damaged glass, frame, lock, or screen",
+            "Coating or tint compatibility uncertain",
+            "Private or restricted area not cleared",
+            "Pre-existing glass and frame condition images",
+            "Unit count and inaccessible-window record",
+            "Product or hard-water test result",
+            "Final walkthrough and secured-opening evidence"
+          ],
+          "guidance": "Pause Residential Window Washing when safe access, damaged glazing, product compatibility, privacy, or opening security remains unresolved. Retain the available Residential Window Washing proof and route unresolved window unit, glass, frame, screen, sill, access method, and adjacent finish scope to window service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Estimate status and next customer action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Estimate review status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Ready for customer review",
+                "Accepted as written",
+                "Accepted with listed option",
+                "Revision required",
+                "Declined"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Estimator and customer review",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Window Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2606__produce_traceability_checklist",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2606__produce_traceability_checklist.pdf",
+  "slug": "produce-traceability-checklist",
+  "title": "Produce Traceability Checklist",
+  "subtitle": "Produce Traceability: documents findings, limits, and disposition.",
+  "description": "Produce Traceability Checklist covers produce lot, growing or packing source, transformation, shipment, recipient, and trace event. The traceability coordinator records Produce Traceability criteria, findings, restrictions, and follow-up. Produce Traceability Checklist keeps Produce Traceability exceptions visible until the traceability coordinator handoff.",
+  "use_case": "Use Produce Traceability Checklist at field, harvest, packing, storage, shipment, and receiving point. Document produce lot, growing or packing source, transformation, shipment, recipient, and trace event identity before Produce Traceability begins. Compare produce lot, growing or packing source, transformation, shipment, recipient, and trace event findings with stated Produce Traceability criteria; route unresolved Produce Traceability issues to qualified produce-record reviewer. For Produce Traceability Checklist, confirm requirements for Produce Traceability. Ask qualified produce-record reviewer to review Produce Traceability conditions beyond the traceability coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspection scope and subject identity",
+      "guidance": "For Produce Traceability, identify responsible parties, field, harvest, packing, storage, shipment, and receiving point, and the linked produce lot, growing or packing source, transformation, shipment, recipient, and trace event source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Produce Traceability identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Commodity, variety, lot, and quantity",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Grower, field, harvest date, and crew",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_3",
+              "label": "Pack, pallet, shipment, customer, and destination",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Observed conditions and item decisions",
+      "guidance": "Capture Produce Traceability facts for produce lot, growing or packing source, transformation, shipment, recipient, and trace event; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Produce Traceability inspection checks",
+          "items": [
+            "Source-lot assignment",
+            "Commingling or transformation event",
+            "Pack and label accuracy",
+            "Quantity balance through movement",
+            "Shipment and recipient linkage",
+            "Trace exercise, discrepancy, and corrective action"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "link",
+              "label": "Lot, event, or custody link",
+              "units": 1.1
+            },
+            {
+              "key": "required",
+              "label": "Required source and destination record",
+              "units": 1.1
+            },
+            {
+              "key": "observed",
+              "label": "Observed quantity, code, or document",
+              "units": 1.15
+            },
+            {
+              "key": "result",
+              "label": "Linked, discrepancy, or not verified",
+              "units": 1.0
+            },
+            {
+              "key": "action",
+              "label": "Correction or affected scope",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "List each unresolved Produce Traceability finding with its restriction, correction owner, and reinspection trigger. Traceability Coordinator records reviewer disposition.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Lot link broken",
+            "Quantity cannot be reconciled",
+            "Label or recipient mismatch",
+            "Affected scope cannot be bounded",
+            "Source and harvest records",
+            "Packing and lot-label evidence",
+            "Shipping and receiving record",
+            "Quantity reconciliation and trace-test result"
+          ],
+          "guidance": "Pause Produce Traceability when source, lot, quantity, transformation, recipient, or affected-scope trace remains unresolved. Retain the available Produce Traceability proof and route unresolved produce lot, growing or packing source, transformation, shipment, recipient, and trace event scope to traceability coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Traceability Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Produce-Record Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

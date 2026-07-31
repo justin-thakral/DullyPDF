@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_145__fuel_reimbursement_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_145__fuel_reimbursement_form.pdf",
+  "slug": "fuel-reimbursement-form",
+  "title": "Fuel Reimbursement Form",
+  "subtitle": "Business Fuel Reimbursement: reconciles purchases, receipts, and approval.",
+  "description": "Fuel Reimbursement Form covers authorized trip, vehicle, fuel purchase, receipt, mileage, allocation, and payment request. The transport expense coordinator records Business Fuel Reimbursement business purpose, purchases, receipts, and approval. Fuel Reimbursement Form keeps Business Fuel Reimbursement exceptions visible until the transport expense coordinator handoff.",
+  "use_case": "Use Fuel Reimbursement Form at business trip route, fueling location, assigned vehicle, and accounting record. Document authorized trip, vehicle, fuel purchase, receipt, mileage, allocation, and payment request identity before Business Fuel Reimbursement begins. Compare authorized trip, vehicle, fuel purchase, receipt, mileage, allocation, and payment request findings with stated Business Fuel Reimbursement criteria; route unresolved Business Fuel Reimbursement issues to authorized expense reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Expense context and business record",
+      "guidance": "For Business Fuel Reimbursement, identify responsible parties, business trip route, fueling location, assigned vehicle, and accounting record, and the linked authorized trip, vehicle, fuel purchase, receipt, mileage, allocation, and payment request source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Claim ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Expense period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Claimant",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Business unit",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Business Fuel Reimbursement identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Claimant, department, and expense report",
+              "units": 2.2222222222222223
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle, unit, plate, and fuel card",
+              "units": 1.9444444444444444
+            },
+            {
+              "key": "identity_3",
+              "label": "Trip, route, business purpose, receipt, and transaction",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Claim lines and substantiation checks",
+      "guidance": "Capture Business Fuel Reimbursement facts for authorized trip, vehicle, fuel purchase, receipt, mileage, allocation, and payment request; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Business Fuel Reimbursement substantiation checks",
+          "items": [
+            "Purchase date, location, product, quantity, and amount",
+            "Odometer or mileage at purchase",
+            "Authorized trip and vehicle match",
+            "Fuel-card, personal-payment, and duplicate-charge check",
+            "Tax, discount, and nonreimbursable separation",
+            "Allocation, approval, posting, and payment status"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Expense substantiation lines",
+          "columns": [
+            {
+              "key": "date",
+              "label": "Date",
+              "units": 0.65
+            },
+            {
+              "key": "purpose",
+              "label": "Business purpose or trip segment",
+              "units": 1.2
+            },
+            {
+              "key": "merchant",
+              "label": "Merchant or source",
+              "units": 0.9
+            },
+            {
+              "key": "amount",
+              "label": "Amount",
+              "units": 0.7
+            },
+            {
+              "key": "evidence",
+              "label": "Receipt or evidence reference",
+              "units": 1.05
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Claim exception and reimbursement decision",
+      "guidance": "Resolve open Business Fuel Reimbursement conditions; have transport expense coordinator assign the next Business Fuel Reimbursement owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Unsupported items, adjustments, and retained evidence",
+          "items": [
+            "Missing or illegible receipt",
+            "Vehicle or trip not authorized",
+            "Duplicate, personal, or unsupported amount",
+            "Reviewer conflict or accounting mismatch",
+            "Itemized receipt or permitted substitute",
+            "Trip and mileage evidence",
+            "Vehicle and authorization record",
+            "Approval and accounting-posting trace"
+          ],
+          "guidance": "Pause Business Fuel Reimbursement when purchase evidence, business purpose, vehicle match, amount support, or independent approval remains unresolved. Retain the available Business Fuel Reimbursement proof and route unresolved authorized trip, vehicle, fuel purchase, receipt, mileage, allocation, and payment request scope to transport expense coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Reimbursement status and accounting handoff",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Reimbursement decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved as submitted",
+                "Approved with adjustment",
+                "More support required",
+                "Returned",
+                "Declined"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Claimant and approver acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Claimant",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Authorized Expense Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

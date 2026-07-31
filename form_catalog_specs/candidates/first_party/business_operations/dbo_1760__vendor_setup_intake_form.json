@@ -1,0 +1,331 @@
+{
+  "catalog_id": "business_operations/dbo_1760__vendor_setup_intake_form",
+  "description": "For vendor setup, this intake form records business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification. Its supporting evidence includes tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Setup opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Setup site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Setup contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Setup process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Setup due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this vendor setup record to its evidence.",
+          "key": "record_routing",
+          "label": "Vendor Setup Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Vendor legal name",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Tax",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Banking data",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Ownership",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Contacts",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Goods or services",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status for this vendor setup.",
+          "key": "core_identity",
+          "label": "Vendor Setup Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status for this vendor setup record.",
+      "key": "identity_1",
+      "title": "Intake Contact and Ownership"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Business need",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Sourcing decision",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Contract status",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Payment terms",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Insurance",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For vendor setup, record business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification.",
+          "key": "task_inputs",
+          "label": "Vendor Setup Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Vendor Setup Desired Outcome and Service Fit",
+              "multiline": true
+            }
+          ],
+          "guidance": "State vendor setup outcomes, dependencies, timing, and sensitive-data limits.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Vendor Setup Desired Outcome and Service Fit",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Route each unresolved vendor setup qualification item.",
+          "items": [
+            "Identity, authority, and primary contacts are verified",
+            "Desired outcome and service fit are understood",
+            "Sensitive information is limited to a stated purpose",
+            "Conflicts, dependencies, and risk screens are complete",
+            "Commitments remain within policy and capacity",
+            "Intake disposition and retention path are explicit"
+          ],
+          "key": "qualification_readiness",
+          "label": "Vendor Setup Qualification Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not activate or pay vendors with unverified bank changes, missing screening, expired insurance, conflicts, or exceeded authority. Route unresolved vendor setup work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Vendor Setup Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For vendor setup, capture business need, sourcing decision, contract status, payment terms, insurance, security access, and risk classification.",
+      "key": "task_2",
+      "title": "Qualification Inputs"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not activate or pay vendors with unverified bank changes, missing screening, expired insurance, conflicts, or exceeded authority. Do not release affected vendor setup work.",
+          "key": "stop_boundary",
+          "label": "Vendor Setup Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Setup exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Setup correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Setup escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close vendor setup exceptions with verification.",
+          "key": "exception_register",
+          "label": "Vendor Setup Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Setup notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Setup notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Setup interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Setup review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Setup release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep vendor setup controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Vendor Setup Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Do not activate or pay vendors with unverified bank changes, missing screening, expired insurance, conflicts, or exceeded authority. Control and route each vendor setup exception.",
+      "key": "exception_3",
+      "title": "Intake Risk and Referrals"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select intake form disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Qualified review",
+                "Hold",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Setup decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Setup approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Setup schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate vendor setup disposition.",
+          "key": "disposition",
+          "label": "Vendor Setup Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Vendor Setup Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the vendor setup decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Vendor Setup Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Setup requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Setup process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Vendor Setup Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the vendor setup next step from tax form, bank verification, insurance certificate, screening results, contract, approval, and system-entry evidence.",
+      "key": "decision_4",
+      "title": "Intake Decision"
+    }
+  ],
+  "slug": "vendor-setup-intake-form",
+  "source_filename": "dbo_1760__vendor_setup_intake_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Vendor Setup Intake Form: vendor due diligence and system setup using vendor legal name, business need, and tax form.",
+  "title": "Vendor Setup Intake Form",
+  "use_case": "Use the intake form during vendor due diligence and system setup when the vendor setup record must identify vendor legal name, tax and banking data, ownership, contacts, goods or services, locations, and related-party status. Complete the applicable handoff for approved vendor ID, controls applied, payment method, renewal dates, document retention, and requester notification."
+}

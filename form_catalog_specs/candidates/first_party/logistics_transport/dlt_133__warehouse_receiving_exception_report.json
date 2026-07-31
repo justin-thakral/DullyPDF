@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_133__warehouse_receiving_exception_report",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_133__warehouse_receiving_exception_report.pdf",
+  "slug": "warehouse-receiving-exception-report",
+  "title": "Warehouse Receiving Exception Report",
+  "subtitle": "Warehouse Receiving: preserves facts, evidence, and actions.",
+  "description": "Warehouse Receiving Exception Report covers inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status. The receiving operations coordinator records Warehouse Receiving chronology, evidence, containment, and effectiveness. Warehouse Receiving Exception Report keeps Warehouse Receiving exceptions visible until the receiving operations coordinator handoff.",
+  "use_case": "Use Warehouse Receiving Exception Report at gate, yard, receiving dock, staging lane, inspection area, and storage location. Document inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status identity before Warehouse Receiving begins. Compare inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status findings with stated Warehouse Receiving criteria; route unresolved Warehouse Receiving issues to warehouse inventory reviewer. For Warehouse Receiving Exception Report, confirm requirements for Warehouse Receiving. Ask warehouse inventory reviewer to review Warehouse Receiving conditions beyond the receiving operations coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "incident_identity",
+      "title": "Warehouse Receiving incident details",
+      "guidance": "Record when the issue was discovered, who reported it, the exact affected subject, and the initial condition.",
+      "blocks": [
+        {
+          "key": "incident_header",
+          "type": "fields",
+          "label": "Incident header",
+          "fields": [
+            {
+              "key": "incident_number",
+              "label": "Receiving / PO / shipment ID",
+              "units": 1.0
+            },
+            {
+              "key": "event_date",
+              "label": "Event or discovery date",
+              "units": 0.7
+            },
+            {
+              "key": "event_time",
+              "label": "Event or discovery time",
+              "units": 0.65
+            },
+            {
+              "key": "reported_by",
+              "label": "Receiving Operations Coordinator",
+              "units": 1.05
+            },
+            {
+              "key": "party",
+              "label": "Supplier / purchase-order owner",
+              "units": 1.1
+            },
+            {
+              "key": "location",
+              "label": "Gate / dock / staging / storage zone",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Warehouse Receiving identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Appointment, purchase order, shipment, and receipt",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Carrier, driver, vehicle, trailer, and seal",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, lot, serial, pallet, quantity, and unit",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Warehouse Receiving identifier printed on inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status or its linked source record."
+        },
+        {
+          "key": "initial_account",
+          "type": "textarea",
+          "label": "Initial factual account, affected scope, and immediate containment",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Initial factual account, affected scope, and immediate containment",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Separate direct observation from reported information, assumption, and unknown fact."
+        }
+      ]
+    },
+    {
+      "key": "incident_chronology",
+      "title": "Chronology, custody, and response",
+      "guidance": "Enter events in time order and identify the source of each fact and the person responsible for the response.",
+      "blocks": [
+        {
+          "key": "chronology",
+          "type": "table",
+          "label": "Incident chronology",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date and time",
+              "units": 0.8
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact, event, or custody change",
+              "units": 1.3
+            },
+            {
+              "key": "source",
+              "label": "Source, witness, record, or device",
+              "units": 1.0
+            },
+            {
+              "key": "response",
+              "label": "Immediate response or notification",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.75
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "chronology_gaps",
+          "type": "textarea",
+          "label": "Unknown times, conflicting accounts, missing custody events, and source limitations",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unknown times, conflicting accounts, missing custody events, and source limitations",
+              "multiline": true
+            }
+          ],
+          "height": 44
+        }
+      ]
+    },
+    {
+      "key": "incident_evidence",
+      "title": "Affected scope, evidence, and escalation",
+      "guidance": "Preserve volatile evidence, distinguish affected from unaffected scope, and keep required notifications visible.",
+      "blocks": [
+        {
+          "key": "preserved_evidence",
+          "type": "checklist",
+          "label": "Evidence preserved or linked",
+          "items": [
+            "Appointment and shipment document",
+            "Seal, trailer, and freight images",
+            "Count and inspection record",
+            "Receipt transaction and location confirmation"
+          ],
+          "guidance": "Attach or link proof for inbound appointment, vehicle, seal, handling unit, item, lot, quantity, and putaway status; mark only Warehouse Receiving evidence present in that record."
+        },
+        {
+          "key": "investigation_checks",
+          "type": "checklist",
+          "label": "Warehouse Receiving investigation points",
+          "items": [
+            "Arrival, gate, dock, and unload timing",
+            "Seal and trailer condition",
+            "Handling-unit and item identity",
+            "Count, damage, and temperature result",
+            "Quarantine, hold, cross-dock, or accepted status",
+            "Receipt posting, label, staging, and putaway"
+          ],
+          "guidance": "Record what was checked without converting an allegation, inference, or unavailable fact into an observation."
+        },
+        {
+          "key": "severity_and_escalation",
+          "type": "checklist",
+          "label": "Severity, notification, and escalation triggers",
+          "items": [
+            "Unplanned or unauthorized arrival",
+            "Seal, identity, quantity, or condition mismatch",
+            "Unsafe unload or product concern",
+            "Receipt posting or putaway cannot be reconciled"
+          ],
+          "guidance": "Pause Warehouse Receiving and notify receiving operations coordinator when arrival authority, seal, identity, condition, quantity, system receipt, or storage destination remains unresolved."
+        }
+      ]
+    },
+    {
+      "key": "incident_actions",
+      "title": "Corrective action, disposition, and review",
+      "guidance": "Track containment through disposition and an effectiveness check; do not close an incident merely because the immediate event stopped.",
+      "blocks": [
+        {
+          "key": "corrective_actions",
+          "type": "table",
+          "label": "Corrective and preventive actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action or affected-scope disposition",
+              "units": 1.3
+            },
+            {
+              "key": "basis",
+              "label": "Supported cause, requirement, or reason",
+              "units": 1.15
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 0.8
+            },
+            {
+              "key": "due",
+              "label": "Due date or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "verification",
+              "label": "Completion or effectiveness evidence",
+              "units": 1.1
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "incident_status",
+          "type": "fields",
+          "label": "Incident status",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Contained; investigation open",
+                "Corrective action in progress",
+                "Affected scope held",
+                "Ready for closure review",
+                "Escalated or externally referred"
+              ]
+            },
+            {
+              "key": "lead",
+              "label": "Investigation or action lead",
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date",
+              "units": 0.7
+            },
+            {
+              "key": "next_review",
+              "label": "Next action or effectiveness-review trigger",
+              "units": 1.15
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Warehouse Receiving effectiveness evidence and closure rationale",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Warehouse Receiving effectiveness evidence and closure rationale",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Link the Warehouse Receiving closure rationale to effectiveness evidence, unresolved risk, and the next review trigger."
+        },
+        {
+          "key": "incident_review",
+          "type": "signatures",
+          "label": "Incident preparation and review",
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Prepared by",
+              "units": 1.0
+            },
+            {
+              "key": "prepared_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Reviewed by warehouse inventory reviewer",
+              "units": 1.2
+            },
+            {
+              "key": "reviewed_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,369 @@
+{
+  "catalog_id": "construction_trades/dct_1154__subcontractor_work_order_issue_tracking_log",
+  "description": "For subcontractor work order, this issue tracking log records deliverables, inclusions, exclusions, quantities, materials, interfaces, safety duties, cleanup, and payment terms. Its supporting evidence includes scope exhibits, drawings, quote, qualification record, schedule commitment, and compliance documents.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Subcontractor opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Subcontractor site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Subcontractor contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Subcontractor superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Subcontractor due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this subcontractor work order record to its evidence.",
+          "key": "record_routing",
+          "label": "Subcontractor Work Order Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Project",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Trade package",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Work locations",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Contract references",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Schedule window",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture project, trade package, work locations, contract references, schedule window, site contacts, and insurance status for this subcontractor work order.",
+          "key": "core_identity",
+          "label": "Subcontractor Work Order Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify project, trade package, work locations, contract references, schedule window, site contacts, and insurance status for this subcontractor work order record.",
+      "key": "identity_1",
+      "title": "Issue Register Coverage"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Deliverables",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Inclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Quantities",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Materials",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Interfaces",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For subcontractor work order, record deliverables, inclusions, exclusions, quantities, materials, interfaces, safety duties, cleanup, and payment terms.",
+          "key": "task_inputs",
+          "label": "Subcontractor Work Order Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "date_time",
+              "label": "Date and time",
+              "units": 1.35
+            },
+            {
+              "key": "fact",
+              "label": "Observed fact or event",
+              "units": 2.6
+            },
+            {
+              "key": "action",
+              "label": "Subcontractor action lead",
+              "units": 2.0
+            },
+            {
+              "key": "due",
+              "label": "Due or next review",
+              "units": 1.4
+            },
+            {
+              "key": "status",
+              "label": "Status",
+              "units": 1.3
+            }
+          ],
+          "guidance": "Keep subcontractor work order chronology immutable.",
+          "key": "working_log",
+          "label": "Subcontractor Work Order Dated Activity Log",
+          "rows": 7,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not mobilize without executed terms, required insurance, approved safety readiness, access, and prerequisite release. Route unresolved subcontractor work order work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Subcontractor Work Order Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For subcontractor work order, capture deliverables, inclusions, exclusions, quantities, materials, interfaces, safety duties, cleanup, and payment terms.",
+      "key": "task_2",
+      "title": "Issue Definition and Priority"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Subcontractor when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Subcontractor measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Subcontractor evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Subcontractor result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For subcontractor work order, record scope exhibits, drawings, quote, qualification record, schedule commitment, and compliance documents.",
+          "key": "evidence_register",
+          "label": "Subcontractor Work Order Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Scope exhibits",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Drawings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Quote",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Qualification record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Schedule commitment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every subcontractor work order evidence source.",
+          "key": "evidence_sources",
+          "label": "Subcontractor Work Order Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Subcontractor dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Subcontractor owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Subcontractor escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep subcontractor work order items open through verification.",
+          "key": "open_item_register",
+          "label": "Subcontractor Work Order Open Items and Next Actions",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Support subcontractor work order findings with scope exhibits, drawings, quote, qualification record, schedule commitment, and compliance documents.",
+      "key": "observation_3",
+      "title": "Investigation Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not mobilize without executed terms, required insurance, approved safety readiness, access, and prerequisite release. Do not release affected subcontractor work order work.",
+          "key": "stop_boundary",
+          "label": "Subcontractor Work Order Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Subcontractor exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Subcontractor correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Subcontractor escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close subcontractor work order exceptions with verification.",
+          "key": "exception_register",
+          "label": "Subcontractor Work Order Exception and Corrective Action",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Subcontractor notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Subcontractor notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Subcontractor interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Subcontractor review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Subcontractor release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep subcontractor work order controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Subcontractor Work Order Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Subcontractor Work Order Resolution Verification Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For subcontractor work order, compare the retest with scope exhibits, drawings, quote, qualification record, schedule commitment, and compliance documents; preserve each subcontractor work order limitation and name its subcontractor work order restart or closure authority.",
+          "height": 55,
+          "key": "resolution_verification_notes",
+          "label": "Subcontractor Work Order Resolution Verification Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Do not mobilize without executed terms, required insurance, approved safety readiness, access, and prerequisite release. Control and route each subcontractor work order exception.",
+      "key": "exception_4",
+      "title": "Controls, Corrections, and Escalation"
+    }
+  ],
+  "slug": "subcontractor-work-order-issue-tracking-log",
+  "source_filename": "dct_1154__subcontractor_work_order_issue_tracking_log.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Subcontractor Work Order Issue Tracking Log: subcontractor work-order scoping and release using project, deliverables, and scope exhibits.",
+  "title": "Subcontractor Work Order Issue Tracking Log",
+  "use_case": "Use the issue tracking log during subcontractor work-order scoping and release when the subcontractor work order record must identify project, trade package, work locations, contract references, schedule window, site contacts, and insurance status. Complete the applicable handoff for authorized work order, notice to proceed, distribution, change protocol, progress reporting, and closeout duties."
+}

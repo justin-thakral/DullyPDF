@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_110__bill_of_lading_intake_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_110__bill_of_lading_intake_form.pdf",
+  "slug": "bill-of-lading-intake-form",
+  "title": "Bill of Lading Intake Form",
+  "subtitle": "Bill Of Lading Intake: captures actual activity and handoff.",
+  "description": "Bill of Lading Intake Form covers received transport document, shipment terms, commodity lines, parties, and exceptions. The transport document intake coordinator records Bill Of Lading Intake activity, quantities, variance, and handoff. Bill of Lading Intake Form keeps Bill Of Lading Intake exceptions visible until the transport document intake coordinator handoff.",
+  "use_case": "Use Bill of Lading Intake Form at shipping office, receiving office, dispatch system, and document repository. Document received transport document, shipment terms, commodity lines, parties, and exceptions identity before Bill Of Lading Intake begins. Compare received transport document, shipment terms, commodity lines, parties, and exceptions findings with stated Bill Of Lading Intake criteria; route unresolved Bill Of Lading Intake issues to transport documentation reviewer. For Bill of Lading Intake Form, confirm requirements for Bill Of Lading Intake. Ask transport documentation reviewer to review Bill Of Lading Intake conditions beyond the transport document intake coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "operation_header",
+      "title": "Transport record and carrier details",
+      "guidance": "Identify the Bill Of Lading Intake entry, responsible parties, and operating window.",
+      "blocks": [
+        {
+          "key": "operation_context",
+          "type": "fields",
+          "label": "Record and operating context",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "BOL intake record ID",
+              "units": 1.0
+            },
+            {
+              "key": "operation_date",
+              "label": "Date or operating period",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Shipment parties / document owner",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Shipping / receiving document office",
+              "units": 1.1
+            },
+            {
+              "key": "responsible_person",
+              "label": "Transport Document Intake Coordinator",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Bill Of Lading Intake identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Document number, version, and received time",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Shipper, consignee, carrier, and billing party",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Shipment, commodity, package, weight, class, and reference identifiers",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Bill Of Lading Intake identifier printed on received transport document, shipment terms, commodity lines, parties, and exceptions or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "activity_record",
+      "title": "Transport activity and task details",
+      "guidance": "Enter one Bill Of Lading Intake row per task, item, reading, or event.",
+      "blocks": [
+        {
+          "key": "plan_and_window",
+          "type": "fields",
+          "label": "Plan and operating window",
+          "fields": [
+            {
+              "key": "start_time",
+              "label": "Start time",
+              "units": 0.65
+            },
+            {
+              "key": "end_time",
+              "label": "End time",
+              "units": 0.65
+            },
+            {
+              "key": "planned_result",
+              "label": "Planned result or target",
+              "units": 1.2
+            },
+            {
+              "key": "procedure",
+              "label": "Procedure, order, label, or instruction reference",
+              "units": 1.35
+            }
+          ]
+        },
+        {
+          "key": "activity_lines",
+          "type": "table",
+          "label": "Transport events, quantities, condition, and custody",
+          "columns": [
+            {
+              "key": "event",
+              "label": "Load, stop, document, or custody event",
+              "units": 1.25
+            },
+            {
+              "key": "planned",
+              "label": "Planned state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "actual",
+              "label": "Actual state or quantity",
+              "units": 1.0
+            },
+            {
+              "key": "condition",
+              "label": "Condition, variance, or delay",
+              "units": 1.0
+            },
+            {
+              "key": "custody",
+              "label": "Party / driver initials",
+              "units": 0.9
+            }
+          ],
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "key": "operation_controls",
+      "title": "Transport exception and restrictions",
+      "guidance": "Record Bill Of Lading Intake variances, affected scope, immediate control, and owner.",
+      "blocks": [
+        {
+          "key": "operating_checks",
+          "type": "checklist",
+          "label": "Bill Of Lading Intake operating checks",
+          "items": [
+            "Document legibility and completeness",
+            "Party and address consistency",
+            "Commodity, package, and weight reconciliation",
+            "Signature, date, instruction, and notation",
+            "Special handling or classification review status",
+            "System entry and retained source copy"
+          ],
+          "guidance": "Complete the Bill Of Lading Intake checks that apply to this received transport document, shipment terms, commodity lines, parties, and exceptions activity; explain every unchecked required item."
+        },
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when document integrity, party identity, shipment reconciliation, or required qualified review remains unresolved. Protect received transport document, shipment terms, commodity lines, parties, and exceptions; document the Bill Of Lading Intake notification and await transport documentation reviewer direction."
+        },
+        {
+          "key": "operation_exceptions",
+          "type": "checklist",
+          "label": "Stop, hold, or correction triggers",
+          "items": [
+            "Document version or authenticity uncertain",
+            "Party, quantity, or weight conflict",
+            "Special term lacks qualified review",
+            "Source document altered during intake"
+          ],
+          "guidance": "For Bill Of Lading Intake, identify affected received transport document, shipment terms, commodity lines, parties, and exceptions scope; ask transport document intake coordinator to document the Bill Of Lading Intake immediate control before continuing."
+        },
+        {
+          "key": "variance_notes",
+          "type": "textarea",
+          "label": "Exception, change from plan, affected scope, and immediate response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Exception, change from plan, affected scope, and immediate response",
+              "multiline": true
+            }
+          ],
+          "height": 54
+        }
+      ]
+    },
+    {
+      "key": "operation_result",
+      "title": "Transport status decision and next action",
+      "guidance": "State the Bill Of Lading Intake outcome, restrictions, next action, and receiving owner.",
+      "blocks": [
+        {
+          "key": "result_evidence",
+          "type": "checklist",
+          "label": "Supporting records retained",
+          "items": [
+            "Unaltered received document image",
+            "Source-order and shipment comparison",
+            "Qualified classification or instruction reference",
+            "System-entry and review audit trail"
+          ],
+          "guidance": "Attach or link proof for received transport document, shipment terms, commodity lines, parties, and exceptions; mark only Bill Of Lading Intake evidence present in that record."
+        },
+        {
+          "key": "final_status",
+          "type": "fields",
+          "label": "Outcome and next action",
+          "fields": [
+            {
+              "key": "outcome",
+              "label": "Operation outcome",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Received or completed",
+                "Completed with exception",
+                "Partially completed",
+                "Held",
+                "Refused or returned"
+              ]
+            },
+            {
+              "key": "completed_at",
+              "label": "Completion date and time",
+              "units": 0.9
+            },
+            {
+              "key": "remaining_action",
+              "label": "Remaining action or restriction",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner or receiving party",
+              "units": 1.0
+            },
+            {
+              "key": "next_due",
+              "label": "Due date or trigger",
+              "units": 0.75
+            }
+          ]
+        },
+        {
+          "key": "vertical_capacity_notes",
+          "type": "textarea",
+          "label": "Bill Of Lading Intake outcome details, unresolved constraints, and receiving instructions",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Bill Of Lading Intake outcome details, unresolved constraints, and receiving instructions",
+              "multiline": true
+            }
+          ],
+          "height": 58,
+          "guidance": "Document Bill Of Lading Intake outcome facts, unresolved operating limits, receiver directions, and the accountable next action."
+        },
+        {
+          "key": "operation_handoff",
+          "type": "signatures",
+          "label": "Operator and handoff acknowledgment",
+          "fields": [
+            {
+              "key": "operator_signature",
+              "label": "Operator or preparer",
+              "units": 1.1
+            },
+            {
+              "key": "operator_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "receiver_signature",
+              "label": "Receiver, supervisor, or customer",
+              "units": 1.2
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ],
+          "guidance": "The Bill Of Lading Intake acknowledgment records the received transport document, shipment terms, commodity lines, parties, and exceptions outcome. It cannot conceal a Bill Of Lading Intake hold, exception, or transport document intake coordinator restriction."
+        }
+      ]
+    }
+  ]
+}

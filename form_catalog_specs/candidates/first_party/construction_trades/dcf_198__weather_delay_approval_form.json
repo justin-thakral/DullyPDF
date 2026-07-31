@@ -1,0 +1,433 @@
+{
+  "catalog_id": "construction_trades/dcf_198__weather_delay_approval_form",
+  "description": "For weather delay, this approval form records observed conditions, workability thresholds, lost or redirected activity, protection measures, and forecast outlook. Its supporting evidence includes on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Delay opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Delay site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Delay contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Delay superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Delay due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this weather delay record to its evidence.",
+          "key": "record_routing",
+          "label": "Weather Delay Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Date",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Site",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Scheduled activities",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Contractual weather basis",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Crew",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture date, site, scheduled activities, contractual weather basis, crew, equipment, and affected milestones for this weather delay.",
+          "key": "core_identity",
+          "label": "Weather Delay Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify date, site, scheduled activities, contractual weather basis, crew, equipment, and affected milestones for this weather delay record.",
+      "key": "identity_1",
+      "title": "Proposal and Authority Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Observed conditions",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Workability thresholds",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Lost or redirected activity",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Protection measures",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For weather delay, record observed conditions, workability thresholds, lost or redirected activity, protection measures, and forecast outlook.",
+          "key": "task_inputs",
+          "label": "Weather Delay Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Delay decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Delay supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Delay review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified weather delay facts from judgment.",
+          "key": "review_criteria",
+          "label": "Weather Delay Review Criteria and Support",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Resolve each failed weather delay approval check.",
+          "items": [
+            "Decision statement is singular and unambiguous",
+            "Approver authority and any conflict are checked",
+            "Cost, schedule, quality, safety, and compliance effects are addressed",
+            "Alternatives and recommendation are documented",
+            "Conditions and effective period can be monitored",
+            "Implementation owner acknowledges the disposition"
+          ],
+          "key": "decision_readiness",
+          "label": "Weather Delay Decision Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Stop exposed or unsafe operations when wind, lightning, heat, cold, precipitation, or ground conditions exceed controls. Route unresolved weather delay work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Weather Delay Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For weather delay, capture observed conditions, workability thresholds, lost or redirected activity, protection measures, and forecast outlook.",
+      "key": "task_2",
+      "title": "Decision Package"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Delay when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Delay measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Delay evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Delay result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For weather delay, record on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record.",
+          "key": "evidence_register",
+          "label": "Weather Delay Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "On-site readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Weather source",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Daily reports",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Schedule fragment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every weather delay evidence source.",
+          "key": "evidence_sources",
+          "label": "Weather Delay Evidence Sources",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Support weather delay findings with on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record.",
+      "key": "observation_3",
+      "title": "Supporting Record Review"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Stop exposed or unsafe operations when wind, lightning, heat, cold, precipitation, or ground conditions exceed controls. Do not release affected weather delay work.",
+          "key": "stop_boundary",
+          "label": "Weather Delay Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Delay exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Delay correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Delay escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close weather delay exceptions with verification.",
+          "key": "exception_register",
+          "label": "Weather Delay Exception and Corrective Action",
+          "rows": 5,
+          "type": "table"
+        }
+      ],
+      "guidance": "Stop exposed or unsafe operations when wind, lightning, heat, cold, precipitation, or ground conditions exceed controls. Control and route each weather delay exception.",
+      "key": "exception_4",
+      "title": "Conflicts and Approval Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select approval form disposition",
+                "Approve",
+                "Approve with conditions",
+                "Revise and resubmit",
+                "Reject"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Delay decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Delay approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Delay authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Delay review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate weather delay disposition.",
+          "key": "disposition",
+          "label": "Weather Delay Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Weather Delay Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the weather delay decision to evidence.",
+          "height": 97,
+          "key": "decision_basis",
+          "label": "Weather Delay Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "approval_handoff_1",
+              "label": "Verified impact",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_2",
+              "label": "Notice status",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_3",
+              "label": "Schedule analysis",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_4",
+              "label": "Mitigation assignment",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_5",
+              "label": "Recovery plan",
+              "units": 1.0
+            },
+            {
+              "key": "approval_handoff_6",
+              "label": "Claim-record linkage",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For weather delay, record verified impact, notice status, schedule analysis, mitigation assignment, recovery plan, and claim-record linkage.",
+          "key": "approval_handoff",
+          "label": "Weather Delay Approved Record Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Weather Delay Recovery Checkpoint",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record the next forecast review, contractual notice decision, recovery trigger, and responsible owner.",
+          "height": 50,
+          "key": "weather_recovery_checkpoint",
+          "label": "Weather Delay Recovery Checkpoint",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Delay coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Delay manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Delay approver signature and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Weather Delay Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the weather delay next step from on-site readings, weather source, photos, daily reports, schedule fragment, and mitigation record.",
+      "key": "decision_5",
+      "title": "Approver Disposition"
+    }
+  ],
+  "slug": "weather-delay-approval-form",
+  "source_filename": "dcf_198__weather_delay_approval_form.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Weather Delay Approval Form: weather-impact documentation and recovery planning using date, observed conditions, and on-site readings.",
+  "title": "Weather Delay Approval Form",
+  "use_case": "Use the approval form during weather-impact documentation and recovery planning when the weather delay record must identify date, site, scheduled activities, contractual weather basis, crew, equipment, and affected milestones. Complete the applicable handoff for verified impact, notice status, schedule analysis, mitigation assignment, recovery plan, and claim-record linkage."
+}

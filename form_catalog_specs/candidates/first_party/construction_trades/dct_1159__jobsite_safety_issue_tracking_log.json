@@ -1,0 +1,285 @@
+{
+  "catalog_id": "construction_trades/dct_1159__jobsite_safety_issue_tracking_log",
+  "description": "For jobsite safety, this issue tracking log records task hazards, competent-person controls, PPE, access protection, emergency contacts, and weather limits. Its supporting evidence includes pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Safety opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Safety site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Safety contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Safety superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Safety due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this jobsite safety record to its evidence.",
+          "key": "record_routing",
+          "label": "Jobsite Safety Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Work zone",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Crew",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Task sequence",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Tools",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Mobile equipment",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces for this jobsite safety.",
+          "key": "core_identity",
+          "label": "Jobsite Safety Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces for this jobsite safety record.",
+      "key": "identity_1",
+      "title": "Issue Register Coverage"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Safety when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Safety measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Safety evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Safety result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For jobsite safety, record pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+          "key": "evidence_register",
+          "label": "Jobsite Safety Findings, Measurements, and Evidence",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Pre-task briefing record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Inspection observations",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Control photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Permits",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every jobsite safety evidence source.",
+          "key": "evidence_sources",
+          "label": "Jobsite Safety Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Safety dependency",
+              "units": 2.4
+            },
+            {
+              "key": "owner",
+              "label": "Safety owner",
+              "units": 1.4
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "units": 2.2
+            },
+            {
+              "key": "due",
+              "label": "Safety escalation deadline",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Keep jobsite safety items open through verification.",
+          "key": "open_item_register",
+          "label": "Jobsite Safety Open Items and Next Actions",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Stop work for uncontrolled energy, fall exposure, excavation instability, missing protection, or imminent danger. Route unresolved jobsite safety work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Jobsite Safety Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Support jobsite safety findings with pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification.",
+      "key": "observation_2",
+      "title": "Investigation Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Stop work for uncontrolled energy, fall exposure, excavation instability, missing protection, or imminent danger. Do not release affected jobsite safety work.",
+          "key": "stop_boundary",
+          "label": "Jobsite Safety Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Safety exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Safety correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Safety escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close jobsite safety exceptions with verification.",
+          "key": "exception_register",
+          "label": "Jobsite Safety Exception and Corrective Action",
+          "rows": 12,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Safety notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Safety notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Safety interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Safety review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Safety release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep jobsite safety controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Jobsite Safety Escalation Record",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Jobsite Safety Resolution Verification Notes",
+              "multiline": true
+            }
+          ],
+          "guidance": "For jobsite safety, compare the retest with pre-task briefing record, inspection observations, control photos, permits, and corrective-action verification; preserve each jobsite safety limitation and name its jobsite safety restart or closure authority.",
+          "height": 55,
+          "key": "resolution_verification_notes",
+          "label": "Jobsite Safety Resolution Verification Notes",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Stop work for uncontrolled energy, fall exposure, excavation instability, missing protection, or imminent danger. Control and route each jobsite safety exception.",
+      "key": "exception_3",
+      "title": "Controls, Corrections, and Escalation"
+    }
+  ],
+  "slug": "jobsite-safety-issue-tracking-log",
+  "source_filename": "dct_1159__jobsite_safety_issue_tracking_log.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Jobsite Safety Issue Tracking Log: jobsite hazard assessment and control verification using work zone, task hazards, and pre-task briefing record.",
+  "title": "Jobsite Safety Issue Tracking Log",
+  "use_case": "Use the issue tracking log during jobsite hazard assessment and control verification when the jobsite safety record must identify work zone, crew, task sequence, tools, mobile equipment, utilities, and public interfaces. Complete the applicable handoff for competent-person release, corrective-action closure, crew acknowledgment, and next-review trigger."
+}

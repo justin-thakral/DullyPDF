@@ -228,6 +228,17 @@ class OpenBatchRetargetResult:
     idempotent_replay: bool
 
 
+@dataclass(frozen=True)
+class SpecRevisionReopenResult:
+    batch: Batch
+    reopened_count: int
+    catalog_ids_digest: str
+    previous_spec_hashes_digest: str
+    previous_state_digest: str
+    current_state_digest: str
+    idempotent_replay: bool
+
+
 class LedgerError(RuntimeError):
     """Base class for control-plane errors."""
 
@@ -1868,6 +1879,256 @@ class CatalogFactoryLedger:
             )
             return batch
 
+    def create_batch_with_exact_assignment(
+        self,
+        *,
+        batch_id: str,
+        target_count: int,
+        base_commit: str,
+        renderer_commit: str,
+        catalog_ids: Sequence[str],
+        idempotency_key: str | None = None,
+    ) -> tuple[Batch, list[WorkItem]]:
+        """Create an open batch and assign its exact initial membership.
+
+        Batch creation, membership validation, and all item updates share one
+        ``BEGIN IMMEDIATE`` transaction. A competing release therefore either
+        owns every requested item or rolls back its new batch row and events.
+        Validation and assignment are O(n) in the requested catalog IDs.
+        """
+
+        batch_id = _validate_nonempty("batch_id", batch_id)
+        base_commit = _validate_nonempty("base_commit", base_commit)
+        renderer_commit = _validate_nonempty("renderer_commit", renderer_commit)
+        target_count = int(target_count)
+        if target_count <= 0:
+            raise ValueError("target_count must be greater than zero")
+        normalized_ids = [
+            _validate_nonempty("catalog_id", value) for value in catalog_ids
+        ]
+        if len(normalized_ids) != len(set(normalized_ids)):
+            raise ValueError("catalog_ids contains duplicates")
+        sorted_ids = sorted(normalized_ids)
+        if len(sorted_ids) != target_count:
+            raise ValueError(
+                "catalog_ids must contain exactly target_count unique items"
+            )
+        request = {
+            "batch_id": batch_id,
+            "target_count": target_count,
+            "base_commit": base_commit,
+            "renderer_commit": renderer_commit,
+            "catalog_ids": sorted_ids,
+        }
+        now = self._now()
+        with self._transaction() as connection:
+            replay = self._idempotency_replay(
+                connection,
+                idempotency_key=idempotency_key,
+                action="create_batch_with_exact_assignment",
+                scope_id=batch_id,
+                request=request,
+            )
+            if replay is not _IDEMPOTENCY_MISSING:
+                return (
+                    self._batch_from_result(replay["batch"]),
+                    [
+                        self._item_from_result(item)
+                        for item in replay["assigned_items"]
+                    ],
+                )
+
+            batch_row = connection.execute(
+                "SELECT * FROM catalog_factory_batches WHERE batch_id = ?",
+                (batch_id,),
+            ).fetchone()
+            if batch_row is not None:
+                batch = self._row_to_batch(batch_row)
+                if (
+                    batch.target_count != target_count
+                    or batch.base_commit != base_commit
+                    or batch.renderer_commit != renderer_commit
+                ):
+                    raise ConflictError(
+                        f"Batch {batch_id!r} already exists with different settings"
+                    )
+                if batch.status is BatchStatus.FROZEN:
+                    raise ConflictError(f"Batch {batch_id!r} is already frozen")
+                if batch.source_commit is not None:
+                    raise ConflictError(
+                        f"Batch {batch_id!r} membership is sealed by release evidence"
+                    )
+                member_rows = connection.execute(
+                    """
+                    SELECT *
+                    FROM catalog_factory_items
+                    WHERE batch_id = ?
+                    ORDER BY catalog_id
+                    """,
+                    (batch_id,),
+                ).fetchall()
+                member_ids = [row["catalog_id"] for row in member_rows]
+                if member_ids == sorted_ids:
+                    assigned = [
+                        self._row_to_item(member_row)
+                        for member_row in member_rows
+                    ]
+                    result = {
+                        "batch": self._batch_result(batch),
+                        "assigned_items": [
+                            self._item_result(item) for item in assigned
+                        ],
+                    }
+                    self._save_idempotency(
+                        connection,
+                        idempotency_key=idempotency_key,
+                        action="create_batch_with_exact_assignment",
+                        scope_id=batch_id,
+                        request=request,
+                        result=result,
+                        now=now,
+                    )
+                    return batch, assigned
+                if member_ids:
+                    raise ConflictError(
+                        f"Batch {batch_id!r} membership does not exactly match "
+                        "the requested catalog IDs"
+                    )
+            else:
+                connection.execute(
+                    """
+                    INSERT INTO catalog_factory_batches (
+                        batch_id,
+                        target_count,
+                        base_commit,
+                        renderer_commit,
+                        status,
+                        created_at
+                    ) VALUES (?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        batch_id,
+                        target_count,
+                        base_commit,
+                        renderer_commit,
+                        BatchStatus.OPEN.value,
+                        now,
+                    ),
+                )
+                batch = self._row_to_batch(
+                    connection.execute(
+                        "SELECT * FROM catalog_factory_batches WHERE batch_id = ?",
+                        (batch_id,),
+                    ).fetchone()
+                )
+                self._event(
+                    connection,
+                    event_type="batch_created",
+                    batch_id=batch_id,
+                    details={
+                        "target_count": target_count,
+                        "base_commit": base_commit,
+                        "renderer_commit": renderer_commit,
+                    },
+                    now=now,
+                )
+
+            candidates: list[WorkItem] = []
+            for catalog_id in sorted_ids:
+                item_row = connection.execute(
+                    "SELECT * FROM catalog_factory_items WHERE catalog_id = ?",
+                    (catalog_id,),
+                ).fetchone()
+                if item_row is None:
+                    raise ConflictError(f"Unknown catalog item {catalog_id!r}")
+                item = self._row_to_item(item_row)
+                if item.ownership != "first_party":
+                    raise ConflictError(
+                        "Only first-party items may enter replacement batches: "
+                        f"{catalog_id!r}"
+                    )
+                if item.stage is not Stage.QUEUED or item.batch_id is not None:
+                    prefix = (
+                        f"Catalog item {catalog_id!r} already belongs to "
+                        f"batch {item.batch_id!r}; "
+                        if item.batch_id is not None
+                        else ""
+                    )
+                    raise ConflictError(
+                        f"{prefix}{catalog_id}: new batch assignment requires "
+                        "stage='queued' and batch_id=None; found "
+                        f"stage={item.stage.value!r}, batch_id={item.batch_id!r}"
+                    )
+                candidates.append(item)
+
+            for item in candidates:
+                cursor = connection.execute(
+                    """
+                    UPDATE catalog_factory_items
+                    SET batch_id = ?,
+                        version = version + 1,
+                        updated_at = ?
+                    WHERE catalog_id = ?
+                        AND batch_id IS NULL
+                        AND stage = ?
+                        AND ownership = 'first_party'
+                    """,
+                    (
+                        batch_id,
+                        now,
+                        item.catalog_id,
+                        Stage.QUEUED.value,
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    raise ConflictError(
+                        f"Catalog item {item.catalog_id!r} changed during "
+                        "exact batch assignment"
+                    )
+                self._event(
+                    connection,
+                    event_type="batch_item_assigned",
+                    catalog_id=item.catalog_id,
+                    batch_id=batch_id,
+                    details={},
+                    now=now,
+                )
+
+            assigned_rows = connection.execute(
+                """
+                SELECT *
+                FROM catalog_factory_items
+                WHERE batch_id = ?
+                ORDER BY catalog_id
+                """,
+                (batch_id,),
+            ).fetchall()
+            assigned = [
+                self._row_to_item(assigned_row)
+                for assigned_row in assigned_rows
+            ]
+            if [item.catalog_id for item in assigned] != sorted_ids:
+                raise ConflictError(
+                    f"Batch {batch_id!r} did not acquire the exact requested "
+                    "catalog IDs"
+                )
+            result = {
+                "batch": self._batch_result(batch),
+                "assigned_items": [
+                    self._item_result(item) for item in assigned
+                ],
+            }
+            self._save_idempotency(
+                connection,
+                idempotency_key=idempotency_key,
+                action="create_batch_with_exact_assignment",
+                scope_id=batch_id,
+                request=request,
+                result=result,
+                now=now,
+            )
+            return batch, assigned
+
     def get_batch(self, batch_id: str) -> Batch | None:
         connection = self._connect()
         try:
@@ -2158,6 +2419,302 @@ class CatalogFactoryLedger:
                 batch=updated,
                 selection_digest=selection_digest,
                 item_count=len(items),
+                previous_state_digest=actual_state_digest,
+                current_state_digest=current_state_digest,
+                idempotent_replay=False,
+            )
+
+    def reopen_spec_ready_items_for_revision(
+        self,
+        *,
+        batch_id: str,
+        expected_base_commit: str,
+        expected_renderer_commit: str,
+        expected_batch_version: int,
+        expected_state_digest: str,
+        expected_spec_hashes: Mapping[str, str],
+        reason: str,
+        actor: str,
+        idempotency_key: str,
+    ) -> SpecRevisionReopenResult:
+        """Atomically return reviewed specs to the authoring queue.
+
+        Reopening is deliberately limited to the same evidence-free,
+        fully-spec-ready boundary used for source retargeting. The operation is
+        O(n) in the batch size because it revalidates the complete inspected
+        state fence before changing any member.
+        """
+
+        batch_id = _validate_nonempty("batch_id", batch_id)
+        expected_base_commit = _validate_commit(
+            "expected_base_commit",
+            expected_base_commit,
+        )
+        expected_renderer_commit = _validate_commit(
+            "expected_renderer_commit",
+            expected_renderer_commit,
+        )
+        expected_state_digest = _validate_sha256(
+            "expected_state_digest",
+            expected_state_digest,
+        )
+        expected_batch_version = int(expected_batch_version)
+        if expected_batch_version < 0:
+            raise ValueError("expected_batch_version must be non-negative")
+        reason = _validate_nonempty("reason", reason)
+        actor = _validate_nonempty("actor", actor)
+        idempotency_key = _validate_nonempty("idempotency_key", idempotency_key)
+        normalized_spec_hashes: dict[str, str] = {}
+        for catalog_id, spec_hash in expected_spec_hashes.items():
+            normalized_id = _validate_nonempty("catalog_id", catalog_id)
+            if normalized_id in normalized_spec_hashes:
+                raise ValueError("expected_spec_hashes contains duplicate catalog IDs")
+            normalized_spec_hashes[normalized_id] = _validate_sha256(
+                f"expected_spec_hashes[{normalized_id!r}]",
+                spec_hash,
+            )
+        if not normalized_spec_hashes:
+            raise ValueError("expected_spec_hashes must not be empty")
+        normalized_spec_hashes = dict(sorted(normalized_spec_hashes.items()))
+        catalog_ids = list(normalized_spec_hashes)
+        catalog_ids_digest = _sha256_json(catalog_ids)
+        previous_spec_hashes_digest = _sha256_json(
+            [
+                {"catalog_id": catalog_id, "spec_hash": normalized_spec_hashes[catalog_id]}
+                for catalog_id in catalog_ids
+            ]
+        )
+        request = {
+            "batch_id": batch_id,
+            "expected_base_commit": expected_base_commit,
+            "expected_renderer_commit": expected_renderer_commit,
+            "expected_batch_version": expected_batch_version,
+            "expected_state_digest": expected_state_digest,
+            "expected_spec_hashes": normalized_spec_hashes,
+            "reason": reason,
+            "actor": actor,
+        }
+        now = self._now()
+        with self._transaction() as connection:
+            replay = self._idempotency_replay(
+                connection,
+                idempotency_key=idempotency_key,
+                action="reopen_spec_ready_items_for_revision",
+                scope_id=batch_id,
+                request=request,
+            )
+            if replay is not _IDEMPOTENCY_MISSING:
+                return SpecRevisionReopenResult(
+                    batch=self._batch_from_result(replay["batch"]),
+                    reopened_count=replay["reopened_count"],
+                    catalog_ids_digest=replay["catalog_ids_digest"],
+                    previous_spec_hashes_digest=replay[
+                        "previous_spec_hashes_digest"
+                    ],
+                    previous_state_digest=replay["previous_state_digest"],
+                    current_state_digest=replay["current_state_digest"],
+                    idempotent_replay=True,
+                )
+
+            row = connection.execute(
+                "SELECT * FROM catalog_factory_batches WHERE batch_id = ?",
+                (batch_id,),
+            ).fetchone()
+            if row is None:
+                raise ConflictError(f"Unknown batch {batch_id!r}")
+            batch = self._row_to_batch(row)
+            if batch.status is BatchStatus.FROZEN:
+                raise BatchFrozenError(f"Batch {batch_id!r} is frozen")
+            if (
+                batch.base_commit != expected_base_commit
+                or batch.renderer_commit != expected_renderer_commit
+                or batch.version != expected_batch_version
+            ):
+                raise ConflictError(
+                    f"Batch {batch_id!r} provenance changed from the inspected fence"
+                )
+
+            item_rows = connection.execute(
+                """
+                SELECT *
+                FROM catalog_factory_items
+                WHERE batch_id = ?
+                ORDER BY catalog_id
+                """,
+                (batch_id,),
+            ).fetchall()
+            items = [self._row_to_item(item_row) for item_row in item_rows]
+            actual_state_digest = self._open_batch_retarget_state_digest(batch, items)
+            if actual_state_digest != expected_state_digest:
+                raise ConflictError(
+                    f"Batch {batch_id!r} state digest changed from the inspected fence"
+                )
+            blockers = self._open_batch_retarget_blockers(batch, items)
+            if blockers:
+                preview = "; ".join(blockers[:10])
+                if len(blockers) > 10:
+                    preview += f"; ... {len(blockers) - 10} more"
+                raise ConflictError(
+                    f"Batch {batch_id!r} is not safe to revise: {preview}"
+                )
+
+            items_by_id = {item.catalog_id: item for item in items}
+            missing_ids = sorted(set(catalog_ids) - set(items_by_id))
+            if missing_ids:
+                raise ConflictError(
+                    "Revision candidates are not members of the inspected batch: "
+                    + ", ".join(missing_ids[:20])
+                )
+            mismatched_hashes = [
+                catalog_id
+                for catalog_id in catalog_ids
+                if items_by_id[catalog_id].spec_hash
+                != normalized_spec_hashes[catalog_id]
+            ]
+            if mismatched_hashes:
+                raise ConflictError(
+                    "Revision candidate hashes changed from the inspected files: "
+                    + ", ".join(mismatched_hashes[:20])
+                )
+
+            cursor = connection.execute(
+                """
+                UPDATE catalog_factory_batches
+                SET version = version + 1
+                WHERE batch_id = ?
+                    AND status = ?
+                    AND version = ?
+                    AND base_commit = ?
+                    AND renderer_commit = ?
+                    AND source_commit IS NULL
+                    AND selection_digest IS NULL
+                    AND build_report_hash IS NULL
+                    AND release_manifest_hash IS NULL
+                    AND frozen_digest IS NULL
+                    AND manifest_json IS NULL
+                    AND frozen_at IS NULL
+                """,
+                (
+                    batch_id,
+                    BatchStatus.OPEN.value,
+                    expected_batch_version,
+                    expected_base_commit,
+                    expected_renderer_commit,
+                ),
+            )
+            if cursor.rowcount != 1:
+                raise ConflictError(
+                    f"Batch {batch_id!r} changed during revision reopening"
+                )
+
+            for catalog_id in catalog_ids:
+                item = items_by_id[catalog_id]
+                cursor = connection.execute(
+                    """
+                    UPDATE catalog_factory_items
+                    SET stage = ?,
+                        spec_hash = NULL,
+                        fence_epoch = fence_epoch + 1,
+                        not_before = 0,
+                        last_error = NULL,
+                        version = version + 1,
+                        updated_at = ?
+                    WHERE catalog_id = ?
+                        AND batch_id = ?
+                        AND stage = ?
+                        AND spec_hash = ?
+                        AND lease_owner IS NULL
+                        AND lease_token IS NULL
+                        AND lease_expires_at IS NULL
+                    """,
+                    (
+                        Stage.QUEUED.value,
+                        now,
+                        catalog_id,
+                        batch_id,
+                        Stage.SPEC_READY.value,
+                        normalized_spec_hashes[catalog_id],
+                    ),
+                )
+                if cursor.rowcount != 1:
+                    raise ConflictError(
+                        f"Revision candidate {catalog_id!r} changed during reopening"
+                    )
+                self._event(
+                    connection,
+                    event_type="spec_reopened_for_revision",
+                    catalog_id=catalog_id,
+                    batch_id=batch_id,
+                    actor=actor,
+                    fence_epoch=item.fence_epoch + 1,
+                    details={
+                        "reason": reason,
+                        "previous_spec_hash": normalized_spec_hashes[catalog_id],
+                    },
+                    now=now,
+                )
+
+            updated_batch = self._row_to_batch(
+                connection.execute(
+                    "SELECT * FROM catalog_factory_batches WHERE batch_id = ?",
+                    (batch_id,),
+                ).fetchone()
+            )
+            updated_items = [
+                self._row_to_item(item_row)
+                for item_row in connection.execute(
+                    """
+                    SELECT *
+                    FROM catalog_factory_items
+                    WHERE batch_id = ?
+                    ORDER BY catalog_id
+                    """,
+                    (batch_id,),
+                ).fetchall()
+            ]
+            current_state_digest = self._open_batch_retarget_state_digest(
+                updated_batch,
+                updated_items,
+            )
+            self._event(
+                connection,
+                event_type="batch_specs_reopened_for_revision",
+                batch_id=batch_id,
+                actor=actor,
+                details={
+                    "reason": reason,
+                    "reopened_count": len(catalog_ids),
+                    "catalog_ids_digest": catalog_ids_digest,
+                    "previous_spec_hashes_digest": previous_spec_hashes_digest,
+                    "previous_batch_version": batch.version,
+                    "new_batch_version": updated_batch.version,
+                    "previous_state_digest": actual_state_digest,
+                    "current_state_digest": current_state_digest,
+                },
+                now=now,
+            )
+            result = {
+                "batch": self._batch_result(updated_batch),
+                "reopened_count": len(catalog_ids),
+                "catalog_ids_digest": catalog_ids_digest,
+                "previous_spec_hashes_digest": previous_spec_hashes_digest,
+                "previous_state_digest": actual_state_digest,
+                "current_state_digest": current_state_digest,
+            }
+            self._save_idempotency(
+                connection,
+                idempotency_key=idempotency_key,
+                action="reopen_spec_ready_items_for_revision",
+                scope_id=batch_id,
+                request=request,
+                result=result,
+                now=now,
+            )
+            return SpecRevisionReopenResult(
+                batch=updated_batch,
+                reopened_count=len(catalog_ids),
+                catalog_ids_digest=catalog_ids_digest,
+                previous_spec_hashes_digest=previous_spec_hashes_digest,
                 previous_state_digest=actual_state_digest,
                 current_state_digest=current_state_digest,
                 idempotent_replay=False,
@@ -2708,6 +3265,7 @@ __all__ = [
     "LedgerError",
     "LeaseLostError",
     "OpenBatchRetargetResult",
+    "SpecRevisionReopenResult",
     "Stage",
     "WorkItem",
     "WorkLease",

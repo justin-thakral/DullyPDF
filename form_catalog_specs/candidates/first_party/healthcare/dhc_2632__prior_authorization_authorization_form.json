@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "catalog_id": "healthcare/dhc_2632__prior_authorization_authorization_form",
+  "source_section": "healthcare",
+  "source_filename": "dhc_2632__prior_authorization_authorization_form.pdf",
+  "slug": "prior-authorization-authorization-form",
+  "title": "Prior Authorization Form",
+  "subtitle": "Capture service request, medical-necessity reference, payer route, and decision period; confirm denial reason and appeal.",
+  "description": "Prior Authorization records service request, medical-necessity reference, payer route, decision period, denial reason, and appeal. Prior Authorization evidence stays linked.",
+  "use_case": "Use this prior authorization authorization decision when staff must document service request and medical-necessity reference. Reconcile payer route, decision period, denial reason, and appeal before the prior authorization handoff. Use the payer form or portal record, procedure or service details, medical-necessity support, submission proof, pending-request log, approval terms, denial letter, and appeal receipt. This workflow follows the payer decision itself through portal submission, pending status, information request, approval scope, units or date limits, denial rationale, peer review, resubmission, and appeal. Record authorization number, certified quantity, approved site, validity window, case reviewer, fax or portal transaction, determination letter, reconsideration appointment, and escalation deadline. Ask the assigned prior authorization reviewer to confirm service request against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Prior Authorization signer details",
+      "guidance": "Track service request, medical-necessity evidence, payer portal or call reference, decision period, approval scope, denial reason, resubmission, and appeal deadline. Keep any urgent prior authorization issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Prior Authorization people and reference",
+          "fields": [
+            {
+              "key": "patient_full_legal_name",
+              "label": "Patient full legal name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "medical_record_or_chart_id",
+              "label": "Medical record or chart ID",
+              "units": 1.25
+            },
+            {
+              "key": "ordering_or_referring_professional",
+              "label": "Ordering or referring professional",
+              "units": 1.1
+            },
+            {
+              "key": "service_request",
+              "label": "Service request",
+              "units": 1.2
+            },
+            {
+              "key": "medical_necessity_reference",
+              "label": "Medical-necessity reference",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Prior Authorization task details",
+          "fields": [
+            {
+              "key": "payer_route",
+              "label": "Payer route",
+              "units": 1.15
+            },
+            {
+              "key": "decision_period",
+              "label": "Decision period",
+              "units": 1.0
+            },
+            {
+              "key": "denial_reason",
+              "label": "Denial reason",
+              "units": 1.25
+            },
+            {
+              "key": "appeal",
+              "label": "Appeal",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_scope",
+      "title": "Prior Authorization scope choices review",
+      "guidance": "Decide each prior authorization scope separately and state any limit.",
+      "blocks": [
+        {
+          "key": "primary_scope_choices",
+          "type": "fields",
+          "label": "Prior Authorization primary scope",
+          "fields": [
+            {
+              "key": "service_request",
+              "label": "Service request",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "medical_necessity_reference",
+              "label": "Medical-necessity reference",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "payer_route",
+              "label": "Payer route",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "additional_scope_choices",
+          "type": "fields",
+          "label": "Prior Authorization additional scope",
+          "fields": [
+            {
+              "key": "decision_period",
+              "label": "Decision period",
+              "units": 1.1,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "denial_reason",
+              "label": "Denial reason",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            },
+            {
+              "key": "appeal",
+              "label": "Appeal",
+              "units": 1.2,
+              "field_type": "choice",
+              "options": [
+                "Authorize",
+                "Authorize with limit",
+                "Do not authorize",
+                "Need review"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "authorization_checks",
+          "type": "checklist",
+          "label": "Prior Authorization checks",
+          "items": [
+            "Signer identity is confirmed",
+            "Signer authority or relationship is confirmed",
+            "Effective period and recipient are stated",
+            "Declined scope remains separate from approved scope",
+            "Point-of-use staff received only authorized instructions"
+          ]
+        },
+        {
+          "key": "authorization_period",
+          "type": "fields",
+          "label": "Prior Authorization effective period and recipient",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "end_date_or_expiration_event",
+              "label": "End date or expiration event",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_care_recipient",
+              "label": "Authorized care recipient",
+              "units": 1.25
+            },
+            {
+              "key": "special_limit",
+              "label": "Special limit",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "authorization_signoff",
+      "title": "Prior Authorization contact and reference",
+      "guidance": "Only recorded prior authorization choices are signed.",
+      "blocks": [
+        {
+          "key": "authorization_notes",
+          "type": "textarea",
+          "label": "Prior Authorization limitation or instruction",
+          "fields": [
+            {
+              "key": "authorized_limit_declined_scope_question_or_responsible_staff_instruction",
+              "label": "Authorized limit, declined scope, question, or responsible-staff instruction"
+            }
+          ],
+          "height": 48
+        },
+        {
+          "key": "authorization_signatures",
+          "type": "signatures",
+          "label": "Prior Authorization signatures",
+          "fields": [
+            {
+              "key": "authorizing_person_and_date",
+              "label": "Authorizing person and date",
+              "units": 1.15
+            },
+            {
+              "key": "clinical_or_administrative_reviewer_and_date",
+              "label": "Clinical or administrative reviewer and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Prior Authorization signatures confirm role and scope."
+        },
+        {
+          "key": "authorization_boundary",
+          "type": "notice",
+          "label": "Prior Authorization boundary",
+          "guidance": "Named prior authorization reviewers handle policy or professional questions."
+        }
+      ]
+    }
+  ]
+}

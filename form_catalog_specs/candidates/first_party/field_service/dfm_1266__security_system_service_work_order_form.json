@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1266__security_system_service_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1266__security_system_service_work_order_form.pdf",
+  "slug": "security-system-service-work-order-form",
+  "title": "Security System Service Work Order Form",
+  "subtitle": "Security System Service: connects authorized scope to results.",
+  "description": "Security System Service Work Order Form covers alarm panel, access-control device, sensor, camera, credential path, and monitoring interface. The site security coordinator records Security System Service authorized tasks, materials, results, and changes. Security System Service Work Order Form keeps Security System Service exceptions visible until the site security coordinator handoff.",
+  "use_case": "Use Security System Service Work Order Form at controlled premises, panel, door, zone, camera view, and monitoring point. Document alarm panel, access-control device, sensor, camera, credential path, and monitoring interface identity before Security System Service begins. Compare alarm panel, access-control device, sensor, camera, credential path, and monitoring interface findings with stated Security System Service criteria; route unresolved Security System Service issues to authorized security-system reviewer. For Security System Service Work Order Form, confirm requirements for Security System Service. Ask authorized security-system reviewer to review Security System Service conditions beyond the site security coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Facility work-order scope review",
+      "guidance": "Bind Security System Service to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Request, asset, or work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Requesting department or site contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Facility, building, or service area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Site Security Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Security System Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Site and service ticket",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Panel, door, zone, camera, or device identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Scope, test window, account, and credential ID",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Security System Service identifier printed on alarm panel, access-control device, sensor, camera, credential path, and monitoring interface or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized work observations and evidence",
+      "guidance": "Record authorized Security System Service activity; separate proposed, declined, deferred, or new Security System Service scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Security System Service task",
+              "units": 1.2
+            },
+            {
+              "key": "subject",
+              "label": "Asset, zone, device, or component",
+              "units": 1.0
+            },
+            {
+              "key": "method",
+              "label": "Method, part, or material",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Actual result or reading",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Technician or crew",
+              "units": 0.8
+            },
+            {
+              "key": "verified",
+              "label": "Verified by / time",
+              "units": 0.85
+            }
+          ],
+          "rows": 6
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Security System Service work and verification points",
+          "items": [
+            "Panel, controller, power, communication, and trouble status",
+            "Door, lock, reader, request-to-exit, and contact response",
+            "Sensor, alarm, notification, and monitoring transmission",
+            "Camera view, recording, timestamp, retention, and obstruction state",
+            "Credential permission and least-access behavior",
+            "Test bypass, restoration, event history, and user acceptance"
+          ],
+          "guidance": "Use each Security System Service check to prompt documented alarm panel, access-control device, sensor, camera, credential path, and monitoring interface execution; enter its actual Security System Service result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Security System Service parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Work exception and scope changes",
+      "guidance": "Stop Security System Service at any scope or cost limit; honor site security coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when protection, monitoring, credential, privacy, or life-safety interface control is unresolved. Protect alarm panel, access-control device, sensor, camera, credential path, and monitoring interface; document the Security System Service notification and await authorized security-system reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Premises left unprotected or bypassed",
+            "Credential or recording privacy boundary exceeded",
+            "Life-safety interface affected",
+            "Monitoring or critical device cannot be restored"
+          ],
+          "guidance": "For Security System Service, identify affected alarm panel, access-control device, sensor, camera, credential path, and monitoring interface scope; ask site security coordinator to document the Security System Service immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected condition, scope change, added cost, and authorization response",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected condition, scope change, added cost, and authorization response",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work authorization decision and site release",
+      "guidance": "Reconcile Security System Service to authorization; state site security coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Device and zone test record",
+            "Sanitized event or alarm history",
+            "Before-and-after configuration evidence",
+            "Monitoring notification and full restoration confirmation"
+          ],
+          "guidance": "Attach or link proof for alarm panel, access-control device, sensor, camera, credential path, and monitoring interface; mark only Security System Service evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

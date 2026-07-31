@@ -39,51 +39,73 @@ def _renderer_runtime() -> dict:
     }
 
 
-def test_activation_merges_cumulative_replacements_and_enforces_order(tmp_path: Path) -> None:
-    current = {
-        "schemaVersion": 1,
-        "releaseId": "catalog-old",
-        "sourceCommit": "a" * 40,
-        "previousReleaseId": None,
-        "activatedAt": "2026-07-28T12:00:00Z",
-        "replacements": [
+def _active_contract(
+    *,
+    release_id: str | None = "catalog-old",
+) -> dict:
+    replacements = []
+    if release_id is not None:
+        replacements.append(
             {
                 "sourceSection": "old",
                 "filename": "old.pdf",
-                "pdfPath": "releases/catalog-old/assets/old/old.pdf",
-                "thumbnailPath": "releases/catalog-old/assets/old/old.webp",
+                "pdfPath": f"releases/{release_id}/assets/old/old.pdf",
+                "thumbnailPath": f"releases/{release_id}/assets/old/old.webp",
                 "sha256": "a" * 64,
                 "bytes": 10,
                 "pageCount": 1,
             }
-        ],
-    }
-    manifest = {
+        )
+    return {
         "schemaVersion": 1,
-        "releaseId": "catalog-new",
+        "releaseId": release_id,
+        "sourceCommit": "a" * 40 if release_id is not None else None,
+        "previousReleaseId": None,
+        "activatedAt": (
+            "2026-07-28T12:00:00Z" if release_id is not None else None
+        ),
+        "replacements": replacements,
+    }
+
+
+def _activation_manifest(
+    *,
+    release_id: str = "catalog-new",
+    previous_release_id: str | None = "catalog-old",
+    section: str = "new",
+    filename: str = "new.pdf",
+) -> dict:
+    stem = Path(filename).stem
+    return {
+        "schemaVersion": 1,
+        "releaseId": release_id,
         "sourceCommit": "b" * 40,
         "baseCommit": "a" * 40,
         "rendererCommit": "b" * 40,
         "rendererRuntime": _renderer_runtime(),
-        "previousReleaseId": "catalog-old",
+        "previousReleaseId": previous_release_id,
         "createdAt": "2026-07-29T11:00:00Z",
         "forms": [
             {
-                "catalogId": "new/new",
-                "slug": "new",
-                "sourceSection": "new",
-                "filename": "new.pdf",
+                "catalogId": f"{section}/{stem}",
+                "slug": stem.replace("_", "-"),
+                "sourceSection": section,
+                "filename": filename,
                 "pageCount": 2,
                 "pdf": {
-                    "sourcePath": "new.pdf",
-                    "objectPath": "releases/catalog-new/assets/new/new.pdf",
+                    "sourcePath": filename,
+                    "objectPath": (
+                        f"releases/{release_id}/assets/{section}/{filename}"
+                    ),
                     "contentType": "application/pdf",
                     "sha256": "b" * 64,
                     "bytes": 20,
                 },
                 "thumbnail": {
-                    "sourcePath": "new.webp",
-                    "objectPath": "releases/catalog-new/assets/new/new.webp",
+                    "sourcePath": f"{stem}.webp",
+                    "objectPath": (
+                        f"releases/{release_id}/assets/{section}/{stem}.webp"
+                    ),
                     "contentType": "image/webp",
                     "sha256": "c" * 64,
                     "bytes": 10,
@@ -91,6 +113,11 @@ def test_activation_merges_cumulative_replacements_and_enforces_order(tmp_path: 
             }
         ],
     }
+
+
+def test_activation_merges_cumulative_replacements_and_enforces_order(tmp_path: Path) -> None:
+    current = _active_contract()
+    manifest = _activation_manifest()
 
     active = build_active_contract(
         manifest_path=_write(tmp_path / "release.json", manifest),
@@ -121,6 +148,43 @@ def test_activation_merges_cumulative_replacements_and_enforces_order(tmp_path: 
             current_active_path=tmp_path / "active.json",
             activated_at="2026-07-29T12:00:00Z",
         )
+
+
+def test_activation_rejects_replacing_an_existing_cumulative_identity(
+    tmp_path: Path,
+) -> None:
+    current = _active_contract()
+    manifest = _activation_manifest(section="old", filename="old.pdf")
+
+    with pytest.raises(
+        ActivationError,
+        match="already exists in cumulative active replacements",
+    ):
+        build_active_contract(
+            manifest_path=_write(tmp_path / "release.json", manifest),
+            current_active_path=_write(tmp_path / "active.json", current),
+            activated_at="2026-07-29T12:00:00Z",
+        )
+
+
+def test_activation_preserves_first_batch_schema_v1_contract_compatibility(
+    tmp_path: Path,
+) -> None:
+    current = _active_contract(release_id=None)
+    manifest = _activation_manifest(
+        release_id="catalog-first",
+        previous_release_id=None,
+    )
+
+    active = build_active_contract(
+        manifest_path=_write(tmp_path / "release.json", manifest),
+        current_active_path=_write(tmp_path / "active.json", current),
+        activated_at="2026-07-29T12:00:00Z",
+    )
+
+    assert active["releaseId"] == "catalog-first"
+    assert active["previousReleaseId"] is None
+    assert len(active["replacements"]) == 1
 
 
 def test_sampling_is_reproducible_and_includes_worst_case_canaries(tmp_path: Path) -> None:

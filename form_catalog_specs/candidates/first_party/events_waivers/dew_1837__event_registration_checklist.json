@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1837__event_registration_checklist",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1837__event_registration_checklist.pdf",
+  "slug": "event-registration-checklist",
+  "title": "Event Registration Checklist",
+  "subtitle": "Capture event admission, ticket class, session choice, and accommodation; confirm payment reference and check-in status.",
+  "description": "Event Registration records event admission, ticket class, session choice, accommodation, payment reference, and check-in status. Event Registration evidence stays linked.",
+  "use_case": "Use this event registration stage-gated verification when staff must document event admission and ticket class. Reconcile session choice, accommodation, payment reference, and check-in status before the event registration handoff. Use the registration record, ticket or admission selection, payment receipt reference, session inventory, accommodation acknowledgment, confirmation message, and check-in scan. This record establishes attendee admission through ticket type, session inventory, purchaser contact, confirmation barcode, accommodation routing, payment reference, and check-in eligibility. It may also distinguish access tiers, guest passes, promotional codes, refund status, transferability, QR delivery, door-list lookup, and badge-printing readiness. Ask the assigned event registration reviewer to confirm event admission against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Event Registration starting details review",
+      "guidance": "Capture admission type, ticket class, session choices, attendee contact, accommodation route, payment reference, confirmation, and check-in.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Event Registration people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "event_admission",
+              "label": "Event admission",
+              "units": 1.1
+            },
+            {
+              "key": "ticket_class",
+              "label": "Ticket class",
+              "units": 1.2
+            },
+            {
+              "key": "session_choice",
+              "label": "Session choice",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Include",
+                "Include with limit",
+                "Do not include",
+                "Pending"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Event Registration task details",
+          "fields": [
+            {
+              "key": "accommodation",
+              "label": "Accommodation",
+              "units": 1.15
+            },
+            {
+              "key": "payment_reference",
+              "label": "Payment reference",
+              "units": 1.0
+            },
+            {
+              "key": "check_in_status",
+              "label": "Check-in status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Event Registration checks and corrections review",
+      "guidance": "Check current event registration facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Event Registration required checks",
+          "items": [
+            "Event admission is identified for this record",
+            "Ticket class matches the current request or source",
+            "Session choice is ready for point-of-use staff",
+            "Accommodation limits or questions are resolved",
+            "Payment reference is communicated to the responsible person",
+            "Check-in status is confirmed at handoff"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Event Registration failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Event Registration decision and readiness",
+      "guidance": "Hold event registration readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Event Registration checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Event Registration reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            },
+            {
+              "key": "event_coordinator_or_responsible_staff_and_date",
+              "label": "Event coordinator or responsible staff and date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Event Registration receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

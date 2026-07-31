@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dhs_169__septic_service_completion_report",
+  "source_section": "field_service",
+  "source_filename": "dhs_169__septic_service_completion_report.pdf",
+  "slug": "septic-service-completion-report",
+  "title": "Septic Service Completion Report",
+  "subtitle": "Residential Septic Service: verifies results and open follow-up.",
+  "description": "Septic Service Completion Report covers tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area. The septic service coordinator records Residential Septic Service performed work, tests, limits, and acceptance. Septic Service Completion Report keeps Residential Septic Service exceptions visible until the septic service coordinator handoff.",
+  "use_case": "Use Septic Service Completion Report at property, tank access, pump chamber, distribution area, and protected ground surface. Document tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area identity before Residential Septic Service begins. Compare tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area findings with stated Residential Septic Service criteria; route unresolved Residential Septic Service issues to qualified septic-system reviewer. For Septic Service Completion Report, confirm requirements for Residential Septic Service. Ask qualified septic-system reviewer to review Residential Septic Service conditions beyond the septic service coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Completed-scope context and subject identity",
+      "guidance": "For Residential Septic Service, identify responsible parties, property, tank access, pump chamber, distribution area, and protected ground surface, and the linked tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Completion record ID",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / contact",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Address / work area",
+              "units": 1.0555555555555556
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Residential Septic Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Customer, property, and service reference",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "System type, tank or component identifier, and access point",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Occupancy, last service, symptom, and weather history",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Performed scope and verification results",
+      "guidance": "Capture Residential Septic Service facts for tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Residential Septic Service completion checks",
+          "items": [
+            "Access cover, riser, seal, and surface condition",
+            "Liquid level, scum, sludge, inlet, outlet, and baffle observation",
+            "Pump, float, alarm, control, and electrical indication",
+            "Backup, odor, surfacing effluent, and wet-area evidence",
+            "Vehicle, excavation, fall, biological, and confined-space boundary",
+            "Post-service level, closure, alarm, and flow observation"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Completion verification lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Performed task or delivered item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 0.9
+            },
+            {
+              "key": "result",
+              "label": "Verified result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.85
+            },
+            {
+              "key": "follow_up",
+              "label": "Limitation or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Verified outcome and customer acknowledgment",
+      "guidance": "Resolve open Residential Septic Service conditions; have septic service coordinator assign the next Residential Septic Service owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Limitations, open work, and retained evidence",
+          "items": [
+            "Unsafe opening, fall, biological, or confined-space exposure",
+            "Backup or surfacing effluent threatens occupancy",
+            "Damaged tank or component requires excavation",
+            "Electrical, structural, or regulatory work outside scope",
+            "Access and component photographs",
+            "Measured level or service quantity",
+            "Waste transport or disposal record",
+            "Cover closure, alarm, and customer restriction evidence"
+          ],
+          "guidance": "Pause Residential Septic Service when access safety, containment, backup, structural integrity, disposal, or qualified escalation remains unresolved. Retain the available Residential Septic Service proof and route unresolved tank, inlet, outlet, baffle, pump, alarm, distribution component, and disposal area scope to septic service coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Acceptance status and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completion status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Accepted",
+                "Accepted with listed limitation",
+                "Follow-up required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Septic Service Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Customer or property contact",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

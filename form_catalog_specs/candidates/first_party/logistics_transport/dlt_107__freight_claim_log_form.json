@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_107__freight_claim_log_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_107__freight_claim_log_form.pdf",
+  "slug": "freight-claim-log-form",
+  "title": "Freight Claim Log Form",
+  "subtitle": "Freight Claim Intake: preserves changes and next triggers.",
+  "description": "Freight Claim Log Form covers claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation. The freight claims coordinator records Freight Claim Intake events, owners, exceptions, and next triggers. Freight Claim Log Form keeps Freight Claim Intake exceptions visible until the freight claims coordinator handoff.",
+  "use_case": "Use Freight Claim Log Form at origin, transit custody points, destination, inspection location, and evidence repository. Document claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation identity before Freight Claim Intake begins. Compare claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation findings with stated Freight Claim Intake criteria; route unresolved Freight Claim Intake issues to authorized claims reviewer. For Freight Claim Log Form, confirm requirements for Freight Claim Intake. Ask authorized claims reviewer to review Freight Claim Intake conditions beyond the freight claims coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking variance reference and responsible owner",
+      "guidance": "For Freight Claim Intake, identify responsible parties, origin, transit custody points, destination, inspection location, and evidence repository, and the linked claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Claimant / liable party",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "location",
+              "label": "Evidence repository",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Freight Claim Intake identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Claim, bill, shipment, order, and invoice",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "Claimant, carrier, shipper, and consignee",
+              "units": 2.2777777777777777
+            },
+            {
+              "key": "identity_3",
+              "label": "Item, lot, serial, package, quantity, and amount",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status variance and accountable response",
+      "guidance": "Capture Freight Claim Intake facts for claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Freight Claim Intake tracked controls",
+          "items": [
+            "Loss, damage, delay, or expense allegation",
+            "Delivery notation and discovery timing",
+            "Affected quantity and amount calculation",
+            "Packaging, handling, and custody evidence",
+            "Mitigation, salvage, repair, and retained goods",
+            "Notice, document completeness, and investigation owner"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Keep the Freight Claim Intake chronology intact through handoff. State the unresolved exception, the owner selected by Freight Claims Coordinator, and the next control point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Claimant or shipment identity incomplete",
+            "Amount lacks traceable support",
+            "Evidence or goods not preserved",
+            "Intake treated as liability or payment decision",
+            "Bill, invoice, packing, and delivery documents",
+            "Damage and packaging images",
+            "Amount worksheet and mitigation receipts",
+            "Notice, inspection, and custody chronology"
+          ],
+          "guidance": "Pause Freight Claim Intake when claim identity, determinable amount, evidence preservation, notice, or authorized investigation remains unresolved. Retain the available Freight Claim Intake proof and route unresolved claimed shipment, affected goods, loss amount, supporting documents, mitigation, and investigation scope to freight claims coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Freight Claims Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorized Claims Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

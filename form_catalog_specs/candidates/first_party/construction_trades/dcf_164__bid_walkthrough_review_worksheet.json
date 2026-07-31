@@ -1,0 +1,347 @@
+{
+  "catalog_id": "construction_trades/dcf_164__bid_walkthrough_review_worksheet",
+  "description": "For bid walkthrough, this review worksheet records observable conditions, scope interfaces, measurement needs, protection, logistics, assumptions, and questions. Its supporting evidence includes annotated plans, measurements, photos, attendee notes, hazardous-material disclosures, and addendum references.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Walkthrough opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Walkthrough site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Walkthrough contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Walkthrough superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Walkthrough due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this bid walkthrough record to its evidence.",
+          "key": "record_routing",
+          "label": "Bid Walkthrough Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Bid package",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Site zones",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Existing systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Access routes",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Working hours",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture bid package, site zones, existing systems, access routes, working hours, utilities, and owner-furnished information for this bid walkthrough.",
+          "key": "core_identity",
+          "label": "Bid Walkthrough Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify bid package, site zones, existing systems, access routes, working hours, utilities, and owner-furnished information for this bid walkthrough record.",
+      "key": "identity_1",
+      "title": "Review Assignment and Question"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Observable conditions",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Scope interfaces",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Measurement needs",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Protection",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Logistics",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For bid walkthrough, record observable conditions, scope interfaces, measurement needs, protection, logistics, assumptions, and questions.",
+          "key": "task_inputs",
+          "label": "Bid Walkthrough Required Inputs",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "criterion",
+              "label": "Walkthrough decision factor",
+              "units": 2.3
+            },
+            {
+              "key": "support",
+              "label": "Walkthrough supporting evidence",
+              "units": 2.5
+            },
+            {
+              "key": "gap",
+              "label": "Walkthrough review condition",
+              "units": 2.1
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate verified bid walkthrough facts from judgment.",
+          "key": "review_criteria",
+          "label": "Bid Walkthrough Review Criteria and Support",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Bid Walkthrough Analysis and Alternatives",
+              "multiline": true
+            }
+          ],
+          "guidance": "Explain bid walkthrough alternatives and retained uncertainty.",
+          "height": 50,
+          "key": "analysis",
+          "label": "Bid Walkthrough Analysis and Alternatives",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "For bid walkthrough, capture observable conditions, scope interfaces, measurement needs, protection, logistics, assumptions, and questions.",
+      "key": "task_2",
+      "title": "Criteria and Analysis"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Walkthrough when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Walkthrough measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Walkthrough evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Walkthrough result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For bid walkthrough, record annotated plans, measurements, photos, attendee notes, hazardous-material disclosures, and addendum references.",
+          "key": "evidence_register",
+          "label": "Bid Walkthrough Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Annotated plans",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Measurements",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Attendee notes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Hazardous-material disclosures",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every bid walkthrough evidence source.",
+          "key": "evidence_sources",
+          "label": "Bid Walkthrough Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Bid Walkthrough Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State bid walkthrough limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Bid Walkthrough Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support bid walkthrough findings with annotated plans, measurements, photos, attendee notes, hazardous-material disclosures, and addendum references.",
+      "key": "observation_3",
+      "title": "Records Examined and Findings"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select review worksheet disposition",
+                "Recommend acceptance",
+                "Recommend conditions",
+                "Further review",
+                "Do not accept"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Walkthrough decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Walkthrough approver",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Walkthrough authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Walkthrough review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate bid walkthrough disposition.",
+          "key": "disposition",
+          "label": "Bid Walkthrough Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Bid Walkthrough Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the bid walkthrough decision to evidence.",
+          "height": 48,
+          "key": "decision_basis",
+          "label": "Bid Walkthrough Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Walkthrough coordinator signature and date",
+              "units": 1.0
+            },
+            {
+              "key": "reviewed_by",
+              "label": "Walkthrough manager review and date",
+              "units": 1.0
+            },
+            {
+              "key": "authorized_by",
+              "label": "Walkthrough decision recipient and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Bid Walkthrough Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the bid walkthrough next step from annotated plans, measurements, photos, attendee notes, hazardous-material disclosures, and addendum references.",
+      "key": "decision_4",
+      "title": "Reviewer Recommendation"
+    }
+  ],
+  "slug": "bid-walkthrough-review-worksheet",
+  "source_filename": "dcf_164__bid_walkthrough_review_worksheet.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Bid Walkthrough Review Worksheet: pre-bid site walkthrough and constraint capture using bid package, observable conditions, and annotated plans.",
+  "title": "Bid Walkthrough Review Worksheet",
+  "use_case": "Use the review worksheet during pre-bid site walkthrough and constraint capture when the bid walkthrough record must identify bid package, site zones, existing systems, access routes, working hours, utilities, and owner-furnished information. Complete the applicable handoff for bid assumptions, RFI list, estimate handoff, risk allowance, addendum tracking, and acknowledgment record."
+}

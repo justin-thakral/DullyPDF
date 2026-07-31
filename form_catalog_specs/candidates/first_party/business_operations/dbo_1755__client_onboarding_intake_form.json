@@ -1,0 +1,331 @@
+{
+  "catalog_id": "business_operations/dbo_1755__client_onboarding_intake_form",
+  "description": "For client onboarding, this intake form records success criteria, service boundaries, dependencies, implementation milestones, data needs, training, and communication cadence. Its supporting evidence includes executed agreement, identity and tax documents, requirements notes, approvals, configuration proof, and kickoff decisions.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Onboarding opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Onboarding site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Onboarding contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Onboarding process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Onboarding due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this client onboarding record to its evidence.",
+          "key": "record_routing",
+          "label": "Client Onboarding Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Client legal identity",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Contacts",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Services",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Locations",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Billing",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Tax status",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture client legal identity, contacts, services, locations, billing, tax status, systems access, and contract record for this client onboarding.",
+          "key": "core_identity",
+          "label": "Client Onboarding Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify client legal identity, contacts, services, locations, billing, tax status, systems access, and contract record for this client onboarding record.",
+      "key": "identity_1",
+      "title": "Intake Contact and Ownership"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Success criteria",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Service boundaries",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Dependencies",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Implementation milestones",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Data needs",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For client onboarding, record success criteria, service boundaries, dependencies, implementation milestones, data needs, training, and communication cadence.",
+          "key": "task_inputs",
+          "label": "Client Onboarding Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Client Onboarding Desired Outcome and Service Fit",
+              "multiline": true
+            }
+          ],
+          "guidance": "State client onboarding outcomes, dependencies, timing, and sensitive-data limits.",
+          "height": 42,
+          "key": "requested_outcome",
+          "label": "Client Onboarding Desired Outcome and Service Fit",
+          "type": "textarea"
+        },
+        {
+          "guidance": "Route each unresolved client onboarding qualification item.",
+          "items": [
+            "Identity, authority, and primary contacts are verified",
+            "Desired outcome and service fit are understood",
+            "Sensitive information is limited to a stated purpose",
+            "Conflicts, dependencies, and risk screens are complete",
+            "Commitments remain within policy and capacity",
+            "Intake disposition and retention path are explicit"
+          ],
+          "key": "qualification_readiness",
+          "label": "Client Onboarding Qualification Readiness",
+          "type": "checklist"
+        },
+        {
+          "guidance": "Do not activate service with missing authority, unresolved sanctions or conflict check, unsupported commitment, or unsafe data access. Route unresolved client onboarding work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Client Onboarding Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For client onboarding, capture success criteria, service boundaries, dependencies, implementation milestones, data needs, training, and communication cadence.",
+      "key": "task_2",
+      "title": "Qualification Inputs"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Do not activate service with missing authority, unresolved sanctions or conflict check, unsupported commitment, or unsafe data access. Do not release affected client onboarding work.",
+          "key": "stop_boundary",
+          "label": "Client Onboarding Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Onboarding exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Onboarding correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Onboarding escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close client onboarding exceptions with verification.",
+          "key": "exception_register",
+          "label": "Client Onboarding Exception and Corrective Action",
+          "rows": 3,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Onboarding notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Onboarding notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Onboarding interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Onboarding review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Onboarding release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep client onboarding controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Client Onboarding Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Do not activate service with missing authority, unresolved sanctions or conflict check, unsupported commitment, or unsafe data access. Control and route each client onboarding exception.",
+      "key": "exception_3",
+      "title": "Intake Risk and Referrals"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select intake form disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Qualified review",
+                "Hold",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Onboarding decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Onboarding approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Onboarding schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate client onboarding disposition.",
+          "key": "disposition",
+          "label": "Client Onboarding Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Client Onboarding Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the client onboarding decision to evidence.",
+          "height": 36,
+          "key": "decision_basis",
+          "label": "Client Onboarding Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Onboarding requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Onboarding process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Client Onboarding Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the client onboarding next step from executed agreement, identity and tax documents, requirements notes, approvals, configuration proof, and kickoff decisions.",
+      "key": "decision_4",
+      "title": "Intake Decision"
+    }
+  ],
+  "slug": "client-onboarding-intake-form",
+  "source_filename": "dbo_1755__client_onboarding_intake_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Client Onboarding Intake Form: new-client qualification and operational onboarding using client legal identity, success criteria, and executed agreement.",
+  "title": "Client Onboarding Intake Form",
+  "use_case": "Use the intake form during new-client qualification and operational onboarding when the client onboarding record must identify client legal identity, contacts, services, locations, billing, tax status, systems access, and contract record. Complete the applicable handoff for readiness approval, account creation, responsibility matrix, milestone handoff, customer confirmation, and record index."
+}

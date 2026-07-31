@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "catalog_id": "events_waivers/dew_1839__event_registration_sign_in_log",
+  "source_section": "events_waivers",
+  "source_filename": "dew_1839__event_registration_sign_in_log.pdf",
+  "slug": "event-registration-sign-in-log",
+  "title": "Event Registration Sign-In Log",
+  "subtitle": "Capture event admission, ticket class, session choice, and accommodation; confirm payment reference and check-in status.",
+  "description": "Event Registration records event admission, ticket class, session choice, accommodation, payment reference, and check-in status. Event Registration evidence stays linked.",
+  "use_case": "Use this event registration attendance and custody reconciliation when staff must document event admission and ticket class. Reconcile session choice, accommodation, payment reference, and check-in status before the event registration handoff. Use the registration record, ticket or admission selection, payment receipt reference, session inventory, accommodation acknowledgment, confirmation message, and check-in scan. This record establishes attendee admission through ticket type, session inventory, purchaser contact, confirmation barcode, accommodation routing, payment reference, and check-in eligibility. It may also distinguish access tiers, guest passes, promotional codes, refund status, transferability, QR delivery, door-list lookup, and badge-printing readiness. Ask the assigned event registration reviewer to confirm event admission against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Event Registration details",
+      "guidance": "Capture admission type, ticket class, session choices, attendee contact, accommodation route, payment reference, confirmation, and check-in.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Event Registration people and reference",
+          "fields": [
+            {
+              "key": "participant_full_name",
+              "label": "Participant full name",
+              "units": 1.15
+            },
+            {
+              "key": "participant_contact",
+              "label": "Participant contact",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_name_when_applicable",
+              "label": "Guardian name when applicable",
+              "units": 1.25
+            },
+            {
+              "key": "event_admission",
+              "label": "Event admission",
+              "units": 1.1
+            },
+            {
+              "key": "ticket_class",
+              "label": "Ticket class",
+              "units": 1.2
+            },
+            {
+              "key": "session_choice",
+              "label": "Session choice",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Include",
+                "Include with limit",
+                "Do not include",
+                "Pending"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Event Registration task details",
+          "fields": [
+            {
+              "key": "accommodation",
+              "label": "Accommodation",
+              "units": 1.15
+            },
+            {
+              "key": "payment_reference",
+              "label": "Payment reference",
+              "units": 1.0
+            },
+            {
+              "key": "check_in_status",
+              "label": "Check-in status",
+              "units": 1.25,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "attendance_rows",
+      "title": "Event Registration roster identity, check-in, assignment, and departure",
+      "guidance": "Match each person to the accepted registration, credential, role or session, and departure status.",
+      "blocks": [
+        {
+          "key": "sign_in_rows",
+          "type": "table",
+          "label": "Event Registration roster rows",
+          "columns": [
+            {
+              "key": "person_or_registrant",
+              "label": "Person or registrant",
+              "units": 1.2
+            },
+            {
+              "key": "check_in_and_identity",
+              "label": "Check-in and identity",
+              "units": 1.1
+            },
+            {
+              "key": "credential_role_or_session",
+              "label": "Credential, role, or session",
+              "units": 1.25
+            },
+            {
+              "key": "departure_or_completion",
+              "label": "Departure or completion",
+              "units": 1.0
+            },
+            {
+              "key": "exception_and_owner",
+              "label": "Exception and owner",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "roster_boundary",
+          "type": "notice",
+          "label": "Event Registration roster boundary",
+          "guidance": "Route any unmatched registration, credential, role, session, or departure to its named owner before closing the roster."
+        }
+      ]
+    },
+    {
+      "key": "attendance_close",
+      "title": "Event Registration roster outcome and reconciliation",
+      "guidance": "Reconcile expected, checked-in, departed, and unresolved roster entries.",
+      "blocks": [
+        {
+          "key": "reconciliation",
+          "type": "fields",
+          "label": "Event Registration closing counts",
+          "fields": [
+            {
+              "key": "expected_roster_count",
+              "label": "Expected roster count",
+              "units": 1.15
+            },
+            {
+              "key": "checked_in_count",
+              "label": "Checked-in count",
+              "units": 1.0
+            },
+            {
+              "key": "departed_or_completed_count",
+              "label": "Departed or completed count",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_entry_and_owner",
+              "label": "Unresolved entry and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "attendance_receipt",
+          "type": "signatures",
+          "label": "Event Registration log receipt",
+          "fields": [
+            {
+              "key": "event_coordinator_or_roster_custodian_and_date",
+              "label": "Event coordinator or roster custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Do not close an unreconciled entry without a named owner."
+        }
+      ]
+    }
+  ]
+}

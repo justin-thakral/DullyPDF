@@ -1,0 +1,291 @@
+{
+  "catalog_id": "home_services/dhs_2633__home_inspection_inspection_checklist",
+  "description": "For home inspection, this inspection checklist records finding classification, clarification questions, safety urgency, further-evaluation needs, and decision responsibility. Its supporting evidence includes report excerpts, location photos, available repair records, specialist response, estimates, and verification documents.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "review_number",
+              "label": "Service review number",
+              "units": 1.0
+            },
+            {
+              "key": "service_date",
+              "label": "Service date and time",
+              "units": 1.0
+            },
+            {
+              "key": "customer_site",
+              "label": "Customer and service address",
+              "units": 1.0
+            },
+            {
+              "key": "service_area",
+              "label": "Rooms, zones, or equipment",
+              "units": 1.0
+            },
+            {
+              "key": "crew",
+              "label": "Crew or technician",
+              "units": 1.0
+            },
+            {
+              "key": "reviewer",
+              "label": "Customer or quality reviewer",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this home inspection review to the service record.",
+          "key": "service_review_reference",
+          "label": "Home Inspection Review Reference",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Inspection report",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Property systems",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Client priorities",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Seller response",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Confirm the reviewed home inspection location and assets.",
+          "key": "service_context",
+          "label": "Home Inspection Context",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify the home inspection service, reviewed areas, crew, and customer.",
+      "key": "identity_1",
+      "title": "Account and Service Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Mark each home inspection item after direct review.",
+          "items": [
+            "Report finding and exact property location are identified",
+            "Finding classification and stated limitation match the report",
+            "Available photo or document reference is linked",
+            "Clarification, further evaluation, or repair evidence is recorded",
+            "Safety urgency and responsible decision maker are identified",
+            "Unresolved questions and specialist referrals remain visible"
+          ],
+          "key": "quality_checks",
+          "label": "Home Inspection Task and Area Checks",
+          "type": "checklist"
+        },
+        {
+          "columns": [
+            {
+              "key": "area",
+              "label": "Room, area, or item",
+              "units": 2.3
+            },
+            {
+              "key": "expected",
+              "label": "Expected task or condition",
+              "units": 2.4
+            },
+            {
+              "key": "result",
+              "label": "Result",
+              "units": 1.4
+            },
+            {
+              "key": "note",
+              "label": "Issue, photo, or customer note",
+              "units": 2.5
+            }
+          ],
+          "guidance": "Use one home inspection row for each reviewed area.",
+          "key": "area_results",
+          "label": "Home Inspection Area and Task Results",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Do not treat the worksheet as engineering, code, legal, or repair certification; route specialist issues for review. Route unresolved home inspection work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Home Inspection Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "Check completed home inspection work by task, room, zone, or equipment.",
+      "key": "task_2",
+      "title": "Recurring Service Quality Check"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Area and issue",
+              "units": 2.1
+            },
+            {
+              "key": "evidence",
+              "label": "Photo or record",
+              "units": 1.7
+            },
+            {
+              "key": "correction",
+              "label": "Correction made",
+              "units": 2.1
+            },
+            {
+              "key": "owner_due",
+              "label": "Home owner and due",
+              "units": 1.7
+            },
+            {
+              "key": "recheck",
+              "label": "Recheck result",
+              "units": 1.7
+            }
+          ],
+          "guidance": "Keep each home inspection concern open through recheck.",
+          "key": "quality_issue_record",
+          "label": "Home Inspection Issue, Photo, and Correction Record",
+          "rows": 7,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Home Inspection Customer Notes or Unresolved Concern",
+              "multiline": true
+            }
+          ],
+          "guidance": "Record unresolved home inspection expectations here.",
+          "height": 42,
+          "key": "customer_concern",
+          "label": "Home Inspection Customer Notes or Unresolved Concern",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Record every home inspection issue, photo, correction, owner, and recheck.",
+      "key": "observation_3",
+      "title": "Issue, Photo, and Correction Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "outcome",
+              "label": "Review outcome",
+              "options": [
+                "Select service review outcome",
+                "Meets expected quality",
+                "Correction completed",
+                "Return visit required",
+                "Customer follow-up required"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "review_date",
+              "label": "Review date and time",
+              "units": 1.0
+            },
+            {
+              "key": "return_visit",
+              "label": "Return visit owner and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer_notice",
+              "label": "Customer notice or reservation",
+              "units": 1.0
+            },
+            {
+              "key": "next_record",
+              "label": "Next service record or follow-up",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Match the home inspection outcome to recorded issues.",
+          "key": "quality_outcome",
+          "label": "Home Inspection Review Outcome",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "quality_followup_1",
+              "label": "Client decision log",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_2",
+              "label": "Referral status",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_3",
+              "label": "Unresolved-risk acknowledgment",
+              "units": 1.0
+            },
+            {
+              "key": "quality_followup_4",
+              "label": "Document package",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For home inspection, record client decision log, referral status, unresolved-risk acknowledgment, document package, and transaction handoff.",
+          "key": "quality_followup",
+          "label": "Home Inspection Follow-Up and Customer Handoff",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "crew_lead",
+              "label": "Crew lead, acknowledgment, and date",
+              "units": 1.0
+            },
+            {
+              "key": "customer",
+              "label": "Customer or reviewer, acknowledgment, and date",
+              "units": 1.0
+            }
+          ],
+          "key": "quality_acknowledgment",
+          "label": "Home Inspection Crew and Customer Acknowledgment",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "State the home inspection result and acknowledge remaining follow-up.",
+      "key": "closeout_4",
+      "title": "Service Review and Handoff"
+    }
+  ],
+  "slug": "dhs-2633-home-inspection-inspection-checklist",
+  "source_filename": "dhs_2633__home_inspection_inspection_checklist.pdf",
+  "source_section": "home_services",
+  "subtitle": "Home Inspection Inspection Checklist: home inspection finding review record using inspection report, finding classification, and report excerpts.",
+  "title": "Home Inspection Checklist",
+  "use_case": "Use the inspection checklist during home inspection finding review record when the home inspection record must identify inspection report, property systems, client priorities, seller response, specialist referrals, and transaction milestones. Complete the applicable handoff for client decision log, referral status, unresolved-risk acknowledgment, document package, and transaction handoff."
+}

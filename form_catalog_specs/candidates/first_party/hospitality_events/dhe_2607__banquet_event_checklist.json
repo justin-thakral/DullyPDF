@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2607__banquet_event_checklist",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2607__banquet_event_checklist.pdf",
+  "slug": "banquet-event-checklist",
+  "title": "Banquet Event Checklist",
+  "subtitle": "Capture function space, guest count, setup, and banquet timing; confirm service owner and event acceptance.",
+  "description": "Banquet Event records function space, guest count, setup, banquet timing, service owner, and event acceptance. Banquet Event evidence stays linked.",
+  "use_case": "Use this banquet event stage-gated verification when staff must document function space and guest count. Reconcile setup, banquet timing, service owner, and event acceptance before the banquet event handoff. Use the function sheet, banquet-event order, floorplan, guaranteed count, menu schedule, audiovisual order, staffing assignment, captain report, and client signoff. Ask the assigned banquet event reviewer to confirm function space against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Banquet Event starting details",
+      "guidance": "Connect function space, guaranteed guest count, room setup, banquet-event order timing, meal courses, service captain, audiovisual needs, and client acceptance.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Banquet Event people and reference",
+          "fields": [
+            {
+              "key": "guest_or_client_full_name",
+              "label": "Guest or client full name",
+              "units": 1.15
+            },
+            {
+              "key": "primary_phone",
+              "label": "Primary phone",
+              "units": 1.0
+            },
+            {
+              "key": "primary_email",
+              "label": "Primary email",
+              "units": 1.25
+            },
+            {
+              "key": "function_space",
+              "label": "Function space",
+              "units": 1.1
+            },
+            {
+              "key": "guest_count",
+              "label": "Guest count",
+              "units": 1.2
+            },
+            {
+              "key": "setup",
+              "label": "Setup",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Banquet Event task details",
+          "fields": [
+            {
+              "key": "banquet_timing",
+              "label": "Banquet timing",
+              "units": 1.15
+            },
+            {
+              "key": "service_owner",
+              "label": "Service owner",
+              "units": 1.0
+            },
+            {
+              "key": "event_acceptance",
+              "label": "Event acceptance",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "task_checks",
+      "title": "Banquet Event checks and corrections review",
+      "guidance": "Check current banquet event facts at point of use.",
+      "blocks": [
+        {
+          "key": "required_checks",
+          "type": "checklist",
+          "label": "Banquet Event required checks",
+          "items": [
+            "Function space is identified for this record",
+            "Guest count matches the current request or source",
+            "Setup is ready for point-of-use staff",
+            "Banquet timing limits or questions are resolved",
+            "Service owner is communicated to the responsible person",
+            "Event acceptance is confirmed at handoff",
+            "A changed banquet event fact is returned for review"
+          ]
+        },
+        {
+          "key": "corrections",
+          "type": "table",
+          "label": "Banquet Event failed or pending items",
+          "columns": [
+            {
+              "key": "check_or_issue",
+              "label": "Check or issue",
+              "units": 1.2
+            },
+            {
+              "key": "correction",
+              "label": "Correction",
+              "units": 1.1
+            },
+            {
+              "key": "owner_and_due_date",
+              "label": "Owner and due date",
+              "units": 1.25
+            },
+            {
+              "key": "recheck_result",
+              "label": "Recheck result",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "checklist_result",
+      "title": "Banquet Event decision and readiness",
+      "guidance": "Hold banquet event readiness on any failed or pending item.",
+      "blocks": [
+        {
+          "key": "readiness",
+          "type": "fields",
+          "label": "Banquet Event checklist outcome",
+          "fields": [
+            {
+              "key": "readiness_result",
+              "label": "Readiness result",
+              "units": 1.15
+            },
+            {
+              "key": "remaining_open_item",
+              "label": "Remaining open item",
+              "units": 1.0
+            },
+            {
+              "key": "next_review_date",
+              "label": "Next review date",
+              "units": 1.25
+            },
+            {
+              "key": "result_communicated_date",
+              "label": "Result communicated date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "checklist_receipt",
+          "type": "signatures",
+          "label": "Banquet Event reviewer receipt",
+          "fields": [
+            {
+              "key": "checklist_reviewer_and_date",
+              "label": "Checklist reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Banquet Event receipt confirms the visible checklist result."
+        }
+      ]
+    }
+  ]
+}

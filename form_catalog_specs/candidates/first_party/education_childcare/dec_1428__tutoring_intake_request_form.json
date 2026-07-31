@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1428__tutoring_intake_request_form",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1428__tutoring_intake_request_form.pdf",
+  "slug": "tutoring-intake-request-form",
+  "title": "Tutoring Intake Request Form",
+  "subtitle": "Capture learner goal, source work, session schedule, and support need; confirm tutor match and progress checkpoint.",
+  "description": "Tutoring Intake records learner goal, source work, session schedule, support need, tutor match, and progress checkpoint. Tutoring Intake evidence stays linked.",
+  "use_case": "Use this tutoring intake request intake when staff must document learner goal and source work. Reconcile session schedule, support need, tutor match, and progress checkpoint before the tutoring intake handoff. Use the intake request, learner work sample, teacher referral if provided, availability calendar, tutor-match rationale, support-route acknowledgment, and first-session plan. For tutoring intake live use, check roster. Reconcile the tutoring intake schedule and actual handoff times. Preserve the tutoring intake roster and schedule. Record the tutoring intake handoff time and instructions. Close the tutoring intake exception queue. Verify tutoring intake day-of-service timing. Resolve tutoring intake real-time changes and operating handoff for tutoring intake. Ask the assigned tutoring intake reviewer to confirm learner goal against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Tutoring Intake requester details review",
+      "guidance": "Preserve learner goal, source assignment or assessment, preferred schedule, support need, tutor match factors, session plan, and initial progress checkpoint.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Tutoring Intake people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "learner_goal",
+              "label": "Learner goal",
+              "units": 1.2
+            },
+            {
+              "key": "source_work",
+              "label": "Source work",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Tutoring Intake task details",
+          "fields": [
+            {
+              "key": "session_schedule",
+              "label": "Session schedule",
+              "units": 1.15
+            },
+            {
+              "key": "support_need",
+              "label": "Support need",
+              "units": 1.0
+            },
+            {
+              "key": "tutor_match",
+              "label": "Tutor match",
+              "units": 1.25
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_scope",
+      "title": "Tutoring Intake exception review and request scope",
+      "guidance": "Separate the requested outcome from constraints and optional items.",
+      "blocks": [
+        {
+          "key": "requested_items",
+          "type": "table",
+          "label": "Tutoring Intake requested items",
+          "columns": [
+            {
+              "key": "requested_learner_goal",
+              "label": "Requested learner goal",
+              "units": 1.2
+            },
+            {
+              "key": "need_or_source_work",
+              "label": "Need or source work",
+              "units": 1.1
+            },
+            {
+              "key": "constraint_or_support_need",
+              "label": "Constraint or support need",
+              "units": 1.25
+            },
+            {
+              "key": "owner_and_status",
+              "label": "Owner and status",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "request_readiness",
+          "type": "checklist",
+          "label": "Tutoring Intake request checks",
+          "items": [
+            "Learner goal is identified for this record",
+            "Source work matches the current request or source",
+            "Session schedule is ready for point-of-use staff",
+            "Support need limits or questions are resolved"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "request_decision",
+      "title": "Tutoring Intake exception review and response",
+      "guidance": "Record the authorized response without promising an unapproved outcome.",
+      "blocks": [
+        {
+          "key": "decision",
+          "type": "fields",
+          "label": "Tutoring Intake request decision",
+          "fields": [
+            {
+              "key": "decision",
+              "label": "Decision",
+              "units": 1.15
+            },
+            {
+              "key": "approved_scope_or_limit",
+              "label": "Approved scope or limit",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Decision owner",
+              "units": 1.25
+            },
+            {
+              "key": "decision_communicated_date",
+              "label": "Decision communicated date",
+              "units": 1.1
+            },
+            {
+              "key": "follow_up_owner_and_due_date",
+              "label": "Follow-up owner and due date",
+              "units": 1.2
+            }
+          ]
+        },
+        {
+          "key": "request_receipt",
+          "type": "signatures",
+          "label": "Tutoring Intake request receipt",
+          "fields": [
+            {
+              "key": "request_reviewer_and_date",
+              "label": "Request reviewer and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the routed decision."
+        }
+      ]
+    }
+  ]
+}

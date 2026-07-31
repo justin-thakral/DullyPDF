@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2639__vendor_load_in_tracking_log",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2639__vendor_load_in_tracking_log.pdf",
+  "slug": "vendor-load-in-tracking-log",
+  "title": "Vendor Load-In Tracking Log",
+  "subtitle": "Capture vendor vehicle, dock slot, freight, and credential; confirm route and load-out reconciliation.",
+  "description": "Vendor Load In records vendor vehicle, dock slot, freight, credential, route, and load-out reconciliation. Vendor Load In evidence stays linked.",
+  "use_case": "Use this vendor load in time-ordered tracking when staff must document vendor vehicle and dock slot. Reconcile freight, credential, route, and load-out reconciliation before the vendor load in handoff. Use the dock schedule, vehicle and driver list, freight manifest, credential roster, route map, elevator booking, marshal assignment, staging check, and load-out receipt. Ask the assigned vendor load in reviewer to confirm vendor vehicle against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Vendor Load In contact and reference",
+      "guidance": "Schedule vendor vehicle, driver, dock slot, freight dimensions, equipment, credential, approved route, elevator or marshal support, staging, and load-out reconciliation.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Vendor Load In people and reference",
+          "fields": [
+            {
+              "key": "operational_record_subject",
+              "label": "Operational record subject",
+              "units": 1.15
+            },
+            {
+              "key": "responsible_contact",
+              "label": "Responsible contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_work_area",
+              "label": "Property, venue, or work area",
+              "units": 1.25
+            },
+            {
+              "key": "scheduled_or_discovery_date",
+              "label": "Scheduled or discovery date",
+              "units": 1.1
+            },
+            {
+              "key": "vendor_vehicle",
+              "label": "Vendor vehicle",
+              "units": 1.2
+            },
+            {
+              "key": "dock_slot",
+              "label": "Dock slot",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Vendor Load In task details",
+          "fields": [
+            {
+              "key": "freight",
+              "label": "Freight",
+              "units": 1.15
+            },
+            {
+              "key": "credential",
+              "label": "Credential",
+              "units": 1.0
+            },
+            {
+              "key": "route",
+              "label": "Route",
+              "units": 1.25
+            },
+            {
+              "key": "load_out_reconciliation",
+              "label": "Load-out reconciliation",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Vendor Load In event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Vendor Load In events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "vendor_vehicle",
+              "label": "Vendor vehicle",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "route",
+              "label": "Route",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Vendor Load In correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Vendor Load In decision and current state",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Vendor Load In status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Vendor Load In open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Vendor Load In log receipt",
+          "fields": [
+            {
+              "key": "service_or_operations_log_custodian_and_date",
+              "label": "Service or operations log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

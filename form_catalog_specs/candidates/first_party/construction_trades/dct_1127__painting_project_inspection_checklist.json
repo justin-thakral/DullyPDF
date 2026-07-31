@@ -1,0 +1,346 @@
+{
+  "catalog_id": "construction_trades/dct_1127__painting_project_inspection_checklist",
+  "description": "For painting project, this inspection checklist records surface preparation, repairs, masking, primer, coat count, application method, protection, and sequencing. Its supporting evidence includes color approval, substrate test, moisture reading, product batch, coverage photos, and finish inspection.",
+  "risk_tier": "A",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Project opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Project site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Project contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Project superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Project due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this painting project record to its evidence.",
+          "key": "record_routing",
+          "label": "Painting Project Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Rooms or elevations",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Substrate",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Existing coating",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Color",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Sheen",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Occupied contents",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture rooms or elevations, substrate, existing coating, color and sheen, occupied contents, access, and environmental limits for this painting project.",
+          "key": "core_identity",
+          "label": "Painting Project Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify rooms or elevations, substrate, existing coating, color and sheen, occupied contents, access, and environmental limits for this painting project record.",
+      "key": "identity_1",
+      "title": "Site Reference and Inspector"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Surface preparation",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Repairs",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Masking",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Primer",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Coat count",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Application method",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For painting project, record surface preparation, repairs, masking, primer, coat count, application method, protection, and sequencing.",
+          "key": "task_inputs",
+          "label": "Painting Project Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the painting project condition before marking.",
+          "items": [
+            "Verify surface preparation",
+            "Verify repairs",
+            "Verify masking",
+            "Verify primer",
+            "Verify coat count",
+            "Verify application method"
+          ],
+          "key": "task_checks",
+          "label": "Painting Project Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Project checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Project review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Project qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Project check time",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the painting project criteria and inspector.",
+          "key": "checkpoint_result",
+          "label": "Painting Project Inspection Reference",
+          "type": "fields"
+        }
+      ],
+      "guidance": "For painting project, capture surface preparation, repairs, masking, primer, coat count, application method, protection, and sequencing.",
+      "key": "task_2",
+      "title": "Scope, Criteria, and Test Method"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Project when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Project measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Project evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Project result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For painting project, record color approval, substrate test, moisture reading, product batch, coverage photos, and finish inspection.",
+          "key": "evidence_register",
+          "label": "Painting Project Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Color approval",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Substrate test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Moisture reading",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Product batch",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Coverage photos",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every painting project evidence source.",
+          "key": "evidence_sources",
+          "label": "Painting Project Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Painting Project Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State painting project limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Painting Project Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support painting project findings with color approval, substrate test, moisture reading, product batch, coverage photos, and finish inspection.",
+      "key": "observation_3",
+      "title": "Measured Finding Record"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select inspection checklist disposition",
+                "Accept",
+                "Conditional acceptance",
+                "Correct and reinspect",
+                "Unsafe—do not release"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Project decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Inspector and qualification",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Criteria or release authority",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Correction or released next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate painting project disposition.",
+          "key": "disposition",
+          "label": "Painting Project Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Painting Project Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the painting project decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Painting Project Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "inspector",
+              "label": "Project qualified inspector and date",
+              "units": 1.0
+            },
+            {
+              "key": "release_authority",
+              "label": "Project release authority and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Painting Project Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the painting project next step from color approval, substrate test, moisture reading, product batch, coverage photos, and finish inspection.",
+      "key": "decision_4",
+      "title": "Release Decision"
+    }
+  ],
+  "slug": "painting-project-inspection-checklist",
+  "source_filename": "dct_1127__painting_project_inspection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Painting Project Inspection Checklist: painting scope preparation and finish control using rooms or elevations, surface preparation, and color approval.",
+  "title": "Painting Project Inspection Checklist",
+  "use_case": "Use the inspection checklist during painting scope preparation and finish control when the painting project record must identify rooms or elevations, substrate, existing coating, color and sheen, occupied contents, access, and environmental limits. Complete the applicable handoff for touch-up verification, leftover material label, cleaning, customer acceptance, and maintenance guidance."
+}

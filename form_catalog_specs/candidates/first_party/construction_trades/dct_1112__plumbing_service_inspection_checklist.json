@@ -1,0 +1,343 @@
+{
+  "catalog_id": "construction_trades/dct_1112__plumbing_service_inspection_checklist",
+  "description": "For plumbing service, this inspection checklist records symptom history, isolation, repair boundary, materials, water-damage protection, code needs, and restoration. Its supporting evidence includes pressure readings, leak trace, drain test, photos, removed-part condition, and post-repair observation.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Plumbing opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Plumbing site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Plumbing contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Plumbing superintendent",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Plumbing due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this plumbing service record to its evidence.",
+          "key": "record_routing",
+          "label": "Plumbing Service Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Fixture",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Branch",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Shutoff",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Supply or drain system",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Water source",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture fixture, branch, shutoff, supply or drain system, water source, affected areas, and building access for this plumbing service.",
+          "key": "core_identity",
+          "label": "Plumbing Service Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify fixture, branch, shutoff, supply or drain system, water source, affected areas, and building access for this plumbing service record.",
+      "key": "identity_1",
+      "title": "Site Reference and Inspector"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Symptom history",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Isolation",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Repair boundary",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Materials",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Water-damage protection",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For plumbing service, record symptom history, isolation, repair boundary, materials, water-damage protection, code needs, and restoration.",
+          "key": "task_inputs",
+          "label": "Plumbing Service Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the plumbing service condition before marking.",
+          "items": [
+            "Verify symptom history",
+            "Verify isolation",
+            "Verify repair boundary",
+            "Verify materials",
+            "Verify water-damage protection",
+            "Verify code needs"
+          ],
+          "key": "task_checks",
+          "label": "Plumbing Service Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Plumbing checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Plumbing review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Plumbing qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Plumbing check time",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Identify the plumbing service criteria and inspector.",
+          "key": "checkpoint_result",
+          "label": "Plumbing Service Inspection Reference",
+          "type": "fields"
+        },
+        {
+          "guidance": "Shut down and escalate uncontrolled discharge, contamination, sewer gas, failed backflow protection, or concealed damage. Route unresolved plumbing service work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Plumbing Service Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For plumbing service, capture symptom history, isolation, repair boundary, materials, water-damage protection, code needs, and restoration.",
+      "key": "task_2",
+      "title": "Scope, Criteria, and Test Method"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Plumbing when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Plumbing measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Plumbing evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Plumbing result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For plumbing service, record pressure readings, leak trace, drain test, photos, removed-part condition, and post-repair observation.",
+          "key": "evidence_register",
+          "label": "Plumbing Service Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Pressure readings",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Leak trace",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Drain test",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Photos",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Removed-part condition",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every plumbing service evidence source.",
+          "key": "evidence_sources",
+          "label": "Plumbing Service Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Plumbing Service Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State plumbing service limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Plumbing Service Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support plumbing service findings with pressure readings, leak trace, drain test, photos, removed-part condition, and post-repair observation.",
+      "key": "observation_3",
+      "title": "Measured Finding Record"
+    },
+    {
+      "blocks": [
+        {
+          "guidance": "Shut down and escalate uncontrolled discharge, contamination, sewer gas, failed backflow protection, or concealed damage. Do not release affected plumbing service work.",
+          "key": "stop_boundary",
+          "label": "Plumbing Service Stop and Review Boundary",
+          "type": "notice"
+        },
+        {
+          "columns": [
+            {
+              "key": "issue",
+              "label": "Plumbing exception",
+              "units": 2.3
+            },
+            {
+              "key": "control",
+              "label": "Immediate control",
+              "units": 1.9
+            },
+            {
+              "key": "owner",
+              "label": "Plumbing correction lead",
+              "units": 1.5
+            },
+            {
+              "key": "due",
+              "label": "Plumbing escalation date",
+              "units": 1.5
+            },
+            {
+              "key": "verification",
+              "label": "Disposition and verification",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Close plumbing service exceptions with verification.",
+          "key": "exception_register",
+          "label": "Plumbing Service Exception and Corrective Action",
+          "rows": 4,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "notified",
+              "label": "Plumbing notified contact",
+              "units": 1.0
+            },
+            {
+              "key": "notice_time",
+              "label": "Plumbing notification time",
+              "units": 1.0
+            },
+            {
+              "key": "interim_owner",
+              "label": "Plumbing interim lead",
+              "units": 1.0
+            },
+            {
+              "key": "decision_needed",
+              "label": "Plumbing review needed",
+              "units": 1.0
+            },
+            {
+              "key": "release_by",
+              "label": "Plumbing release approval",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Keep plumbing service controls until authorized release.",
+          "key": "escalation_record",
+          "label": "Plumbing Service Escalation Record",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Shut down and escalate uncontrolled discharge, contamination, sewer gas, failed backflow protection, or concealed damage. Control and route each plumbing service exception.",
+      "key": "exception_4",
+      "title": "Defect Risk and Correction"
+    }
+  ],
+  "slug": "plumbing-service-inspection-checklist",
+  "source_filename": "dct_1112__plumbing_service_inspection_checklist.pdf",
+  "source_section": "construction_trades",
+  "subtitle": "Plumbing Service Inspection Checklist: plumbing leak or fixture service workflow using fixture, symptom history, and pressure readings.",
+  "title": "Plumbing Service Inspection Checklist",
+  "use_case": "Use the inspection checklist during plumbing leak or fixture service workflow when the plumbing service record must identify fixture, branch, shutoff, supply or drain system, water source, affected areas, and building access. Complete the applicable handoff for leak-free verification, restored service, damage referral, customer care instructions, and repair warranty record."
+}

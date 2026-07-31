@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1444__summer_camp_registration_tracking_log",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1444__summer_camp_registration_tracking_log.pdf",
+  "slug": "summer-camp-registration-tracking-log",
+  "title": "Summer Camp Registration Tracking Log",
+  "subtitle": "Capture session placement, unit assignment, activity choices, and support route; confirm supplies and guardian handoff.",
+  "description": "Summer Camp Registration records session placement, unit assignment, activity choices, support route, supplies, and guardian handoff. Summer Camp Registration evidence stays linked.",
+  "use_case": "Use this summer camp registration time-ordered tracking when staff must document session placement and unit assignment. Reconcile activity choices, support route, supplies, and guardian handoff before the summer camp registration handoff. Use the application, session-capacity report, unit list, bus choice, activity permissions, support-route receipt, payment reference, packing notice, and placement confirmation. Ask the assigned summer camp registration reviewer to confirm session placement against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Summer Camp Registration contact and reference",
+      "guidance": "Confirm session placement, unit assignment, optional activities, support routing, supplies, fee reference, orientation, transportation, and guardian handoff.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Summer Camp Registration people and reference",
+          "fields": [
+            {
+              "key": "learner_full_name",
+              "label": "Learner full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_age_group_or_classroom",
+              "label": "Grade, age group, or classroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_preferred_contact",
+              "label": "Guardian preferred contact",
+              "units": 1.1
+            },
+            {
+              "key": "session_placement",
+              "label": "Session placement",
+              "units": 1.2
+            },
+            {
+              "key": "unit_assignment",
+              "label": "Unit assignment",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Summer Camp Registration task details",
+          "fields": [
+            {
+              "key": "activity_choices",
+              "label": "Activity choices",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Include",
+                "Include with limit",
+                "Do not include",
+                "Pending"
+              ]
+            },
+            {
+              "key": "support_route",
+              "label": "Support route",
+              "units": 1.0
+            },
+            {
+              "key": "supplies",
+              "label": "Supplies",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_handoff",
+              "label": "Guardian handoff",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Summer Camp Registration exception review and event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Summer Camp Registration events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "session_placement",
+              "label": "Session placement",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "supplies",
+              "label": "Supplies",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Summer Camp Registration correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 44
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Summer Camp Registration current state and handoff",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Summer Camp Registration status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Summer Camp Registration open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Summer Camp Registration log receipt",
+          "fields": [
+            {
+              "key": "school_or_program_log_custodian_and_date",
+              "label": "School or program log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

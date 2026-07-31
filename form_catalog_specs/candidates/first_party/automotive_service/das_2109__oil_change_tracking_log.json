@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2109__oil_change_tracking_log",
+  "source_section": "automotive_service",
+  "source_filename": "das_2109__oil_change_tracking_log.pdf",
+  "slug": "oil-change-tracking-log",
+  "title": "Oil Change Tracking Log",
+  "subtitle": "Engine Oil-Change Service: preserves changes and next triggers.",
+  "description": "Oil Change Tracking Log covers vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval. The maintenance service advisor records Engine Oil-Change Service events, owners, exceptions, and next triggers. Oil Change Tracking Log keeps Engine Oil-Change Service exceptions visible until the maintenance service advisor handoff.",
+  "use_case": "Use Oil Change Tracking Log at service lane, lift bay, engine compartment, and customer handoff. Document vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval identity before Engine Oil-Change Service begins. Compare vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval findings with stated Engine Oil-Change Service criteria; route unresolved Engine Oil-Change Service issues to qualified automotive maintenance reviewer. For Oil Change Tracking Log, confirm requirements for Engine Oil-Change Service. Ask qualified automotive maintenance reviewer to review Engine Oil-Change Service conditions beyond the maintenance service advisor's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For Engine Oil-Change Service, identify responsible parties, service lane, lift bay, engine compartment, and customer handoff, and the linked vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Engine Oil-Change Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Work order and customer",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, year, make, model, and mileage",
+              "units": 2.3333333333333335
+            },
+            {
+              "key": "identity_3",
+              "label": "Engine, oil specification, capacity, filter, and interval",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Status variance and accountable response",
+      "guidance": "Capture Engine Oil-Change Service facts for vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Engine Oil-Change Service tracked controls",
+          "items": [
+            "Pre-service oil level and visible leak condition",
+            "Drain plug, pan, filter housing, and sealing surface",
+            "Oil and filter specification match",
+            "Measured fill quantity and final level",
+            "Leak check after operation",
+            "Maintenance indicator reset and next interval"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Reconcile the latest Engine Oil-Change Service event before closeout. Maintenance Service Advisor identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Oil specification cannot be confirmed",
+            "Damaged drain or filter interface",
+            "Active leak requires separate repair",
+            "Final level or leak check cannot be verified",
+            "Vehicle and odometer intake",
+            "Oil and filter product trace",
+            "Drain, filter, quantity, and final-level record",
+            "Post-service leak check and interval notice"
+          ],
+          "guidance": "Pause Engine Oil-Change Service when oil specification, sealing integrity, active leak, final level, or operating verification remains unresolved. Retain the available Engine Oil-Change Service proof and route unresolved vehicle, engine, oil specification, filter, drain and fill points, fluid level, and service interval scope to maintenance service advisor."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Maintenance Service Advisor",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Automotive Maintenance Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

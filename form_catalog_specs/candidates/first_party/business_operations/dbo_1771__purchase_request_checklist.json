@@ -1,0 +1,299 @@
+{
+  "catalog_id": "business_operations/dbo_1771__purchase_request_checklist",
+  "description": "For purchase request, this checklist records business justification, specification, alternatives, total cost, recurring obligation, sourcing path, and budget availability. Its supporting evidence includes quotes, budget report, technical review, supplier record, conflict disclosure, contract reference, and approval evidence.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Purchase opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Purchase site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Purchase contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Purchase process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Purchase due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this purchase request record to its evidence.",
+          "key": "record_routing",
+          "label": "Purchase Request Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Requester",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Department",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Supplier",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Goods or services",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Quantity",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Needed-by date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture requester, department, supplier, goods or services, quantity, needed-by date, location, and accounting dimensions for this purchase request.",
+          "key": "core_identity",
+          "label": "Purchase Request Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify requester, department, supplier, goods or services, quantity, needed-by date, location, and accounting dimensions for this purchase request record.",
+      "key": "identity_1",
+      "title": "Process Checkpoint and Owner"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Business justification",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Specification",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Alternatives",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Total cost",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Recurring obligation",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For purchase request, record business justification, specification, alternatives, total cost, recurring obligation, sourcing path, and budget availability.",
+          "key": "task_inputs",
+          "label": "Purchase Request Required Inputs",
+          "type": "fields"
+        },
+        {
+          "guidance": "Verify the purchase request condition before marking.",
+          "items": [
+            "Verify business justification",
+            "Verify specification",
+            "Verify alternatives",
+            "Verify total cost",
+            "Verify recurring obligation"
+          ],
+          "key": "task_checks",
+          "label": "Purchase Request Verification Points",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "checkpoint",
+              "label": "Purchase checkpoint",
+              "units": 1.0
+            },
+            {
+              "key": "criteria",
+              "label": "Purchase review criteria",
+              "units": 1.0
+            },
+            {
+              "key": "checked_by",
+              "label": "Purchase qualified checker",
+              "units": 1.0
+            },
+            {
+              "key": "check_date",
+              "label": "Purchase check time",
+              "units": 1.0
+            },
+            {
+              "field_type": "choice",
+              "key": "result",
+              "label": "Result",
+              "options": [
+                "Select checkpoint result",
+                "Meets criteria",
+                "Conditionally acceptable",
+                "Correction required",
+                "Do not proceed"
+              ],
+              "units": 1.0
+            }
+          ],
+          "guidance": "Pair each purchase request result with a finding.",
+          "key": "checkpoint_result",
+          "label": "Purchase Request Checkpoint Result",
+          "type": "fields"
+        },
+        {
+          "guidance": "Do not order before required competitive review, budget confirmation, contract review, security assessment, or approval. Route unresolved purchase request work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Purchase Request Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For purchase request, capture business justification, specification, alternatives, total cost, recurring obligation, sourcing path, and budget availability.",
+      "key": "task_2",
+      "title": "Conditions to Verify"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Purchase when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Purchase measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Purchase evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Purchase result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For purchase request, record quotes, budget report, technical review, supplier record, conflict disclosure, contract reference, and approval evidence.",
+          "key": "evidence_register",
+          "label": "Purchase Request Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Quotes",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Budget report",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Technical review",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Supplier record",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Conflict disclosure",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Contract reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every purchase request evidence source.",
+          "key": "evidence_sources",
+          "label": "Purchase Request Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "guidance": "Reconcile unchecked purchase request items before release.",
+          "items": [
+            "Correct checklist version and applicability are confirmed",
+            "Prerequisite documents and access are available",
+            "Each item is marked verified, not applicable, or exception",
+            "Exceptions name an owner and target correction date",
+            "Evidence supports every critical verification",
+            "Final release is within the reviewer's authority"
+          ],
+          "key": "mode_verification_sequence",
+          "label": "Purchase Request Repeatable Checklist",
+          "type": "checklist"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Purchase Request Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State purchase request limits, assumptions, and access gaps.",
+          "height": 40,
+          "key": "limitations",
+          "label": "Purchase Request Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support purchase request findings with quotes, budget report, technical review, supplier record, conflict disclosure, contract reference, and approval evidence.",
+      "key": "observation_3",
+      "title": "Checklist Finding Record"
+    }
+  ],
+  "slug": "purchase-request-checklist",
+  "source_filename": "dbo_1771__purchase_request_checklist.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Purchase Request Checklist: internal purchase request and authorization using requester, business justification, and quotes.",
+  "title": "Purchase Request Checklist",
+  "use_case": "Use the checklist during internal purchase request and authorization when the purchase request record must identify requester, department, supplier, goods or services, quantity, needed-by date, location, and accounting dimensions. Complete the applicable handoff for purchase-order reference, committed amount, receiving owner, invoice instructions, asset tagging, and request closure."
+}

@@ -151,6 +151,173 @@ that replacement. Index generation rejects unknown or ambiguous source targets,
 duplicate mappings or asset paths, mixed PDF/thumbnail release IDs, and any
 asset path outside `releases/<release-id>/assets/`.
 
+## Plan a disjoint release batch
+
+Plan each train against the current cumulative active contract and every frozen
+selection that has not yet been absorbed by that contract:
+
+```bash
+python3 -m scripts.form_catalog_factory plan-batch \
+  --release-id catalog-20260730-002 \
+  --target-count 1000 \
+  --active-contract form_catalog_releases/active.json \
+  --frozen-selection form_catalog_releases/planning/catalog-20260729-001-selection.json \
+  --theme-id charcoal-deep-green-gold-v1 \
+  --output form_catalog_releases/planning/catalog-20260730-002-selection.json
+```
+
+Repeat `--frozen-selection` for each open or historical frozen plan whose
+members might not yet appear in `active.json`. The planner validates those
+sources and excludes their union before applying the stable SEO-first ranking.
+An identity may appear in both the active contract and one frozen plan because
+that is the normal promotion lifecycle. Duplicate identities across two frozen
+plans, malformed identities, conflicting metadata, stale catalog identities,
+or any selected/excluded overlap fail closed.
+
+The selection records the SHA-256 and item count of the active contract and
+each frozen plan, a canonical digest and count of the excluded catalog IDs, the
+remaining eligible candidate count, and the exact render-theme provenance.
+These fields make a planned train reproducible without rewriting historical
+selection files. The first train can omit `--frozen-selection`; use
+`--active-contract` with the default empty contract.
+
+Render an individual specification with the same planned theme before opening
+the full release build:
+
+```bash
+python3 -m scripts.form_catalog_factory render \
+  form_catalog_specs/candidates/<source-family>/<source-section>/<spec>.json \
+  --output-root tmp/form-catalog-theme-preview \
+  --theme-id charcoal-deep-green-gold-v1
+```
+
+The content gate assigns each form a task-proportional usability profile.
+Inherently focused absence notes, reservations, and acknowledgments may render
+to at most two pages, or three for Tier-C review needs. Standard operational
+forms have a six-page fail-safe ceiling and genuinely complex applications,
+assessments, plans, and packets have an eight-page ceiling. These are rejection
+ceilings, not authoring targets; semantic review must still reject unnecessary
+length for the named task. The release builder enforces the rendered-page
+ceiling in addition to pre-render section and control ceilings. Batch QA also
+rejects excessive reuse of an exact layout, the same normalized section-role
+sequence, or the same long customer-facing metadata or instructional phrase.
+Individual QA rejects two or more generic workflow section labels and guidance
+copied across multiple sections of one form. These controls prevent cosmetic
+label, count, or boilerplate changes from disguising one oversized workflow
+template as many distinct forms. Batch QA also rejects a four-or-more-word
+control label reused across more than 25 percent of the batch, after a minimum
+40-form floor, so short universal labels remain practical while a shared
+workflow shell cannot dominate a release. Discrete UI copy must use polished
+sentence case, and adjacent duplicate words such as `Scope Scope` fail
+individual specification QA.
+
+CI schema-validates the complete tracked candidate tree, then reads
+`form_catalog_releases/planning-qa-registry.json`. Every discovered selection
+must have one exact path and SHA-256 binding. Exactly one themed selection is
+marked `current-policy` and receives the moving content gate. The initial
+unthemed release is bound by exact hash as `immutable-legacy-schema`; it is not
+identified by release ID alone.
+
+Before adding the next train, preserve the current train's passing
+`form-catalog-selection-spec-qa` report under
+`form_catalog_releases/qa-receipts/`, bind the receipt path and SHA-256 in the
+registry, and change that selection to `pinned-policy-receipt`. Then add the
+new exact selection as the sole `current-policy` entry and update
+`currentPolicyReleaseId`. CI verifies that every pinned receipt is passing and
+matches both the release ID and selection hash. This prevents future QA-policy
+changes from reinterpreting historical work while also preventing an edited
+historical selection or receipt from being silently skipped.
+
+Rendered release QA also fails a multi-page form when the final page's lowest
+widget remains above 45 percent of page height measured from the PDF bottom
+edge. This applies regardless of widget count and catches sparse tails outside
+the narrower six-control orphan-page rule. Repair the pagination with
+substantive adjacent workflow content, never with filler controls.
+Unthemed historical selections retain the prior 60-percent build threshold
+solely for byte-compatible legacy reproduction; every new themed release uses
+the 45-percent gate.
+
+### Reopen rejected specifications before release evidence
+
+Independent semantic or visual review may reject specifications after workers
+have marked them `spec_ready`. Never edit the SQLite database or silently
+replace a hash-bound file. While the complete batch is still open, fully
+`spec_ready`, unleased, and has no render, QA, review, source, or release
+evidence, inspect its exact state fence:
+
+```bash
+python3 -m scripts.form_catalog_factory inspect-open-batch-retarget \
+  --ledger tmp/form-catalog-factory/runtime/factory-v4.sqlite3 \
+  --selection form_catalog_releases/planning/catalog-20260730-002-selection.json
+```
+
+Pass the unchanged fence values and the exact current rejected spec paths to
+the atomic revision transition:
+
+```bash
+python3 -m scripts.form_catalog_factory reopen-specs-for-revision \
+  <exact-current-rejected-spec-paths...> \
+  --ledger tmp/form-catalog-factory/runtime/factory-v4.sqlite3 \
+  --batch-id catalog-20260730-002 \
+  --expected-base-commit "<fence base_commit>" \
+  --expected-renderer-commit "<fence renderer_commit>" \
+  --expected-batch-version "<fence batch_version>" \
+  --expected-state-digest "<fence state_digest>" \
+  --reason "<independent review defect>" \
+  --actor "<release controller>" \
+  --idempotency-key "<stable unique operation key>"
+```
+
+The command hashes every supplied file, validates the complete inspected batch
+state in one transaction, clears only those spec hashes, advances their fence
+epochs, records per-form and batch audit events, and returns the exact items to
+`queued`. Any stale hash, lease, changed batch state, prior release evidence, or
+frozen batch rejects the whole operation. Corrected workers must reclaim and
+complete those exact IDs through the normal fenced authoring flow before build
+or retarget.
+
+When a corrected ignored draft is independently approved, claim its exact
+catalog ID with `claim-spec`, then replace the rejected tracked bytes through
+the audited revision publisher:
+
+```bash
+python3 -m scripts.form_catalog_factory publish-spec-revision \
+  --ledger tmp/form-catalog-factory/runtime/factory-v4.sqlite3 \
+  --claim "<active revision claim file>" \
+  --draft "<approved ignored draft>" \
+  --destination "<current tracked candidate spec>" \
+  --expected-previous-sha256 "<hash recorded by the reopen event>" \
+  --expected-draft-sha256 "<hash recorded by independent draft review>" \
+  --idempotency-key "<stable per-form revision completion key>"
+```
+
+The publisher requires the claim's prior revision event, verifies the audited
+old hash and independently reviewed draft hash, validates the draft identity
+and content, atomically replaces the tracked file, and immediately completes
+the fenced claim with the new hash. A crash between filesystem replacement and
+ledger completion is resumable only when the destination exactly matches the
+immutable draft; any third byte state fails closed.
+
+For a reviewed lane or other multi-form revision set, use the bulk coordinator
+instead of scripting unaudited file replacement:
+
+```bash
+python3 -m scripts.form_catalog_factory publish-spec-revisions \
+  tmp/form-catalog-factory/batch2-lanes/lane-a/reviewed-drafts \
+  --ledger tmp/form-catalog-factory/runtime/factory-v4.sqlite3 \
+  --batch-id catalog-20260730-002 \
+  --worker-id lane-a-revision-publisher \
+  --destination-root form_catalog_specs/candidates \
+  --claim-root tmp/form-catalog-factory/runtime/revision-claims
+```
+
+The coordinator validates the complete draft set and preflights every batch
+identity, tracked destination, audited previous hash, and ledger stage before
+the first mutation. It then invokes the same per-form fenced revision publisher
+with each peer-reviewed content hash. Its fence-aware claim identities resume a
+live interrupted claim, safely reclaim an expired lease with a new fence, and
+remain idempotent for destinations already completed at the reviewed hash.
+
 ## Bind build and visual-review evidence
 
 Build the entire tracked selection from one exact source commit. Do not merge

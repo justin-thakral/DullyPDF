@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dec_1459__allergy_action_plan_tracking_log",
+  "source_section": "education_childcare",
+  "source_filename": "dec_1459__allergy_action_plan_tracking_log.pdf",
+  "slug": "allergy-action-plan-tracking-log",
+  "title": "Allergy Action Plan Tracking Log",
+  "subtitle": "Capture allergen source, exposure route, current plan, and emergency supply; confirm symptom threshold and guardian update.",
+  "description": "Allergy Action Plan records allergen source, exposure route, current plan, emergency supply, symptom threshold, and guardian update. Allergy Action Plan evidence stays linked.",
+  "use_case": "Use this allergy action plan time-ordered tracking when staff must document allergen source and exposure route. Reconcile current plan, emergency supply, symptom threshold, and guardian update before the allergy action plan handoff. Use the current clinician action-plan reference, allergen list, medication-label match, emergency-supply seal and expiration, exposure record, and guardian receipt. Unlike a medication administration record, this plan centers exposure prevention, recognized threshold signs, emergency-supply access, school response roles, and return to review. Ask the assigned allergy action plan reviewer to confirm allergen source against the organization's policy.",
+  "risk_tier": "C",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Allergy Action Plan starting details",
+      "guidance": "Preserve the named allergen, likely exposure setting, current qualified plan, emergency supply location, symptom threshold, and guardian notification route. Keep any urgent allergy action plan issue with its escalation contact and time.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Allergy Action Plan people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "date_of_birth",
+              "label": "Date of birth",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_contact",
+              "label": "Guardian contact",
+              "units": 1.1
+            },
+            {
+              "key": "allergen_source",
+              "label": "Allergen source",
+              "units": 1.2
+            },
+            {
+              "key": "exposure_route",
+              "label": "Exposure route",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Allergy Action Plan task details",
+          "fields": [
+            {
+              "key": "current_plan",
+              "label": "Current plan",
+              "units": 1.15
+            },
+            {
+              "key": "emergency_supply",
+              "label": "Emergency supply",
+              "units": 1.0
+            },
+            {
+              "key": "symptom_threshold",
+              "label": "Symptom threshold",
+              "units": 1.25
+            },
+            {
+              "key": "guardian_update",
+              "label": "Guardian update",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Allergy Action Plan event history review",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Allergy Action Plan events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "allergen_source",
+              "label": "Allergen source",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "symptom_threshold",
+              "label": "Symptom threshold",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Allergy Action Plan correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 40
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Allergy Action Plan current state and handoff",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Allergy Action Plan status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Allergy Action Plan open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Allergy Action Plan log receipt",
+          "fields": [
+            {
+              "key": "school_or_program_log_custodian_and_date",
+              "label": "School or program log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

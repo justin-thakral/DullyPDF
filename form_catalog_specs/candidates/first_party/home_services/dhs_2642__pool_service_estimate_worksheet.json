@@ -1,0 +1,358 @@
+{
+  "catalog_id": "home_services/dhs_2642__pool_service_estimate_worksheet",
+  "description": "For pool service, this estimate worksheet records water testing, chemical dosing, debris removal, equipment inspection, filter work, seasonal tasks, and customer requests. Its supporting evidence includes free and total sanitizer, pH, alkalinity, stabilizer, temperature, pressure, chemical amounts, and equipment observations.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Pool opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Pool site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Pool contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Pool account lead",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Pool due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this pool service record to its evidence.",
+          "key": "record_routing",
+          "label": "Pool Service Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Pool",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Spa volume",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Equipment",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Sanitizer system",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Water features",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Cover",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture pool and spa volume, equipment, sanitizer system, water features, cover, occupancy, gates, and service history for this pool service.",
+          "key": "core_identity",
+          "label": "Pool Service Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify pool and spa volume, equipment, sanitizer system, water features, cover, occupancy, gates, and service history for this pool service record.",
+      "key": "identity_1",
+      "title": "Account and Estimate Cycle"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Water testing",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Chemical dosing",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Debris removal",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Equipment inspection",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Filter work",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For pool service, record water testing, chemical dosing, debris removal, equipment inspection, filter work, seasonal tasks, and customer requests.",
+          "key": "task_inputs",
+          "label": "Pool Service Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pool Service Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State pool service outcomes, exclusions, timing, and assumptions.",
+          "height": 46,
+          "key": "requested_outcome",
+          "label": "Pool Service Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Pool work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Pool owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate pool service items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Pool Service Items, Quantity, and Responsibility",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "guidance": "Close access and escalate unsafe chemistry, electrical concerns, failed circulation, suction hazard, or uncontrolled leakage. Route unresolved pool service work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Pool Service Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For pool service, capture water testing, chemical dosing, debris removal, equipment inspection, filter work, seasonal tasks, and customer requests.",
+      "key": "task_2",
+      "title": "Quantities, Rates, and Assumptions"
+    },
+    {
+      "blocks": [
+        {
+          "columns": [
+            {
+              "key": "location_time",
+              "label": "Pool when and where",
+              "units": 1.7
+            },
+            {
+              "key": "finding",
+              "label": "Pool measured finding",
+              "units": 2.5
+            },
+            {
+              "key": "source",
+              "label": "Pool evidence source",
+              "units": 1.9
+            },
+            {
+              "key": "result",
+              "label": "Pool result record",
+              "units": 2.3
+            }
+          ],
+          "guidance": "For pool service, record free and total sanitizer, pH, alkalinity, stabilizer, temperature, pressure, chemical amounts, and equipment observations.",
+          "key": "evidence_register",
+          "label": "Pool Service Findings, Measurements, and Evidence",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "evidence_1",
+              "label": "Free",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_2",
+              "label": "Total sanitizer",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_3",
+              "label": "Alkalinity",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_4",
+              "label": "Stabilizer",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_5",
+              "label": "Temperature",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_6",
+              "label": "Pressure",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Cite every pool service evidence source.",
+          "key": "evidence_sources",
+          "label": "Pool Service Evidence Sources",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pool Service Limitations and Interpretation",
+              "multiline": true
+            }
+          ],
+          "guidance": "State pool service limits, assumptions, and access gaps.",
+          "height": 44,
+          "key": "limitations",
+          "label": "Pool Service Limitations and Interpretation",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Support pool service findings with free and total sanitizer, pH, alkalinity, stabilizer, temperature, pressure, chemical amounts, and equipment observations.",
+      "key": "observation_3",
+      "title": "Pricing Evidence and Options"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select estimate worksheet disposition",
+                "Approve estimate",
+                "Approve with option",
+                "Revise basis",
+                "Decline to price"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Pool decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Pool service reviewer",
+              "units": 1.0
+            },
+            {
+              "key": "authority",
+              "label": "Pool authority basis",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Pool review date",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate pool service disposition.",
+          "key": "disposition",
+          "label": "Pool Service Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Pool Service Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the pool service decision to evidence.",
+          "height": 43,
+          "key": "decision_basis",
+          "label": "Pool Service Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "prepared_by",
+              "label": "Pool crew lead and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Pool service decision and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Pool Service Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the pool service next step from free and total sanitizer, pH, alkalinity, stabilizer, temperature, pressure, chemical amounts, and equipment observations.",
+      "key": "decision_4",
+      "title": "Pricing Outcome"
+    }
+  ],
+  "slug": "dhs-2642-pool-service-estimate-worksheet",
+  "source_filename": "dhs_2642__pool_service_estimate_worksheet.pdf",
+  "source_section": "home_services",
+  "subtitle": "Pool Service Estimate Worksheet: residential pool maintenance and chemistry record using pool, water testing, and free.",
+  "title": "Pool Service Estimate Worksheet",
+  "use_case": "Use the estimate worksheet during residential pool maintenance and chemistry record when the pool service record must identify pool and spa volume, equipment, sanitizer system, water features, cover, occupancy, gates, and service history. Complete the applicable handoff for post-treatment readings, equipment status, swimming restriction, customer alert, repair referral, and next-service target."
+}

@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2121__collision_repair_inspection_checklist",
+  "source_section": "automotive_service",
+  "source_filename": "das_2121__collision_repair_inspection_checklist.pdf",
+  "slug": "collision-repair-inspection-checklist",
+  "title": "Collision Repair Inspection Checklist",
+  "subtitle": "Collision Repair: documents findings, limits, and disposition.",
+  "description": "Collision Repair Inspection Checklist covers damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need. The collision repair coordinator records Collision Repair criteria, findings, restrictions, and follow-up. Collision Repair Inspection Checklist keeps Collision Repair exceptions visible until the collision repair coordinator handoff.",
+  "use_case": "Use Collision Repair Inspection Checklist at intake area, body bay, frame or measurement area, refinish area, and delivery point. Document damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need identity before Collision Repair begins. Compare damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need findings with stated Collision Repair criteria; route unresolved Collision Repair issues to qualified collision and structural repair reviewer. For Collision Repair Inspection Checklist, confirm requirements for Collision Repair. Ask qualified collision and structural repair reviewer to review Collision Repair conditions beyond the collision repair coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Inspector, location, and subject identity",
+      "guidance": "For Collision Repair, identify responsible parties, intake area, body bay, frame or measurement area, refinish area, and delivery point, and the linked damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Collision Repair identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Repair order, owner, insurer, and claim",
+              "units": 2.1666666666666665
+            },
+            {
+              "key": "identity_2",
+              "label": "VIN, plate, mileage, and impact location",
+              "units": 2.2222222222222223
+            },
+            {
+              "key": "identity_3",
+              "label": "Estimate, supplement, part, procedure, and calibration references",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Observed conditions and item decisions",
+      "guidance": "Capture Collision Repair facts for damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Collision Repair inspection checks",
+          "items": [
+            "Visible and hidden-damage mapping",
+            "Body, structural, suspension, restraint, and glass concern",
+            "Measurement and repair-method basis",
+            "Part type, fit, corrosion protection, and refinish process",
+            "Scan, calibration, alignment, and system verification",
+            "Quality, appearance, function, and final safety review"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Use observed Collision Repair evidence to state disposition. Keep limits visible and give Collision Repair Coordinator both correction and repeat-check responsibility.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Hidden damage changes approved scope",
+            "Structural or restraint procedure unavailable",
+            "Calibration or measurement fails",
+            "Vehicle released before safety-related verification",
+            "Intake and disassembly photographs",
+            "Measurement and repair-procedure record",
+            "Part, weld, refinish, and corrosion-protection trace",
+            "Scan, calibration, alignment, and final inspection evidence"
+          ],
+          "guidance": "Pause Collision Repair when structural, restraint, repair-method, calibration, alignment, or final safety verification remains unresolved. Retain the available Collision Repair proof and route unresolved damaged vehicle area, structural or restraint concern, repair plan, supplement, refinish operation, and calibration need scope to collision repair coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Collision Repair Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Collision And Structural Repair Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

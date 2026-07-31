@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2632__cold_storage_inspection_log",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2632__cold_storage_inspection_log.pdf",
+  "slug": "cold-storage-inspection-log",
+  "title": "Cold Storage Inspection Log",
+  "subtitle": "Cold Storage Control: records repeated checks and excursions.",
+  "description": "Cold Storage Inspection Log covers storage room, zone, product lot, monitoring device, door event, alarm, and disposition. The cold-storage operations owner records Cold Storage Control check times, results, excursions, and review. Cold Storage Inspection Log keeps Cold Storage Control exceptions visible until the cold-storage operations owner handoff.",
+  "use_case": "Use Cold Storage Inspection Log at cooler, freezer, cold room, loading interface, and affected product zone. Document storage room, zone, product lot, monitoring device, door event, alarm, and disposition identity before Cold Storage Control begins. Compare storage room, zone, product lot, monitoring device, door event, alarm, and disposition findings with stated Cold Storage Control criteria; route unresolved Cold Storage Control issues to qualified product-condition reviewer. For Cold Storage Inspection Log, confirm requirements for Cold Storage Control. Ask qualified product-condition reviewer to review Cold Storage Control conditions beyond the cold-storage operations owner's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Monitoring review context and source record",
+      "guidance": "For Cold Storage Control, identify responsible parties, cooler, freezer, cold room, loading interface, and affected product zone, and the linked storage room, zone, product lot, monitoring device, door event, alarm, and disposition source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Log period",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Cold Storage Control identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Facility, room, zone, and unit",
+              "units": 1.6666666666666667
+            },
+            {
+              "key": "identity_2",
+              "label": "Product, lot, quantity, and storage requirement",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Logger, sensor, probe, calibration, and alarm",
+              "units": 2.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Repeated checks and recorded results",
+      "guidance": "Capture Cold Storage Control facts for storage room, zone, product lot, monitoring device, door event, alarm, and disposition; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "inspection_log",
+          "type": "table",
+          "label": "Repeated inspection entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "subject",
+              "label": "Room, zone, device, or product lot",
+              "units": 1.05
+            },
+            {
+              "key": "observed",
+              "label": "Temperature, alarm, door, or equipment",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Within range or excursion",
+              "units": 0.9
+            },
+            {
+              "key": "action",
+              "label": "Hold, transfer, correct, escalate, or none",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Owner or initials",
+              "units": 0.7
+            }
+          ],
+          "rows": 3
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Cold Storage Control monitored controls",
+          "items": [
+            "Air and representative product temperature",
+            "Door, seal, traffic, and loading event",
+            "Evaporator, fan, airflow, frost, and drain condition",
+            "Alarm, setpoint, sensor, and communication status",
+            "Excursion start, duration, affected scope, and containment",
+            "Qualified hold, release, rework, transfer, or disposal"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Excursions, period result, and next review",
+      "guidance": "Resolve open Cold Storage Control log excursions; have cold-storage operations owner record the period result, review owner, and next monitoring point.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Excursions, missed checks, and retained evidence",
+          "items": [
+            "Temperature excursion duration uncertain",
+            "Device or calibration unreliable",
+            "Affected lots cannot be bounded",
+            "Product moved or released without qualified disposition",
+            "Time-stamped logger and manual readings",
+            "Device and calibration identity",
+            "Door, equipment, and product-location evidence",
+            "Excursion review and product disposition"
+          ],
+          "guidance": "Pause Cold Storage Control when temperature history, device reliability, affected scope, containment, or qualified product disposition remains unresolved. Retain the available Cold Storage Control proof and route unresolved storage room, zone, product lot, monitoring device, door event, alarm, and disposition scope to cold-storage operations owner."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Period result and next review",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Log-period result",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Period complete and in control",
+                "Period complete with listed exception",
+                "Correction remains open",
+                "Review required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Log owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Cold-Storage Operations Owner",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Product-Condition Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

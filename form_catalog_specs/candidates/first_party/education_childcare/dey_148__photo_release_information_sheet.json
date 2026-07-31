@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_148__photo_release_information_sheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_148__photo_release_information_sheet.pdf",
+  "slug": "photo-release-information-sheet",
+  "title": "Photo Release Information Sheet",
+  "subtitle": "Capture capture type, event setting, audience, and channel; confirm attribution and withdrawal route.",
+  "description": "Photo Release records capture type, event setting, audience, channel, attribution, and withdrawal route. Photo Release evidence stays linked.",
+  "use_case": "Use this photo release controlled information handoff when staff must document capture type and event setting. Reconcile audience, channel, attribution, and withdrawal route before the photo release handoff. Use the capture plan, shot list, subject or roster match, approved channel list, production exclusion list, published-asset reference, and withdrawal request log. Ask the assigned photo release reviewer to confirm capture type against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Photo Release audience details review",
+      "guidance": "Separate still image, video, audio, name use, event setting, audience, channel, editing, attribution, duration, declined uses, and withdrawal route. Record the photo release decision separately from attendance, registration, or routine operations.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Photo Release people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "grade_or_homeroom",
+              "label": "Grade or homeroom",
+              "units": 1.0
+            },
+            {
+              "key": "guardian_full_name",
+              "label": "Guardian full name",
+              "units": 1.25
+            },
+            {
+              "key": "capture_type",
+              "label": "Capture type",
+              "units": 1.1
+            },
+            {
+              "key": "event_setting",
+              "label": "Event setting",
+              "units": 1.2
+            },
+            {
+              "key": "audience",
+              "label": "Audience",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Photo Release task details",
+          "fields": [
+            {
+              "key": "channel",
+              "label": "Channel",
+              "units": 1.15
+            },
+            {
+              "key": "attribution",
+              "label": "Attribution",
+              "units": 1.0
+            },
+            {
+              "key": "withdrawal_route",
+              "label": "Withdrawal route",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "point_of_use_information",
+      "title": "Photo Release current instructions",
+      "guidance": "List current instructions, their source, and any operating limit.",
+      "blocks": [
+        {
+          "key": "information_rows",
+          "type": "table",
+          "label": "Photo Release instructions and contacts",
+          "columns": [
+            {
+              "key": "information_or_instruction",
+              "label": "Information or instruction",
+              "units": 1.2
+            },
+            {
+              "key": "source_and_date",
+              "label": "Source and date",
+              "units": 1.1
+            },
+            {
+              "key": "limit_or_question",
+              "label": "Limit or question",
+              "units": 1.25
+            },
+            {
+              "key": "contact_or_recipient",
+              "label": "Contact or recipient",
+              "units": 1.0
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Photo Release questions or access needs",
+          "fields": [
+            {
+              "key": "question_access_need_outdated_item_or_replacement_source",
+              "label": "Question, access need, outdated item, or replacement source"
+            }
+          ],
+          "height": 56
+        }
+      ]
+    },
+    {
+      "key": "information_update",
+      "title": "Photo Release update route",
+      "guidance": "Make the effective period and update owner visible.",
+      "blocks": [
+        {
+          "key": "update_route",
+          "type": "fields",
+          "label": "Photo Release effective period and update",
+          "fields": [
+            {
+              "key": "effective_date",
+              "label": "Effective date",
+              "units": 1.15
+            },
+            {
+              "key": "review_or_replacement_date",
+              "label": "Review or replacement date",
+              "units": 1.0
+            },
+            {
+              "key": "update_owner_and_contact",
+              "label": "Update owner and contact",
+              "units": 1.25
+            }
+          ]
+        },
+        {
+          "key": "update_boundary",
+          "type": "notice",
+          "label": "Photo Release update boundary",
+          "guidance": "Replace outdated photo release instructions at the point of use and identify the new source."
+        }
+      ]
+    }
+  ]
+}

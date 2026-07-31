@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "catalog_id": "agriculture_food/daf_2649__csa_subscription_tracking_log",
+  "source_section": "agriculture_food",
+  "source_filename": "daf_2649__csa_subscription_tracking_log.pdf",
+  "slug": "csa-subscription-tracking-log",
+  "title": "CSA Subscription Tracking Log",
+  "subtitle": "Community-Supported Agriculture Subscription: preserves changes and next triggers.",
+  "description": "CSA Subscription Tracking Log covers subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication. The CSA program coordinator records Community-Supported Agriculture Subscription events, owners, exceptions, and next triggers. CSA Subscription Tracking Log keeps Community-Supported Agriculture Subscription exceptions visible until the CSA program coordinator handoff.",
+  "use_case": "Use CSA Subscription Tracking Log at farm program, packing point, pickup site, delivery route, and subscriber handoff. Document subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication identity before Community-Supported Agriculture Subscription begins. Compare subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication findings with stated Community-Supported Agriculture Subscription criteria; route unresolved Community-Supported Agriculture Subscription issues to farm subscription operations reviewer.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Tracking review and responsible owner",
+      "guidance": "For Community-Supported Agriculture Subscription, identify responsible parties, farm program, packing point, pickup site, delivery route, and subscriber handoff, and the linked subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Tracking record ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Farm / facility / account",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Field / lot / site",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Community-Supported Agriculture Subscription identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Subscriber, account, household, and contact",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_2",
+              "label": "Share type, season, frequency, and payment plan",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Pickup site, route, authorization, and preference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Tracking review and variance evidence",
+      "guidance": "Capture Community-Supported Agriculture Subscription facts for subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Community-Supported Agriculture Subscription tracked controls",
+          "items": [
+            "Enrollment and payment status",
+            "Share contents and source lot where needed",
+            "Packing, hold, pickup, and authorized alternate",
+            "Allergy or preference communication boundary",
+            "Missed pickup, substitution, credit, and donation rule",
+            "Season completion, balance, feedback, and renewal"
+          ]
+        },
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Status and event entries",
+          "columns": [
+            {
+              "key": "time",
+              "label": "Date, time, or event",
+              "units": 0.8
+            },
+            {
+              "key": "subject",
+              "label": "Item, stage, route, or checkpoint",
+              "units": 1.1
+            },
+            {
+              "key": "actual",
+              "label": "Actual state, count, or reading",
+              "units": 1.05
+            },
+            {
+              "key": "status",
+              "label": "Status, variance, or exception",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Owner and next trigger",
+              "units": 1.0
+            }
+          ],
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Tracking exception, status, and next update",
+      "guidance": "Reconcile the latest Community-Supported Agriculture Subscription event before closeout. CSA Program Coordinator identifies overdue action, the responsible party, and the event that reopens review.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Status exceptions, overdue actions, and retained evidence",
+          "items": [
+            "Payment or plan mismatch",
+            "Pickup authority uncertain",
+            "Substitution or allergen communication failure",
+            "Unclaimed share lacks timely disposition",
+            "Subscription and payment agreement",
+            "Distribution and pickup record",
+            "Substitution or credit communication",
+            "Balance, complaint, and season-closeout trace"
+          ],
+          "guidance": "Pause Community-Supported Agriculture Subscription when subscription terms, payment, pickup authority, communication, or share disposition remains unresolved. Retain the available Community-Supported Agriculture Subscription proof and route unresolved subscriber, share plan, season, pickup site, distribution, substitution, credit, and communication scope to CSA program coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Current status and next update",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Current tracking status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Current and within target",
+                "Current with open follow-up",
+                "Variance requires correction",
+                "Escalation required",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Tracking owner and reviewer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "CSA Program Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Farm Subscription Operations Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

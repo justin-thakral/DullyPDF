@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "catalog_id": "hospitality_events/dhe_2619__guest_incident_tracking_log",
+  "source_section": "hospitality_events",
+  "source_filename": "dhe_2619__guest_incident_tracking_log.pdf",
+  "slug": "guest-incident-tracking-log",
+  "title": "Guest Incident Tracking Log",
+  "subtitle": "Capture guest account, scene condition, witness, and immediate response; confirm evidence custody and follow-up.",
+  "description": "Guest Incident records guest account, scene condition, witness, immediate response, evidence custody, and follow-up. Guest Incident evidence stays linked.",
+  "use_case": "Use this guest incident time-ordered tracking when staff must document guest account and scene condition. Reconcile witness, immediate response, evidence custody, and follow-up before the guest incident handoff. Use the guest statement, witness contacts, scene photographs, camera-footage custody reference, first-response log, security report, property action, claim route, and follow-up call. Ask the assigned guest incident reviewer to confirm guest account against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Guest Incident starting details",
+      "guidance": "Preserve guest account and exact time, scene condition, witnesses, immediate care or security response, photographs, evidence custody, property action, and follow-up contact.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Guest Incident people and reference",
+          "fields": [
+            {
+              "key": "guest_full_name",
+              "label": "Guest full name",
+              "units": 1.15
+            },
+            {
+              "key": "guest_contact",
+              "label": "Guest contact",
+              "units": 1.0
+            },
+            {
+              "key": "property_venue_or_service_area",
+              "label": "Property, venue, or service area",
+              "units": 1.25
+            },
+            {
+              "key": "event_or_service_date",
+              "label": "Event or service date",
+              "units": 1.1
+            },
+            {
+              "key": "guest_account",
+              "label": "Guest account",
+              "units": 1.2
+            },
+            {
+              "key": "scene_condition",
+              "label": "Scene condition",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Guest Incident task details",
+          "fields": [
+            {
+              "key": "witness",
+              "label": "Witness",
+              "units": 1.15
+            },
+            {
+              "key": "immediate_response",
+              "label": "Immediate response",
+              "units": 1.0
+            },
+            {
+              "key": "evidence_custody",
+              "label": "Evidence custody",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Follow-up",
+              "units": 1.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "chronological_log",
+      "title": "Guest Incident event history",
+      "guidance": "Add events in time order; correct an entry without erasing it.",
+      "blocks": [
+        {
+          "key": "log_entries",
+          "type": "table",
+          "label": "Guest Incident events and state changes",
+          "columns": [
+            {
+              "key": "date_and_time",
+              "label": "Date and time",
+              "units": 1.2
+            },
+            {
+              "key": "guest_account",
+              "label": "Guest account",
+              "units": 1.1
+            },
+            {
+              "key": "event_or_change",
+              "label": "Event or change",
+              "units": 1.25
+            },
+            {
+              "key": "evidence_custody",
+              "label": "Evidence custody",
+              "units": 1.0
+            },
+            {
+              "key": "next_owner_and_due",
+              "label": "Next owner and due",
+              "units": 1.15
+            }
+          ],
+          "rows": 4
+        },
+        {
+          "key": "correction_note",
+          "type": "textarea",
+          "label": "Guest Incident correction note",
+          "fields": [
+            {
+              "key": "original_entry_corrected_fact_reason_author_and_time",
+              "label": "Original entry, corrected fact, reason, author, and time"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "current_state",
+      "title": "Guest Incident current state and handoff",
+      "guidance": "Reconcile the latest accepted event with the next action.",
+      "blocks": [
+        {
+          "key": "state_and_owner",
+          "type": "fields",
+          "label": "Guest Incident status and next owner",
+          "fields": [
+            {
+              "key": "current_status",
+              "label": "Current status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Not started",
+                "Pending",
+                "Active",
+                "Held",
+                "Complete"
+              ]
+            },
+            {
+              "key": "latest_accepted_event_date",
+              "label": "Latest accepted event date",
+              "units": 1.0
+            },
+            {
+              "key": "open_or_overdue_action",
+              "label": "Open or overdue action",
+              "units": 1.25
+            },
+            {
+              "key": "next_owner_and_due_date",
+              "label": "Next owner and due date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "open_actions",
+          "type": "table",
+          "label": "Guest Incident open actions",
+          "columns": [
+            {
+              "key": "action",
+              "label": "Action",
+              "units": 1.2
+            },
+            {
+              "key": "originating_event",
+              "label": "Originating event",
+              "units": 1.1
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.25
+            },
+            {
+              "key": "due_or_disposition",
+              "label": "Due or disposition",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "log_receipt",
+          "type": "signatures",
+          "label": "Guest Incident log receipt",
+          "fields": [
+            {
+              "key": "service_or_operations_log_custodian_and_date",
+              "label": "Service or operations log custodian and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt confirms reconciliation of the current state."
+        }
+      ]
+    }
+  ]
+}

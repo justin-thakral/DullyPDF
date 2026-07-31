@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1206__elevator_service_work_order_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1206__elevator_service_work_order_form.pdf",
+  "slug": "elevator-service-work-order-form",
+  "title": "Elevator Service Work Order Form",
+  "subtitle": "Elevator Service: connects authorized scope to results.",
+  "description": "Elevator Service Work Order Form covers elevator, controller, door system, communication device, and landing. The building elevator coordinator records Elevator Service authorized tasks, materials, results, and changes. Elevator Service Work Order Form keeps Elevator Service exceptions visible until the building elevator coordinator handoff.",
+  "use_case": "Use Elevator Service Work Order Form at machine space, hoistway access point, car, and affected landings. Document elevator, controller, door system, communication device, and landing identity before Elevator Service begins. Compare elevator, controller, door system, communication device, and landing findings with stated Elevator Service criteria; route unresolved Elevator Service issues to licensed or otherwise qualified elevator service reviewer. For Elevator Service Work Order Form, confirm requirements for Elevator Service. Ask licensed or otherwise qualified elevator service reviewer to review Elevator Service conditions beyond the building elevator coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "work_order_header",
+      "title": "Facility work-order scope review",
+      "guidance": "Bind Elevator Service to party, worker, site, and service window.",
+      "blocks": [
+        {
+          "key": "work_order_context",
+          "type": "fields",
+          "label": "Work-order details",
+          "fields": [
+            {
+              "key": "work_order_number",
+              "label": "Request, asset, or work-order ID",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Opened date",
+              "units": 0.65
+            },
+            {
+              "key": "party",
+              "label": "Requesting department or site contact",
+              "units": 1.15
+            },
+            {
+              "key": "location",
+              "label": "Facility, building, or service area",
+              "units": 1.1
+            },
+            {
+              "key": "assigned_to",
+              "label": "Building Elevator Coordinator",
+              "units": 1.1
+            },
+            {
+              "key": "authorization",
+              "label": "Scope authorized by / date",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "subject_identity",
+          "type": "fields",
+          "label": "Elevator Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Building and unit designation",
+              "units": 1.0
+            },
+            {
+              "key": "identity_2",
+              "label": "Controller or equipment identifier",
+              "units": 1.0
+            },
+            {
+              "key": "identity_3",
+              "label": "Service call, permit, and maintenance-control reference",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Use the Elevator Service identifier printed on elevator, controller, door system, communication device, and landing or its linked source record."
+        }
+      ]
+    },
+    {
+      "key": "authorized_execution",
+      "title": "Authorized work observations and evidence",
+      "guidance": "Record authorized Elevator Service activity; separate proposed, declined, deferred, or new Elevator Service scope.",
+      "blocks": [
+        {
+          "key": "authorized_tasks",
+          "type": "table",
+          "label": "Authorized work and completion record",
+          "columns": [
+            {
+              "key": "task",
+              "label": "Elevator service task",
+              "units": 1.15
+            },
+            {
+              "key": "subject",
+              "label": "Unit, landing, controller, or device",
+              "units": 1.1
+            },
+            {
+              "key": "method",
+              "label": "Work, part, setting, or test",
+              "units": 1.05
+            },
+            {
+              "key": "result",
+              "label": "Operating or test result",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Qualified technician",
+              "units": 0.8
+            },
+            {
+              "key": "verified",
+              "label": "Verified by / time",
+              "units": 0.85
+            }
+          ],
+          "rows": 5
+        },
+        {
+          "key": "work_verification",
+          "type": "checklist",
+          "label": "Elevator Service work and verification points",
+          "items": [
+            "Car and landing door operation",
+            "Leveling, ride, noise, and vibration observation",
+            "Alarm, emergency communication, and lighting response",
+            "Visible controls, indicators, and operating fixtures",
+            "Machine-space housekeeping and accessible component condition",
+            "Out-of-service protection and landing communication"
+          ],
+          "guidance": "Use each Elevator Service check to prompt documented elevator, controller, door system, communication device, and landing execution; enter its actual Elevator Service result in the table."
+        },
+        {
+          "key": "materials_and_time",
+          "type": "table",
+          "label": "Elevator Service parts, materials, time, or outside service",
+          "columns": [
+            {
+              "key": "item",
+              "label": "Part, material, equipment, or service",
+              "units": 1.35
+            },
+            {
+              "key": "reference",
+              "label": "Part, lot, vendor, or equipment reference",
+              "units": 1.15
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or hours",
+              "units": 0.8
+            },
+            {
+              "key": "status",
+              "label": "Used, returned, pending, or supplied",
+              "units": 1.0
+            }
+          ],
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "key": "work_changes",
+      "title": "Work exception and scope changes",
+      "guidance": "Stop Elevator Service at any scope or cost limit; honor building elevator coordinator access and safety boundaries.",
+      "blocks": [
+        {
+          "key": "stop_and_route",
+          "type": "notice",
+          "label": "Do not proceed without control",
+          "guidance": "Stop normal processing when the unit cannot be secured, a life-safety device fails, or required qualified elevator review is unavailable. Protect elevator, controller, door system, communication device, and landing; document the Elevator Service notification and await licensed or otherwise qualified elevator service reviewer direction."
+        },
+        {
+          "key": "work_stop_conditions",
+          "type": "checklist",
+          "label": "Conditions requiring stop or renewed authorization",
+          "items": [
+            "Entrapment or uncontrolled movement concern",
+            "Door protection or leveling failure",
+            "Emergency communication failure",
+            "Work or testing beyond technician qualification"
+          ],
+          "guidance": "For Elevator Service, identify affected elevator, controller, door system, communication device, and landing scope; ask building elevator coordinator to document the Elevator Service immediate control before continuing."
+        },
+        {
+          "key": "scope_change_record",
+          "type": "textarea",
+          "label": "Unexpected elevator condition, protected unit status, authority response, and restoration plan",
+          "fields": [
+            {
+              "key": "details",
+              "label": "Unexpected elevator condition, protected unit status, authority response, and restoration plan",
+              "multiline": true
+            }
+          ],
+          "height": 58
+        }
+      ]
+    },
+    {
+      "key": "work_order_completion",
+      "title": "Work authorization decision and site release",
+      "guidance": "Reconcile Elevator Service to authorization; state building elevator coordinator limitations, deferred work, and next visit.",
+      "blocks": [
+        {
+          "key": "work_evidence",
+          "type": "checklist",
+          "label": "Work-order records retained",
+          "items": [
+            "Unit and controller identification photographs",
+            "Fault history or controller indication",
+            "Test and measurement record within authorized scope",
+            "Out-of-service notice and restoration confirmation"
+          ],
+          "guidance": "Attach or link proof for elevator, controller, door system, communication device, and landing; mark only Elevator Service evidence present in that record."
+        },
+        {
+          "key": "completion_result",
+          "type": "fields",
+          "label": "Work-order result",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Work status",
+              "units": 1.0,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Completed",
+                "Completed with limitation",
+                "Partially completed",
+                "Awaiting part or authorization",
+                "Stopped or cancelled"
+              ]
+            },
+            {
+              "key": "completion_date",
+              "label": "Completion date",
+              "units": 0.7
+            },
+            {
+              "key": "functional_result",
+              "label": "Test, operating result, or condition",
+              "units": 1.25
+            },
+            {
+              "key": "follow_up",
+              "label": "Deferred work or next step",
+              "units": 1.15
+            },
+            {
+              "key": "follow_up_owner",
+              "label": "Follow-up owner",
+              "units": 0.9
+            }
+          ]
+        },
+        {
+          "key": "work_order_signatures",
+          "type": "signatures",
+          "label": "Technician and customer or site acknowledgment",
+          "fields": [
+            {
+              "key": "technician_signature",
+              "label": "Technician or crew lead",
+              "units": 1.1
+            },
+            {
+              "key": "technician_date",
+              "label": "Date",
+              "units": 0.6
+            },
+            {
+              "key": "customer_signature",
+              "label": "Customer, site contact, or fleet representative",
+              "units": 1.3
+            },
+            {
+              "key": "customer_date",
+              "label": "Date",
+              "units": 0.6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

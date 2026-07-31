@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dld_2212__courier_pickup_authorization_form",
+  "source_section": "logistics_transport",
+  "source_filename": "dld_2212__courier_pickup_authorization_form.pdf",
+  "slug": "courier-pickup-authorization-form",
+  "title": "Courier Pickup Authorization Form",
+  "subtitle": "Courier Pickup: bounds the decision, conditions, and expiry.",
+  "description": "Courier Pickup Authorization Form controls parcel, envelope, service level, pickup window, label, and custody handoff by tying each Courier Pickup custody, document, or movement decision to the pickup customer / shipper, a stated boundary, and an expiry. The courier dispatch coordinator preserves conditions, exceptions, confirmation, and both sides of the handoff.",
+  "use_case": "Use Courier Pickup Authorization Form at pickup address, secure collection point, vehicle, and destination route. Check applicable Courier Pickup requirements, list the affected quantity, value, document, route, or custody action, and state its limit. Record whether the pickup customer / shipper approves, conditions, holds, or declines the request; obtain renewed consent before changing parcel, envelope, service level, pickup window, label, and custody handoff scope.",
+  "risk_tier": "A",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Decision context and authorization record",
+      "guidance": "For Courier Pickup, identify responsible parties, pickup address, secure collection point, vehicle, and destination route, and the linked parcel, envelope, service level, pickup window, label, and custody handoff source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Authorization ID",
+              "units": 1.0
+            },
+            {
+              "key": "record_date",
+              "label": "Request date",
+              "units": 0.75
+            },
+            {
+              "key": "party",
+              "label": "Requesting party",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Pickup point / route",
+              "units": 1.1111111111111112
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Courier Pickup identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Requester, account, and pickup number",
+              "units": 2.0555555555555554
+            },
+            {
+              "key": "identity_2",
+              "label": "Piece, label, tracking, and seal identifiers",
+              "units": 2.4444444444444446
+            },
+            {
+              "key": "identity_3",
+              "label": "Origin, destination, service level, and pickup window",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Decision evidence, conditions, and limits",
+      "guidance": "Capture Courier Pickup facts for parcel, envelope, service level, pickup window, label, and custody handoff; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Requested scope and decision lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Requested scope or custody action",
+              "units": 1.2
+            },
+            {
+              "key": "basis",
+              "label": "Finding, rate, or source basis",
+              "units": 1.1
+            },
+            {
+              "key": "limit",
+              "label": "Limit or condition",
+              "units": 0.95
+            },
+            {
+              "key": "decision",
+              "label": "Decision or required change",
+              "units": 1.1
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Courier Pickup authorization checks",
+          "items": [
+            "Piece count and label match",
+            "Packaging and closure condition",
+            "Restricted-content declaration and handling note",
+            "Pickup contact and authority",
+            "Custody timestamp and courier identity",
+            "Failed-pickup or alternate-routing reason"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Authorization conditions and final decision",
+      "guidance": "Resolve open Courier Pickup conditions; have courier dispatch coordinator assign the next Courier Pickup owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Decision limits, holds, and retained evidence",
+          "items": [
+            "Package identity or count mismatch",
+            "Unsafe or prohibited contents concern",
+            "Pickup authority or secure access unavailable",
+            "Service commitment cannot be met",
+            "Pickup request and label record",
+            "Piece and packaging photograph when needed",
+            "Time-and-location custody evidence",
+            "Failed-attempt and notification record"
+          ],
+          "guidance": "Pause Courier Pickup when content, identity, authority, security, or service-level exception remains unresolved. Retain the available Courier Pickup proof and route unresolved parcel, envelope, service level, pickup window, label, and custody handoff scope to courier dispatch coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Authorization decision and limits",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Authorization decision",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Approved within listed limits",
+                "Approved with listed conditions",
+                "Revision required",
+                "Declined",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Requester and authorizer acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Requesting party or authorized representative",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorizing authority: Courier Operations Reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

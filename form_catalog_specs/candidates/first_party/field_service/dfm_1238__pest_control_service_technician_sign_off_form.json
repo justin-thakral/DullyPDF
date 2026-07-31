@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "catalog_id": "field_service/dfm_1238__pest_control_service_technician_sign_off_form",
+  "source_section": "field_service",
+  "source_filename": "dfm_1238__pest_control_service_technician_sign_off_form.pdf",
+  "slug": "pest-control-service-technician-sign-off-form",
+  "title": "Pest Control Service Technician Sign-Off Form",
+  "subtitle": "Commercial Pest-Control Service: verifies results and open follow-up.",
+  "description": "Pest Control Service Technician Sign-Off Form covers monitored pest activity, device network, treatment area, and contributing condition. The site pest-management coordinator records Commercial Pest-Control Service performed work, tests, limits, and acceptance. Pest Control Service Technician Sign-Off Form keeps Commercial Pest-Control Service exceptions visible until the site pest-management coordinator handoff.",
+  "use_case": "Use Pest Control Service Technician Sign-Off Form at food, storage, waste, exterior, utility, and occupied monitoring zones. Document monitored pest activity, device network, treatment area, and contributing condition identity before Commercial Pest-Control Service begins. Compare monitored pest activity, device network, treatment area, and contributing condition findings with stated Commercial Pest-Control Service criteria; route unresolved Commercial Pest-Control Service issues to licensed or otherwise qualified pest-control reviewer. For Pest Control Service Technician Sign-Off Form, confirm requirements for Commercial Pest-Control Service. Ask licensed or otherwise qualified pest-control reviewer to review Commercial Pest-Control Service conditions beyond the site pest-management coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Completion parties and source record",
+      "guidance": "For Commercial Pest-Control Service, identify responsible parties, food, storage, waste, exterior, utility, and occupied monitoring zones, and the linked monitored pest activity, device network, treatment area, and contributing condition source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Completion record ID",
+              "units": 1.1111111111111112
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Department / site contact",
+              "units": 1.3888888888888888
+            },
+            {
+              "key": "location",
+              "label": "Facility / service area",
+              "units": 1.2777777777777777
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Commercial Pest-Control Service identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Site and service agreement",
+              "units": 1.4444444444444444
+            },
+            {
+              "key": "identity_2",
+              "label": "Target pest and confirmed evidence",
+              "units": 1.8888888888888888
+            },
+            {
+              "key": "identity_3",
+              "label": "Device map, device numbers, and prior trend reference",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Delivered result and verification evidence",
+      "guidance": "Capture Commercial Pest-Control Service facts for monitored pest activity, device network, treatment area, and contributing condition; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Completion verification lines",
+          "columns": [
+            {
+              "key": "scope",
+              "label": "Performed task or delivered item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Completion criterion",
+              "units": 0.9
+            },
+            {
+              "key": "result",
+              "label": "Verified result",
+              "units": 0.9
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence reference",
+              "units": 0.85
+            },
+            {
+              "key": "follow_up",
+              "label": "Limitation or follow-up",
+              "units": 1.05
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Commercial Pest-Control Service completion checks",
+          "items": [
+            "Activity type, count, direction, and freshness",
+            "Device condition, placement, and service result",
+            "Entry point, moisture, food, waste, and harborage condition",
+            "Sanitation and structural corrective-action status",
+            "Treatment material, location, amount, and restriction",
+            "Trend compared with prior service thresholds"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Remaining work, evidence, and next owner",
+      "guidance": "Resolve open Commercial Pest-Control Service conditions; have site pest-management coordinator assign the next Commercial Pest-Control Service owner and transfer its retained record.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Limitations, open work, and retained evidence",
+          "items": [
+            "Non-target exposure or accessible treatment",
+            "Activity requiring different identification or method",
+            "Food-contact or occupied-area restriction not controlled",
+            "Structural or sanitation cause remains unassigned",
+            "Annotated device and activity map",
+            "Photographs of evidence and contributing conditions",
+            "Material and service record",
+            "Corrective-action and trend history"
+          ],
+          "guidance": "Pause Commercial Pest-Control Service when treatment exposure, target identification, occupied-area restriction, or required corrective action is unresolved. Retain the available Commercial Pest-Control Service proof and route unresolved monitored pest activity, device network, treatment area, and contributing condition scope to site pest-management coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Acceptance status and next action",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completion status",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Accepted",
+                "Accepted with listed limitation",
+                "Follow-up required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Provider and customer completion acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Site Pest-Management Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "receiver",
+              "label": "Site contact or service reviewer",
+              "units": 1.15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

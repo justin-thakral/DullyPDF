@@ -1,0 +1,367 @@
+{
+  "catalog_id": "business_operations/dbo_1768__service_quote_request_form",
+  "description": "For service quote, this request form records deliverables, exclusions, responsibilities, service levels, implementation, recurring fees, pass-through costs, and options. Its supporting evidence includes discovery notes, cost model, rate card, supplier inputs, exception approvals, scope attachment, and version comparison.",
+  "risk_tier": "B",
+  "schema_version": 1,
+  "sections": [
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Record number",
+              "units": 1.0
+            },
+            {
+              "key": "opened_date",
+              "label": "Quote opened",
+              "units": 1.0
+            },
+            {
+              "key": "location",
+              "label": "Quote site or account",
+              "units": 1.0
+            },
+            {
+              "key": "requester",
+              "label": "Quote contact",
+              "units": 1.0
+            },
+            {
+              "key": "owner",
+              "label": "Quote process owner",
+              "units": 1.0
+            },
+            {
+              "key": "needed_date",
+              "label": "Quote due date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Link this service quote record to its evidence.",
+          "key": "record_routing",
+          "label": "Service Quote Record and Routing",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "core_1",
+              "label": "Prospect",
+              "units": 1.0
+            },
+            {
+              "key": "core_2",
+              "label": "Service package",
+              "units": 1.0
+            },
+            {
+              "key": "core_3",
+              "label": "Locations",
+              "units": 1.0
+            },
+            {
+              "key": "core_4",
+              "label": "Volumes",
+              "units": 1.0
+            },
+            {
+              "key": "core_5",
+              "label": "Delivery window",
+              "units": 1.0
+            },
+            {
+              "key": "core_6",
+              "label": "Assumptions",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Capture prospect, service package, locations, volumes, delivery window, assumptions, pricing inputs, and quote validity for this service quote.",
+          "key": "core_identity",
+          "label": "Service Quote Core Identifiers",
+          "type": "fields"
+        }
+      ],
+      "guidance": "Identify prospect, service package, locations, volumes, delivery window, assumptions, pricing inputs, and quote validity for this service quote record.",
+      "key": "identity_1",
+      "title": "Business Request Reference"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "key": "input_1",
+              "label": "Deliverables",
+              "units": 1.0
+            },
+            {
+              "key": "input_2",
+              "label": "Exclusions",
+              "units": 1.0
+            },
+            {
+              "key": "input_3",
+              "label": "Responsibilities",
+              "units": 1.0
+            },
+            {
+              "key": "input_4",
+              "label": "Service levels",
+              "units": 1.0
+            },
+            {
+              "key": "input_5",
+              "label": "Implementation",
+              "units": 1.0
+            },
+            {
+              "key": "input_6",
+              "label": "Recurring fees",
+              "units": 1.0
+            }
+          ],
+          "guidance": "For service quote, record deliverables, exclusions, responsibilities, service levels, implementation, recurring fees, pass-through costs, and options.",
+          "key": "task_inputs",
+          "label": "Service Quote Required Inputs",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Service Quote Requested Outcome, Boundaries, and Exclusions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State service quote outcomes, exclusions, timing, and assumptions.",
+          "height": 50,
+          "key": "requested_outcome",
+          "label": "Service Quote Requested Outcome, Boundaries, and Exclusions",
+          "type": "textarea"
+        },
+        {
+          "columns": [
+            {
+              "key": "item",
+              "label": "Quote work item",
+              "units": 2.3
+            },
+            {
+              "key": "quantity",
+              "label": "Quantity or extent",
+              "units": 1.4
+            },
+            {
+              "key": "requirement",
+              "label": "Requirement or selection",
+              "units": 2.2
+            },
+            {
+              "key": "owner",
+              "label": "Quote owner",
+              "units": 1.5
+            }
+          ],
+          "guidance": "Separate service quote items by price, owner, and timing.",
+          "key": "scope_schedule",
+          "label": "Service Quote Items, Quantity, and Responsibility",
+          "rows": 6,
+          "type": "table"
+        },
+        {
+          "guidance": "Hold quotes with unsupported margin, unapproved terms, privacy or security commitments, or delivery promises beyond capacity. Route unresolved service quote work for review.",
+          "key": "applicable_review_boundary",
+          "label": "Service Quote Applicable Review Boundary",
+          "type": "notice"
+        }
+      ],
+      "guidance": "For service quote, capture deliverables, exclusions, responsibilities, service levels, implementation, recurring fees, pass-through costs, and options.",
+      "key": "task_2",
+      "title": "Requested Commitment and Limits"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "decision",
+              "label": "Decision",
+              "options": [
+                "Select request form disposition",
+                "Accept",
+                "Clarify",
+                "Defer",
+                "Decline"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "decision_date",
+              "label": "Quote decided at",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Quote approver",
+              "units": 1.0
+            },
+            {
+              "key": "next_step",
+              "label": "Authorized next step",
+              "units": 1.0
+            },
+            {
+              "key": "effective_until",
+              "label": "Quote schedule date",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Choose the narrowest accurate service quote disposition.",
+          "key": "disposition",
+          "label": "Service Quote Disposition",
+          "type": "fields"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Service Quote Rationale, Conditions, and Residual Risk",
+              "multiline": true
+            }
+          ],
+          "guidance": "Link the service quote decision to evidence.",
+          "height": 40,
+          "key": "decision_basis",
+          "label": "Service Quote Rationale, Conditions, and Residual Risk",
+          "type": "textarea"
+        },
+        {
+          "fields": [
+            {
+              "key": "requester",
+              "label": "Quote requester confirmation and date",
+              "units": 1.0
+            },
+            {
+              "key": "decision_owner",
+              "label": "Quote process owner and date",
+              "units": 1.0
+            }
+          ],
+          "key": "decision_acknowledgments",
+          "label": "Service Quote Review and Authorization",
+          "type": "signatures"
+        }
+      ],
+      "guidance": "Decide the service quote next step from discovery notes, cost model, rate card, supplier inputs, exception approvals, scope attachment, and version comparison.",
+      "key": "decision_3",
+      "title": "Sponsor Decision"
+    },
+    {
+      "blocks": [
+        {
+          "fields": [
+            {
+              "field_type": "choice",
+              "key": "response_status",
+              "label": "Response status",
+              "options": [
+                "Select response status",
+                "Approved for next step",
+                "Scheduled",
+                "More information required",
+                "Declined with reason",
+                "Escalated for review"
+              ],
+              "units": 1.0
+            },
+            {
+              "key": "response_date",
+              "label": "Response date",
+              "units": 1.0
+            },
+            {
+              "key": "response_owner",
+              "label": "Responding process owner",
+              "units": 1.0
+            },
+            {
+              "key": "requester_notice",
+              "label": "Requester notice date",
+              "units": 1.0
+            },
+            {
+              "key": "notice_method",
+              "label": "Notice method",
+              "units": 1.0
+            },
+            {
+              "key": "response_record",
+              "label": "Response record location",
+              "units": 1.0
+            }
+          ],
+          "guidance": "Return the service quote response to the requester and record.",
+          "key": "request_response",
+          "label": "Service Quote Response and Notice",
+          "type": "fields"
+        },
+        {
+          "columns": [
+            {
+              "key": "question",
+              "label": "Question or information needed",
+              "units": 2.6
+            },
+            {
+              "key": "owner",
+              "label": "Assigned process owner",
+              "units": 1.7
+            },
+            {
+              "key": "due",
+              "label": "Due or response date",
+              "units": 1.5
+            },
+            {
+              "key": "evidence",
+              "label": "Response or decision evidence",
+              "units": 2.2
+            }
+          ],
+          "guidance": "Keep unresolved service quote questions visible to closure.",
+          "key": "request_followup",
+          "label": "Service Quote Open Questions and Follow-Up",
+          "rows": 5,
+          "type": "table"
+        },
+        {
+          "fields": [
+            {
+              "key": "details",
+              "label": "Service Quote Requester Message and Conditions",
+              "multiline": true
+            }
+          ],
+          "guidance": "State the service quote response, conditions, next action, and contact for questions.",
+          "height": 46,
+          "key": "requester_message",
+          "label": "Service Quote Requester Message and Conditions",
+          "type": "textarea"
+        }
+      ],
+      "guidance": "Close the service quote record with approved quote version, customer delivery, acceptance status, expiry follow-up, CRM update, and contract handoff.",
+      "key": "closeout_4",
+      "title": "Requester Notice and Next Step"
+    }
+  ],
+  "slug": "service-quote-request-form",
+  "source_filename": "dbo_1768__service_quote_request_form.pdf",
+  "source_section": "business_operations",
+  "subtitle": "Service Quote Request Form: business service quote development and approval using prospect, deliverables, and discovery notes.",
+  "title": "Service Quote Request Form",
+  "use_case": "Use the request form during business service quote development and approval when the service quote record must identify prospect, service package, locations, volumes, delivery window, assumptions, pricing inputs, and quote validity. Complete the applicable handoff for approved quote version, customer delivery, acceptance status, expiry follow-up, CRM update, and contract handoff."
+}

@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "logistics_transport/dlt_126__carrier_onboarding_checklist",
+  "source_section": "logistics_transport",
+  "source_filename": "dlt_126__carrier_onboarding_checklist.pdf",
+  "slug": "carrier-onboarding-checklist",
+  "title": "Carrier Onboarding Checklist",
+  "subtitle": "Carrier Onboarding: documents findings, limits, and disposition.",
+  "description": "Carrier Onboarding Checklist covers carrier organization, operating authority, insurance, contacts, equipment, controls, and approval. The carrier onboarding coordinator records Carrier Onboarding criteria, findings, restrictions, and follow-up. Carrier Onboarding Checklist keeps Carrier Onboarding exceptions visible until the carrier onboarding coordinator handoff.",
+  "use_case": "Use Carrier Onboarding Checklist at carrier file, qualification system, dispatch access, and document repository. Document carrier organization, operating authority, insurance, contacts, equipment, controls, and approval identity before Carrier Onboarding begins. Compare carrier organization, operating authority, insurance, contacts, equipment, controls, and approval findings with stated Carrier Onboarding criteria; route unresolved Carrier Onboarding issues to authorized carrier-compliance reviewer. For Carrier Onboarding Checklist, confirm requirements for Carrier Onboarding. Ask authorized carrier-compliance reviewer to review Carrier Onboarding conditions beyond the carrier onboarding coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Carrier Onboarding, identify responsible parties, carrier file, qualification system, dispatch access, and document repository, and the linked carrier organization, operating authority, insurance, contacts, equipment, controls, and approval source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Carrier / vendor account",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Qualification file",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Carrier Onboarding identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Carrier legal and operating names",
+              "units": 1.8333333333333333
+            },
+            {
+              "key": "identity_2",
+              "label": "Authority, tax, insurance, and vendor identifiers",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Dispatch, safety, claims, billing, and after-hours contacts",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist points, conditions, and actions",
+      "guidance": "Capture Carrier Onboarding facts for carrier organization, operating authority, insurance, contacts, equipment, controls, and approval; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Carrier Onboarding inspection checks",
+          "items": [
+            "Authority and operating scope",
+            "Insurance type, limit, term, and source",
+            "Equipment and service capability",
+            "Safety, security, tracking, and cargo controls",
+            "Payment, fraud, identity, and communication verification",
+            "Approval scope, conditions, expiration, and re-review"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Inspection disposition and reviewer acknowledgment",
+      "guidance": "Before closing Carrier Onboarding, identify what failed or was not inspected, who owns correction, and when examination resumes. Carrier Onboarding Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Identity or ownership cannot be verified",
+            "Authority or insurance incomplete",
+            "Fraud or contact inconsistency",
+            "Approval requested beyond reviewer authority",
+            "Source authority and insurance evidence",
+            "Verified contact and identity record",
+            "Capability and control questionnaire",
+            "Approval decision and expiry monitoring"
+          ],
+          "guidance": "Pause Carrier Onboarding when carrier identity, authority, insurance, fraud control, or authorized approval remains unresolved. Retain the available Carrier Onboarding proof and route unresolved carrier organization, operating authority, insurance, contacts, equipment, controls, and approval scope to carrier onboarding coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Carrier Onboarding Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Authorized Carrier-Compliance Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

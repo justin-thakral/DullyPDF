@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "catalog_id": "education_childcare/dey_179__bullying_incident_review_worksheet",
+  "source_section": "education_childcare",
+  "source_filename": "dey_179__bullying_incident_review_worksheet.pdf",
+  "slug": "bullying-incident-review-worksheet",
+  "title": "Bullying Incident Review Worksheet",
+  "subtitle": "Capture reported conduct, exact statement, location pattern, and protective step; confirm retaliation concern and support follow-up.",
+  "description": "Bullying Incident records reported conduct, exact statement, location pattern, protective step, retaliation concern, and support follow-up. Bullying Incident evidence stays linked.",
+  "use_case": "Use this bullying incident evidence-based review when staff must document reported conduct and exact statement. Reconcile location pattern, protective step, retaliation concern, and support follow-up before the bullying incident handoff. Preserve the original report, dated witness accounts, location map or digital-channel reference, protective-action log, retaliation check, and restricted support record. Ask the assigned bullying incident reviewer to confirm reported conduct against the organization's policy.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "task_details",
+      "title": "Bullying Incident meeting details",
+      "guidance": "Separate reported conduct and exact statements from observations; record location patterns, protective measures, retaliation concerns, and support follow-up.",
+      "blocks": [
+        {
+          "key": "task_details_1",
+          "type": "fields",
+          "label": "Bullying Incident people and reference",
+          "fields": [
+            {
+              "key": "student_full_name",
+              "label": "Student full name",
+              "units": 1.15
+            },
+            {
+              "key": "reporting_person_and_role",
+              "label": "Reporting person and role",
+              "units": 1.0
+            },
+            {
+              "key": "date_and_time_first_reported",
+              "label": "Date and time first reported",
+              "units": 1.25
+            },
+            {
+              "key": "reported_conduct",
+              "label": "Reported conduct",
+              "units": 1.1
+            },
+            {
+              "key": "exact_statement",
+              "label": "Exact statement",
+              "units": 1.2
+            },
+            {
+              "key": "location_pattern",
+              "label": "Location pattern",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "task_details_2",
+          "type": "fields",
+          "label": "Bullying Incident task details",
+          "fields": [
+            {
+              "key": "protective_step",
+              "label": "Protective step",
+              "units": 1.15
+            },
+            {
+              "key": "retaliation_concern",
+              "label": "Retaliation concern",
+              "units": 1.0
+            },
+            {
+              "key": "support_follow_up",
+              "label": "Support follow-up",
+              "units": 1.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "review_discussion",
+      "title": "Bullying Incident discussion",
+      "guidance": "Capture what is working, the participant's input, and unresolved concerns.",
+      "blocks": [
+        {
+          "key": "working_well",
+          "type": "textarea",
+          "label": "Bullying Incident strengths or working well",
+          "fields": [
+            {
+              "key": "strength_progress_or_successful_support_related_to_reported_conduct",
+              "label": "Strength, progress, or successful support related to reported conduct"
+            }
+          ],
+          "height": 44
+        },
+        {
+          "key": "questions",
+          "type": "textarea",
+          "label": "Bullying Incident questions or concerns",
+          "fields": [
+            {
+              "key": "concern_missing_context_or_question_about_location_pattern",
+              "label": "Concern, missing context, or question about location pattern"
+            }
+          ],
+          "height": 36
+        },
+        {
+          "key": "participant_input",
+          "type": "textarea",
+          "label": "Bullying Incident participant or family input",
+          "fields": [
+            {
+              "key": "priority_preference_or_proposed_support_for_protective_step",
+              "label": "Priority, preference, or proposed support for protective step"
+            }
+          ],
+          "height": 36
+        }
+      ]
+    },
+    {
+      "key": "review_actions",
+      "title": "Bullying Incident exception review and action plan",
+      "guidance": "Turn the review into owned actions and a progress checkpoint.",
+      "blocks": [
+        {
+          "key": "action_plan",
+          "type": "table",
+          "label": "Bullying Incident agreed actions",
+          "columns": [
+            {
+              "key": "goal_or_action",
+              "label": "Goal or action",
+              "units": 1.2
+            },
+            {
+              "key": "owner",
+              "label": "Owner",
+              "units": 1.1
+            },
+            {
+              "key": "due_date",
+              "label": "Due date",
+              "units": 1.25
+            },
+            {
+              "key": "progress_measure",
+              "label": "Progress measure",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "review_followup",
+          "type": "fields",
+          "label": "Bullying Incident follow-up plan",
+          "fields": [
+            {
+              "key": "agreed_outcome",
+              "label": "Agreed outcome",
+              "units": 1.15
+            },
+            {
+              "key": "communication_method",
+              "label": "Communication method",
+              "units": 1.0
+            },
+            {
+              "key": "progress_checkpoint",
+              "label": "Progress checkpoint",
+              "units": 1.25
+            },
+            {
+              "key": "unresolved_question_and_owner",
+              "label": "Unresolved question and owner",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "review_receipt",
+          "type": "signatures",
+          "label": "Bullying Incident review receipt",
+          "fields": [
+            {
+              "key": "review_facilitator_and_date",
+              "label": "Review facilitator and date",
+              "units": 1.15
+            }
+          ],
+          "guidance": "Receipt records the discussion and assigned follow-up."
+        }
+      ]
+    }
+  ]
+}

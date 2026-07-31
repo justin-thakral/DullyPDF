@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "catalog_id": "automotive_service/das_2146__towing_dispatch_inspection_checklist",
+  "source_section": "automotive_service",
+  "source_filename": "das_2146__towing_dispatch_inspection_checklist.pdf",
+  "slug": "towing-dispatch-inspection-checklist",
+  "title": "Towing Dispatch Inspection Checklist",
+  "subtitle": "Towing Dispatch: documents findings, limits, and disposition.",
+  "description": "Towing Dispatch Inspection Checklist covers disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery. The towing dispatch coordinator records Towing Dispatch criteria, findings, restrictions, and follow-up. Towing Dispatch Inspection Checklist keeps Towing Dispatch exceptions visible until the towing dispatch coordinator handoff.",
+  "use_case": "Use Towing Dispatch Inspection Checklist at roadside pickup, safe staging point, tow route, storage yard, and delivery location. Document disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery identity before Towing Dispatch begins. Compare disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery findings with stated Towing Dispatch criteria; route unresolved Towing Dispatch issues to qualified towing operations reviewer. For Towing Dispatch Inspection Checklist, confirm requirements for Towing Dispatch. Ask qualified towing operations reviewer to review Towing Dispatch conditions beyond the towing dispatch coordinator's role.",
+  "risk_tier": "B",
+  "sections": [
+    {
+      "key": "compact_identity",
+      "title": "Checklist context and subject record",
+      "guidance": "For Towing Dispatch, identify responsible parties, roadside pickup, safe staging point, tow route, storage yard, and delivery location, and the linked disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery source.",
+      "blocks": [
+        {
+          "key": "compact_record_context",
+          "type": "fields",
+          "label": "Record and responsible parties",
+          "fields": [
+            {
+              "key": "record_number",
+              "label": "Checklist record ID",
+              "units": 1.0555555555555556
+            },
+            {
+              "key": "record_date",
+              "label": "Date / period",
+              "units": 0.8
+            },
+            {
+              "key": "party",
+              "label": "Customer / fleet / payer",
+              "units": 1.3333333333333333
+            },
+            {
+              "key": "location",
+              "label": "Shop / bay / site",
+              "units": 1.0
+            },
+            {
+              "key": "worker",
+              "label": "Responsible owner",
+              "units": 1.0
+            }
+          ]
+        },
+        {
+          "key": "compact_subject_identity",
+          "type": "fields",
+          "label": "Towing Dispatch identity",
+          "fields": [
+            {
+              "key": "identity_1",
+              "label": "Dispatch, requester, account, and authority",
+              "units": 2.388888888888889
+            },
+            {
+              "key": "identity_2",
+              "label": "Vehicle VIN or plate, make, model, color, and location",
+              "units": 2.6
+            },
+            {
+              "key": "identity_3",
+              "label": "Truck, operator, equipment, destination, and custody references",
+              "units": 2.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_task_record",
+      "title": "Checklist findings and inspection checks",
+      "guidance": "Capture Towing Dispatch facts for disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery; include result, limit, source, and next control.",
+      "blocks": [
+        {
+          "key": "compact_task_lines",
+          "type": "table",
+          "label": "Finding and action lines",
+          "columns": [
+            {
+              "key": "subject",
+              "label": "Checkpoint, area, or item",
+              "units": 1.15
+            },
+            {
+              "key": "criterion",
+              "label": "Criterion or expected state",
+              "units": 1.0
+            },
+            {
+              "key": "observed",
+              "label": "Observed result or reading",
+              "units": 1.1
+            },
+            {
+              "key": "decision",
+              "label": "Pass, issue, N/A, or not inspected",
+              "units": 0.95
+            },
+            {
+              "key": "action",
+              "label": "Restriction or follow-up",
+              "units": 1.0
+            }
+          ],
+          "rows": 2
+        },
+        {
+          "key": "compact_task_checks",
+          "type": "checklist",
+          "label": "Towing Dispatch inspection checks",
+          "items": [
+            "Road, traffic, weather, visibility, and scene safety",
+            "Vehicle position, damage, mobility, drivetrain, and clearance",
+            "Tow method, attachment, securement, and special equipment",
+            "Occupant, key, property, and law-enforcement context",
+            "Departure, route, storage, and destination handoff",
+            "Pre-existing and delivery condition"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "compact_closeout",
+      "title": "Deficiencies, inspection decision, and follow-up",
+      "guidance": "Before closing Towing Dispatch, identify what failed or was not inspected, who owns correction, and when examination resumes. Towing Dispatch Coordinator preserves the decision.",
+      "blocks": [
+        {
+          "key": "compact_exception_evidence",
+          "type": "checklist",
+          "label": "Deficiencies, restrictions, and retained evidence",
+          "items": [
+            "Scene cannot be made safe",
+            "Requester lacks authority",
+            "Vehicle requires different equipment or recovery plan",
+            "Destination or custody acceptance unavailable",
+            "Scene and vehicle condition photographs",
+            "Dispatch and authority record",
+            "Attachment and securement evidence",
+            "Custody, destination, and delivery acknowledgment"
+          ],
+          "guidance": "Pause Towing Dispatch when scene safety, authority, equipment fit, securement, destination, or vehicle custody remains unresolved. Retain the available Towing Dispatch proof and route unresolved disabled vehicle, requester, pickup condition, destination, tow equipment, route, custody, and delivery scope to towing dispatch coordinator."
+        },
+        {
+          "key": "compact_outcome",
+          "type": "fields",
+          "label": "Inspection disposition and reinspection",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Inspection disposition",
+              "units": 1.15,
+              "field_type": "choice",
+              "options": [
+                "Select...",
+                "Passed within observed scope",
+                "Passed with listed limitation",
+                "Correction or reinspection required",
+                "Not accepted",
+                "Held"
+              ]
+            },
+            {
+              "key": "next_owner",
+              "label": "Next owner",
+              "units": 1.0
+            },
+            {
+              "key": "due",
+              "label": "Due or trigger",
+              "units": 0.85
+            },
+            {
+              "key": "reference",
+              "label": "Related reference",
+              "units": 1.1
+            }
+          ]
+        },
+        {
+          "key": "compact_handoff",
+          "type": "signatures",
+          "label": "Inspector and qualified-review acknowledgment",
+          "fields": [
+            {
+              "key": "provider",
+              "label": "Towing Dispatch Coordinator",
+              "units": 1.15
+            },
+            {
+              "key": "provider_date",
+              "label": "Date and time",
+              "units": 0.75
+            },
+            {
+              "key": "receiver",
+              "label": "Qualified Towing Operations Reviewer",
+              "units": 1.15
+            },
+            {
+              "key": "receiver_date",
+              "label": "Date and time",
+              "units": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
