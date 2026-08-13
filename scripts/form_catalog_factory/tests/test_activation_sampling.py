@@ -196,13 +196,18 @@ def test_sampling_is_reproducible_and_includes_worst_case_canaries(tmp_path: Pat
     items = []
     results = []
     forms = []
+    (tmp_path / "qa").mkdir()
     for index in range(12):
         catalog_id = f"section/form_{index:02d}"
         items.append(
             {
                 "catalogId": catalog_id,
                 "slug": f"form-{index:02d}",
-                "riskTier": "C" if index == 11 else ("B" if index == 10 else "A"),
+                "riskTier": (
+                    "C"
+                    if index in (9, 11)
+                    else ("B" if index in (8, 10) else "A")
+                ),
                 "sourceSection": "section",
                 "filename": f"form_{index:02d}.pdf",
             }
@@ -225,12 +230,33 @@ def test_sampling_is_reproducible_and_includes_worst_case_canaries(tmp_path: Pat
             "sha256": f"{index + 100:064x}",
             "bytes": 50 + index,
         }
+        field_count = 50 + index
+        field_types = {"/Tx": field_count}
+        if index < 10:
+            field_types = {"/Btn": 1, "/Tx": field_count - 1}
+        qa_path = _write(
+            tmp_path / "qa" / f"form_{index:02d}.json",
+            {
+                "pdfQa": {
+                    "ok": True,
+                    "sha256": pdf["sha256"],
+                    "bytes": pdf["bytes"],
+                    "metrics": {
+                        "pages": index + 1,
+                        "fields": field_count,
+                        "field_types": field_types,
+                    },
+                }
+            },
+        )
         results.append(
             {
                 "catalogId": catalog_id,
                 "ok": True,
                 "pageCount": index + 1,
-                "fieldCount": 50 + index,
+                "fieldCount": field_count,
+                "qaPath": qa_path.relative_to(tmp_path).as_posix(),
+                "qaSha256": hashlib.sha256(qa_path.read_bytes()).hexdigest(),
                 "pdf": pdf,
                 "thumbnail": thumbnail,
             }
@@ -310,11 +336,29 @@ def test_sampling_is_reproducible_and_includes_worst_case_canaries(tmp_path: Pat
     assert first == second
     assert first["canaryRoles"]["largest_page_count"] == "section/form_11"
     assert first["canaryRoles"]["risk_tier_c"] == "section/form_11"
+    assert first["browserCatalogIds"][:2] == [
+        "section/form_09",
+        "section/form_08",
+    ]
+    assert "section/form_10" not in first["browserCatalogIds"]
+    assert "section/form_11" not in first["browserCatalogIds"]
     assert first["browserCanaryCount"] == 3
     assert first["sourceCommit"] == source_commit
     assert first["manifestSha256"] == hashlib.sha256(
         manifest.read_bytes()
     ).hexdigest()
+
+    qa_path = tmp_path / "qa" / "form_00.json"
+    original_qa = qa_path.read_bytes()
+    qa_path.write_text("{}", encoding="utf-8")
+    with pytest.raises(SamplingPlanError, match="QA evidence hash differs"):
+        build_sample_plan(
+            selection_path=selection,
+            build_report_path=report,
+            manifest_path=manifest,
+            random_count=4,
+        )
+    qa_path.write_bytes(original_qa)
 
     changed = json.loads(manifest.read_text(encoding="utf-8"))
     changed["forms"][0]["pdf"]["sha256"] = "f" * 64

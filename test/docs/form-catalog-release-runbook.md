@@ -594,6 +594,13 @@ and release ID; the report must bind the exact selection and release-manifest
 hashes, and every PDF/thumbnail mapping, page count, and commit field must match
 the manifest exactly.
 
+For releases with hash-bound PDF QA receipts, browser canaries are selected
+only from PDFs whose QA `field_types` prove at least one text (`/Tx`) and one
+checkbox (`/Btn`) field. Global page-count, field-count, alphabetical, and risk
+extremes remain in the HTTP sample even when they are text-only. The planner
+adds deterministic browser-compatible fallbacks to that sample so every
+fill/save/reopen canary can exercise and independently reopen both field types.
+
 The production deploy must produce a Hosting receipt like this:
 
 ```json

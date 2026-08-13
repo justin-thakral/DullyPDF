@@ -44,6 +44,83 @@ def _canonical_hash(payload: Any) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def _browser_field_types(
+    *,
+    build_report_path: str | Path,
+    catalog_id: str,
+    result: dict[str, Any],
+) -> dict[str, int] | None:
+    """Load field-type counts from the build's hash-bound PDF QA receipt.
+
+    Historical fixture reports did not carry QA paths, so an entirely absent
+    QA binding returns ``None`` for backwards compatibility. Once either QA
+    field is present, both the path and hash are required and all referenced
+    metrics must agree with the passing build result.
+    """
+
+    qa_path_value = result.get("qaPath")
+    qa_sha256 = result.get("qaSha256")
+    if qa_path_value is None and qa_sha256 is None:
+        return None
+    if not isinstance(qa_path_value, str) or not qa_path_value:
+        raise SamplingPlanError(f"{catalog_id}: build result has no QA path")
+    if (
+        not isinstance(qa_sha256, str)
+        or not re.fullmatch(r"[0-9a-f]{64}", qa_sha256)
+    ):
+        raise SamplingPlanError(f"{catalog_id}: build result has no valid QA hash")
+
+    report_root = Path(build_report_path).resolve().parent
+    qa_path = (report_root / qa_path_value).resolve()
+    try:
+        qa_path.relative_to(report_root)
+    except ValueError as exc:
+        raise SamplingPlanError(
+            f"{catalog_id}: QA path escapes the build report directory"
+        ) from exc
+    if not qa_path.is_file():
+        raise SamplingPlanError(f"{catalog_id}: QA evidence is missing")
+    if _sha256_file(qa_path) != qa_sha256:
+        raise SamplingPlanError(f"{catalog_id}: QA evidence hash differs")
+
+    qa = _load(qa_path, f"{catalog_id} QA evidence")
+    pdf_qa = qa.get("pdfQa")
+    metrics = pdf_qa.get("metrics") if isinstance(pdf_qa, dict) else None
+    field_types = metrics.get("field_types") if isinstance(metrics, dict) else None
+    if (
+        not isinstance(pdf_qa, dict)
+        or pdf_qa.get("ok") is not True
+        or not isinstance(metrics, dict)
+        or metrics.get("pages") != result.get("pageCount")
+        or metrics.get("fields") != result.get("fieldCount")
+        or pdf_qa.get("sha256") != result.get("pdf", {}).get("sha256")
+        or pdf_qa.get("bytes") != result.get("pdf", {}).get("bytes")
+        or not isinstance(field_types, dict)
+    ):
+        raise SamplingPlanError(
+            f"{catalog_id}: QA evidence does not match the passing PDF result"
+        )
+
+    normalized: dict[str, int] = {}
+    for field_type, count in field_types.items():
+        if (
+            not isinstance(field_type, str)
+            or not field_type
+            or not isinstance(count, int)
+            or isinstance(count, bool)
+            or count < 0
+        ):
+            raise SamplingPlanError(
+                f"{catalog_id}: QA field-type counts are invalid"
+            )
+        normalized[field_type] = count
+    if sum(normalized.values()) != result.get("fieldCount"):
+        raise SamplingPlanError(
+            f"{catalog_id}: QA field-type counts do not equal fieldCount"
+        )
+    return normalized
+
+
 def _resolve_render_theme(
     *sources: tuple[str, dict[str, Any]],
 ) -> dict[str, Any] | None:
@@ -60,7 +137,11 @@ def build_sample_plan(
     manifest_path: str | Path,
     random_count: int = 10,
 ) -> dict[str, Any]:
-    """Choose reproducible random samples plus worst-case deterministic canaries."""
+    """Choose reproducible random samples plus worst-case deterministic canaries.
+
+    For ``n`` forms, planning is O(n log n) time and O(n) memory, including
+    one bounded, hash-verified QA receipt read per form when receipts exist.
+    """
 
     if random_count <= 0:
         raise SamplingPlanError("random_count must be positive")
@@ -181,6 +262,39 @@ def build_sample_plan(
                 raise SamplingPlanError(
                     f"{item_id}: build and manifest {asset_name} assets differ"
                 )
+
+    field_types_by_id = {
+        item_id: _browser_field_types(
+            build_report_path=build_report_path,
+            catalog_id=item_id,
+            result=result_by_id[item_id],
+        )
+        for item_id in ids
+    }
+    qa_bound_ids = {
+        item_id
+        for item_id, field_types in field_types_by_id.items()
+        if field_types is not None
+    }
+    if qa_bound_ids and len(qa_bound_ids) != len(ids):
+        raise SamplingPlanError(
+            "Build results must either all carry PDF QA bindings or all omit them"
+        )
+    if qa_bound_ids:
+        browser_eligible_ids = [
+            item_id
+            for item_id in ids
+            if field_types_by_id[item_id].get("/Tx", 0) > 0
+            and field_types_by_id[item_id].get("/Btn", 0) > 0
+        ]
+        if not browser_eligible_ids:
+            raise SamplingPlanError(
+                "No release PDF has both text and checkbox fields for browser canaries"
+            )
+    else:
+        # Historical reports predate hash-bound PDF QA receipts. Preserve their
+        # deterministic plans while new releases select from proven field types.
+        browser_eligible_ids = ids
     seed_material = json.dumps(
         manifest,
         sort_keys=True,
@@ -225,21 +339,67 @@ def build_sample_plan(
                 key=lambda item_id: (result_by_id[item_id]["fieldCount"], item_id),
             )
 
-    http_ids = sorted(set(random_ids) | set(canary_roles.values()))
+    eligible_set = set(browser_eligible_ids)
+    eligible_tier_c = [
+        item_id
+        for item_id in browser_eligible_ids
+        if result_by_id[item_id].get(
+            "riskTier",
+            plan_by_id[item_id].get("riskTier"),
+        )
+        == "C"
+    ]
+    eligible_tier_b = [
+        item_id
+        for item_id in browser_eligible_ids
+        if result_by_id[item_id].get(
+            "riskTier",
+            plan_by_id[item_id].get("riskTier"),
+        )
+        == "B"
+    ]
     browser_ids: list[str] = []
     browser_candidates = [
-        canary_roles["largest_field_count"],
-        canary_roles.get("risk_tier_c"),
-        canary_roles.get("risk_tier_b"),
-        canary_roles["largest_page_count"],
-        *random_ids,
-        canary_roles["alphabetical_last"],
+        max(
+            browser_eligible_ids,
+            key=lambda item_id: (result_by_id[item_id]["fieldCount"], item_id),
+        ),
+        max(
+            eligible_tier_c,
+            key=lambda item_id: (result_by_id[item_id]["fieldCount"], item_id),
+        )
+        if eligible_tier_c
+        else None,
+        max(
+            eligible_tier_b,
+            key=lambda item_id: (result_by_id[item_id]["fieldCount"], item_id),
+        )
+        if eligible_tier_b
+        else None,
+        max(
+            browser_eligible_ids,
+            key=lambda item_id: (result_by_id[item_id]["pageCount"], item_id),
+        ),
+        *(item_id for item_id in random_ids if item_id in eligible_set),
+        max(browser_eligible_ids),
+        *sorted(
+            browser_eligible_ids,
+            key=lambda item_id: (result_by_id[item_id]["fieldCount"], item_id),
+            reverse=True,
+        ),
     ]
     for item_id in browser_candidates:
         if item_id and item_id not in browser_ids:
             browser_ids.append(item_id)
         if len(browser_ids) == 3:
             break
+
+    # Global edge/risk roles remain in HTTP coverage even when their PDFs are
+    # text-only. Browser-compatible fallbacks are added to the same exact-byte
+    # HTTP sample before the stronger fill/save/reopen checks run.
+    http_ids = sorted(
+        set(random_ids) | set(canary_roles.values()) | set(browser_ids)
+    )
 
     samples = []
     for item_id in http_ids:

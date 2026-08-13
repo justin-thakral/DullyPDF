@@ -355,7 +355,21 @@ def _promotion_evidence(
     schema_sha256 = hashlib.sha256(b"fixture-schema").hexdigest()
     qa_path = _write_json(
         evidence_dir / "qa.json",
-        {"schemaVersion": 1, "catalogId": catalog_id, "ok": True},
+        {
+            "schemaVersion": 1,
+            "catalogId": catalog_id,
+            "ok": True,
+            "pdfQa": {
+                "ok": True,
+                "sha256": form["pdf"]["sha256"],
+                "bytes": form["pdf"]["bytes"],
+                "metrics": {
+                    "pages": form["pageCount"],
+                    "fields": 4,
+                    "field_types": {"/Btn": 1, "/Tx": 3},
+                },
+            },
+        },
     )
     qa_sha256 = hashlib.sha256(qa_path.read_bytes()).hexdigest()
     build_report = _write_json(
